@@ -30,14 +30,14 @@
         "zzz": true,
         "zzzz": true,
         "**/assets": true,
-        "**/packages": true,
-        "**/android": true,
+        // "**/packages": true,
+        // "**/android": true,
         "**/ios": true,
         "ioszz": true,
         "**/web": true,
         "**/macos": true,
         // "**/macos2": true,
-        // "**/pubspec.yaml": true,
+        "**/pubspec.yaml": true,
         "sats.xd": true,
         //
         //

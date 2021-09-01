@@ -1,0 +1,33 @@
+{
+"chain": "BTC", 
+"xpub": "xpub661MyMwAqRbcG2sgXXxqa4w1sQtbJkfpEtWk4YdNa7mmXaFZsDMhfryrChjf1HJVFytircdgHDaszmxDuCcNkQkSLpNMmQPFqsgNeFKVvq9", 
+"xfp": "EFAB2046", 
+"account": 0, 
+
+"bip49": {
+	"xpub": "xpub6Cp3FLGzFqSEXN59aWx9SUmTLyFxbNwpdBLidcpXh48scHcbk6AqC4DhhxJq6UKpFEEzpnu5Fg5ET5PGKQSCYTED9JQScNYDwW97HRKh85y", 
+	"first": "3KTxZ8KvEyjK9qpffCMXkYa2a2UbbBbjJM", 
+	"deriv": "m/49'/0'/0'", 
+	"xfp": "E2E5472B", 
+	"name": "p2wpkh-p2sh", 
+	"_pub": "ypub6XeJYzwuQWyiNfGGQsjmeZrxWwQQXzwKYHrwR1iR54WkfPRpzkLPp7sqjAGR6NyjesMoaGVdiLRnLMzq36rDLgup1e6sCHMiDECkfzLQiy6"
+}, 
+
+"bip44": {
+	"xpub": "xpub6DDCxCuEukKxvaTTL49zajjvEJNrrBuWLTLtn3tWUpPVuQ523ce3xWuRvsDqa3cEpUDh2dm5nmJMtCdCjY6k5gpcuucFor3F2sTzPR8e19T", 
+	"first": "1ESpFDrfWJzjUs5ufyfpWwmgyMKbYmvp3s", 
+	"deriv": "m/44'/0'/0'", 
+	"xfp": "40C3FCFA", 
+	"name": "p2pkh"
+}, 
+
+"bip84": {
+	"xpub": "xpub6BupP6RVJejhJcEfhUUATSN1DhdZ35yC4yKuEPCs784xQPHYy166w4Fegz1qPmpB6KQ5HhLZGDT5hpp6t8eFWg5oFynG4Mbr8XxW6ySnwHD", 
+	"first": "bc1q8e4hp24acrd8eevg4w250fc6t2qyuevclylm9j", 
+	"deriv": "m/84'/0'/0'", 
+	"xfp": "B96FD5D7", 
+	"name": "p2wpkh", 
+	"_pub": "zpub6qaLzRmKc1pf1CcuNC3QscZ1ZdvSvKxBuCNLoAzds8piWav1UKREBBZvjPw1Pb81ubdgneXgBYABUQ3EKXUH79SzzfB7EBEpfz5nt5eQPe9"
+}
+
+}

@@ -101,7 +101,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
     this._logger,
   ) : super(SeedGenerateState()) {
     _networkCubitSub = _networkCubit.stream.listen((NetworkState nState) {
-      if (nState.hasOffError() != '') goToNetworkAndReset();
+      if (nState.hasOffError() != '') _goToNetworkAndReset();
     });
   }
 
@@ -115,68 +115,25 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
   final LoggerCubit _logger;
   final net.NetworkCubit _testNetCubit;
 
-  goToNetworkAndReset() {
+  _goToNetworkAndReset() {
     if (state.currentStep == SeedGenerateSteps.networkOn ||
         state.currentStep == SeedGenerateSteps.warning ||
         state.currentStep == SeedGenerateSteps.security) return;
     emit(SeedGenerateState(currentStep: SeedGenerateSteps.security));
   }
 
-  nextClicked() {
-    switch (state.currentStep) {
-      case SeedGenerateSteps.warning:
-        emit(state.copyWith(currentStep: SeedGenerateSteps.security));
-        break;
-      case SeedGenerateSteps.security:
-        emit(state.copyWith(currentStep: SeedGenerateSteps.passphrase));
-        break;
-      case SeedGenerateSteps.passphrase:
-        _checkPassphrase();
-        break;
-      case SeedGenerateSteps.generate:
-        _confirmSeed();
-        break;
-      case SeedGenerateSteps.confirm:
-        break;
-      case SeedGenerateSteps.label:
-        _checkLabel();
-        break;
-      case SeedGenerateSteps.networkOn:
-        _saveWallet();
-        break;
+  _checkPassphrase() {
+    if (state.passPhrase.length > 8 || state.passPhrase.contains(' ')) {
+      emit(state.copyWith(errPassphrase: 'Invalid Passphrase'));
+      return;
     }
-  }
 
-  backClicked() {
-    switch (state.currentStep) {
-      case SeedGenerateSteps.warning:
-        break;
-      case SeedGenerateSteps.security:
-        emit(state.copyWith(currentStep: SeedGenerateSteps.warning));
-        break;
-      case SeedGenerateSteps.passphrase:
-        emit(state.copyWith(
-          currentStep: SeedGenerateSteps.security,
-          passPhrase: '',
-        ));
-        break;
-      case SeedGenerateSteps.generate:
-        emit(state.copyWith(currentStep: SeedGenerateSteps.passphrase));
-        break;
-      case SeedGenerateSteps.confirm:
-        emit(state.copyWith(
-          currentStep: SeedGenerateSteps.generate,
-          quizSeedAnswer: '',
-          quizSeedList: [],
-          quizSeedError: '',
-          quizSeedCompletedAnswers: [],
-        ));
-        break;
-      case SeedGenerateSteps.label:
-        break;
-      case SeedGenerateSteps.networkOn:
-        break;
-    }
+    _generateSeed();
+
+    emit(state.copyWith(
+      currentStep: SeedGenerateSteps.generate,
+      errPassphrase: '',
+    ));
   }
 
   _generateSeed() async {
@@ -255,51 +212,6 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
       quizSeedList: answerList,
       quizSeedAnswerIdx: answerIdx + 1,
     ));
-  }
-
-  seedWordSelected(String text) {
-    if (text != state.quizSeedAnswer) {
-      emit(state.copyWith(quizSeedError: 'Incorrect Word Selected'));
-      return;
-    }
-    emit(state.copyWith(quizSeedError: ''));
-
-    List<String> completedAnswers = state.quizSeedCompletedAnswers.toList();
-    completedAnswers.add(text);
-
-    emit(state.copyWith(
-      quizSeedCompletedAnswers: completedAnswers,
-      quizSeedCompleted: completedAnswers.length,
-    ));
-
-    if (completedAnswers.length == 3) {
-      emit(state.copyWith(currentStep: SeedGenerateSteps.passphrase));
-      return;
-    }
-
-    _generateQuiz();
-  }
-
-  passPhrasedChanged(String text) {
-    emit(state.copyWith(passPhrase: text));
-  }
-
-  _checkPassphrase() {
-    if (state.passPhrase.length > 8 || state.passPhrase.contains(' ')) {
-      emit(state.copyWith(errPassphrase: 'Invalid Passphrase'));
-      return;
-    }
-
-    _generateSeed();
-
-    emit(state.copyWith(
-      currentStep: SeedGenerateSteps.generate,
-      errPassphrase: '',
-    ));
-  }
-
-  labelChanged(String text) {
-    emit(state.copyWith(walletLabel: text, walletLabelError: ''));
   }
 
   _checkLabel() async {
@@ -388,6 +300,94 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
         newWalletSaved: true,
       ));
     }
+  }
+
+  nextClicked() {
+    switch (state.currentStep) {
+      case SeedGenerateSteps.warning:
+        emit(state.copyWith(currentStep: SeedGenerateSteps.security));
+        break;
+      case SeedGenerateSteps.security:
+        emit(state.copyWith(currentStep: SeedGenerateSteps.passphrase));
+        break;
+      case SeedGenerateSteps.passphrase:
+        _checkPassphrase();
+        break;
+      case SeedGenerateSteps.generate:
+        _confirmSeed();
+        break;
+      case SeedGenerateSteps.confirm:
+        break;
+      case SeedGenerateSteps.label:
+        _checkLabel();
+        break;
+      case SeedGenerateSteps.networkOn:
+        _saveWallet();
+        break;
+    }
+  }
+
+  backClicked() {
+    switch (state.currentStep) {
+      case SeedGenerateSteps.warning:
+        break;
+      case SeedGenerateSteps.security:
+        emit(state.copyWith(currentStep: SeedGenerateSteps.warning));
+        break;
+      case SeedGenerateSteps.passphrase:
+        emit(state.copyWith(
+          currentStep: SeedGenerateSteps.security,
+          passPhrase: '',
+        ));
+        break;
+      case SeedGenerateSteps.generate:
+        emit(state.copyWith(currentStep: SeedGenerateSteps.passphrase));
+        break;
+      case SeedGenerateSteps.confirm:
+        emit(state.copyWith(
+          currentStep: SeedGenerateSteps.generate,
+          quizSeedAnswer: '',
+          quizSeedList: [],
+          quizSeedError: '',
+          quizSeedCompletedAnswers: [],
+        ));
+        break;
+      case SeedGenerateSteps.label:
+        break;
+      case SeedGenerateSteps.networkOn:
+        break;
+    }
+  }
+
+  passPhrasedChanged(String text) {
+    emit(state.copyWith(passPhrase: text));
+  }
+
+  seedWordSelected(String text) {
+    if (text != state.quizSeedAnswer) {
+      emit(state.copyWith(quizSeedError: 'Incorrect Word Selected'));
+      return;
+    }
+    emit(state.copyWith(quizSeedError: ''));
+
+    List<String> completedAnswers = state.quizSeedCompletedAnswers.toList();
+    completedAnswers.add(text);
+
+    emit(state.copyWith(
+      quizSeedCompletedAnswers: completedAnswers,
+      quizSeedCompleted: completedAnswers.length,
+    ));
+
+    if (completedAnswers.length == 3) {
+      emit(state.copyWith(currentStep: SeedGenerateSteps.label));
+      return;
+    }
+
+    _generateQuiz();
+  }
+
+  labelChanged(String text) {
+    emit(state.copyWith(walletLabel: text, walletLabelError: ''));
   }
 
   @override
