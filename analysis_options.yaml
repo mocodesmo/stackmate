@@ -1,0 +1,5 @@
+analyzer:
+  enable-experiment:
+    - non-nullable
+  errors:
+    invalid_annotation_target: ignore
