@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sats/zold/api/firebase.dart';
-import 'package:sats/zold/api/wallet.dart';
+// import 'package:sats/zold/api/firebase.dart'; 
+// import 'package:sats/zold/api/wallet.dart';
 import 'package:sats/deps.dart';
 import 'package:sats/cubit/logger.dart';
-import 'package:sats/zold/cubit/wallet.dart';
+// import 'package:sats/zold/cubit/wallet.dart';
 import 'package:sats/pkg/clipboard.dart';
 import 'package:sats/pkg/deep-link.dart';
 import 'package:sats/pkg/launcher.dart';
 import 'package:sats/pkg/share.dart';
 import 'package:sats/pkg/storage.dart';
-import 'package:sats/zold/cubit/email-login.dart';
+// import 'package:sats/zold/cubit/email-login.dart';
 import 'package:sats/cubit/network.dart';
 
-final walletCubit = WalletCubit(
-  locator<IStorage>(),
-  locator<IWalletAPI>(),
-  loggerCubit,
-  locator<IShare>(),
-  locator<IClipBoard>(),
-);
+// final walletCubit = WalletCubit(
+//   locator<IStorage>(),
+//   locator<IWalletAPI>(),
+//   loggerCubit,
+//   locator<IShare>(),
+//   locator<IClipBoard>(),
+// );
 
 // final userCubit = UserCubit(
 //   locator<IProfileAPI>(),
@@ -30,12 +30,12 @@ final walletCubit = WalletCubit(
 //   locator<ILauncher>(),
 // );
 
-final emailCubit = EmailCubit(
-  locator<IStorage>(),
-  locator<IDeepLink>(),
-  loggerCubit,
-  locator<ILauncher>(),
-);
+// final emailCubit = EmailCubit(
+//   locator<IStorage>(),
+//   locator<IDeepLink>(),
+//   loggerCubit,
+//   locator<ILauncher>(),
+// );
 
 final testNetCubit = NetworkCubit();
 
@@ -53,7 +53,7 @@ class Cubits extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: walletCubit),
+        // BlocProvider.value(value: walletCubit),
         // BlocProvider.value(value: userCubit),
         // BlocProvider.value(value: testNetCubit),
         BlocProvider.value(value: loggerCubit),

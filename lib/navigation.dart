@@ -56,7 +56,7 @@ class Routes {
           networkCubit,
           locator<IBitcoin>(),
           locator<IStorage>(),
-          walletCubit,
+          // walletCubit,
           testNetCubit,
           loggerCubit,
         );
@@ -76,7 +76,7 @@ class Routes {
           networkCubit,
           locator<IBitcoin>(),
           locator<IStorage>(),
-          walletCubit,
+          // walletCubit,
           testNetCubit,
           loggerCubit,
         );

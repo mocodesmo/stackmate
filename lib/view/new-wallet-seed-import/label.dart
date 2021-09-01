@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sats/cubit/new-wallet/seed-import.dart';
 import 'package:sats/pkg/extensions.dart';
-import 'package:sats/zold/view/common/header-text.dart';
+import 'package:sats/view/common/header-text.dart';
 
 class SeedImportLabel extends StatefulWidget {
   const SeedImportLabel({Key? key}) : super(key: key);

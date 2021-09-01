@@ -1,7 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:sats/pkg/extensions.dart';
-import 'package:sats/zold/view/common/corner-title.dart';
+import 'package:sats/view/common/corner-title.dart';
 
 class Header extends StatelessWidget {
   const Header({Key? key, required this.cornerTitle, required this.children})

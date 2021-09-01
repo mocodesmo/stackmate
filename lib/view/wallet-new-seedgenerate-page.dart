@@ -2,10 +2,11 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sats/cubit/new-wallet/seed-generate.dart';
-import 'package:sats/zold/cubit/wallet.dart';
+// import 'package:sats/zold/cubit/wallet.dart';
 import 'package:sats/pkg/extensions.dart';
-import 'package:sats/zold/view/common/back-button.dart';
-import 'package:sats/zold/view/common/header.dart';
+import 'package:sats/view/common/back-button.dart';
+import 'package:sats/view/common/back-button2.dart';
+import 'package:sats/view/common/header.dart';
 import 'package:sats/view/new-wallet-common/network-on.dart';
 import 'package:sats/view/new-wallet-common/network-off.dart';
 import 'package:sats/view/new-wallet-seed-generate/confirm.dart';
@@ -40,7 +41,7 @@ class _SeedGeneratePageState extends State<SeedGeneratePage> {
               duration: Duration(milliseconds: 300), curve: Curves.bounceIn);
 
           if (state.newWalletSaved) {
-            c.read<WalletCubit>().getWallets();
+            // c.read<WalletCubit>().getWallets();
             Navigator.pop(context);
           }
         },

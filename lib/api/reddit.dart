@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:retry/retry.dart';
-import 'package:sats/zold/api/_helpers.dart';
+import 'package:sats/api/_helpers.dart';
 
 abstract class IRedditAPI {
   Future<Response> fetchPosts(String topic);

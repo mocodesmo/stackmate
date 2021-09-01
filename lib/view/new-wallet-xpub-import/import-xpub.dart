@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sats/cubit/new-wallet/xpub-import.dart';
 import 'package:sats/pkg/extensions.dart';
-import 'package:sats/zold/view/common/header-text.dart';
+import 'package:sats/view/common/header-text.dart';
 
 class XpubImport extends StatefulWidget {
   const XpubImport({Key? key}) : super(key: key);

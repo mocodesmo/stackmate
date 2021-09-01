@@ -3,7 +3,7 @@ import 'package:sats/cubit/new-wallet/network.dart';
 import 'package:sats/cubit/new-wallet/seed-generate.dart';
 import 'package:sats/cubit/new-wallet/seed-import.dart';
 import 'package:sats/pkg/extensions.dart';
-import 'package:sats/zold/view/common/header-text.dart';
+import 'package:sats/view/common/header-text.dart';
 
 class SeedNetworkOff extends StatelessWidget {
   const SeedNetworkOff({Key? key, required this.isImport}) : super(key: key);

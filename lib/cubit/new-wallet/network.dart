@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sats/zold/api/_helpers.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/pkg/extensions.dart';
 

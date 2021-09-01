@@ -1,11 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sats/zold/api/_helpers.dart';
+// import 'package:sats/zold/api/_helpers.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/new-wallet/network.dart';
 import 'package:sats/cubit/network.dart' as net;
-import 'package:sats/zold/cubit/wallet.dart';
+// import 'package:sats/zold/cubit/wallet.dart';
 import 'package:sats/pkg/bitcoin.dart';
 //import 'package:sats/pkg/bitcoin/bitcoin.dart';
 import 'package:sats/pkg/extensions.dart';
@@ -96,7 +97,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
     this._bitcoin,
     // this._soloWalletAPI,
     this._storage,
-    this._walletBloc,
+    // this._walletBloc,
     this._testNetCubit,
     this._logger,
   ) : super(SeedGenerateState()) {
@@ -107,7 +108,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
 
   StreamSubscription? _networkCubitSub;
   final NetworkCubit _networkCubit;
-  final WalletCubit _walletBloc;
+  // final WalletCubit _walletBloc;
 
   final IBitcoin _bitcoin;
   // final ISoloWalletAPI _soloWalletAPI;
@@ -222,10 +223,10 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
       return;
     }
 
-    if (_walletBloc.state.labelExists(state.walletLabel)) {
-      emit(state.copyWith(walletLabelError: 'Label already exists'));
-      return;
-    }
+    // if (_walletBloc.state.labelExists(state.walletLabel)) {
+    //   emit(state.copyWith(walletLabelError: 'Label already exists'));
+    //   return;
+    // }
 
     _createNewLocalWallet();
   }

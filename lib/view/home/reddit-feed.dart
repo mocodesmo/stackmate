@@ -1,8 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:sats/zold/model/reddit-post.dart';
+import 'package:sats/model/reddit-post.dart';
 import 'package:sats/pkg/extensions.dart';
-import 'package:sats/zold/view/common/loading.dart';
+import 'package:sats/view/common/loading.dart';
 import 'package:sats/cubit/reddit.dart';
 
 class RedditFeed extends StatelessWidget {
