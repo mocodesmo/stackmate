@@ -5,7 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 // import 'package:sats/zold/api/_helpers.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/new-wallet/network.dart';
-import 'package:sats/cubit/network.dart' as net;
+// import 'package:sats/cubit/network.dart' as net;
 // import 'package:sats/zold/cubit/wallet.dart';
 import 'package:sats/pkg/bitcoin.dart';
 import 'package:sats/pkg/storage.dart';
@@ -88,7 +88,7 @@ class SeedImportCubit extends Cubit<SeedImportState> {
     // this._soloWalletAPI,
     this._storage,
     // this._walletBloc,
-    this._testNetCubit,
+    // this._testNetCubit,
     this.logger, {
     String walletLabel = '',
   }) : super(SeedImportState(
@@ -108,7 +108,7 @@ class SeedImportCubit extends Cubit<SeedImportState> {
   // final ISoloWalletAPI _soloWalletAPI;
   final IStorage _storage;
   final LoggerCubit logger;
-  final net.NetworkCubit _testNetCubit;
+  // final net.NetworkCubit _testNetCubit;
 
   goToNetworkAndReset() {
     if (state.currentStep == SeedImportSteps.networkOn ||

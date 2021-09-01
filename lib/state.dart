@@ -1,81 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:sats/zold/api/firebase.dart'; 
-// import 'package:sats/zold/api/wallet.dart';
-import 'package:sats/deps.dart';
+
 import 'package:sats/cubit/logger.dart';
-// import 'package:sats/zold/cubit/wallet.dart';
-import 'package:sats/pkg/clipboard.dart';
-import 'package:sats/pkg/deep-link.dart';
-import 'package:sats/pkg/launcher.dart';
-import 'package:sats/pkg/share.dart';
-import 'package:sats/pkg/storage.dart';
-// import 'package:sats/zold/cubit/email-login.dart';
-import 'package:sats/cubit/network.dart';
-
-// final walletCubit = WalletCubit(
-//   locator<IStorage>(),
-//   locator<IWalletAPI>(),
-//   loggerCubit,
-//   locator<IShare>(),
-//   locator<IClipBoard>(),
-// );
-
-// final userCubit = UserCubit(
-//   locator<IProfileAPI>(),
-//   locator<IStorage>(),
-//   locator<IAuthGateway>(),
-//   emailCubit,
-//   loggerCubit,
-//   locator<ILauncher>(),
-// );
-
-// final emailCubit = EmailCubit(
-//   locator<IStorage>(),
-//   locator<IDeepLink>(),
-//   loggerCubit,
-//   locator<ILauncher>(),
-// );
-
-final testNetCubit = NetworkCubit();
 
 final loggerCubit = LoggerCubit();
 
 class Cubits extends StatelessWidget {
-  Cubits({
-    Key? key,
-    required this.child,
-  }) : super(key: key);
+  Cubits({Key? key, required this.child}) : super(key: key);
 
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        // BlocProvider.value(value: walletCubit),
-        // BlocProvider.value(value: userCubit),
-        // BlocProvider.value(value: testNetCubit),
-        BlocProvider.value(value: loggerCubit),
-      ],
-      child: child,
-      // child: BlocListener<UserCubit, UserState>(
-      //   listenWhen: (previous, current) {
-      //     return previous.authenticated != current.authenticated;
-      //   },
-      //   listener: (_, state) {
-      //     // if (state.authenticated) {
-      //     //   if (state.user!.pinStatus)
-      //     //     homeNavigator.currentState!.pushReplacementNamed('/pin-login');
-      //     //   else
-      //     //     homeNavigator.currentState!.pushReplacementNamed('/pin-setup');
-      //     // } else {
-      //     //   homeNavigator.currentState!.pushReplacementNamed('/');
-      //     // }
-      //   },
-      //   child: child,
-      // ),
-    );
+    return MultiBlocProvider(providers: [
+      BlocProvider.value(value: loggerCubit),
+    ], child: child);
   }
 }
 
