@@ -37,6 +37,7 @@ class Routes {
           locator<IRedditAPI>(),
           loggerCubit,
           locator<ILauncher>(),
+          locator<IStorage>(),
         );
 
         page = BlocProvider.value(
@@ -55,7 +56,7 @@ class Routes {
         final seedGenerateCubit = SeedGenerateCubit(
           networkCubit,
           locator<IBitcoin>(),
-          locator<IStorage>(),
+          // locator<IStorage>(),
           // walletCubit,
           // testNetCubit,
           loggerCubit,
@@ -75,7 +76,7 @@ class Routes {
         final seedImportCubit = SeedImportCubit(
           networkCubit,
           locator<IBitcoin>(),
-          locator<IStorage>(),
+          // locator<IStorage>(),
           // walletCubit,
           // testNetCubit,
           loggerCubit,
@@ -94,7 +95,7 @@ class Routes {
         final xpubCubit = XpubImportCubit(
           loggerCubit,
           locator<IClipBoard>(),
-          locator<IStorage>(),
+          // locator<IStorage>(),
         );
 
         page = BlocProvider.value(

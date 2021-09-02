@@ -86,7 +86,7 @@ class SeedImportCubit extends Cubit<SeedImportState> {
     this._networkCubit,
     this._bitcoin,
     // this._soloWalletAPI,
-    this._storage,
+    // this._storage,
     // this._walletBloc,
     // this._testNetCubit,
     this.logger, {
@@ -106,7 +106,7 @@ class SeedImportCubit extends Cubit<SeedImportState> {
 
   final IBitcoin _bitcoin;
   // final ISoloWalletAPI _soloWalletAPI;
-  final IStorage _storage;
+  // final IStorage _storage;
   final LoggerCubit logger;
   // final net.NetworkCubit _testNetCubit;
 
@@ -259,8 +259,8 @@ class SeedImportCubit extends Cubit<SeedImportState> {
         // }
       }
 
-      await _storage.saveOrUpdateItem(
-          key: CacheKeys.xPriv + ':' + state.walletLabel, value: childXPriv);
+      // await _storage.saveOrUpdateItem(
+      //     key: CacheKeys.xPriv + ':' + state.walletLabel, value: childXPriv);
 
       if (state.labelFixed) {
         emit(state.copyWith(newWalletSaved: true));

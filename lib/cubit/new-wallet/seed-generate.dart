@@ -96,7 +96,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
     this._networkCubit,
     this._bitcoin,
     // this._soloWalletAPI,
-    this._storage,
+    // this._storage,
     // this._walletBloc,
     // this._testNetCubit,
     this._logger,
@@ -112,7 +112,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
 
   final IBitcoin _bitcoin;
   // final ISoloWalletAPI _soloWalletAPI;
-  final IStorage _storage;
+  // final IStorage _storage;
   final LoggerCubit _logger;
   // final net.NetworkCubit _testNetCubit;
 
@@ -254,8 +254,8 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
       final childXPriv = results[2];
       final childXPub = results[3];
 
-      await _storage.saveOrUpdateItem(
-          key: CacheKeys.xPriv + ':' + state.walletLabel, value: childXPriv);
+      // await _storage.saveOrUpdateItem(
+      //     key: CacheKeys.xPriv + ':' + state.walletLabel, value: childXPriv);
 
       emit(state.copyWith(
         currentStep: SeedGenerateSteps.networkOn,

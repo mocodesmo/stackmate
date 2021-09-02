@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hive/hive.dart';
 
 part 'reddit-post.g.dart';
 part 'reddit-post.freezed.dart';
@@ -6,13 +7,15 @@ part 'reddit-post.freezed.dart';
 @freezed
 class RedditPost with _$RedditPost {
   const RedditPost._();
+
+  @HiveType(typeId: 0, adapterName: 'RedditPostClassAdapter')
   const factory RedditPost({
-    @JsonKey(name: 'title') @Default('') String title,
-    @JsonKey(name: 'permalink') @Default('') String permalink,
-    @JsonKey(name: 'score') @Default(0) int score,
-    @JsonKey(name: 'thumbnail') @Default('') String thumbnail,
-    @JsonKey(name: 'url') @Default('') String url,
-    @JsonKey(name: 'created_utc') @Default(0) double createdAt,
+    @JsonKey(name: 'title') @HiveField(0) @Default('') String title,
+    @JsonKey(name: 'permalink') @HiveField(1) @Default('') String permalink,
+    @JsonKey(name: 'score') @HiveField(2) @Default(0) int score,
+    @JsonKey(name: 'thumbnail') @HiveField(3) @Default('') String thumbnail,
+    @JsonKey(name: 'url') @HiveField(4) @Default('') String url,
+    @JsonKey(name: 'created_utc') @HiveField(5) @Default(0) double createdAt,
   }) = _RedditPost;
 
   factory RedditPost.fromJson(Map<String, dynamic> json) =>
@@ -46,4 +49,9 @@ class RedditPost with _$RedditPost {
   }
 
   String link() => 'https://www.reddit.com' + permalink;
+}
+
+cc() {
+  var rd = RedditPost(title: '');
+  // rd.;
 }

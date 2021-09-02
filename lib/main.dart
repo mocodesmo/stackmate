@@ -1,4 +1,5 @@
 import 'package:sats/pkg/bitcoin.dart';
+import 'package:sats/pkg/storage.dart';
 import 'package:sats/state.dart';
 import 'package:sats/deps.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:sats/pkg/extensions.dart';
 import 'package:sats/style.dart';
 
 void main() async {
+  await initializeHive();
   testBitcoin();
   setupDependencies(useDummies: true);
   WidgetsFlutterBinding.ensureInitialized();

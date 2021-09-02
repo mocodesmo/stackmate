@@ -22,12 +22,12 @@ class _$RedditPostTearOff {
   const _$RedditPostTearOff();
 
   _RedditPost call(
-      {@JsonKey(name: 'title') String title = '',
-      @JsonKey(name: 'permalink') String permalink = '',
-      @JsonKey(name: 'score') int score = 0,
-      @JsonKey(name: 'thumbnail') String thumbnail = '',
-      @JsonKey(name: 'url') String url = '',
-      @JsonKey(name: 'created_utc') double createdAt = 0}) {
+      {@JsonKey(name: 'title') @HiveField(0) String title = '',
+      @JsonKey(name: 'permalink') @HiveField(1) String permalink = '',
+      @JsonKey(name: 'score') @HiveField(2) int score = 0,
+      @JsonKey(name: 'thumbnail') @HiveField(3) String thumbnail = '',
+      @JsonKey(name: 'url') @HiveField(4) String url = '',
+      @JsonKey(name: 'created_utc') @HiveField(5) double createdAt = 0}) {
     return _RedditPost(
       title: title,
       permalink: permalink,
@@ -49,16 +49,22 @@ const $RedditPost = _$RedditPostTearOff();
 /// @nodoc
 mixin _$RedditPost {
   @JsonKey(name: 'title')
+  @HiveField(0)
   String get title => throw _privateConstructorUsedError;
   @JsonKey(name: 'permalink')
+  @HiveField(1)
   String get permalink => throw _privateConstructorUsedError;
   @JsonKey(name: 'score')
+  @HiveField(2)
   int get score => throw _privateConstructorUsedError;
   @JsonKey(name: 'thumbnail')
+  @HiveField(3)
   String get thumbnail => throw _privateConstructorUsedError;
   @JsonKey(name: 'url')
+  @HiveField(4)
   String get url => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_utc')
+  @HiveField(5)
   double get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -73,12 +79,12 @@ abstract class $RedditPostCopyWith<$Res> {
           RedditPost value, $Res Function(RedditPost) then) =
       _$RedditPostCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'title') String title,
-      @JsonKey(name: 'permalink') String permalink,
-      @JsonKey(name: 'score') int score,
-      @JsonKey(name: 'thumbnail') String thumbnail,
-      @JsonKey(name: 'url') String url,
-      @JsonKey(name: 'created_utc') double createdAt});
+      {@JsonKey(name: 'title') @HiveField(0) String title,
+      @JsonKey(name: 'permalink') @HiveField(1) String permalink,
+      @JsonKey(name: 'score') @HiveField(2) int score,
+      @JsonKey(name: 'thumbnail') @HiveField(3) String thumbnail,
+      @JsonKey(name: 'url') @HiveField(4) String url,
+      @JsonKey(name: 'created_utc') @HiveField(5) double createdAt});
 }
 
 /// @nodoc
@@ -134,12 +140,12 @@ abstract class _$RedditPostCopyWith<$Res> implements $RedditPostCopyWith<$Res> {
       __$RedditPostCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'title') String title,
-      @JsonKey(name: 'permalink') String permalink,
-      @JsonKey(name: 'score') int score,
-      @JsonKey(name: 'thumbnail') String thumbnail,
-      @JsonKey(name: 'url') String url,
-      @JsonKey(name: 'created_utc') double createdAt});
+      {@JsonKey(name: 'title') @HiveField(0) String title,
+      @JsonKey(name: 'permalink') @HiveField(1) String permalink,
+      @JsonKey(name: 'score') @HiveField(2) int score,
+      @JsonKey(name: 'thumbnail') @HiveField(3) String thumbnail,
+      @JsonKey(name: 'url') @HiveField(4) String url,
+      @JsonKey(name: 'created_utc') @HiveField(5) double createdAt});
 }
 
 /// @nodoc
@@ -192,14 +198,15 @@ class __$RedditPostCopyWithImpl<$Res> extends _$RedditPostCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
+@HiveType(typeId: 0, adapterName: 'RedditPostClassAdapter')
 class _$_RedditPost extends _RedditPost {
   const _$_RedditPost(
-      {@JsonKey(name: 'title') this.title = '',
-      @JsonKey(name: 'permalink') this.permalink = '',
-      @JsonKey(name: 'score') this.score = 0,
-      @JsonKey(name: 'thumbnail') this.thumbnail = '',
-      @JsonKey(name: 'url') this.url = '',
-      @JsonKey(name: 'created_utc') this.createdAt = 0})
+      {@JsonKey(name: 'title') @HiveField(0) this.title = '',
+      @JsonKey(name: 'permalink') @HiveField(1) this.permalink = '',
+      @JsonKey(name: 'score') @HiveField(2) this.score = 0,
+      @JsonKey(name: 'thumbnail') @HiveField(3) this.thumbnail = '',
+      @JsonKey(name: 'url') @HiveField(4) this.url = '',
+      @JsonKey(name: 'created_utc') @HiveField(5) this.createdAt = 0})
       : super._();
 
   factory _$_RedditPost.fromJson(Map<String, dynamic> json) =>
@@ -207,21 +214,27 @@ class _$_RedditPost extends _RedditPost {
 
   @override
   @JsonKey(name: 'title')
+  @HiveField(0)
   final String title;
   @override
   @JsonKey(name: 'permalink')
+  @HiveField(1)
   final String permalink;
   @override
   @JsonKey(name: 'score')
+  @HiveField(2)
   final int score;
   @override
   @JsonKey(name: 'thumbnail')
+  @HiveField(3)
   final String thumbnail;
   @override
   @JsonKey(name: 'url')
+  @HiveField(4)
   final String url;
   @override
   @JsonKey(name: 'created_utc')
+  @HiveField(5)
   final double createdAt;
 
   @override
@@ -273,12 +286,13 @@ class _$_RedditPost extends _RedditPost {
 
 abstract class _RedditPost extends RedditPost {
   const factory _RedditPost(
-      {@JsonKey(name: 'title') String title,
-      @JsonKey(name: 'permalink') String permalink,
-      @JsonKey(name: 'score') int score,
-      @JsonKey(name: 'thumbnail') String thumbnail,
-      @JsonKey(name: 'url') String url,
-      @JsonKey(name: 'created_utc') double createdAt}) = _$_RedditPost;
+          {@JsonKey(name: 'title') @HiveField(0) String title,
+          @JsonKey(name: 'permalink') @HiveField(1) String permalink,
+          @JsonKey(name: 'score') @HiveField(2) int score,
+          @JsonKey(name: 'thumbnail') @HiveField(3) String thumbnail,
+          @JsonKey(name: 'url') @HiveField(4) String url,
+          @JsonKey(name: 'created_utc') @HiveField(5) double createdAt}) =
+      _$_RedditPost;
   const _RedditPost._() : super._();
 
   factory _RedditPost.fromJson(Map<String, dynamic> json) =
@@ -286,21 +300,27 @@ abstract class _RedditPost extends RedditPost {
 
   @override
   @JsonKey(name: 'title')
+  @HiveField(0)
   String get title => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'permalink')
+  @HiveField(1)
   String get permalink => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'score')
+  @HiveField(2)
   int get score => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'thumbnail')
+  @HiveField(3)
   String get thumbnail => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'url')
+  @HiveField(4)
   String get url => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'created_utc')
+  @HiveField(5)
   double get createdAt => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)

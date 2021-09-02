@@ -11,7 +11,7 @@ GetIt locator = GetIt.instance;
 
 setupDependencies({bool useDummies = false}) {
   if (useDummies) {
-    locator.registerLazySingleton<IStorage>(() => DummyStorage());
+    locator.registerLazySingleton<IStorage>(() => HiveStore());
     locator.registerLazySingleton<IClipBoard>(() => ClipBoardd());
     locator.registerLazySingleton<IShare>(() => Sharer());
     locator.registerSingleton<ILauncher>(Launcher());
@@ -25,7 +25,7 @@ setupDependencies({bool useDummies = false}) {
   locator.registerLazySingleton<ILauncher>(() => Launcher());
   locator.registerLazySingleton<IRedditAPI>(() => RedditAPI());
   locator.registerLazySingleton<IClipBoard>(() => ClipBoardd());
-  locator.registerLazySingleton<IStorage>(() => SecureeStorage());
+  locator.registerLazySingleton<IStorage>(() => HiveStore());
   locator.registerLazySingleton<IBitcoin>(() => BitcoinFFI());
   locator.registerLazySingleton<IVibrate>(() => Vibrator());
 }
