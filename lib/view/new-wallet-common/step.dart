@@ -21,7 +21,7 @@ class StepCell extends StatelessWidget {
           height: 8,
           width: c.width * 0.2,
           decoration: BoxDecoration(
-              color: isOn ? c.colours.primary : c.colours.secondaryVariant,
+              color: isOn ? c.colours.secondary : Colors.white,
               borderRadius: BorderRadius.circular(2))),
       SizedBox(height: 4),
       Center(

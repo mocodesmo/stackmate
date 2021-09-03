@@ -56,10 +56,11 @@ class Routes {
         final seedGenerateCubit = SeedGenerateCubit(
           networkCubit,
           locator<IBitcoin>(),
-          // locator<IStorage>(),
+          locator<IStorage>(),
           // walletCubit,
           // testNetCubit,
           loggerCubit,
+          walletsCubit,
         );
 
         page = MultiBlocProvider(
@@ -76,9 +77,11 @@ class Routes {
         final seedImportCubit = SeedImportCubit(
           networkCubit,
           locator<IBitcoin>(),
-          // locator<IStorage>(),
+          locator<IStorage>(),
           // walletCubit,
           // testNetCubit,
+          walletsCubit,
+
           loggerCubit,
         );
 
@@ -93,9 +96,11 @@ class Routes {
 
       case watchOnly:
         final xpubCubit = XpubImportCubit(
+          locator<IBitcoin>(),
           loggerCubit,
           locator<IClipBoard>(),
-          // locator<IStorage>(),
+          locator<IStorage>(),
+          walletsCubit,
         );
 
         page = BlocProvider.value(

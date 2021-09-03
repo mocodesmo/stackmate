@@ -5,6 +5,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 // import 'package:sats/zold/api/_helpers.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/new-wallet/network.dart';
+import 'package:sats/cubit/wallet/wallets.dart';
+import 'package:sats/model/wallet.dart';
 // import 'package:sats/cubit/network.dart' as net;
 // import 'package:sats/zold/cubit/wallet.dart';
 import 'package:sats/pkg/bitcoin.dart';
@@ -30,6 +32,8 @@ class SeedGenerateState with _$SeedGenerateState {
   const factory SeedGenerateState({
     @Default(SeedGenerateSteps.warning) SeedGenerateSteps currentStep,
     List<String>? seed,
+    String? xpriv,
+    String? fingerPrint,
     @Default(false) bool generatingSeed,
     @Default('') String seedError,
     @Default(0) int quizSeedCompleted,
@@ -42,7 +46,7 @@ class SeedGenerateState with _$SeedGenerateState {
     @Default('') String errPassphrase,
     @Default('') String walletLabel,
     @Default('') String walletLabelError,
-    @Default('') String walletDetails,
+    // @Default('') String walletDetails,
     @Default(false) bool savinngWallet,
     @Default('') String savingWalletError,
     @Default(false) bool newWalletSaved,
@@ -96,10 +100,11 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
     this._networkCubit,
     this._bitcoin,
     // this._soloWalletAPI,
-    // this._storage,
+    this._storage,
     // this._walletBloc,
     // this._testNetCubit,
     this._logger,
+    this._wallets,
   ) : super(SeedGenerateState()) {
     _networkCubitSub = _networkCubit.stream.listen((NetworkState nState) {
       if (nState.hasOffError() != '') _goToNetworkAndReset();
@@ -112,9 +117,10 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
 
   final IBitcoin _bitcoin;
   // final ISoloWalletAPI _soloWalletAPI;
-  // final IStorage _storage;
+  final IStorage _storage;
   final LoggerCubit _logger;
   // final net.NetworkCubit _testNetCubit;
+  final WalletsCubit _wallets;
 
   _goToNetworkAndReset() {
     if (state.currentStep == SeedGenerateSteps.networkOn ||
@@ -150,10 +156,12 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
         network: '',
       );
 
+      if (response.startsWith('Error')) throw response;
+
       final json = jsonDecode(response);
       final neu = json['mnemonic'];
-      // final fingerprint = json['fingerprint'];
-      // final xpriv = json['xprv'];
+      final fingerprint = json['fingerprint'];
+      final xpriv = json['xprv'];
 
       final nmeuList = neu.split(' ');
 
@@ -161,6 +169,8 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
         generatingSeed: false,
         currentStep: SeedGenerateSteps.generate,
         seed: nmeuList,
+        xpriv: xpriv,
+        fingerPrint: fingerprint,
       ));
     } catch (e, s) {
       _logger.logException(e, 'SeedGenerateCubit._generateSeed', s);
@@ -233,33 +243,31 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
 
   _createNewLocalWallet() async {
     try {
-      // var seed = '';
-      // for (var word in state.seed!) seed += word + ' ';
+      final result = await _bitcoin.deriveHardened(
+        masterXPriv: state.xpriv!,
+        account: '',
+        purpose: '',
+      );
 
-      // final xpriv = await _bitcoin.generateMaster(
-      //   mnemonic: seed,
-      //   passphrase: state.passPhrase,
-      //   network: _testNetCubit.state.isTestNet ? '1h' : '0h',
-      // );
+      if (result.startsWith('Error')) throw result;
 
-      final result = '';
-      // await _bitcoin.deriveHardened(
-      //   masterXPriv: xpriv,
-      //   account: '0',
-      // );
+      final obj = jsonDecode(result);
 
-      final results = result.split(':');
-      final fingerPrint = results[0];
-      final path = results[1];
-      final childXPriv = results[2];
-      final childXPub = results[3];
+      final fingerPrint = obj['fingerPrint'];
+      final path = obj['hardened_path'];
+      final childXPriv = obj['xprv'];
+      final childXPub = obj['xpub'];
 
-      // await _storage.saveOrUpdateItem(
-      //     key: CacheKeys.xPriv + ':' + state.walletLabel, value: childXPriv);
+      final newWallet = Wallet(
+        label: state.walletLabel,
+        policy: '',
+        descriptor: '',
+      );
+
+      _storage.saveItem(StoreKeys.Wallet.name, newWallet);
 
       emit(state.copyWith(
         currentStep: SeedGenerateSteps.networkOn,
-        walletDetails: fingerPrint + ':' + path + ':' + childXPub,
       ));
     } catch (e, s) {
       _logger.logException(e, 'SeedGenerateCubit._createNewLocalWallet', s);
@@ -267,10 +275,16 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
   }
 
   _saveWallet() async {
+    _wallets.refresh();
     emit(state.copyWith(
-      savinngWallet: true,
       savingWalletError: '',
+      savinngWallet: false,
+      newWalletSaved: true,
     ));
+    // emit(state.copyWith(
+    //   savinngWallet: true,
+    //   savingWalletError: '',
+    // ));
 
     try {
       // final authToken = await _storage.getItem(key: CacheKeys.token);
@@ -339,18 +353,26 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
         emit(state.copyWith(
           currentStep: SeedGenerateSteps.security,
           passPhrase: '',
+          xpriv: null,
+          fingerPrint: null,
         ));
         break;
       case SeedGenerateSteps.generate:
-        emit(state.copyWith(currentStep: SeedGenerateSteps.passphrase));
+        emit(state.copyWith(
+          currentStep: SeedGenerateSteps.passphrase,
+          xpriv: null,
+          fingerPrint: null,
+        ));
         break;
       case SeedGenerateSteps.confirm:
         emit(state.copyWith(
-          currentStep: SeedGenerateSteps.generate,
+          currentStep: SeedGenerateSteps.passphrase,
           quizSeedAnswer: '',
           quizSeedList: [],
           quizSeedError: '',
           quizSeedCompletedAnswers: [],
+          xpriv: null,
+          fingerPrint: null,
         ));
         break;
       case SeedGenerateSteps.label:

@@ -34,8 +34,10 @@ class SeedConfirm extends StatelessWidget {
               height: 88,
               child: Center(
                   child: Text(answerIdx + '.',
-                      style: c.fonts.headline5!
-                          .copyWith(fontWeight: FontWeight.bold))))),
+                      style: c.fonts.headline5!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ))))),
       if (error != '')
         Center(
             child: Text(error,
@@ -43,8 +45,7 @@ class SeedConfirm extends StatelessWidget {
       SizedBox(height: 8),
       Center(
           child: Text('Select the correct answer',
-              style:
-                  c.fonts.subtitle1!.copyWith(color: c.colours.onBackground))),
+              style: c.fonts.subtitle1!.copyWith(color: Colors.white))),
       SizedBox(height: 16),
       for (var i = 0; i < words.length; i++)
         if (i % 2 == 0)

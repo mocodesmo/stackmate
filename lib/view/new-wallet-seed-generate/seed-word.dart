@@ -29,7 +29,7 @@ class SeedWord extends StatelessWidget {
               child: Text(text,
                   textAlign: TextAlign.left,
                   style: c.fonts.subtitle2!.copyWith(
-                    color: c.colours.background,
+                    color: onTap == null ? Colors.white : c.colours.primary,
                   )))),
     );
   }

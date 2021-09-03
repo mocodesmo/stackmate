@@ -31,7 +31,7 @@ class SeedGeneratePassphrase extends StatelessWidget {
                 SizedBox(height: 24),
                 Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: ElevatedButton(
+                    child: TextButton(
                         onPressed: () {
                           c.read<SeedGenerateCubit>().nextClicked();
                         },

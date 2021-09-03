@@ -26,9 +26,10 @@ class XpubLabel extends StatelessWidget {
                     c.read<XpubImportCubit>().labelChanged(text);
                   },
                   decoration: InputDecoration(
-                    labelText: 'Wallet Name',
-                    //errorText: state.walletLabelError.nullIfEmpty(),
-                  ))),
+                      labelText: 'Wallet Name',
+                      labelStyle: TextStyle(color: Colors.transparent)
+                      //errorText: state.walletLabelError.nullIfEmpty(),
+                      ))),
           SizedBox(height: 40),
           if (state.errSavingWallet != '')
             Text(state.errSavingWallet,
@@ -36,7 +37,7 @@ class XpubLabel extends StatelessWidget {
           if (!state.savingWallet)
             Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: ElevatedButton(
+                child: TextButton(
                     onPressed: () {
                       c.read<XpubImportCubit>().nextClicked();
                     },

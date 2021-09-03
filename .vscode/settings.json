@@ -37,7 +37,7 @@
         "**/web": true,
         "**/macos": true,
         // "**/macos2": true,
-        // "**/pubspec.yaml": true,
+        "**/pubspec.yaml": true,
         "sats.xd": true,
         //
         //

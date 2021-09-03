@@ -46,7 +46,7 @@ class SeedImportPassphrase extends StatelessWidget {
                       style: c.fonts.caption!.copyWith(color: c.colours.error)),
                 Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: ElevatedButton(
+                    child: TextButton(
                         onPressed: () {
                           c.read<SeedImportCubit>().nextClicked();
                         },

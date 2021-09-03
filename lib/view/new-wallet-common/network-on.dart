@@ -24,7 +24,9 @@ class SeedNetworkOn extends StatelessWidget {
           child: Text(
               'For maximum security, turn off all\nnetworking on your device.'
                   .notLocalised(),
-              style: c.fonts.subtitle2)),
+              style: c.fonts.subtitle2!.copyWith(
+                color: Colors.white,
+              ))),
       SizedBox(height: 40),
       NetworkRow(
         isOnline: network.mobileOnline,
@@ -71,12 +73,12 @@ class ImportSaveButton extends StatelessWidget {
             child: AnimatedOpacity(
                 opacity: hasOnError ? 0.3 : 1,
                 duration: Duration(milliseconds: 500),
-                child: ElevatedButton(
+                child: TextButton(
                     onPressed: () {
                       if (hasOnError) return;
                       c.read<SeedImportCubit>().nextClicked();
                     },
-                    child: Text('Save')))),
+                    child: Text('Done')))),
         SizedBox(height: 8),
         if (state.savingWalletError != '')
           Text(state.savingWalletError,
@@ -110,12 +112,12 @@ class GenerateSaveButton extends StatelessWidget {
             child: AnimatedOpacity(
                 opacity: hasOnError ? 0.3 : 1,
                 duration: Duration(milliseconds: 500),
-                child: ElevatedButton(
+                child: TextButton(
                     onPressed: () {
                       if (hasOnError) return;
                       c.read<SeedGenerateCubit>().nextClicked();
                     },
-                    child: Text('Save')))),
+                    child: Text('Done')))),
         SizedBox(height: 8),
         if (state.savingWalletError != '')
           Text(state.savingWalletError,

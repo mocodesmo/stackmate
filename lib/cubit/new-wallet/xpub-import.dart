@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
+import 'package:sats/cubit/wallet/wallets.dart';
+import 'package:sats/model/wallet.dart';
+import 'package:sats/pkg/bitcoin.dart';
 import 'package:sats/pkg/clipboard.dart';
 import 'package:sats/pkg/storage.dart';
 
@@ -52,15 +57,65 @@ class XpubImportState with _$XpubImportState {
 class XpubImportCubit extends Cubit<XpubImportState> {
   XpubImportCubit(
     // this._soloWalletAPI,
+    this._bitcoin,
     this._logger,
     this._clipboard,
-    // this._storage,
+    this._storage,
+    this._wallets,
   ) : super(XpubImportState());
 
   final IClipBoard _clipboard;
   // final ISoloWalletAPI _soloWalletAPI;
   final LoggerCubit _logger;
-  // final IStorage _storage;
+  final IStorage _storage;
+  final IBitcoin _bitcoin;
+  final WalletsCubit _wallets;
+
+  void _saveWallet() async {
+    // emit(state.copyWith(
+    //   savingWallet: true,
+    //   errSavingWallet: '',
+    // ));
+
+    try {
+      final result = await _bitcoin.deriveHardened(
+        masterXPriv: state.xpub,
+        account: '',
+        purpose: '',
+      );
+
+      if (result.startsWith('Error')) throw result;
+
+      final obj = jsonDecode(result);
+
+      final fingerPrint = obj['fingerPrint'];
+      final path = obj['hardened_path'];
+      final childXPriv = obj['xprv'];
+      final childXPub = obj['xpub'];
+
+      final newWallet = Wallet(
+        label: state.label,
+        policy: '',
+        descriptor: '',
+      );
+
+      _storage.saveItem(StoreKeys.Wallet.name, newWallet);
+
+      _wallets.refresh();
+
+      emit(state.copyWith(
+        savingWallet: false,
+        newWalletSaved: true,
+      ));
+    } catch (e, s) {
+      _logger.logException(e, 'SeedImportCubit._saveWallet', s);
+
+      emit(state.copyWith(
+        errSavingWallet: 'Error Occured.',
+        newWalletSaved: true,
+      ));
+    }
+  }
 
   void toggleCamera() async {
     try {
@@ -161,46 +216,11 @@ class XpubImportCubit extends Cubit<XpubImportState> {
       case XpubImportStep.import:
         break;
       case XpubImportStep.label:
-        emit(state.copyWith(currentStep: XpubImportStep.import));
+        emit(state.copyWith(
+          currentStep: XpubImportStep.import,
+          label: '',
+        ));
         break;
-    }
-  }
-
-  void _saveWallet() async {
-    emit(state.copyWith(
-      savingWallet: true,
-      errSavingWallet: '',
-    ));
-
-    try {
-      // final authToken = await _storage.getItem(key: CacheKeys.token);
-
-      // final enterExtra = state.showOtherDetails();
-
-      // final response = await _soloWalletAPI.postGenesis(
-      //   authToken: authToken,
-      //   nickname: state.label,
-      //   fingerprint: enterExtra ? state.fingerPrint : '',
-      //   pathh: enterExtra ? state.path : '',
-      //   xpub: state.xpub,
-      //   rescan: true,
-      //   start: 1974272,
-      //   end: 1974279,
-      // );
-
-      // if (response.statusCode != 200) throw '';
-
-      // emit(state.copyWith(
-      //   savingWallet: false,
-      //   newWalletSaved: true,
-      // ));
-    } catch (e, s) {
-      _logger.logException(e, 'SeedImportCubit._saveWallet', s);
-
-      emit(state.copyWith(
-        errSavingWallet: 'Error Occured.',
-        newWalletSaved: true,
-      ));
     }
   }
 }

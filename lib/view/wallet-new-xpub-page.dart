@@ -47,7 +47,7 @@ class XpubImportPage extends StatelessWidget {
                               text: 'EXIT',
                               onTapped: () {
                                 if (!state.canGoBack()) {
-                                  c.read<SeedImportCubit>().backClicked();
+                                  c.read<XpubImportCubit>().backClicked();
                                   return;
                                 }
 

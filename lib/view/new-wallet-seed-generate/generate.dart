@@ -16,7 +16,7 @@ class SeedGenerate extends StatelessWidget {
       SizedBox(height: 16),
       Text(
         'Make sure that no one can view,\nwhat you are writing'.notLocalised(),
-        style: c.fonts.caption!.copyWith(color: c.colours.onBackground),
+        style: c.fonts.caption!.copyWith(color: Colors.white),
       ),
       SizedBox(height: 16),
       Container(
@@ -45,7 +45,7 @@ class SeedGenerate extends StatelessWidget {
       SizedBox(height: 24),
       Padding(
           padding: EdgeInsets.all(16),
-          child: ElevatedButton(
+          child: TextButton(
               onPressed: () {
                 c.read<SeedGenerateCubit>().nextClicked();
               },

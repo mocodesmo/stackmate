@@ -1,21 +1,32 @@
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:sats/model/reddit-post.dart';
+import 'package:sats/model/wallet.dart';
 
-enum StoreKeys { RedditPost }
+enum StoreKeys {
+  RedditPost,
+  Wallet,
+}
 
 extension StoreKeysFunctions on StoreKeys {
   String get name => const {
         StoreKeys.RedditPost: 'reddit-post',
+        StoreKeys.Wallet: 'wallet',
       }[this]!;
 }
 
 Future<void> initializeHive() async {
   await Hive.initFlutter();
   Hive.registerAdapter(RedditPostClassAdapter());
+  Hive.registerAdapter(WalletClassAdaper());
   await Hive.openBox<RedditPost>(
     StoreKeys.RedditPost.name,
     compactionStrategy: (entries, deletedEntries) => deletedEntries > 50,
+  );
+
+  await Hive.openBox<Wallet>(
+    StoreKeys.Wallet.name,
+    // compactionStrategy: (entries, deletedEntries) => deletedEntries > 50,
   );
 }
 

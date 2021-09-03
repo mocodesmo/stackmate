@@ -20,6 +20,8 @@ class _$SeedGenerateStateTearOff {
   _SeedGenerateState call(
       {SeedGenerateSteps currentStep = SeedGenerateSteps.warning,
       List<String>? seed,
+      String? xpriv,
+      String? fingerPrint,
       bool generatingSeed = false,
       String seedError = '',
       int quizSeedCompleted = 0,
@@ -32,13 +34,14 @@ class _$SeedGenerateStateTearOff {
       String errPassphrase = '',
       String walletLabel = '',
       String walletLabelError = '',
-      String walletDetails = '',
       bool savinngWallet = false,
       String savingWalletError = '',
       bool newWalletSaved = false}) {
     return _SeedGenerateState(
       currentStep: currentStep,
       seed: seed,
+      xpriv: xpriv,
+      fingerPrint: fingerPrint,
       generatingSeed: generatingSeed,
       seedError: seedError,
       quizSeedCompleted: quizSeedCompleted,
@@ -51,7 +54,6 @@ class _$SeedGenerateStateTearOff {
       errPassphrase: errPassphrase,
       walletLabel: walletLabel,
       walletLabelError: walletLabelError,
-      walletDetails: walletDetails,
       savinngWallet: savinngWallet,
       savingWalletError: savingWalletError,
       newWalletSaved: newWalletSaved,
@@ -66,6 +68,8 @@ const $SeedGenerateState = _$SeedGenerateStateTearOff();
 mixin _$SeedGenerateState {
   SeedGenerateSteps get currentStep => throw _privateConstructorUsedError;
   List<String>? get seed => throw _privateConstructorUsedError;
+  String? get xpriv => throw _privateConstructorUsedError;
+  String? get fingerPrint => throw _privateConstructorUsedError;
   bool get generatingSeed => throw _privateConstructorUsedError;
   String get seedError => throw _privateConstructorUsedError;
   int get quizSeedCompleted => throw _privateConstructorUsedError;
@@ -78,8 +82,8 @@ mixin _$SeedGenerateState {
   String get passPhrase => throw _privateConstructorUsedError;
   String get errPassphrase => throw _privateConstructorUsedError;
   String get walletLabel => throw _privateConstructorUsedError;
-  String get walletLabelError => throw _privateConstructorUsedError;
-  String get walletDetails => throw _privateConstructorUsedError;
+  String get walletLabelError =>
+      throw _privateConstructorUsedError; // @Default('') String walletDetails,
   bool get savinngWallet => throw _privateConstructorUsedError;
   String get savingWalletError => throw _privateConstructorUsedError;
   bool get newWalletSaved => throw _privateConstructorUsedError;
@@ -97,6 +101,8 @@ abstract class $SeedGenerateStateCopyWith<$Res> {
   $Res call(
       {SeedGenerateSteps currentStep,
       List<String>? seed,
+      String? xpriv,
+      String? fingerPrint,
       bool generatingSeed,
       String seedError,
       int quizSeedCompleted,
@@ -109,7 +115,6 @@ abstract class $SeedGenerateStateCopyWith<$Res> {
       String errPassphrase,
       String walletLabel,
       String walletLabelError,
-      String walletDetails,
       bool savinngWallet,
       String savingWalletError,
       bool newWalletSaved});
@@ -128,6 +133,8 @@ class _$SeedGenerateStateCopyWithImpl<$Res>
   $Res call({
     Object? currentStep = freezed,
     Object? seed = freezed,
+    Object? xpriv = freezed,
+    Object? fingerPrint = freezed,
     Object? generatingSeed = freezed,
     Object? seedError = freezed,
     Object? quizSeedCompleted = freezed,
@@ -140,7 +147,6 @@ class _$SeedGenerateStateCopyWithImpl<$Res>
     Object? errPassphrase = freezed,
     Object? walletLabel = freezed,
     Object? walletLabelError = freezed,
-    Object? walletDetails = freezed,
     Object? savinngWallet = freezed,
     Object? savingWalletError = freezed,
     Object? newWalletSaved = freezed,
@@ -154,6 +160,14 @@ class _$SeedGenerateStateCopyWithImpl<$Res>
           ? _value.seed
           : seed // ignore: cast_nullable_to_non_nullable
               as List<String>?,
+      xpriv: xpriv == freezed
+          ? _value.xpriv
+          : xpriv // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fingerPrint: fingerPrint == freezed
+          ? _value.fingerPrint
+          : fingerPrint // ignore: cast_nullable_to_non_nullable
+              as String?,
       generatingSeed: generatingSeed == freezed
           ? _value.generatingSeed
           : generatingSeed // ignore: cast_nullable_to_non_nullable
@@ -201,10 +215,6 @@ class _$SeedGenerateStateCopyWithImpl<$Res>
       walletLabelError: walletLabelError == freezed
           ? _value.walletLabelError
           : walletLabelError // ignore: cast_nullable_to_non_nullable
-              as String,
-      walletDetails: walletDetails == freezed
-          ? _value.walletDetails
-          : walletDetails // ignore: cast_nullable_to_non_nullable
               as String,
       savinngWallet: savinngWallet == freezed
           ? _value.savinngWallet
@@ -232,6 +242,8 @@ abstract class _$SeedGenerateStateCopyWith<$Res>
   $Res call(
       {SeedGenerateSteps currentStep,
       List<String>? seed,
+      String? xpriv,
+      String? fingerPrint,
       bool generatingSeed,
       String seedError,
       int quizSeedCompleted,
@@ -244,7 +256,6 @@ abstract class _$SeedGenerateStateCopyWith<$Res>
       String errPassphrase,
       String walletLabel,
       String walletLabelError,
-      String walletDetails,
       bool savinngWallet,
       String savingWalletError,
       bool newWalletSaved});
@@ -265,6 +276,8 @@ class __$SeedGenerateStateCopyWithImpl<$Res>
   $Res call({
     Object? currentStep = freezed,
     Object? seed = freezed,
+    Object? xpriv = freezed,
+    Object? fingerPrint = freezed,
     Object? generatingSeed = freezed,
     Object? seedError = freezed,
     Object? quizSeedCompleted = freezed,
@@ -277,7 +290,6 @@ class __$SeedGenerateStateCopyWithImpl<$Res>
     Object? errPassphrase = freezed,
     Object? walletLabel = freezed,
     Object? walletLabelError = freezed,
-    Object? walletDetails = freezed,
     Object? savinngWallet = freezed,
     Object? savingWalletError = freezed,
     Object? newWalletSaved = freezed,
@@ -291,6 +303,14 @@ class __$SeedGenerateStateCopyWithImpl<$Res>
           ? _value.seed
           : seed // ignore: cast_nullable_to_non_nullable
               as List<String>?,
+      xpriv: xpriv == freezed
+          ? _value.xpriv
+          : xpriv // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fingerPrint: fingerPrint == freezed
+          ? _value.fingerPrint
+          : fingerPrint // ignore: cast_nullable_to_non_nullable
+              as String?,
       generatingSeed: generatingSeed == freezed
           ? _value.generatingSeed
           : generatingSeed // ignore: cast_nullable_to_non_nullable
@@ -339,10 +359,6 @@ class __$SeedGenerateStateCopyWithImpl<$Res>
           ? _value.walletLabelError
           : walletLabelError // ignore: cast_nullable_to_non_nullable
               as String,
-      walletDetails: walletDetails == freezed
-          ? _value.walletDetails
-          : walletDetails // ignore: cast_nullable_to_non_nullable
-              as String,
       savinngWallet: savinngWallet == freezed
           ? _value.savinngWallet
           : savinngWallet // ignore: cast_nullable_to_non_nullable
@@ -365,6 +381,8 @@ class _$_SeedGenerateState extends _SeedGenerateState {
   const _$_SeedGenerateState(
       {this.currentStep = SeedGenerateSteps.warning,
       this.seed,
+      this.xpriv,
+      this.fingerPrint,
       this.generatingSeed = false,
       this.seedError = '',
       this.quizSeedCompleted = 0,
@@ -377,7 +395,6 @@ class _$_SeedGenerateState extends _SeedGenerateState {
       this.errPassphrase = '',
       this.walletLabel = '',
       this.walletLabelError = '',
-      this.walletDetails = '',
       this.savinngWallet = false,
       this.savingWalletError = '',
       this.newWalletSaved = false})
@@ -388,6 +405,10 @@ class _$_SeedGenerateState extends _SeedGenerateState {
   final SeedGenerateSteps currentStep;
   @override
   final List<String>? seed;
+  @override
+  final String? xpriv;
+  @override
+  final String? fingerPrint;
   @JsonKey(defaultValue: false)
   @override
   final bool generatingSeed;
@@ -424,11 +445,8 @@ class _$_SeedGenerateState extends _SeedGenerateState {
   @JsonKey(defaultValue: '')
   @override
   final String walletLabelError;
-  @JsonKey(defaultValue: '')
-  @override
-  final String walletDetails;
   @JsonKey(defaultValue: false)
-  @override
+  @override // @Default('') String walletDetails,
   final bool savinngWallet;
   @JsonKey(defaultValue: '')
   @override
@@ -439,7 +457,7 @@ class _$_SeedGenerateState extends _SeedGenerateState {
 
   @override
   String toString() {
-    return 'SeedGenerateState(currentStep: $currentStep, seed: $seed, generatingSeed: $generatingSeed, seedError: $seedError, quizSeedCompleted: $quizSeedCompleted, quizSeedAnswer: $quizSeedAnswer, quizSeedAnswerIdx: $quizSeedAnswerIdx, quizSeedList: $quizSeedList, quizSeedCompletedAnswers: $quizSeedCompletedAnswers, quizSeedError: $quizSeedError, passPhrase: $passPhrase, errPassphrase: $errPassphrase, walletLabel: $walletLabel, walletLabelError: $walletLabelError, walletDetails: $walletDetails, savinngWallet: $savinngWallet, savingWalletError: $savingWalletError, newWalletSaved: $newWalletSaved)';
+    return 'SeedGenerateState(currentStep: $currentStep, seed: $seed, xpriv: $xpriv, fingerPrint: $fingerPrint, generatingSeed: $generatingSeed, seedError: $seedError, quizSeedCompleted: $quizSeedCompleted, quizSeedAnswer: $quizSeedAnswer, quizSeedAnswerIdx: $quizSeedAnswerIdx, quizSeedList: $quizSeedList, quizSeedCompletedAnswers: $quizSeedCompletedAnswers, quizSeedError: $quizSeedError, passPhrase: $passPhrase, errPassphrase: $errPassphrase, walletLabel: $walletLabel, walletLabelError: $walletLabelError, savinngWallet: $savinngWallet, savingWalletError: $savingWalletError, newWalletSaved: $newWalletSaved)';
   }
 
   @override
@@ -451,6 +469,11 @@ class _$_SeedGenerateState extends _SeedGenerateState {
                     .equals(other.currentStep, currentStep)) &&
             (identical(other.seed, seed) ||
                 const DeepCollectionEquality().equals(other.seed, seed)) &&
+            (identical(other.xpriv, xpriv) ||
+                const DeepCollectionEquality().equals(other.xpriv, xpriv)) &&
+            (identical(other.fingerPrint, fingerPrint) ||
+                const DeepCollectionEquality()
+                    .equals(other.fingerPrint, fingerPrint)) &&
             (identical(other.generatingSeed, generatingSeed) ||
                 const DeepCollectionEquality()
                     .equals(other.generatingSeed, generatingSeed)) &&
@@ -489,9 +512,6 @@ class _$_SeedGenerateState extends _SeedGenerateState {
             (identical(other.walletLabelError, walletLabelError) ||
                 const DeepCollectionEquality()
                     .equals(other.walletLabelError, walletLabelError)) &&
-            (identical(other.walletDetails, walletDetails) ||
-                const DeepCollectionEquality()
-                    .equals(other.walletDetails, walletDetails)) &&
             (identical(other.savinngWallet, savinngWallet) ||
                 const DeepCollectionEquality()
                     .equals(other.savinngWallet, savinngWallet)) &&
@@ -508,6 +528,8 @@ class _$_SeedGenerateState extends _SeedGenerateState {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(currentStep) ^
       const DeepCollectionEquality().hash(seed) ^
+      const DeepCollectionEquality().hash(xpriv) ^
+      const DeepCollectionEquality().hash(fingerPrint) ^
       const DeepCollectionEquality().hash(generatingSeed) ^
       const DeepCollectionEquality().hash(seedError) ^
       const DeepCollectionEquality().hash(quizSeedCompleted) ^
@@ -520,7 +542,6 @@ class _$_SeedGenerateState extends _SeedGenerateState {
       const DeepCollectionEquality().hash(errPassphrase) ^
       const DeepCollectionEquality().hash(walletLabel) ^
       const DeepCollectionEquality().hash(walletLabelError) ^
-      const DeepCollectionEquality().hash(walletDetails) ^
       const DeepCollectionEquality().hash(savinngWallet) ^
       const DeepCollectionEquality().hash(savingWalletError) ^
       const DeepCollectionEquality().hash(newWalletSaved);
@@ -535,6 +556,8 @@ abstract class _SeedGenerateState extends SeedGenerateState {
   const factory _SeedGenerateState(
       {SeedGenerateSteps currentStep,
       List<String>? seed,
+      String? xpriv,
+      String? fingerPrint,
       bool generatingSeed,
       String seedError,
       int quizSeedCompleted,
@@ -547,7 +570,6 @@ abstract class _SeedGenerateState extends SeedGenerateState {
       String errPassphrase,
       String walletLabel,
       String walletLabelError,
-      String walletDetails,
       bool savinngWallet,
       String savingWalletError,
       bool newWalletSaved}) = _$_SeedGenerateState;
@@ -557,6 +579,10 @@ abstract class _SeedGenerateState extends SeedGenerateState {
   SeedGenerateSteps get currentStep => throw _privateConstructorUsedError;
   @override
   List<String>? get seed => throw _privateConstructorUsedError;
+  @override
+  String? get xpriv => throw _privateConstructorUsedError;
+  @override
+  String? get fingerPrint => throw _privateConstructorUsedError;
   @override
   bool get generatingSeed => throw _privateConstructorUsedError;
   @override
@@ -582,9 +608,7 @@ abstract class _SeedGenerateState extends SeedGenerateState {
   String get walletLabel => throw _privateConstructorUsedError;
   @override
   String get walletLabelError => throw _privateConstructorUsedError;
-  @override
-  String get walletDetails => throw _privateConstructorUsedError;
-  @override
+  @override // @Default('') String walletDetails,
   bool get savinngWallet => throw _privateConstructorUsedError;
   @override
   String get savingWalletError => throw _privateConstructorUsedError;

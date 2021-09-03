@@ -26,7 +26,6 @@ class _$SeedImportStateTearOff {
       int accountNumber = 0,
       String errPassPhrase = '',
       String walletLabelError = '',
-      String walletDetails = '',
       bool savingWallet = false,
       String savingWalletError = '',
       bool newWalletSaved = false,
@@ -40,7 +39,6 @@ class _$SeedImportStateTearOff {
       accountNumber: accountNumber,
       errPassPhrase: errPassPhrase,
       walletLabelError: walletLabelError,
-      walletDetails: walletDetails,
       savingWallet: savingWallet,
       savingWalletError: savingWalletError,
       newWalletSaved: newWalletSaved,
@@ -61,8 +59,8 @@ mixin _$SeedImportState {
   String get passPhrase => throw _privateConstructorUsedError;
   int get accountNumber => throw _privateConstructorUsedError;
   String get errPassPhrase => throw _privateConstructorUsedError;
-  String get walletLabelError => throw _privateConstructorUsedError;
-  String get walletDetails => throw _privateConstructorUsedError;
+  String get walletLabelError =>
+      throw _privateConstructorUsedError; // @Default('') String walletDetails,
   bool get savingWallet => throw _privateConstructorUsedError;
   String get savingWalletError => throw _privateConstructorUsedError;
   bool get newWalletSaved => throw _privateConstructorUsedError;
@@ -87,7 +85,6 @@ abstract class $SeedImportStateCopyWith<$Res> {
       int accountNumber,
       String errPassPhrase,
       String walletLabelError,
-      String walletDetails,
       bool savingWallet,
       String savingWalletError,
       bool newWalletSaved,
@@ -113,7 +110,6 @@ class _$SeedImportStateCopyWithImpl<$Res>
     Object? accountNumber = freezed,
     Object? errPassPhrase = freezed,
     Object? walletLabelError = freezed,
-    Object? walletDetails = freezed,
     Object? savingWallet = freezed,
     Object? savingWalletError = freezed,
     Object? newWalletSaved = freezed,
@@ -152,10 +148,6 @@ class _$SeedImportStateCopyWithImpl<$Res>
           ? _value.walletLabelError
           : walletLabelError // ignore: cast_nullable_to_non_nullable
               as String,
-      walletDetails: walletDetails == freezed
-          ? _value.walletDetails
-          : walletDetails // ignore: cast_nullable_to_non_nullable
-              as String,
       savingWallet: savingWallet == freezed
           ? _value.savingWallet
           : savingWallet // ignore: cast_nullable_to_non_nullable
@@ -192,7 +184,6 @@ abstract class _$SeedImportStateCopyWith<$Res>
       int accountNumber,
       String errPassPhrase,
       String walletLabelError,
-      String walletDetails,
       bool savingWallet,
       String savingWalletError,
       bool newWalletSaved,
@@ -220,7 +211,6 @@ class __$SeedImportStateCopyWithImpl<$Res>
     Object? accountNumber = freezed,
     Object? errPassPhrase = freezed,
     Object? walletLabelError = freezed,
-    Object? walletDetails = freezed,
     Object? savingWallet = freezed,
     Object? savingWalletError = freezed,
     Object? newWalletSaved = freezed,
@@ -259,10 +249,6 @@ class __$SeedImportStateCopyWithImpl<$Res>
           ? _value.walletLabelError
           : walletLabelError // ignore: cast_nullable_to_non_nullable
               as String,
-      walletDetails: walletDetails == freezed
-          ? _value.walletDetails
-          : walletDetails // ignore: cast_nullable_to_non_nullable
-              as String,
       savingWallet: savingWallet == freezed
           ? _value.savingWallet
           : savingWallet // ignore: cast_nullable_to_non_nullable
@@ -295,7 +281,6 @@ class _$_SeedImportState extends _SeedImportState {
       this.accountNumber = 0,
       this.errPassPhrase = '',
       this.walletLabelError = '',
-      this.walletDetails = '',
       this.savingWallet = false,
       this.savingWalletError = '',
       this.newWalletSaved = false,
@@ -326,11 +311,8 @@ class _$_SeedImportState extends _SeedImportState {
   @JsonKey(defaultValue: '')
   @override
   final String walletLabelError;
-  @JsonKey(defaultValue: '')
-  @override
-  final String walletDetails;
   @JsonKey(defaultValue: false)
-  @override
+  @override // @Default('') String walletDetails,
   final bool savingWallet;
   @JsonKey(defaultValue: '')
   @override
@@ -344,7 +326,7 @@ class _$_SeedImportState extends _SeedImportState {
 
   @override
   String toString() {
-    return 'SeedImportState(currentStep: $currentStep, seed: $seed, seedError: $seedError, walletLabel: $walletLabel, passPhrase: $passPhrase, accountNumber: $accountNumber, errPassPhrase: $errPassPhrase, walletLabelError: $walletLabelError, walletDetails: $walletDetails, savingWallet: $savingWallet, savingWalletError: $savingWalletError, newWalletSaved: $newWalletSaved, labelFixed: $labelFixed)';
+    return 'SeedImportState(currentStep: $currentStep, seed: $seed, seedError: $seedError, walletLabel: $walletLabel, passPhrase: $passPhrase, accountNumber: $accountNumber, errPassPhrase: $errPassPhrase, walletLabelError: $walletLabelError, savingWallet: $savingWallet, savingWalletError: $savingWalletError, newWalletSaved: $newWalletSaved, labelFixed: $labelFixed)';
   }
 
   @override
@@ -374,9 +356,6 @@ class _$_SeedImportState extends _SeedImportState {
             (identical(other.walletLabelError, walletLabelError) ||
                 const DeepCollectionEquality()
                     .equals(other.walletLabelError, walletLabelError)) &&
-            (identical(other.walletDetails, walletDetails) ||
-                const DeepCollectionEquality()
-                    .equals(other.walletDetails, walletDetails)) &&
             (identical(other.savingWallet, savingWallet) ||
                 const DeepCollectionEquality()
                     .equals(other.savingWallet, savingWallet)) &&
@@ -402,7 +381,6 @@ class _$_SeedImportState extends _SeedImportState {
       const DeepCollectionEquality().hash(accountNumber) ^
       const DeepCollectionEquality().hash(errPassPhrase) ^
       const DeepCollectionEquality().hash(walletLabelError) ^
-      const DeepCollectionEquality().hash(walletDetails) ^
       const DeepCollectionEquality().hash(savingWallet) ^
       const DeepCollectionEquality().hash(savingWalletError) ^
       const DeepCollectionEquality().hash(newWalletSaved) ^
@@ -424,7 +402,6 @@ abstract class _SeedImportState extends SeedImportState {
       int accountNumber,
       String errPassPhrase,
       String walletLabelError,
-      String walletDetails,
       bool savingWallet,
       String savingWalletError,
       bool newWalletSaved,
@@ -447,9 +424,7 @@ abstract class _SeedImportState extends SeedImportState {
   String get errPassPhrase => throw _privateConstructorUsedError;
   @override
   String get walletLabelError => throw _privateConstructorUsedError;
-  @override
-  String get walletDetails => throw _privateConstructorUsedError;
-  @override
+  @override // @Default('') String walletDetails,
   bool get savingWallet => throw _privateConstructorUsedError;
   @override
   String get savingWalletError => throw _privateConstructorUsedError;

@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:sats/pkg/bitcoin.dart';
 import 'package:sats/pkg/storage.dart';
 import 'package:sats/state.dart';
@@ -15,7 +18,14 @@ void main() async {
   setupDependencies(useDummies: true);
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocObserver();
-  runApp(SatsApp());
+
+  FlutterError.onError = (details) {
+    log(details.exceptionAsString(), stackTrace: details.stack);
+  };
+  runZonedGuarded(
+    () => runApp(const SatsApp()),
+    (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),
+  );
 }
 
 final homeNavigator = GlobalKey<NavigatorState>();

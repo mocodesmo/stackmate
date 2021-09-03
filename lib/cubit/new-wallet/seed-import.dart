@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 // import 'package:sats/zold/api/_helpers.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/new-wallet/network.dart';
+import 'package:sats/cubit/wallet/wallets.dart';
+import 'package:sats/model/wallet.dart';
 // import 'package:sats/cubit/network.dart' as net;
 // import 'package:sats/zold/cubit/wallet.dart';
 import 'package:sats/pkg/bitcoin.dart';
@@ -15,8 +18,8 @@ part 'seed-import.freezed.dart';
 enum SeedImportSteps {
   warning,
   security,
-  import,
   passphrase,
+  import,
   label,
   networkOn,
 }
@@ -33,7 +36,7 @@ class SeedImportState with _$SeedImportState {
     @Default(0) int accountNumber,
     @Default('') String errPassPhrase,
     @Default('') String walletLabelError,
-    @Default('') String walletDetails,
+    // @Default('') String walletDetails,
     @Default(false) bool savingWallet,
     @Default('') String savingWalletError,
     @Default(false) bool newWalletSaved,
@@ -86,9 +89,10 @@ class SeedImportCubit extends Cubit<SeedImportState> {
     this._networkCubit,
     this._bitcoin,
     // this._soloWalletAPI,
-    // this._storage,
+    this._storage,
     // this._walletBloc,
     // this._testNetCubit,
+    this._wallets,
     this.logger, {
     String walletLabel = '',
   }) : super(SeedImportState(
@@ -96,7 +100,7 @@ class SeedImportCubit extends Cubit<SeedImportState> {
           labelFixed: walletLabel != '',
         )) {
     _networkCubitSub = _networkCubit.stream.listen((NetworkState nState) {
-      if (nState.hasOffError() != '') goToNetworkAndReset();
+      if (nState.hasOffError() != '') _goToNetworkAndReset();
     });
   }
 
@@ -106,75 +110,26 @@ class SeedImportCubit extends Cubit<SeedImportState> {
 
   final IBitcoin _bitcoin;
   // final ISoloWalletAPI _soloWalletAPI;
-  // final IStorage _storage;
+  final IStorage _storage;
   final LoggerCubit logger;
+  final WalletsCubit _wallets;
+
   // final net.NetworkCubit _testNetCubit;
 
-  goToNetworkAndReset() {
+  _goToNetworkAndReset() {
     if (state.currentStep == SeedImportSteps.networkOn ||
         state.currentStep == SeedImportSteps.warning) return;
     emit(SeedImportState(currentStep: SeedImportSteps.security));
   }
 
-  nextClicked() {
-    switch (state.currentStep) {
-      case SeedImportSteps.warning:
-        emit(SeedImportState(currentStep: SeedImportSteps.security));
-        break;
-
-      case SeedImportSteps.security:
-        emit(SeedImportState(currentStep: SeedImportSteps.import));
-        break;
-
-      case SeedImportSteps.import:
-        _checkSeed();
-        break;
-
-      case SeedImportSteps.passphrase:
-        _checkPassPhrase();
-        break;
-
-      case SeedImportSteps.label:
-        _checkLabel();
-        break;
-
-      case SeedImportSteps.networkOn:
-        _saveWallet();
-        break;
+  _checkPassPhrase() {
+    if (state.passPhrase.length > 8 || state.passPhrase.contains(' ')) {
+      emit(state.copyWith(errPassPhrase: 'Invalid Passphrase'));
+      return;
     }
-  }
 
-  backClicked() {
-    switch (state.currentStep) {
-      case SeedImportSteps.warning:
-        break;
-
-      case SeedImportSteps.security:
-        emit(SeedImportState(currentStep: SeedImportSteps.warning));
-        break;
-
-      case SeedImportSteps.import:
-        emit(SeedImportState(currentStep: SeedImportSteps.security));
-        break;
-
-      case SeedImportSteps.passphrase:
-        emit(SeedImportState(currentStep: SeedImportSteps.import));
-        break;
-
-      case SeedImportSteps.label:
-        emit(SeedImportState(currentStep: SeedImportSteps.passphrase));
-        break;
-
-      case SeedImportSteps.networkOn:
-        break;
-    }
-  }
-
-  seedTextChanged(String seed) {
-    emit(state.copyWith(
-      seed: seed,
-      seedError: '',
-    ));
+    emit(
+        state.copyWith(currentStep: SeedImportSteps.import, errPassPhrase: ''));
   }
 
   _checkSeed() {
@@ -186,32 +141,8 @@ class SeedImportCubit extends Cubit<SeedImportState> {
         return;
       }
 
-      emit(state.copyWith(currentStep: SeedImportSteps.passphrase));
+      emit(state.copyWith(currentStep: SeedImportSteps.label));
     } catch (e) {}
-  }
-
-  passPhraseChanged(String text) {
-    emit(state.copyWith(passPhrase: text));
-  }
-
-  accountNumberChanged(String number) {
-    try {
-      final val = int.parse(number);
-      emit(state.copyWith(accountNumber: val));
-    } catch (e) {}
-  }
-
-  _checkPassPhrase() {
-    if (state.passPhrase.length > 8 || state.passPhrase.contains(' ')) {
-      emit(state.copyWith(errPassPhrase: 'Invalid Passphrase'));
-      return;
-    }
-
-    emit(state.copyWith(currentStep: SeedImportSteps.label, errPassPhrase: ''));
-  }
-
-  labelChanged(String text) {
-    emit(state.copyWith(walletLabel: text, walletLabelError: ''));
   }
 
   _checkLabel() async {
@@ -231,36 +162,45 @@ class SeedImportCubit extends Cubit<SeedImportState> {
 
   _saveWalletLocally() async {
     try {
-      // final xpriv = await _bitcoin.generateMaster(
+      // final res = await _bitcoin.importMaster(
       //   mnemonic: state.seed,
       //   passphrase: state.passPhrase,
-      //   network: _testNetCubit.state.isTestNet ? '1h' : '0h',
+      //   network: '',
       // );
 
-      final result = '';
-      // await _bitcoin.deriveHardened(
+      // if (res.startsWith('Error')) throw res;
+
+      // final json = jsonDecode(res);
+      // final neu = json['mnemonic'];
+      // final fingerprint = json['fingerprint'];
+      // final xpriv = json['xprv'];
+
+      //check nmeu ?
+
+      // final result = await _bitcoin.deriveHardened(
       //   masterXPriv: xpriv,
-      //   account: '0',
+      //   account: '',
+      //   purpose: '',
       // );
 
-      final results = result.split(':');
-      final fingerPrint = results[0];
-      final path = results[1];
-      final childXPriv = results[2];
-      final childXPub = results[3];
+      // if (result.startsWith('Error')) throw result;
 
-      if (state.labelFixed) {
-        // final wallet = _walletBloc.state.wallets
-        //     .where((w) => w.label == state.walletLabel)
-        //     .first;
-        // if (wallet.xpub != childXPub) {
-        //   emit(state.copyWith(walletLabelError: 'Public key does not match.'));
-        //   return;
-        // }
-      }
+      // final obj = jsonDecode(result);
 
-      // await _storage.saveOrUpdateItem(
-      //     key: CacheKeys.xPriv + ':' + state.walletLabel, value: childXPriv);
+      // final fingerPrint = obj['fingerPrint'];
+      // final path = obj['hardened_path'];
+      // final childXPriv = obj['xprv'];
+      // final childXPub = obj['xpub'];
+
+      // create policy + descriptor
+
+      final newWallet = Wallet(
+        label: state.walletLabel,
+        policy: '',
+        descriptor: '',
+      );
+
+      _storage.saveItem(StoreKeys.Wallet.name, newWallet);
 
       if (state.labelFixed) {
         emit(state.copyWith(newWalletSaved: true));
@@ -269,7 +209,6 @@ class SeedImportCubit extends Cubit<SeedImportState> {
 
       emit(state.copyWith(
         currentStep: SeedImportSteps.networkOn,
-        walletDetails: fingerPrint + ':' + path + ':' + childXPub,
       ));
     } catch (e, s) {
       logger.logException(e, 'SeedImportCubit._saveWalletLocally', s);
@@ -277,10 +216,16 @@ class SeedImportCubit extends Cubit<SeedImportState> {
   }
 
   _saveWallet() async {
+    _wallets.refresh();
+
     emit(state.copyWith(
-      savingWallet: true,
-      savingWalletError: '',
+      savingWallet: false,
+      newWalletSaved: true,
     ));
+    // emit(state.copyWith(
+    //   savingWallet: true,
+    //   savingWalletError: '',
+    // ));
 
     try {
       // final authToken = await _storage.getItem(key: CacheKeys.token);
@@ -312,6 +257,90 @@ class SeedImportCubit extends Cubit<SeedImportState> {
         newWalletSaved: true,
       ));
     }
+  }
+
+  nextClicked() {
+    switch (state.currentStep) {
+      case SeedImportSteps.warning:
+        emit(SeedImportState(currentStep: SeedImportSteps.security));
+        break;
+
+      case SeedImportSteps.security:
+        emit(SeedImportState(currentStep: SeedImportSteps.passphrase));
+        break;
+
+      case SeedImportSteps.passphrase:
+        _checkPassPhrase();
+        break;
+
+      case SeedImportSteps.import:
+        _checkSeed();
+        break;
+
+      case SeedImportSteps.label:
+        _checkLabel();
+        break;
+
+      case SeedImportSteps.networkOn:
+        _saveWallet();
+        break;
+    }
+  }
+
+  backClicked() {
+    switch (state.currentStep) {
+      case SeedImportSteps.warning:
+        break;
+
+      case SeedImportSteps.security:
+        emit(SeedImportState(currentStep: SeedImportSteps.warning));
+        break;
+
+      case SeedImportSteps.passphrase:
+        emit(SeedImportState(
+          currentStep: SeedImportSteps.security,
+          passPhrase: '',
+          errPassPhrase: '',
+        ));
+        break;
+
+      case SeedImportSteps.import:
+        emit(SeedImportState(
+          currentStep: SeedImportSteps.passphrase,
+          seed: '',
+          seedError: '',
+        ));
+        break;
+
+      case SeedImportSteps.label:
+        emit(SeedImportState(currentStep: SeedImportSteps.passphrase));
+        break;
+
+      case SeedImportSteps.networkOn:
+        break;
+    }
+  }
+
+  seedTextChanged(String seed) {
+    emit(state.copyWith(
+      seed: seed,
+      seedError: '',
+    ));
+  }
+
+  passPhraseChanged(String text) {
+    emit(state.copyWith(passPhrase: text));
+  }
+
+  accountNumberChanged(String number) {
+    try {
+      final val = int.parse(number);
+      emit(state.copyWith(accountNumber: val));
+    } catch (e) {}
+  }
+
+  labelChanged(String text) {
+    emit(state.copyWith(walletLabel: text, walletLabelError: ''));
   }
 
   @override

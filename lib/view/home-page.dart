@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/home/reddit-feed.dart';
 import 'dart:ui';
+
+import 'package:sats/view/home/wallet-card.dart';
 
 class HeaderRow extends StatelessWidget {
   @override
@@ -34,41 +37,15 @@ class HeaderRow extends StatelessWidget {
 class AccountsRow extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
+    final wallets = c.select((WalletsCubit w) => w.state.wallets);
     return Container(
         child: SingleChildScrollView(
             physics: ClampingScrollPhysics(),
             scrollDirection: Axis.horizontal,
             child: Row(children: [
               SizedBox(width: 16),
-              for (var i = 0; i < 5; i++) ...[
-                Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                    child: Material(
-                        elevation: 4,
-                        shadowColor: Colors.white24,
-                        borderRadius: BorderRadius.circular(16),
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-                          child: Container(
-                              height: 180,
-                              width: 150,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.centerRight,
-                                    stops: [
-                                      0.3,
-                                      0.99
-                                    ],
-                                    colors: [
-                                      Colors.blue[300]!.withOpacity(0.5),
-                                      Colors.teal[100]!.withOpacity(0.5)
-                                    ]),
-                              )),
-                        )))
-              ],
+              for (var w in wallets) WalletCard(wallet: w),
+              // for (var i = 0; i < 5; i++) ...[WalletCard()],
               SizedBox(width: 16),
             ])));
   }

@@ -55,7 +55,7 @@ class _XpubImportState extends State<XpubImport> {
                   child: Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    child: Text('OPEN SCANNER'),
+                    child: Text('SCAN'),
                   ),
                   onPressed: () {
                     c.read<XpubImportCubit>().toggleCamera();
@@ -83,17 +83,17 @@ class _XpubImportState extends State<XpubImport> {
                     onTap: () {
                       c.read<XpubImportCubit>().xpubPasteClicked();
                     },
-                    child: Text('PASTE FROM CLIPBOARD'.notLocalised(),
+                    child: Text('PASTE'.notLocalised(),
                         style: c.fonts.button!
                             .copyWith(color: c.colours.primary))))),
         SizedBox(height: 40),
         if (state.showOtherDetails()) ...[
-          Text('Fingerprint'.notLocalised(),
+          Text('Fingerprint'.toUpperCase().notLocalised(),
               style: c.fonts.overline!.copyWith(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               )),
-          SizedBox(height: 4),
+          SizedBox(height: 8),
           Padding(
               padding: EdgeInsets.all(0),
               child: TextField(
@@ -115,16 +115,16 @@ class _XpubImportState extends State<XpubImport> {
                       onTap: () {
                         c.read<XpubImportCubit>().fingerPrintPastedClicked();
                       },
-                      child: Text('PASTE FROM CLIPBOARD'.notLocalised(),
+                      child: Text('PASTE'.notLocalised(),
                           style: c.fonts.button!
                               .copyWith(color: c.colours.primary))))),
           SizedBox(height: 40),
-          Text('Path'.notLocalised(),
+          Text('Path'.toUpperCase().notLocalised(),
               style: c.fonts.overline!.copyWith(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               )),
-          SizedBox(height: 4),
+          SizedBox(height: 8),
           Padding(
               padding: EdgeInsets.all(0),
               child: TextField(
@@ -146,7 +146,7 @@ class _XpubImportState extends State<XpubImport> {
                       onTap: () {
                         c.read<XpubImportCubit>().pathPasteClicked();
                       },
-                      child: Text('PASTE FROM CLIPBOARD'.notLocalised(),
+                      child: Text('PASTE'.notLocalised(),
                           style: c.fonts.button!
                               .copyWith(color: c.colours.primary))))),
           SizedBox(height: 40),

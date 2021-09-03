@@ -30,7 +30,7 @@ class SeedImportPhrase extends StatelessWidget {
         AnimatedOpacity(
           opacity: state.showSeedCompleteButton() ? 1 : 0.3,
           duration: Duration(milliseconds: 300),
-          child: ElevatedButton(
+          child: TextButton(
               onPressed: () {
                 if (state.showSeedCompleteButton())
                   c.read<SeedImportCubit>().nextClicked();

@@ -26,6 +26,8 @@ class SeedGenerateLabel extends StatelessWidget {
                         },
                         decoration: InputDecoration(
                           labelText: 'Wallet Name',
+                          labelStyle: TextStyle(color: Colors.transparent),
+
                           //errorText: state.walletLabelError.nullIfEmpty()
                         ))),
                 SizedBox(height: 40),
@@ -35,7 +37,7 @@ class SeedGenerateLabel extends StatelessWidget {
                 SizedBox(height: 24),
                 Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: ElevatedButton(
+                    child: TextButton(
                         onPressed: () {
                           c.read<SeedGenerateCubit>().nextClicked();
                         },

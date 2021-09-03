@@ -49,6 +49,8 @@ class _SeedImportLabelState extends State<SeedImportLabel> {
                           },
                           decoration: InputDecoration(
                             labelText: 'Wallet Name',
+                            labelStyle: TextStyle(color: Colors.transparent),
+                            // hintStyle: TextStyle(color: Colors.white)
                             //errorText: state.walletLabelError.nullIfEmpty(),
                           )),
                     )),
@@ -58,7 +60,7 @@ class _SeedImportLabelState extends State<SeedImportLabel> {
                       style: c.fonts.caption!.copyWith(color: c.colours.error)),
                 Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: ElevatedButton(
+                    child: TextButton(
                         onPressed: () {
                           c.read<SeedImportCubit>().nextClicked();
                         },
