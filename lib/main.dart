@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sats/pkg/bitcoin.dart';
 import 'package:sats/pkg/storage.dart';
 import 'package:sats/state.dart';
@@ -11,6 +12,7 @@ import 'package:oktoast/oktoast.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/style.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   await initializeHive();
@@ -41,6 +43,11 @@ class SatsApp extends StatelessWidget {
       position: ToastPosition.bottom,
       textStyle: c.fonts.caption!.copyWith(color: c.colours.onBackground),
       child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
           builder: (context, child) {
             final mediaQueryData = MediaQuery.of(context);
             return MediaQuery(

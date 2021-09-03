@@ -11,6 +11,10 @@ dependencies:
   flutter:
     sdk: flutter  
 
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.17.0
+
   get_it: ^6.0.0
   bloc: ^7.1.0
   flutter_bloc: ^7.2.0
@@ -28,7 +32,7 @@ dependencies:
   share: ^2.0.1
   qr_flutter: ^4.0.0
   petitparser: ^4.1.0
-  intl: ^0.17.0
+  # intl: ^0.17.0
   oktoast: ^3.0.0
   animate_do: ^2.0.0
   google_fonts: ^2.0.0
@@ -76,3 +80,4 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true

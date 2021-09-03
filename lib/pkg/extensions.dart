@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 extension contextUtils on BuildContext {
   ColorScheme get colours => Theme.of(this).colorScheme;
@@ -7,6 +8,7 @@ extension contextUtils on BuildContext {
   ThemeData get theme => Theme.of(this);
   double get width => MediaQuery.of(this).size.width;
   double get height => MediaQuery.of(this).size.height;
+  AppLocalizations get word => AppLocalizations.of(this);
 }
 
 extension strings on String {
