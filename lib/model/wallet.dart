@@ -9,7 +9,7 @@ class Wallet with _$Wallet {
   @HiveType(typeId: 1, adapterName: 'WalletClassAdaper')
   const factory Wallet({
     @HiveField(0) @Default('') String label,
-    @HiveField(1) @Default('') String policy,
+    // @HiveField(1) @Default('') String policy,
     @HiveField(2) @Default('') String descriptor,
   }) = _Wallet;
 

@@ -19,6 +19,11 @@ abstract class IBitcoin {
     required String purpose,
   });
 
+  Future<String> compile({
+    required String policy,
+    required String scriptType,
+  });
+
   Future<String> syncBalance({
     required String depositDesc,
     required String changeDesc,
@@ -103,6 +108,13 @@ class BitcoinFFI implements IBitcoin {
     );
     return resp;
   }
+
+  @override
+  Future<String> compile(
+      {required String policy, required String scriptType}) async {
+    final resp = await _bitcoin.compile(policy: policy, scriptType: scriptType);
+    return resp;
+  }
 }
 
 class DummyBitcoin implements IBitcoin {
@@ -169,5 +181,11 @@ class DummyBitcoin implements IBitcoin {
       required String changeDesc,
       required String network}) {
     throw UnimplementedError();
+  }
+
+  @override
+  Future<String> compile(
+      {required String policy, required String scriptType}) async {
+    return '';
   }
 }

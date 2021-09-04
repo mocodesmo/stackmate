@@ -13,6 +13,11 @@ typedef ffi_func3_derive = Pointer<Utf8> Function(
   Pointer<Utf8> account,
 );
 
+typedef ffi_func2_compile = Pointer<Utf8> Function(
+  Pointer<Utf8> policy,
+  Pointer<Utf8> script_type,
+);
+
 typedef ffi_func3_sync = Pointer<Utf8> Function(
   Pointer<Utf8> deposit_desc,
   Pointer<Utf8> change_desc,
@@ -75,6 +80,20 @@ class BitcoinFFFI {
       masterXPriv.toNativeUtf8(),
       purpose.toNativeUtf8(),
       account.toNativeUtf8(),
+    );
+    return response.toDartString();
+  }
+
+  Future<String> compile({
+    required String policy,
+    required String scriptType,
+  }) async {
+    final func = _lib.lookupFunction<ffi_func2_compile, ffi_func2_compile>(
+      'compile',
+    );
+    final response = func(
+      policy.toNativeUtf8(),
+      scriptType.toNativeUtf8(),
     );
     return response.toDartString();
   }

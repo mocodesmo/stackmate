@@ -15,6 +15,7 @@
         "**/.flutter-plugins-dependencies": true,
         "**/generated_plugin_registrant.dart": true,
         "**/CHANGELOG.md": true,
+        "l10n.yaml": true,
         //
         //
         //
@@ -30,7 +31,7 @@
         "zzz": true,
         "zzzz": true,
         "**/assets": true,
-        "**/packages": true,
+        // "**/packages": true,
         "**/android": true,
         "**/ios": true,
         "ioszz": true,

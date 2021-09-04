@@ -128,6 +128,9 @@ class Routes {
     // );
   }
 }
+
+final homeNavigator = GlobalKey<NavigatorState>();
+
 //
 //
 //

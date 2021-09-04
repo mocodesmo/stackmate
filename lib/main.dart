@@ -30,8 +30,6 @@ void main() async {
   );
 }
 
-final homeNavigator = GlobalKey<NavigatorState>();
-
 class SatsApp extends StatelessWidget {
   const SatsApp({Key? key}) : super(key: key);
 
@@ -43,6 +41,7 @@ class SatsApp extends StatelessWidget {
       position: ToastPosition.bottom,
       textStyle: c.fonts.caption!.copyWith(color: c.colours.onBackground),
       child: MaterialApp(
+          locale: null,
           localizationsDelegates: const [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,

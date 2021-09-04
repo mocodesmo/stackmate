@@ -22,12 +22,9 @@ class _$WalletTearOff {
   const _$WalletTearOff();
 
   _Wallet call(
-      {@HiveField(0) String label = '',
-      @HiveField(1) String policy = '',
-      @HiveField(2) String descriptor = ''}) {
+      {@HiveField(0) String label = '', @HiveField(2) String descriptor = ''}) {
     return _Wallet(
       label: label,
-      policy: policy,
       descriptor: descriptor,
     );
   }
@@ -43,9 +40,8 @@ const $Wallet = _$WalletTearOff();
 /// @nodoc
 mixin _$Wallet {
   @HiveField(0)
-  String get label => throw _privateConstructorUsedError;
-  @HiveField(1)
-  String get policy => throw _privateConstructorUsedError;
+  String get label =>
+      throw _privateConstructorUsedError; // @HiveField(1) @Default('') String policy,
   @HiveField(2)
   String get descriptor => throw _privateConstructorUsedError;
 
@@ -58,10 +54,7 @@ mixin _$Wallet {
 abstract class $WalletCopyWith<$Res> {
   factory $WalletCopyWith(Wallet value, $Res Function(Wallet) then) =
       _$WalletCopyWithImpl<$Res>;
-  $Res call(
-      {@HiveField(0) String label,
-      @HiveField(1) String policy,
-      @HiveField(2) String descriptor});
+  $Res call({@HiveField(0) String label, @HiveField(2) String descriptor});
 }
 
 /// @nodoc
@@ -75,17 +68,12 @@ class _$WalletCopyWithImpl<$Res> implements $WalletCopyWith<$Res> {
   @override
   $Res call({
     Object? label = freezed,
-    Object? policy = freezed,
     Object? descriptor = freezed,
   }) {
     return _then(_value.copyWith(
       label: label == freezed
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
-              as String,
-      policy: policy == freezed
-          ? _value.policy
-          : policy // ignore: cast_nullable_to_non_nullable
               as String,
       descriptor: descriptor == freezed
           ? _value.descriptor
@@ -100,10 +88,7 @@ abstract class _$WalletCopyWith<$Res> implements $WalletCopyWith<$Res> {
   factory _$WalletCopyWith(_Wallet value, $Res Function(_Wallet) then) =
       __$WalletCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {@HiveField(0) String label,
-      @HiveField(1) String policy,
-      @HiveField(2) String descriptor});
+  $Res call({@HiveField(0) String label, @HiveField(2) String descriptor});
 }
 
 /// @nodoc
@@ -118,17 +103,12 @@ class __$WalletCopyWithImpl<$Res> extends _$WalletCopyWithImpl<$Res>
   @override
   $Res call({
     Object? label = freezed,
-    Object? policy = freezed,
     Object? descriptor = freezed,
   }) {
     return _then(_Wallet(
       label: label == freezed
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
-              as String,
-      policy: policy == freezed
-          ? _value.policy
-          : policy // ignore: cast_nullable_to_non_nullable
               as String,
       descriptor: descriptor == freezed
           ? _value.descriptor
@@ -143,9 +123,7 @@ class __$WalletCopyWithImpl<$Res> extends _$WalletCopyWithImpl<$Res>
 @HiveType(typeId: 1, adapterName: 'WalletClassAdaper')
 class _$_Wallet implements _Wallet {
   const _$_Wallet(
-      {@HiveField(0) this.label = '',
-      @HiveField(1) this.policy = '',
-      @HiveField(2) this.descriptor = ''});
+      {@HiveField(0) this.label = '', @HiveField(2) this.descriptor = ''});
 
   factory _$_Wallet.fromJson(Map<String, dynamic> json) =>
       _$$_WalletFromJson(json);
@@ -155,17 +133,13 @@ class _$_Wallet implements _Wallet {
   @HiveField(0)
   final String label;
   @JsonKey(defaultValue: '')
-  @override
-  @HiveField(1)
-  final String policy;
-  @JsonKey(defaultValue: '')
-  @override
+  @override // @HiveField(1) @Default('') String policy,
   @HiveField(2)
   final String descriptor;
 
   @override
   String toString() {
-    return 'Wallet(label: $label, policy: $policy, descriptor: $descriptor)';
+    return 'Wallet(label: $label, descriptor: $descriptor)';
   }
 
   @override
@@ -174,8 +148,6 @@ class _$_Wallet implements _Wallet {
         (other is _Wallet &&
             (identical(other.label, label) ||
                 const DeepCollectionEquality().equals(other.label, label)) &&
-            (identical(other.policy, policy) ||
-                const DeepCollectionEquality().equals(other.policy, policy)) &&
             (identical(other.descriptor, descriptor) ||
                 const DeepCollectionEquality()
                     .equals(other.descriptor, descriptor)));
@@ -185,7 +157,6 @@ class _$_Wallet implements _Wallet {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(label) ^
-      const DeepCollectionEquality().hash(policy) ^
       const DeepCollectionEquality().hash(descriptor);
 
   @JsonKey(ignore: true)
@@ -202,7 +173,6 @@ class _$_Wallet implements _Wallet {
 abstract class _Wallet implements Wallet {
   const factory _Wallet(
       {@HiveField(0) String label,
-      @HiveField(1) String policy,
       @HiveField(2) String descriptor}) = _$_Wallet;
 
   factory _Wallet.fromJson(Map<String, dynamic> json) = _$_Wallet.fromJson;
@@ -210,10 +180,7 @@ abstract class _Wallet implements Wallet {
   @override
   @HiveField(0)
   String get label => throw _privateConstructorUsedError;
-  @override
-  @HiveField(1)
-  String get policy => throw _privateConstructorUsedError;
-  @override
+  @override // @HiveField(1) @Default('') String policy,
   @HiveField(2)
   String get descriptor => throw _privateConstructorUsedError;
   @override

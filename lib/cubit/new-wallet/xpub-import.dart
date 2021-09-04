@@ -72,31 +72,29 @@ class XpubImportCubit extends Cubit<XpubImportState> {
   final WalletsCubit _wallets;
 
   void _saveWallet() async {
-    // emit(state.copyWith(
-    //   savingWallet: true,
-    //   errSavingWallet: '',
-    // ));
+    emit(state.copyWith(
+      savingWallet: true,
+      errSavingWallet: '',
+    ));
 
     try {
-      final result = await _bitcoin.deriveHardened(
-        masterXPriv: state.xpub,
-        account: '',
-        purpose: '',
+      final fingerprint = state.fingerPrint;
+      final path = state.path;
+      final xpub = state.xpub;
+      String policy = '';
+      if (!state.showOtherDetails())
+        policy = xpub;
+      else
+        policy = 'pk([$fingerprint/$path]$xpub)';
+      final resp = await _bitcoin.compile(
+        policy: policy,
+        scriptType: 'wsh',
       );
-
-      if (result.startsWith('Error')) throw result;
-
-      final obj = jsonDecode(result);
-
-      final fingerPrint = obj['fingerPrint'];
-      final path = obj['hardened_path'];
-      final childXPriv = obj['xprv'];
-      final childXPub = obj['xpub'];
-
+      if (resp.startsWith('Error')) throw resp;
+      final descriptor = jsonDecode(resp)['descriptor'] as String;
       final newWallet = Wallet(
         label: state.label,
-        policy: '',
-        descriptor: '',
+        descriptor: descriptor,
       );
 
       _storage.saveItem(StoreKeys.Wallet.name, newWallet);

@@ -18,7 +18,6 @@ class WalletClassAdaper extends TypeAdapter<_$_Wallet> {
     };
     return _$_Wallet(
       label: fields[0] as String,
-      policy: fields[1] as String,
       descriptor: fields[2] as String,
     );
   }
@@ -26,11 +25,9 @@ class WalletClassAdaper extends TypeAdapter<_$_Wallet> {
   @override
   void write(BinaryWriter writer, _$_Wallet obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(2)
       ..writeByte(0)
       ..write(obj.label)
-      ..writeByte(1)
-      ..write(obj.policy)
       ..writeByte(2)
       ..write(obj.descriptor);
   }
@@ -52,12 +49,10 @@ class WalletClassAdaper extends TypeAdapter<_$_Wallet> {
 
 _$_Wallet _$$_WalletFromJson(Map<String, dynamic> json) => _$_Wallet(
       label: json['label'] as String? ?? '',
-      policy: json['policy'] as String? ?? '',
       descriptor: json['descriptor'] as String? ?? '',
     );
 
 Map<String, dynamic> _$$_WalletToJson(_$_Wallet instance) => <String, dynamic>{
       'label': instance.label,
-      'policy': instance.policy,
       'descriptor': instance.descriptor,
     };

@@ -248,24 +248,23 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
         account: '',
         purpose: '',
       );
-
       if (result.startsWith('Error')) throw result;
-
       final obj = jsonDecode(result);
-
       final fingerPrint = obj['fingerPrint'];
       final path = obj['hardened_path'];
       final childXPriv = obj['xprv'];
-      final childXPub = obj['xpub'];
-
+      final policy = 'pk([$fingerPrint/$path]$childXPriv)';
+      final resp = await _bitcoin.compile(
+        policy: policy,
+        scriptType: 'wsh',
+      );
+      if (resp.startsWith('Error')) throw resp;
+      final descriptor = jsonDecode(resp)['descriptor'] as String;
       final newWallet = Wallet(
         label: state.walletLabel,
-        policy: '',
-        descriptor: '',
+        descriptor: descriptor,
       );
-
       _storage.saveItem(StoreKeys.Wallet.name, newWallet);
-
       emit(state.copyWith(
         currentStep: SeedGenerateSteps.networkOn,
       ));
