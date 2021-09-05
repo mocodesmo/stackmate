@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sats/cubit/new-wallet/seed-generate.dart';
 // import 'package:sats/zold/cubit/wallet.dart';
 import 'package:sats/pkg/extensions.dart';
-import 'package:sats/view/common/back-button.dart';
 import 'package:sats/view/common/back-button2.dart';
 import 'package:sats/view/common/header.dart';
 import 'package:sats/view/new-wallet-common/network-on.dart';

@@ -10,12 +10,12 @@ class RedditPost with _$RedditPost {
 
   @HiveType(typeId: 0, adapterName: 'RedditPostClassAdapter')
   const factory RedditPost({
-    @JsonKey(name: 'title') @HiveField(0) @Default('') String title,
-    @JsonKey(name: 'permalink') @HiveField(1) @Default('') String permalink,
-    @JsonKey(name: 'score') @HiveField(2) @Default(0) int score,
-    @JsonKey(name: 'thumbnail') @HiveField(3) @Default('') String thumbnail,
-    @JsonKey(name: 'url') @HiveField(4) @Default('') String url,
-    @JsonKey(name: 'created_utc') @HiveField(5) @Default(0) double createdAt,
+    @HiveField(0) required String title,
+    @HiveField(1) required String permalink,
+    @HiveField(2) required int score,
+    @HiveField(3) required String thumbnail,
+    @HiveField(4) required String url,
+    @HiveField(5) @JsonKey(name: 'created_utc') required double createdAt,
   }) = _RedditPost;
 
   factory RedditPost.fromJson(Map<String, dynamic> json) =>
@@ -49,9 +49,4 @@ class RedditPost with _$RedditPost {
   }
 
   String link() => 'https://www.reddit.com' + permalink;
-}
-
-cc() {
-  var rd = RedditPost(title: '');
-  // rd.;
 }

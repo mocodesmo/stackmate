@@ -1,25 +1,28 @@
+import 'dart:ffi';
+import 'dart:io';
+
 import 'package:bitcoin/bitcoin.dart';
 
 abstract class IBitcoin {
-  Future<String> generateMaster({
+  Future<Nmeu> generateMaster({
     required String mnemonic,
     required String passphrase,
     required String network,
   });
 
-  Future<String> importMaster({
+  Future<Nmeu> importMaster({
     required String mnemonic,
     required String passphrase,
     required String network,
   });
 
-  Future<String> deriveHardened({
+  Future<Derive> deriveHardened({
     required String masterXPriv,
     required String account,
     required String purpose,
   });
 
-  Future<String> compile({
+  Future<Compile> compile({
     required String policy,
     required String scriptType,
   });
@@ -39,10 +42,14 @@ abstract class IBitcoin {
 }
 
 class BitcoinFFI implements IBitcoin {
-  final _bitcoin = BitcoinFFFI();
+  final _bitcoin = BitcoinFFFI(
+    binary: Platform.isAndroid
+        ? DynamicLibrary.open('libditto.so')
+        : DynamicLibrary.process(),
+  );
 
   @override
-  Future<String> generateMaster(
+  Future<Nmeu> generateMaster(
       {required String mnemonic,
       required String passphrase,
       required String network}) async {
@@ -55,7 +62,7 @@ class BitcoinFFI implements IBitcoin {
   }
 
   @override
-  Future<String> importMaster(
+  Future<Nmeu> importMaster(
       {required String mnemonic,
       required String passphrase,
       required String network}) async {
@@ -68,7 +75,7 @@ class BitcoinFFI implements IBitcoin {
   }
 
   @override
-  Future<String> deriveHardened({
+  Future<Derive> deriveHardened({
     required String masterXPriv,
     required String account,
     required String purpose,
@@ -77,6 +84,16 @@ class BitcoinFFI implements IBitcoin {
       masterXPriv: masterXPriv,
       account: account,
       purpose: purpose,
+    );
+    return resp;
+  }
+
+  @override
+  Future<Compile> compile(
+      {required String policy, required String scriptType}) async {
+    final resp = await _bitcoin.compile(
+      policy: policy,
+      scriptType: scriptType,
     );
     return resp;
   }
@@ -108,84 +125,77 @@ class BitcoinFFI implements IBitcoin {
     );
     return resp;
   }
-
-  @override
-  Future<String> compile(
-      {required String policy, required String scriptType}) async {
-    final resp = await _bitcoin.compile(policy: policy, scriptType: scriptType);
-    return resp;
-  }
 }
 
-class DummyBitcoin implements IBitcoin {
-  List<String> _w = [
-    'Donkey',
-    'Monkey',
-    'Dog',
-    'Cat',
-    'Tiger',
-    'Lion',
-    'Human',
-    'Bird',
-    'Insect',
-    'Ant',
-    'Lizard',
-    'Fish',
-  ];
+// class DummyBitcoin implements IBitcoin {
+//   List<String> _w = [
+//     'Donkey',
+//     'Monkey',
+//     'Dog',
+//     'Cat',
+//     'Tiger',
+//     'Lion',
+//     'Human',
+//     'Bird',
+//     'Insect',
+//     'Ant',
+//     'Lizard',
+//     'Fish',
+//   ];
 
-  @override
-  Future<String> generateMaster(
-      {required String mnemonic,
-      required String passphrase,
-      required String network}) async {
-    return 'abc';
-  }
+//   @override
+//   Future<String> generateMaster(
+//       {required String mnemonic,
+//       required String passphrase,
+//       required String network}) async {
+//     return 'abc';
+//   }
 
-  @override
-  Future<String> signPsbt(
-      {required String fingerprint,
-      required String accountIndex,
-      required String xprv,
-      required String psbt}) async {
-    return '';
-  }
+//   @override
+//   Future<String> signPsbt(
+//       {required String fingerprint,
+//       required String accountIndex,
+//       required String xprv,
+//       required String psbt}) async {
+//     return '';
+//   }
 
-  @override
-  Future<String> deriveHardened(
-      {required String masterXPriv,
-      required String account,
-      required String purpose}) {
-    throw UnimplementedError();
-  }
+//   @override
+//   Future<String> deriveHardened(
+//       {required String masterXPriv,
+//       required String account,
+//       required String purpose}) {
+//     throw UnimplementedError();
+//   }
 
-  @override
-  Future<String> getAddress(
-      {required String depositDesc,
-      required String changeDesc,
-      required String network,
-      required String index}) {
-    throw UnimplementedError();
-  }
+//   @override
+//   Future<String> getAddress(
+//       {required String depositDesc,
+//       required String changeDesc,
+//       required String network,
+//       required String index}) {
+//     throw UnimplementedError();
+//   }
 
-  @override
-  Future<String> importMaster(
-      {required String mnemonic,
-      required String passphrase,
-      required String network}) {
-    throw UnimplementedError();
-  }
+//   @override
+//   Future<String> importMaster(
+//       {required String mnemonic,
+//       required String passphrase,
+//       required String network}) {
+//     throw UnimplementedError();
+//   }
 
-  @override
-  Future<String> syncBalance(
-      {required String depositDesc,
-      required String changeDesc,
-      required String network}) {
-    throw UnimplementedError();
-  }
+//   @override
+//   Future<String> syncBalance(
+//       {required String depositDesc,
+//       required String changeDesc,
+//       required String network}) {
+//     throw UnimplementedError();
+//   }
 
-  @override
-  Future<String> compile(
-      {required String policy, required String scriptType}) async {
-    return '';
-  }
-}
+//   @override
+//   Future<String> compile(
+//       {required String policy, required String scriptType}) async {
+//     return '';
+//   }
+// }

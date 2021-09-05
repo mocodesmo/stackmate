@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sats/cubit/new-wallet/seed-import.dart';
 import 'package:sats/cubit/new-wallet/xpub-import.dart';
 // import 'package:sats/zold/cubit/wallet.dart';
 import 'package:sats/pkg/extensions.dart';
-import 'package:sats/view/common/back-button.dart';
 import 'package:sats/view/common/back-button2.dart';
 import 'package:sats/view/common/header.dart';
 import 'package:sats/view/new-wallet-xpub-import/import-xpub.dart';

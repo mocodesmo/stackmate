@@ -61,12 +61,12 @@ class RedditPostClassAdapter extends TypeAdapter<_$_RedditPost> {
 
 _$_RedditPost _$$_RedditPostFromJson(Map<String, dynamic> json) =>
     _$_RedditPost(
-      title: json['title'] as String? ?? '',
-      permalink: json['permalink'] as String? ?? '',
-      score: json['score'] as int? ?? 0,
-      thumbnail: json['thumbnail'] as String? ?? '',
-      url: json['url'] as String? ?? '',
-      createdAt: (json['created_utc'] as num?)?.toDouble() ?? 0,
+      title: json['title'] as String,
+      permalink: json['permalink'] as String,
+      score: json['score'] as int,
+      thumbnail: json['thumbnail'] as String,
+      url: json['url'] as String,
+      createdAt: (json['created_utc'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$$_RedditPostToJson(_$_RedditPost instance) =>

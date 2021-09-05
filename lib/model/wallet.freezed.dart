@@ -22,7 +22,8 @@ class _$WalletTearOff {
   const _$WalletTearOff();
 
   _Wallet call(
-      {@HiveField(0) String label = '', @HiveField(2) String descriptor = ''}) {
+      {@HiveField(0) required String label,
+      @HiveField(2) required String descriptor}) {
     return _Wallet(
       label: label,
       descriptor: descriptor,
@@ -123,16 +124,15 @@ class __$WalletCopyWithImpl<$Res> extends _$WalletCopyWithImpl<$Res>
 @HiveType(typeId: 1, adapterName: 'WalletClassAdaper')
 class _$_Wallet implements _Wallet {
   const _$_Wallet(
-      {@HiveField(0) this.label = '', @HiveField(2) this.descriptor = ''});
+      {@HiveField(0) required this.label,
+      @HiveField(2) required this.descriptor});
 
   factory _$_Wallet.fromJson(Map<String, dynamic> json) =>
       _$$_WalletFromJson(json);
 
-  @JsonKey(defaultValue: '')
   @override
   @HiveField(0)
   final String label;
-  @JsonKey(defaultValue: '')
   @override // @HiveField(1) @Default('') String policy,
   @HiveField(2)
   final String descriptor;
@@ -172,8 +172,8 @@ class _$_Wallet implements _Wallet {
 
 abstract class _Wallet implements Wallet {
   const factory _Wallet(
-      {@HiveField(0) String label,
-      @HiveField(2) String descriptor}) = _$_Wallet;
+      {@HiveField(0) required String label,
+      @HiveField(2) required String descriptor}) = _$_Wallet;
 
   factory _Wallet.fromJson(Map<String, dynamic> json) = _$_Wallet.fromJson;
 

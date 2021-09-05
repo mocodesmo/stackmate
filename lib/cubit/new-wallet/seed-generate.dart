@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:math';
 import 'package:freezed_annotation/freezed_annotation.dart';
 // import 'package:sats/zold/api/_helpers.dart';
@@ -150,27 +149,18 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
         seedError: '',
       ));
 
-      final response = await _bitcoin.generateMaster(
+      final neu = await _bitcoin.generateMaster(
         mnemonic: '12',
         passphrase: state.passPhrase,
         network: '',
       );
 
-      if (response.startsWith('Error')) throw response;
-
-      final json = jsonDecode(response);
-      final neu = json['mnemonic'];
-      final fingerprint = json['fingerprint'];
-      final xpriv = json['xprv'];
-
-      final nmeuList = neu.split(' ');
-
       emit(state.copyWith(
         generatingSeed: false,
         currentStep: SeedGenerateSteps.generate,
-        seed: nmeuList,
-        xpriv: xpriv,
-        fingerPrint: fingerprint,
+        seed: neu.neuList,
+        xpriv: neu.xprv,
+        fingerPrint: neu.fingerprint,
       ));
     } catch (e, s) {
       _logger.logException(e, 'SeedGenerateCubit._generateSeed', s);
@@ -243,27 +233,22 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
 
   _createNewLocalWallet() async {
     try {
-      final result = await _bitcoin.deriveHardened(
+      final der = await _bitcoin.deriveHardened(
         masterXPriv: state.xpriv!,
         account: '',
         purpose: '',
       );
-      if (result.startsWith('Error')) throw result;
-      final obj = jsonDecode(result);
-      final fingerPrint = obj['fingerPrint'];
-      final path = obj['hardened_path'];
-      final childXPriv = obj['xprv'];
-      final policy = 'pk([$fingerPrint/$path]$childXPriv)';
-      final resp = await _bitcoin.compile(
-        policy: policy,
+
+      final com = await _bitcoin.compile(
+        policy: der.policy,
         scriptType: 'wsh',
       );
-      if (resp.startsWith('Error')) throw resp;
-      final descriptor = jsonDecode(resp)['descriptor'] as String;
+
       final newWallet = Wallet(
         label: state.walletLabel,
-        descriptor: descriptor,
+        descriptor: com.descriptor,
       );
+
       _storage.saveItem(StoreKeys.Wallet.name, newWallet);
       emit(state.copyWith(
         currentStep: SeedGenerateSteps.networkOn,

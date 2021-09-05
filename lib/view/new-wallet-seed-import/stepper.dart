@@ -35,8 +35,6 @@ class NewImportStepper extends StatelessWidget {
         buildWhen: (previous, current) =>
             previous.currentStep != current.currentStep,
         builder: (context, state) {
-          final percent = state.completePercent();
-          final percentStr = state.completePercentLabel();
           final stepLabel = state.currentStepLabel();
           final steps = SeedImportSteps.values.length;
           final idx = state.currentStep.index;

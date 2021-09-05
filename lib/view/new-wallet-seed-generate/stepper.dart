@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sats/cubit/new-wallet/seed-generate.dart';
 import 'package:sats/pkg/extensions.dart';
-import 'package:sats/view/new-wallet-common/step.dart';
 //import 'package:sats/zold/view/new-wallet-common/step.dart';
 
 //class SeedGenerateStepper extends StatelessWidget {
@@ -41,8 +40,6 @@ class NewGenerateStepper extends StatelessWidget {
         buildWhen: (previous, current) =>
             previous.currentStep != current.currentStep,
         builder: (context, state) {
-          final percent = state.completePercent();
-          final percentStr = state.completePercentLabel();
           final stepLabel = state.currentStepLabel();
           final steps = SeedGenerateSteps.values.length;
           final idx = state.currentStep.index;
@@ -57,8 +54,7 @@ class NewGenerateStepper extends StatelessWidget {
                 // ),
                 Text(
                   stepLabel,
-                  style:
-                      c.fonts.headline6!.copyWith(color: Colors.white),
+                  style: c.fonts.headline6!.copyWith(color: Colors.white),
                 ),
                 SizedBox(height: 24),
                 Row(
@@ -69,9 +65,10 @@ class NewGenerateStepper extends StatelessWidget {
                           height: 8,
                           width: 40,
                           decoration: BoxDecoration(
-                            color: i <= idx ? Colors.blue.withOpacity(0.4) : Colors.white,
-                            borderRadius: BorderRadius.circular(8)
-                          ),
+                              color: i <= idx
+                                  ? Colors.blue.withOpacity(0.4)
+                                  : Colors.white,
+                              borderRadius: BorderRadius.circular(8)),
                         ),
                     ]),
                 // Container(

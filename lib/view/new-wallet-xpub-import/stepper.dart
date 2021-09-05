@@ -10,8 +10,6 @@ class XPubImportStepper extends StatelessWidget {
   Widget build(BuildContext c) {
     return BlocBuilder<XpubImportCubit, XpubImportState>(
       builder: (context, state) {
-        final percent = state.completePercent();
-        final percentStr = state.completePercentLabel();
         final stepLabel = state.currentStepLabel();
         final steps = XpubImportStep.values.length;
         final idx = state.currentStep.index;

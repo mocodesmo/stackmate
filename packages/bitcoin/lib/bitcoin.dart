@@ -1,101 +1,78 @@
 import 'dart:ffi';
-import 'dart:io';
 import 'package:ffi/ffi.dart';
-
-typedef ffi_func3_master = Pointer<Utf8> Function(
-  Pointer<Utf8> mnemonic,
-  Pointer<Utf8> passphrase,
-  Pointer<Utf8> network,
-);
-typedef ffi_func3_derive = Pointer<Utf8> Function(
-  Pointer<Utf8> master_xprv,
-  Pointer<Utf8> purpose,
-  Pointer<Utf8> account,
-);
-
-typedef ffi_func2_compile = Pointer<Utf8> Function(
-  Pointer<Utf8> policy,
-  Pointer<Utf8> script_type,
-);
-
-typedef ffi_func3_sync = Pointer<Utf8> Function(
-  Pointer<Utf8> deposit_desc,
-  Pointer<Utf8> change_desc,
-  Pointer<Utf8> network,
-);
-
-typedef ffi_func4_address = Pointer<Utf8> Function(
-  Pointer<Utf8> deposit_desc,
-  Pointer<Utf8> change_desc,
-  Pointer<Utf8> network,
-  Pointer<Utf8> index,
-);
+import 'package:bitcoin/ffi-types.dart';
+import 'package:bitcoin/types.dart';
+export 'package:bitcoin/types.dart';
 
 class BitcoinFFFI {
-  final DynamicLibrary _lib = Platform.isAndroid
-      ? DynamicLibrary.open('libditto.so')
-      : DynamicLibrary.process();
+  BitcoinFFFI({required this.binary});
 
-  Future<String> generateMaster({
+  final DynamicLibrary binary;
+
+  Future<Nmeu> generateMaster({
     required String mnemonic,
     required String passphrase,
     required String network,
   }) async {
-    final func = _lib.lookupFunction<ffi_func3_master, ffi_func3_master>(
+    final func = binary.lookupFunction<seedT, seedT>(
       'generate_master',
     );
-    final response = func(
+    final resp = func(
       mnemonic.toNativeUtf8(),
       passphrase.toNativeUtf8(),
       network.toNativeUtf8(),
-    );
-    return response.toDartString();
+    ).toDartString();
+    if (resp.startsWith('Error')) throw resp;
+    return Nmeu.fromJson(resp);
   }
 
-  Future<String> importMaster({
+  Future<Nmeu> importMaster({
     required String mnemonic,
     required String passphrase,
     required String network,
   }) async {
-    final func = _lib.lookupFunction<ffi_func3_master, ffi_func3_master>(
+    final func = binary.lookupFunction<seedT, seedT>(
       'import_master',
     );
-    final response = func(
+    final resp = func(
       mnemonic.toNativeUtf8(),
       passphrase.toNativeUtf8(),
       network.toNativeUtf8(),
-    );
-    return response.toDartString();
+    ).toDartString();
+    if (resp.startsWith('Error')) throw resp;
+    return Nmeu.fromJson(resp);
   }
 
-  Future<String> deriveHardened({
+  Future<Derive> deriveHardened({
     required String masterXPriv,
     required String account,
     required String purpose,
   }) async {
-    final func = _lib.lookupFunction<ffi_func3_derive, ffi_func3_derive>(
+    final func = binary.lookupFunction<deriveT, deriveT>(
       'derive_hardened',
     );
-    final response = func(
+    final resp = func(
       masterXPriv.toNativeUtf8(),
       purpose.toNativeUtf8(),
       account.toNativeUtf8(),
-    );
-    return response.toDartString();
+    ).toDartString();
+    if (resp.startsWith('Error')) throw resp;
+    return Derive.fromJson(resp);
   }
 
-  Future<String> compile({
+  Future<Compile> compile({
     required String policy,
     required String scriptType,
   }) async {
-    final func = _lib.lookupFunction<ffi_func2_compile, ffi_func2_compile>(
+    final func = binary.lookupFunction<compileT, compileT>(
       'compile',
     );
-    final response = func(
+    final resp = func(
       policy.toNativeUtf8(),
       scriptType.toNativeUtf8(),
-    );
-    return response.toDartString();
+    ).toDartString();
+    if (resp.startsWith('Error')) throw resp;
+    return Compile.fromJson(resp);
   }
 
   Future<String> syncBalance({
@@ -103,7 +80,7 @@ class BitcoinFFFI {
     required String changeDesc,
     required String network,
   }) async {
-    final func = _lib.lookupFunction<ffi_func3_sync, ffi_func3_sync>(
+    final func = binary.lookupFunction<syncT, syncT>(
       'sync_balance',
     );
     final response = func(
@@ -119,7 +96,7 @@ class BitcoinFFFI {
       required String changeDesc,
       required String network,
       required String index}) async {
-    final func = _lib.lookupFunction<ffi_func4_address, ffi_func4_address>(
+    final func = binary.lookupFunction<addressT, addressT>(
       'get_address',
     );
     final response = func(

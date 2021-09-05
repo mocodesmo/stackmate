@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -86,15 +84,13 @@ class XpubImportCubit extends Cubit<XpubImportState> {
         policy = xpub;
       else
         policy = 'pk([$fingerprint/$path]$xpub)';
-      final resp = await _bitcoin.compile(
+      final com = await _bitcoin.compile(
         policy: policy,
         scriptType: 'wsh',
       );
-      if (resp.startsWith('Error')) throw resp;
-      final descriptor = jsonDecode(resp)['descriptor'] as String;
       final newWallet = Wallet(
         label: state.label,
-        descriptor: descriptor,
+        descriptor: com.descriptor,
       );
 
       _storage.saveItem(StoreKeys.Wallet.name, newWallet);

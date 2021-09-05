@@ -1,29 +1,34 @@
-import 'dart:convert';
 import 'package:bitcoin/bitcoin.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'dart:ffi';
-import 'package:ffi/ffi.dart';
 
 void main() {
-  late DynamicLibrary _lib;
+  late BitcoinFFFI ffi;
 
   setUp(() {
-    _lib = DynamicLibrary.open('libditto.dylib');
+    ffi = BitcoinFFFI(
+      binary: DynamicLibrary.open('libditto.dylib'),
+    );
   });
 
-  test('test generate_master ffi', () async {
-    final func = _lib.lookupFunction<ffi_func3_master, ffi_func3_master>(
-      'generate_master',
+  test('test generate flow', () async {
+    final neu = await ffi.generateMaster(
+      mnemonic: '12',
+      passphrase: '',
+      network: '',
     );
 
-    final response = func(
-      '9'.toNativeUtf8(),
-      ''.toNativeUtf8(),
-      'tpanini'.toNativeUtf8(),
+    final der = await ffi.deriveHardened(
+      masterXPriv: neu.xprv,
+      account: '',
+      purpose: '',
     );
 
-    final mnemonic = jsonDecode(response.toDartString())['mnemonic'];
+    final _ = await ffi.compile(
+      policy: der.policy,
+      scriptType: 'wsh',
+    );
 
-    expect(mnemonic.split(' ').length, 24);
+    print('com');
   });
 }

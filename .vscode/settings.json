@@ -25,14 +25,14 @@
         //
         "assets": true,
         "integration_test": true,
-        "**/test": true,
+        // "**/test": true,
         ".gitlab-ci.yml": true,
         //
         "zzz": true,
         "zzzz": true,
         "**/assets": true,
         // "**/packages": true,
-        "**/android": true,
+        // "**/android": true,
         "**/ios": true,
         "ioszz": true,
         "**/web": true,

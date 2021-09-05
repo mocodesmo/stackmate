@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -162,39 +161,27 @@ class SeedImportCubit extends Cubit<SeedImportState> {
 
   _saveWalletLocally() async {
     try {
-      final res = await _bitcoin.importMaster(
+      final neu = await _bitcoin.importMaster(
         mnemonic: state.seed,
         passphrase: state.passPhrase,
         network: '',
       );
-      if (res.startsWith('Error')) throw res;
-      final json = jsonDecode(res);
-      final neu = json['mnemonic'];
-      final fingerprint = json['fingerprint'];
-      final xpriv = json['xprv'];
 
       //check nmeu ?
 
-      final result = await _bitcoin.deriveHardened(
-        masterXPriv: xpriv,
+      final der = await _bitcoin.deriveHardened(
+        masterXPriv: neu.xprv,
         account: '',
         purpose: '',
       );
-      if (result.startsWith('Error')) throw result;
-      final obj = jsonDecode(result);
-      final fingerPrint = obj['fingerPrint'];
-      final path = obj['hardened_path'];
-      final childXPriv = obj['xprv'];
-      final policy = 'pk([$fingerPrint/$path]$childXPriv)';
-      final resp = await _bitcoin.compile(
-        policy: policy,
+      final com = await _bitcoin.compile(
+        policy: der.policy,
         scriptType: 'wsh',
       );
-      if (resp.startsWith('Error')) throw resp;
-      final descriptor = jsonDecode(resp)['descriptor'] as String;
+
       final newWallet = Wallet(
         label: state.walletLabel,
-        descriptor: descriptor,
+        descriptor: com.descriptor,
       );
 
       _storage.saveItem(StoreKeys.Wallet.name, newWallet);

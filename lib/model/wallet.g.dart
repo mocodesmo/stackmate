@@ -48,8 +48,8 @@ class WalletClassAdaper extends TypeAdapter<_$_Wallet> {
 // **************************************************************************
 
 _$_Wallet _$$_WalletFromJson(Map<String, dynamic> json) => _$_Wallet(
-      label: json['label'] as String? ?? '',
-      descriptor: json['descriptor'] as String? ?? '',
+      label: json['label'] as String,
+      descriptor: json['descriptor'] as String,
     );
 
 Map<String, dynamic> _$$_WalletToJson(_$_Wallet instance) => <String, dynamic>{
