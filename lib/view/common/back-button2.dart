@@ -19,13 +19,13 @@ class BckButton extends StatelessWidget {
           children: [
             Icon(
               Icons.arrow_back_ios_sharp,
-              color: c.colours.surface,
+              color: c.colours.onSurface,
               size: 13,
             ),
             Padding(
                 padding: const EdgeInsets.only(bottom: 2, left: 4),
                 child: Text(text,
-                    style: c.fonts.button!.copyWith(color: c.colours.surface)))
+                    style: c.fonts.button!.copyWith(color: c.colours.onSurface)))
           ],
         ));
   }

@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button.dart';
+import 'package:sats/view/common/log-button.dart';
 
 class HeaderRow extends StatelessWidget {
   @override
@@ -24,12 +25,14 @@ class HeaderRow extends StatelessWidget {
                 SizedBox(height: 48),
               ]),
               Spacer(),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.lightbulb_outline_sharp,
-                    size: 32,
-                    // color: Colors.blue[400],
-                    color: c.colours.primary),
+              LogButton(
+                child: IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.lightbulb_outline_sharp,
+                      size: 32,
+                      // color: Colors.blue[400],
+                      color: c.colours.primary),
+                ),
               ),
               SizedBox(width: 16),
             ]));
@@ -84,8 +87,9 @@ class WalletSelection extends StatelessWidget {
                         // maxLines: 4,
                         // softWrap: true,
                         // overflow: TextOverflow.fade,
-                        style: context.fonts.caption!
-                            .copyWith(color: Colors.white60)),
+                        style: context.fonts.caption!.copyWith(
+                          color: context.colours.onSurface,
+                        )),
                   ),
                 ]),
                 Spacer(),
@@ -106,7 +110,7 @@ class AddWalletPage extends StatelessWidget {
   const AddWalletPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext c) {
     return Scaffold(
         body: SafeArea(
             child: SingleChildScrollView(
@@ -125,34 +129,36 @@ class AddWalletPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               'SIGNLE SIGNATURE',
-              style: context.fonts.overline!.copyWith(color: Colors.white),
+              style: c.fonts.overline!.copyWith(
+                color: Colors.white,
+              ),
             ),
           ),
           SizedBox(height: 16),
           WalletSelection(
             text: 'Generate Seed',
             description: lorem,
-            colour: Colors.blue.withOpacity(0.1),
+            colour: c.colours.surface,
             onPressed: () {
-              Navigator.pushNamed(context, Routes.generateSeed);
+              Navigator.pushNamed(c, Routes.generateSeed);
             },
           ),
           SizedBox(height: 16),
           WalletSelection(
             text: 'Import Seed',
             description: lorem,
-            colour: Colors.blue.withOpacity(0.1),
+            colour: c.colours.surface,
             onPressed: () {
-              Navigator.pushNamed(context, Routes.importSeed);
+              Navigator.pushNamed(c, Routes.importSeed);
             },
           ),
           SizedBox(height: 16),
           WalletSelection(
             text: 'Import Watch-only Wallet',
             description: lorem,
-            colour: Colors.blue.withOpacity(0.1),
+            colour: c.colours.surface,
             onPressed: () {
-              Navigator.pushNamed(context, Routes.watchOnly);
+              Navigator.pushNamed(c, Routes.watchOnly);
             },
           ),
           SizedBox(height: 32),
@@ -160,21 +166,21 @@ class AddWalletPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               'MULTI SIGNATURE',
-              style: context.fonts.overline!.copyWith(color: Colors.white),
+              style: c.fonts.overline!.copyWith(color: Colors.white),
             ),
           ),
           SizedBox(height: 16),
           WalletSelection(
             text: 'Raft Policy',
             description: lorem,
-            colour: Colors.blue.withOpacity(0.1),
+            colour: c.colours.surface,
             onPressed: () {},
           ),
           SizedBox(height: 16),
           WalletSelection(
             text: 'Corporate Settings',
             description: lorem,
-            colour: Colors.blue.withOpacity(0.1),
+            colour: c.colours.surface,
             onPressed: () {},
           ),
           SizedBox(height: 100)

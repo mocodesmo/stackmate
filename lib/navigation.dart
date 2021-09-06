@@ -17,6 +17,7 @@ import 'package:sats/pkg/extensions.dart';
 import 'package:sats/pkg/launcher.dart';
 import 'package:sats/pkg/storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sats/view/logs-page.dart';
 import 'package:sats/view/wallet-new-seedgenerate-page.dart';
 import 'package:sats/view/wallet-new-seedimport-page.dart';
 import 'package:sats/view/wallet-new-xpub-page.dart';
@@ -27,6 +28,8 @@ class Routes {
   static const generateSeed = 'generate-seed';
   static const importSeed = 'import-seed';
   static const watchOnly = 'watch-only';
+
+  static const logs = 'logs';
 
   static setupRoutes(RouteSettings settings, BuildContext c) {
     Widget page = Container();
@@ -107,6 +110,14 @@ class Routes {
           value: xpubCubit,
           child: XpubImportPage(),
         );
+        break;
+
+      case logs:
+        page = BlocProvider.value(
+          value: loggerCubit,
+          child: LogsPage(),
+        );
+
         break;
     }
 

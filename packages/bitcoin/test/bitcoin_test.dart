@@ -24,7 +24,7 @@ void main() {
       purpose: '',
     );
 
-    final _ = await ffi.compile(
+    final com = await ffi.compile(
       policy: der.policy,
       scriptType: 'wsh',
     );

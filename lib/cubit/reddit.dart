@@ -35,12 +35,12 @@ class RedditCubit extends Cubit<RedditState> {
 
   void getPosts() async {
     try {
-      final storedPosts =
-          _storage.getAll<RedditPost>(StoreKeys.RedditPost.name);
-      if (storedPosts.length > 0) {
-        emit(state.copyWith(posts: storedPosts, loading: false));
-        return;
-      }
+      // final storedPosts =
+      //     _storage.getAll<RedditPost>(StoreKeys.RedditPost.name);
+      // if (storedPosts.length > 0) {
+      //   emit(state.copyWith(posts: storedPosts, loading: false));
+      //   return;
+      // }
 
       emit(state.copyWith(loading: true, error: ''));
       var response = await _reddit.fetchPosts('bitcoin');

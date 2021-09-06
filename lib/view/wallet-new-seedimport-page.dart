@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:sats/cubit/new-wallet/seed-import.dart';
+import 'package:sats/navigation.dart';
 // import 'package:sats/cubit/wallet.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button2.dart';
@@ -23,7 +24,7 @@ class SeedImportPage extends StatelessWidget {
         listener: (context, state) {
           if (state.newWalletSaved) {
             // c.read<WalletCubit>().getWallets();
-            Navigator.pop(context);
+            Navigator.pushReplacementNamed(context, Routes.home);
           }
         },
         buildWhen: (previous, current) =>
@@ -68,7 +69,7 @@ class SeedImportPage extends StatelessWidget {
                                   horizontal: 32, vertical: 24),
                               padding: EdgeInsets.all(16),
                               decoration: BoxDecoration(
-                                  color: Colors.blue.withOpacity(0.1),
+                                  color: c.colours.surface,
                                   borderRadius: BorderRadius.circular(8)),
                               child: () {
                                 switch (state.currentStep) {

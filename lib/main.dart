@@ -55,7 +55,7 @@ class SatsApp extends StatelessWidget {
           },
           navigatorKey: homeNavigator,
           debugShowCheckedModeBanner: false,
-          theme: mainTheme(),
+          theme: derivedTheme(mainTheme()),
           onGenerateRoute: (settings) => Routes.setupRoutes(settings, c)),
     ));
   }

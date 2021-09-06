@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sats/cubit/new-wallet/xpub-import.dart';
+import 'package:sats/navigation.dart';
 // import 'package:sats/zold/cubit/wallet.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button2.dart';
@@ -18,7 +19,8 @@ class XpubImportPage extends StatelessWidget {
         listener: (context, state) {
           if (state.newWalletSaved) {
             // c.read<WalletCubit>().getWallets();
-            Navigator.pop(context);
+            // Navigator.pop(context);
+            Navigator.pushReplacementNamed(context, Routes.home);
           }
         },
         buildWhen: (previous, current) =>
@@ -62,7 +64,7 @@ class XpubImportPage extends StatelessWidget {
                                 horizontal: 16, vertical: 24),
                             padding: EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                                color: Colors.blue.withOpacity(0.1),
+                                color: c.colours.surface,
                                 borderRadius: BorderRadius.circular(8)),
                             child: () {
                               switch (state.currentStep) {

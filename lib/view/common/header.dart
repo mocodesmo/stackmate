@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/corner-title.dart';
+import 'package:sats/view/common/log-button.dart';
 
 class Header extends StatelessWidget {
   const Header({Key? key, required this.cornerTitle, required this.children})
@@ -39,11 +40,7 @@ class Header extends StatelessWidget {
             PositionedDirectional(
               top: 0,
               end: 0,
-              child: GestureDetector(
-                  onLongPress: () {
-                    Navigator.pushNamed(c, '/logs');
-                  },
-                  child: CornerTitle(text: cornerTitle)),
+              child: LogButton(child: CornerTitle(text: cornerTitle)),
             )
           ])),
     );

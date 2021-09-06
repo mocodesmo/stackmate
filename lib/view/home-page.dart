@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
+import 'package:sats/view/common/log-button.dart';
 import 'package:sats/view/home/reddit-feed.dart';
 import 'dart:ui';
 
@@ -11,26 +12,37 @@ class HeaderRow extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     return Padding(
-        padding:
-            const EdgeInsets.only(left: 24, right: 16, top: 32, bottom: 16),
-        child: Row(children: [
-          Text(
-            'STACKMATE',
-            style: c.fonts.headline5!.copyWith(
-              color: Colors.white,
+      padding: const EdgeInsets.only(top: 32, bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          RedditLoader(),
+          Padding(
+              padding: const EdgeInsets.only(left: 24, right: 16),
+              child: Row(children: [
+                // RedditLoader(),
+                Text(
+                  'STACKMATE',
+                  style: c.fonts.headline5!.copyWith(
+                    color: Colors.white,
 
-              // color: Colors.blue[400],
-            ),
-          ),
-          Spacer(),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.lightbulb_outline_sharp,
-                size: 32,
-                // color: Colors.blue[400],
-                color: c.colours.primary),
-          ),
-        ]));
+                    // color: Colors.blue[400],
+                  ),
+                ),
+                Spacer(),
+                LogButton(
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.lightbulb_outline_sharp,
+                        size: 32,
+                        // color: Colors.blue[400],
+                        color: c.colours.primary),
+                  ),
+                ),
+              ])),
+        ],
+      ),
+    );
   }
 }
 
@@ -38,11 +50,29 @@ class AccountsRow extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     final wallets = c.select((WalletsCubit w) => w.state.wallets);
+    if (wallets.length == 0)
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        // mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: 66),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 40),
+            child: Text(
+              'No\nwallets\nadded',
+              style: c.fonts.caption!.copyWith(
+                color: c.colours.onBackground,
+              ),
+            ),
+          ),
+        ],
+      );
     return Container(
+        width: c.width,
         child: SingleChildScrollView(
-            physics: ClampingScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
-            child: Row(children: [
+            child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
               SizedBox(width: 16),
               for (var w in wallets) WalletCard(wallet: w),
               // for (var i = 0; i < 5; i++) ...[WalletCard()],
@@ -104,36 +134,39 @@ class NewHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     return Scaffold(
-      body: CustomScrollView(slivers: [
-        SliverAppBar(
-            stretch: true,
-            //floating: true,
-            pinned: true,
-            expandedHeight: 350,
-            // collapsedHeight: 88,
-            // leadingWidth: c.width * 0.33,
-            backgroundColor: c.colours.secondary,
-            flexibleSpace: FlexibleSpaceBar(
-                stretchModes: [
-                  StretchMode.blurBackground,
-                  //StretchMode.zoomBackground,
-                  StretchMode.fadeTitle
-                ],
-                //centerTitle: true,
-                collapseMode: CollapseMode.pin,
-                background: Column(children: [
-                  HeaderRow(),
-                  AccountsRow(),
-                ])),
-            bottom: PreferredSize(
-              preferredSize: Size(c.width, 24),
-              child: ActionsRow(),
-            )),
-        SliverList(
-            delegate: SliverChildListDelegate([
-          FeedRow(),
-        ]))
-      ]),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+              stretch: true,
+              //floating: true,
+              pinned: true,
+              expandedHeight: 350,
+              automaticallyImplyLeading: false,
+              // collapsedHeight: 88,
+              // leadingWidth: c.width * 0.33,
+              backgroundColor: c.colours.secondary,
+              flexibleSpace: FlexibleSpaceBar(
+                  stretchModes: [
+                    StretchMode.blurBackground,
+                    //StretchMode.zoomBackground,
+                    StretchMode.fadeTitle
+                  ],
+                  //centerTitle: true,
+                  collapseMode: CollapseMode.pin,
+                  background: Column(children: [
+                    HeaderRow(),
+                    AccountsRow(),
+                  ])),
+              bottom: PreferredSize(
+                preferredSize: Size(c.width, 24),
+                child: ActionsRow(),
+              )),
+          SliverList(
+              delegate: SliverChildListDelegate([
+            FeedRow(),
+          ]))
+        ],
+      ),
       // body: SingleChildScrollView(
       //     child: Column(children: [
       //   Material(
