@@ -9,14 +9,15 @@ import 'package:sats/pkg/storage.dart';
 
 final loggerCubit = LoggerCubit();
 
-final walletsCubit = WalletsCubit(
+final blockchainCubit = BlockchainCubit(
   locator<IStorage>(),
   loggerCubit,
 );
 
-final blockchainCubit = BlockchainCubit(
+final walletsCubit = WalletsCubit(
   locator<IStorage>(),
   loggerCubit,
+  blockchainCubit,
 );
 
 class Cubits extends StatelessWidget {
