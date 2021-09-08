@@ -33,7 +33,7 @@
         "**/assets": true,
         // "**/packages": true,
         // "**/android": true,
-        "**/ios": true,
+        // "**/ios": true,
         "ioszz": true,
         "**/web": true,
         "**/macos": true,

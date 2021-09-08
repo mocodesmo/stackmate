@@ -13,8 +13,6 @@ PODS:
   - flutter_blue/Protos (0.0.1):
     - Flutter
     - Protobuf (~> 3.11.4)
-  - flutter_secure_storage (3.3.1):
-    - Flutter
   - open_mail_app (0.0.1):
     - Flutter
   - path_provider (0.0.1):
@@ -32,7 +30,6 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_barcode_scanner (from `.symlinks/plugins/flutter_barcode_scanner/ios`)
   - flutter_blue (from `.symlinks/plugins/flutter_blue/ios`)
-  - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - open_mail_app (from `.symlinks/plugins/open_mail_app/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - share (from `.symlinks/plugins/share/ios`)
@@ -54,8 +51,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_barcode_scanner/ios"
   flutter_blue:
     :path: ".symlinks/plugins/flutter_blue/ios"
-  flutter_secure_storage:
-    :path: ".symlinks/plugins/flutter_secure_storage/ios"
   open_mail_app:
     :path: ".symlinks/plugins/open_mail_app/ios"
   path_provider:
@@ -66,12 +61,11 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher/ios"
 
 SPEC CHECKSUMS:
-  bitcoin: 7d9bc8982392071ac3245cab4306de2eaa53bf28
+  bitcoin: edad264f62e1babdd1ad827c9c919d0921ddf1af
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   flutter_barcode_scanner: 7a1144744c28dc0c57a8de7218ffe5ec59a9e4bf
   flutter_blue: eeb381dc4727a0954dede73515f683865494b370
-  flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
   open_mail_app: 794172f6a22cd16319d3ddaf45e945b2f74952b0
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   Protobuf: 176220c526ad8bd09ab1fb40a978eac3fef665f7
@@ -79,6 +73,6 @@ SPEC CHECKSUMS:
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
 
-PODFILE CHECKSUM: b29329a0421408b75d07844c542c2843e56901fb
+PODFILE CHECKSUM: a2d11418b6c930ab12f2ee51093d8b3b378b03a9
 
-COCOAPODS: 1.10.2
+COCOAPODS: 1.11.0

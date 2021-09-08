@@ -10,7 +10,8 @@
             "type": "dart",
             "args": [
                 //"--no-sound-null-safety",
-                "--dart-define=APP=user"
+                "--dart-define=APP=user",
+                // "-v"
             ],
             "program": "${workspaceFolder}/lib/main.dart",
         },

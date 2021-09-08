@@ -17,7 +17,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 void main() async {
   await initializeHive();
   testBitcoin();
-  setupDependencies(useDummies: true);
+  await setupDependencies(useDummies: true);
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocObserver();
 

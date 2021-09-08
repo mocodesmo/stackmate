@@ -11,4 +11,9 @@ public class SwiftBitcoinPlugin: NSObject, FlutterPlugin {
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     result("iOS " + UIDevice.current.systemVersion)
   }
+
+   public func dummyMethodToEnforceBundling() {
+    // This will never be executed
+    // generate_master("","","");
+  }
 }

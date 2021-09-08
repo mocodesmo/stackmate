@@ -17,14 +17,14 @@ class BlockchainCubit extends Cubit<BlockchainState> {
   BlockchainCubit(
     this._storage,
     this._logger,
-    this._walletsCubit,
+    // this._walletsCubit,
   ) : super(BlockchainState()) {
-    this._init();
+    // this._init();
   }
 
   final IStorage _storage;
   final LoggerCubit _logger;
-  final WalletsCubit _walletsCubit;
+  // final WalletsCubit _walletsCubit;
 
   _init() async {
     try {
@@ -33,7 +33,7 @@ class BlockchainCubit extends Cubit<BlockchainState> {
 
       emit(BlockchainState(blockchain: blockchain));
       await Future.delayed(Duration(milliseconds: 50));
-      _walletsCubit.refresh();
+      // _walletsCubit.refresh();
     } catch (e, s) {
       _logger.logException(e, 'BlockchainCubit._init', s);
     }
@@ -44,7 +44,7 @@ class BlockchainCubit extends Cubit<BlockchainState> {
       emit(BlockchainState(blockchain: blockchain));
       _storage.saveItem(StoreKeys.Blockchain.name, 'bc');
       await Future.delayed(Duration(milliseconds: 50));
-      _walletsCubit.refresh();
+      // _walletsCubit.refresh();
     } catch (e, s) {
       _logger.logException(e, 'BlockchainCubit.changeBlockchain', s);
     }

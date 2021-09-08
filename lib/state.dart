@@ -12,7 +12,7 @@ final loggerCubit = LoggerCubit();
 final blockchainCubit = BlockchainCubit(
   locator<IStorage>(),
   loggerCubit,
-  walletsCubit,
+  // walletsCubit,
 );
 
 final walletsCubit = WalletsCubit(
