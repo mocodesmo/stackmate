@@ -21,9 +21,7 @@ class WalletsCubit extends Cubit<WalletsState> {
     this._storage,
     this._logger,
     this._blockchainCubit,
-  ) : super(WalletsState()) {
-    this.refresh();
-  }
+  ) : super(WalletsState());
 
   final IStorage _storage;
   final LoggerCubit _logger;

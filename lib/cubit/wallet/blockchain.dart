@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
+import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/pkg/storage.dart';
 part 'blockchain.freezed.dart';
@@ -13,12 +14,17 @@ class BlockchainState with _$BlockchainState {
 }
 
 class BlockchainCubit extends Cubit<BlockchainState> {
-  BlockchainCubit(this._storage, this._logger) : super(BlockchainState()) {
+  BlockchainCubit(
+    this._storage,
+    this._logger,
+    this._walletsCubit,
+  ) : super(BlockchainState()) {
     this._init();
   }
 
   final IStorage _storage;
   final LoggerCubit _logger;
+  final WalletsCubit _walletsCubit;
 
   _init() async {
     try {
@@ -26,15 +32,19 @@ class BlockchainCubit extends Cubit<BlockchainState> {
           await _storage.getItem<Blockchain>(StoreKeys.Blockchain.name, 'bc');
 
       emit(BlockchainState(blockchain: blockchain));
+      await Future.delayed(Duration(milliseconds: 50));
+      _walletsCubit.refresh();
     } catch (e, s) {
       _logger.logException(e, 'BlockchainCubit._init', s);
     }
   }
 
-  changeBlockchain(Blockchain blockchain) {
+  changeBlockchain(Blockchain blockchain) async {
     try {
       emit(BlockchainState(blockchain: blockchain));
       _storage.saveItem(StoreKeys.Blockchain.name, 'bc');
+      await Future.delayed(Duration(milliseconds: 50));
+      _walletsCubit.refresh();
     } catch (e, s) {
       _logger.logException(e, 'BlockchainCubit.changeBlockchain', s);
     }
