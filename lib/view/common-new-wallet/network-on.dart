@@ -5,49 +5,7 @@ import 'package:sats/cubit/new-wallet/seed-import.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/header-text.dart';
 import 'package:sats/view/common/loading.dart';
-import 'package:sats/view/new-wallet-common/network-off.dart';
-
-class SeedNetworkOn extends StatelessWidget {
-  const SeedNetworkOn({Key? key, required this.isImport}) : super(key: key);
-
-  final bool isImport;
-
-  @override
-  Widget build(BuildContext c) {
-    final network = c.select((NetworkCubit c) => c.state);
-
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      HeaderTextDark(text: 'Turn on\nnetworking'.notLocalised()),
-      SizedBox(height: 16),
-      Padding(
-          padding: const EdgeInsets.all(0.0),
-          child: Text(
-              'For maximum security, turn off all\nnetworking on your device.'
-                  .notLocalised(),
-              style: c.fonts.subtitle2!.copyWith(
-                color: Colors.white,
-              ))),
-      SizedBox(height: 40),
-      NetworkRow(
-        isOnline: network.mobileOnline,
-        shouldTurnOn: true,
-        text: 'Mobile Network',
-      ),
-      SizedBox(height: 24),
-      NetworkRow(
-        isOnline: network.wifiOnline,
-        shouldTurnOn: true,
-        text: 'WiFi Network    ',
-      ),
-      SizedBox(height: 32),
-      if (isImport)
-        ImportSaveButton(hasOnError: network.hasOnError() != '')
-      else
-        GenerateSaveButton(hasOnError: network.hasOnError() != ''),
-      SizedBox(height: 16)
-    ]);
-  }
-}
+import 'package:sats/view/common-new-wallet/network-off.dart';
 
 class ImportSaveButton extends StatelessWidget {
   const ImportSaveButton({
@@ -124,5 +82,47 @@ class GenerateSaveButton extends StatelessWidget {
               style: c.fonts.caption!.copyWith(color: c.colours.error))
       ]);
     });
+  }
+}
+
+class SeedNetworkOn extends StatelessWidget {
+  const SeedNetworkOn({Key? key, required this.isImport}) : super(key: key);
+
+  final bool isImport;
+
+  @override
+  Widget build(BuildContext c) {
+    final network = c.select((NetworkCubit c) => c.state);
+
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      HeaderTextDark(text: 'Turn on\nnetworking'.notLocalised()),
+      SizedBox(height: 16),
+      Padding(
+          padding: const EdgeInsets.all(0.0),
+          child: Text(
+              'For maximum security, turn off all\nnetworking on your device.'
+                  .notLocalised(),
+              style: c.fonts.subtitle2!.copyWith(
+                color: Colors.white,
+              ))),
+      SizedBox(height: 40),
+      NetworkRow(
+        isOnline: network.mobileOnline,
+        shouldTurnOn: true,
+        text: 'Mobile Network',
+      ),
+      SizedBox(height: 24),
+      NetworkRow(
+        isOnline: network.wifiOnline,
+        shouldTurnOn: true,
+        text: 'WiFi Network    ',
+      ),
+      SizedBox(height: 32),
+      if (isImport)
+        ImportSaveButton(hasOnError: network.hasOnError() != '')
+      else
+        GenerateSaveButton(hasOnError: network.hasOnError() != ''),
+      SizedBox(height: 16)
+    ]);
   }
 }
