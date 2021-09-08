@@ -23,10 +23,12 @@ class _$WalletTearOff {
 
   _Wallet call(
       {@HiveField(0) required String label,
-      @HiveField(2) required String descriptor}) {
+      @HiveField(2) required String descriptor,
+      @HiveField(3) required Blockchain blockchain}) {
     return _Wallet(
       label: label,
       descriptor: descriptor,
+      blockchain: blockchain,
     );
   }
 
@@ -45,6 +47,8 @@ mixin _$Wallet {
       throw _privateConstructorUsedError; // @HiveField(1) @Default('') String policy,
   @HiveField(2)
   String get descriptor => throw _privateConstructorUsedError;
+  @HiveField(3)
+  Blockchain get blockchain => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -55,7 +59,10 @@ mixin _$Wallet {
 abstract class $WalletCopyWith<$Res> {
   factory $WalletCopyWith(Wallet value, $Res Function(Wallet) then) =
       _$WalletCopyWithImpl<$Res>;
-  $Res call({@HiveField(0) String label, @HiveField(2) String descriptor});
+  $Res call(
+      {@HiveField(0) String label,
+      @HiveField(2) String descriptor,
+      @HiveField(3) Blockchain blockchain});
 }
 
 /// @nodoc
@@ -70,6 +77,7 @@ class _$WalletCopyWithImpl<$Res> implements $WalletCopyWith<$Res> {
   $Res call({
     Object? label = freezed,
     Object? descriptor = freezed,
+    Object? blockchain = freezed,
   }) {
     return _then(_value.copyWith(
       label: label == freezed
@@ -80,6 +88,10 @@ class _$WalletCopyWithImpl<$Res> implements $WalletCopyWith<$Res> {
           ? _value.descriptor
           : descriptor // ignore: cast_nullable_to_non_nullable
               as String,
+      blockchain: blockchain == freezed
+          ? _value.blockchain
+          : blockchain // ignore: cast_nullable_to_non_nullable
+              as Blockchain,
     ));
   }
 }
@@ -89,7 +101,10 @@ abstract class _$WalletCopyWith<$Res> implements $WalletCopyWith<$Res> {
   factory _$WalletCopyWith(_Wallet value, $Res Function(_Wallet) then) =
       __$WalletCopyWithImpl<$Res>;
   @override
-  $Res call({@HiveField(0) String label, @HiveField(2) String descriptor});
+  $Res call(
+      {@HiveField(0) String label,
+      @HiveField(2) String descriptor,
+      @HiveField(3) Blockchain blockchain});
 }
 
 /// @nodoc
@@ -105,6 +120,7 @@ class __$WalletCopyWithImpl<$Res> extends _$WalletCopyWithImpl<$Res>
   $Res call({
     Object? label = freezed,
     Object? descriptor = freezed,
+    Object? blockchain = freezed,
   }) {
     return _then(_Wallet(
       label: label == freezed
@@ -115,6 +131,10 @@ class __$WalletCopyWithImpl<$Res> extends _$WalletCopyWithImpl<$Res>
           ? _value.descriptor
           : descriptor // ignore: cast_nullable_to_non_nullable
               as String,
+      blockchain: blockchain == freezed
+          ? _value.blockchain
+          : blockchain // ignore: cast_nullable_to_non_nullable
+              as Blockchain,
     ));
   }
 }
@@ -125,7 +145,8 @@ class __$WalletCopyWithImpl<$Res> extends _$WalletCopyWithImpl<$Res>
 class _$_Wallet implements _Wallet {
   const _$_Wallet(
       {@HiveField(0) required this.label,
-      @HiveField(2) required this.descriptor});
+      @HiveField(2) required this.descriptor,
+      @HiveField(3) required this.blockchain});
 
   factory _$_Wallet.fromJson(Map<String, dynamic> json) =>
       _$$_WalletFromJson(json);
@@ -136,10 +157,13 @@ class _$_Wallet implements _Wallet {
   @override // @HiveField(1) @Default('') String policy,
   @HiveField(2)
   final String descriptor;
+  @override
+  @HiveField(3)
+  final Blockchain blockchain;
 
   @override
   String toString() {
-    return 'Wallet(label: $label, descriptor: $descriptor)';
+    return 'Wallet(label: $label, descriptor: $descriptor, blockchain: $blockchain)';
   }
 
   @override
@@ -150,14 +174,18 @@ class _$_Wallet implements _Wallet {
                 const DeepCollectionEquality().equals(other.label, label)) &&
             (identical(other.descriptor, descriptor) ||
                 const DeepCollectionEquality()
-                    .equals(other.descriptor, descriptor)));
+                    .equals(other.descriptor, descriptor)) &&
+            (identical(other.blockchain, blockchain) ||
+                const DeepCollectionEquality()
+                    .equals(other.blockchain, blockchain)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(label) ^
-      const DeepCollectionEquality().hash(descriptor);
+      const DeepCollectionEquality().hash(descriptor) ^
+      const DeepCollectionEquality().hash(blockchain);
 
   @JsonKey(ignore: true)
   @override
@@ -173,7 +201,8 @@ class _$_Wallet implements _Wallet {
 abstract class _Wallet implements Wallet {
   const factory _Wallet(
       {@HiveField(0) required String label,
-      @HiveField(2) required String descriptor}) = _$_Wallet;
+      @HiveField(2) required String descriptor,
+      @HiveField(3) required Blockchain blockchain}) = _$_Wallet;
 
   factory _Wallet.fromJson(Map<String, dynamic> json) = _$_Wallet.fromJson;
 
@@ -183,6 +212,9 @@ abstract class _Wallet implements Wallet {
   @override // @HiveField(1) @Default('') String policy,
   @HiveField(2)
   String get descriptor => throw _privateConstructorUsedError;
+  @override
+  @HiveField(3)
+  Blockchain get blockchain => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$WalletCopyWith<_Wallet> get copyWith => throw _privateConstructorUsedError;

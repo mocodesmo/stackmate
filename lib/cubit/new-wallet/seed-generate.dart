@@ -4,8 +4,11 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 // import 'package:sats/zold/api/_helpers.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/new-wallet/network.dart';
+import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/model/wallet.dart';
+import 'package:sats/model/blockchain.dart';
+
 // import 'package:sats/cubit/network.dart' as net;
 // import 'package:sats/zold/cubit/wallet.dart';
 import 'package:sats/pkg/bitcoin.dart';
@@ -104,6 +107,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
     // this._testNetCubit,
     this._logger,
     this._wallets,
+    this._blockchainCubit,
   ) : super(SeedGenerateState()) {
     _networkCubitSub = _networkCubit.stream.listen((NetworkState nState) {
       if (nState.hasOffError() != '') _goToNetworkAndReset();
@@ -120,6 +124,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
   final LoggerCubit _logger;
   // final net.NetworkCubit _testNetCubit;
   final WalletsCubit _wallets;
+  final BlockchainCubit _blockchainCubit;
 
   _goToNetworkAndReset() {
     if (state.currentStep == SeedGenerateSteps.networkOn ||
@@ -152,7 +157,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
       final neu = await _bitcoin.generateMaster(
         mnemonic: '12',
         passphrase: state.passPhrase,
-        network: '',
+        network: _blockchainCubit.state.blockchain.name,
       );
 
       emit(state.copyWith(
@@ -247,6 +252,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
       final newWallet = Wallet(
         label: state.walletLabel,
         descriptor: com.descriptor,
+        blockchain: _blockchainCubit.state.blockchain,
       );
 
       _storage.saveItem(StoreKeys.Wallet.name, newWallet);

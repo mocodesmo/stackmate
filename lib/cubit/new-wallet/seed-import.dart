@@ -5,8 +5,11 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 // import 'package:sats/zold/api/_helpers.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/new-wallet/network.dart';
+import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/model/wallet.dart';
+import 'package:sats/model/blockchain.dart';
+
 // import 'package:sats/cubit/network.dart' as net;
 // import 'package:sats/zold/cubit/wallet.dart';
 import 'package:sats/pkg/bitcoin.dart';
@@ -92,6 +95,7 @@ class SeedImportCubit extends Cubit<SeedImportState> {
     // this._walletBloc,
     // this._testNetCubit,
     this._wallets,
+    this._blockchainCubit,
     this.logger, {
     String walletLabel = '',
   }) : super(SeedImportState(
@@ -112,6 +116,7 @@ class SeedImportCubit extends Cubit<SeedImportState> {
   final IStorage _storage;
   final LoggerCubit logger;
   final WalletsCubit _wallets;
+  final BlockchainCubit _blockchainCubit;
 
   // final net.NetworkCubit _testNetCubit;
 
@@ -164,7 +169,7 @@ class SeedImportCubit extends Cubit<SeedImportState> {
       final neu = await _bitcoin.importMaster(
         mnemonic: state.seed,
         passphrase: state.passPhrase,
-        network: '',
+        network: _blockchainCubit.state.blockchain.name,
       );
 
       //check nmeu ?
@@ -182,6 +187,7 @@ class SeedImportCubit extends Cubit<SeedImportState> {
       final newWallet = Wallet(
         label: state.walletLabel,
         descriptor: com.descriptor,
+        blockchain: _blockchainCubit.state.blockchain,
       );
 
       _storage.saveItem(StoreKeys.Wallet.name, newWallet);

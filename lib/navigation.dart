@@ -64,6 +64,7 @@ class Routes {
           // testNetCubit,
           loggerCubit,
           walletsCubit,
+          blockchainCubit,
         );
 
         page = MultiBlocProvider(
@@ -84,7 +85,7 @@ class Routes {
           // walletCubit,
           // testNetCubit,
           walletsCubit,
-
+          blockchainCubit,
           loggerCubit,
         );
 
@@ -104,6 +105,7 @@ class Routes {
           locator<IClipBoard>(),
           locator<IStorage>(),
           walletsCubit,
+          blockchainCubit,
         );
 
         page = BlocProvider.value(

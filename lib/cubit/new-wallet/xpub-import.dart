@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
+import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/model/wallet.dart';
 import 'package:sats/pkg/bitcoin.dart';
@@ -60,6 +61,7 @@ class XpubImportCubit extends Cubit<XpubImportState> {
     this._clipboard,
     this._storage,
     this._wallets,
+    this._blockchainCubit,
   ) : super(XpubImportState());
 
   final IClipBoard _clipboard;
@@ -68,6 +70,7 @@ class XpubImportCubit extends Cubit<XpubImportState> {
   final IStorage _storage;
   final IBitcoin _bitcoin;
   final WalletsCubit _wallets;
+  final BlockchainCubit _blockchainCubit;
 
   void _saveWallet() async {
     emit(state.copyWith(
@@ -91,6 +94,7 @@ class XpubImportCubit extends Cubit<XpubImportState> {
       final newWallet = Wallet(
         label: state.label,
         descriptor: com.descriptor,
+        blockchain: _blockchainCubit.state.blockchain,
       );
 
       _storage.saveItem(StoreKeys.Wallet.name, newWallet);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:sats/cubit/logger.dart';
+import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/deps.dart';
 import 'package:sats/pkg/storage.dart';
@@ -9,6 +10,11 @@ import 'package:sats/pkg/storage.dart';
 final loggerCubit = LoggerCubit();
 
 final walletsCubit = WalletsCubit(
+  locator<IStorage>(),
+  loggerCubit,
+);
+
+final blockchainCubit = BlockchainCubit(
   locator<IStorage>(),
   loggerCubit,
 );
@@ -21,6 +27,7 @@ class Cubits extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(providers: [
+      BlocProvider.value(value: blockchainCubit),
       BlocProvider.value(value: loggerCubit),
       BlocProvider.value(value: walletsCubit),
     ], child: child);

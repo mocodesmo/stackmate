@@ -1,17 +1,16 @@
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:sats/model/blockchain.dart';
 import 'package:sats/model/reddit-post.dart';
 import 'package:sats/model/wallet.dart';
 
-enum StoreKeys {
-  RedditPost,
-  Wallet,
-}
+enum StoreKeys { RedditPost, Wallet, Blockchain }
 
 extension StoreKeysFunctions on StoreKeys {
   String get name => const {
         StoreKeys.RedditPost: 'reddit-post',
         StoreKeys.Wallet: 'wallet',
+        StoreKeys.Blockchain: 'blockchain',
       }[this]!;
 }
 
@@ -26,6 +25,11 @@ Future<void> initializeHive() async {
 
   await Hive.openBox<Wallet>(
     StoreKeys.Wallet.name,
+    // compactionStrategy: (entries, deletedEntries) => deletedEntries > 50,
+  );
+
+  await Hive.openBox<Blockchain>(
+    StoreKeys.Blockchain.name,
     // compactionStrategy: (entries, deletedEntries) => deletedEntries > 50,
   );
 }
