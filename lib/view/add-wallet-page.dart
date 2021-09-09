@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
@@ -82,13 +83,14 @@ class WalletSelection extends StatelessWidget {
                   SizedBox(height: 4),
                   Container(
                     width: 240,
-                    height: 45,
+                    // height: 45,
                     child: Text(description,
-                        // maxLines: 4,
+                        maxLines: 3,
                         // softWrap: true,
                         // overflow: TextOverflow.fade,
                         style: context.fonts.caption!.copyWith(
-                          color: context.colours.onSurface,
+                          color: context.colours.onSurface.withOpacity(0.7),
+                          // fontWeight: FontWeight.w100,
                         )),
                   ),
                 ]),
@@ -112,78 +114,100 @@ class AddWalletPage extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     return Scaffold(
-        body: SafeArea(
-            child: SingleChildScrollView(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-          // SizedBox(height: 48),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 16),
-          //   child:
-          HeaderRow(),
-          // ),
-          // SizedBox(height: 32),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // SizedBox(height: 48),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 16),
+              //   child:
+              HeaderRow(),
+              // ),
+              // SizedBox(height: 32),
 
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              'SIGNLE SIGNATURE',
-              style: c.fonts.overline!.copyWith(
-                color: Colors.white,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  'SIGNLE SIGNATURE',
+                  style: c.fonts.overline!.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
               ),
-            ),
+              SizedBox(height: 16),
+              WalletSelection(
+                text: 'Generate Seed',
+                description: lorem,
+                colour: c.colours.surface,
+                onPressed: () {
+                  Navigator.pushNamed(c, Routes.generateSeed);
+                },
+              ),
+              SizedBox(height: 16),
+              WalletSelection(
+                text: 'Import Seed',
+                description: lorem,
+                colour: c.colours.surface,
+                onPressed: () {
+                  Navigator.pushNamed(c, Routes.importSeed);
+                },
+              ),
+              SizedBox(height: 16),
+              WalletSelection(
+                text: 'Import Watch-only Wallet',
+                description: lorem,
+                colour: c.colours.surface,
+                onPressed: () {
+                  Navigator.pushNamed(c, Routes.watchOnly);
+                },
+              ),
+              SizedBox(height: 48),
+              Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: Text(
+                  'Coming soon'.toUpperCase(),
+                  style: c.fonts.overline!.copyWith(
+                    color: c.colours.onSurface,
+                  ),
+                ),
+              ),
+              SizedBox(height: 32),
+              Opacity(
+                opacity: 0.5,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Text(
+                        'MULTI SIGNATURE',
+                        style: c.fonts.overline!.copyWith(color: Colors.white),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    WalletSelection(
+                      text: 'Raft Policy',
+                      description: lorem,
+                      colour: c.colours.surface,
+                      onPressed: () {},
+                    ),
+                    SizedBox(height: 16),
+                    WalletSelection(
+                      text: 'Corporate Settings',
+                      description: lorem,
+                      colour: c.colours.surface,
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 100)
+            ],
           ),
-          SizedBox(height: 16),
-          WalletSelection(
-            text: 'Generate Seed',
-            description: lorem,
-            colour: c.colours.surface,
-            onPressed: () {
-              Navigator.pushNamed(c, Routes.generateSeed);
-            },
-          ),
-          SizedBox(height: 16),
-          WalletSelection(
-            text: 'Import Seed',
-            description: lorem,
-            colour: c.colours.surface,
-            onPressed: () {
-              Navigator.pushNamed(c, Routes.importSeed);
-            },
-          ),
-          SizedBox(height: 16),
-          WalletSelection(
-            text: 'Import Watch-only Wallet',
-            description: lorem,
-            colour: c.colours.surface,
-            onPressed: () {
-              Navigator.pushNamed(c, Routes.watchOnly);
-            },
-          ),
-          SizedBox(height: 32),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              'MULTI SIGNATURE',
-              style: c.fonts.overline!.copyWith(color: Colors.white),
-            ),
-          ),
-          SizedBox(height: 16),
-          WalletSelection(
-            text: 'Raft Policy',
-            description: lorem,
-            colour: c.colours.surface,
-            onPressed: () {},
-          ),
-          SizedBox(height: 16),
-          WalletSelection(
-            text: 'Corporate Settings',
-            description: lorem,
-            colour: c.colours.surface,
-            onPressed: () {},
-          ),
-          SizedBox(height: 100)
-        ]))));
+        ),
+      ),
+    );
   }
 }

@@ -154,7 +154,9 @@ class ActionsRow extends StatelessWidget {
               icon: Icon(Icons.calculate_sharp,
                   size: 32, color: context.colours.primary)),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, Routes.setting);
+            },
             icon:
                 Icon(Icons.settings, size: 32, color: context.colours.primary),
           ),

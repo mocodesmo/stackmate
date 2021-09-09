@@ -35,16 +35,23 @@ class RatesHeader extends StatelessWidget {
                         },
                         child: Row(children: [
                           Expanded(
-                              child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Text(calcState.satsAmt,
-                                      style: c.fonts.headline5!.copyWith(
-                                          color: c.colours.primary)))),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Text(
+                                calcState.satsAmt,
+                                style: c.fonts.headline5!.copyWith(
+                                  color: c.colours.primary.withAlpha(
+                                    !calcState.editingBtc ? 160 : 255,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                           SizedBox(width: 8),
                           DropdownButtonHideUnderline(
                               child: DropdownButton<String>(
                                   iconEnabledColor: c.colours.primary,
-                                  dropdownColor: c.colours.secondary,
+                                  dropdownColor: c.colours.background,
                                   value: calcState.btcSelected ? 'BTC' : 'sats',
                                   onTap: () {
                                     print('eerrree');
@@ -61,20 +68,24 @@ class RatesHeader extends StatelessWidget {
                                         style: c.fonts.button!.copyWith(
                                             color: c.colours.primary))),
                                 DropdownMenuItem(
-                                    value: 'sats',
-                                    child: Text('sats',
-                                        style: c.fonts.button!.copyWith(
-                                            color: c.colours.primary.withAlpha(
-                                                calcState.editingBtc
-                                                    ? 255
-                                                    : 160))))
+                                  value: 'sats',
+                                  child: Text(
+                                    'sats',
+                                    style: c.fonts.button!.copyWith(
+                                      color: c.colours.primary.withAlpha(
+                                        calcState.editingBtc ? 255 : 160,
+                                      ),
+                                    ),
+                                  ),
+                                )
                               ]))
                         ])),
                   ),
                   FadeIn(
                       duration: Duration(milliseconds: 800),
                       delay: Duration(milliseconds: 400),
-                      child: Divider(color: c.colours.primary)),
+                      child:
+                          Divider(color: c.colours.primary.withOpacity(0.5))),
                   FadeIn(
                     duration: Duration(milliseconds: 800),
                     delay: Duration(milliseconds: 600),
@@ -84,19 +95,23 @@ class RatesHeader extends StatelessWidget {
                         },
                         child: Row(children: [
                           Expanded(
-                              child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Text(calcState.currencyAmt,
-                                      style: c.fonts.headline5!.copyWith(
-                                          color: c.colours.primary.withAlpha(
-                                              calcState.editingBtc
-                                                  ? 160
-                                                  : 255))))),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Text(
+                                calcState.currencyAmt,
+                                style: c.fonts.headline5!.copyWith(
+                                  color: c.colours.primary.withAlpha(
+                                    calcState.editingBtc ? 160 : 255,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                           SizedBox(width: 8),
                           DropdownButtonHideUnderline(
                               child: DropdownButton<Rate>(
                                   iconEnabledColor: c.colours.primary,
-                                  dropdownColor: c.colours.surface,
+                                  dropdownColor: c.colours.background,
                                   onTap: () {},
                                   onChanged: (rate) {
                                     c
@@ -107,10 +122,16 @@ class RatesHeader extends StatelessWidget {
                                   items: [
                                 for (var rate in calcState.rates!)
                                   DropdownMenuItem(
-                                      value: rate,
-                                      child: Text(rate.symbol,
-                                          style: c.fonts.button!.copyWith(
-                                              color: c.colours.primary)))
+                                    value: rate,
+                                    child: Text(
+                                      rate.symbol,
+                                      style: c.fonts.button!.copyWith(
+                                        color: c.colours.primary.withAlpha(
+                                          !calcState.editingBtc ? 255 : 160,
+                                        ),
+                                      ),
+                                    ),
+                                  )
                               ]))
                         ])),
                   )
@@ -157,11 +178,10 @@ class _CalcKeyState extends State<CalcKey> {
         width: (c.width / 5) - 5,
         height: (c.width / 5) - 5,
         child: Material(
-          elevation: _elevation,
-          color: (Validation.isNumeric(widget.text)
-                  ? Colors.transparent
-                  : c.colours.background.withOpacity(1))
-              .withOpacity(0.4),
+          elevation: 1, //_elevation,
+          color: Validation.isNumeric(widget.text)
+              ? Colors.transparent
+              : c.colours.surface,
           child: Center(
             child: Text(
               widget.text,

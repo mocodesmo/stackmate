@@ -44,4 +44,4 @@ extension nums on num {
   }
 }
 
-class CCContextIMPORT {}
+class CCC {}

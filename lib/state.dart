@@ -28,11 +28,18 @@ class Cubits extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(providers: [
-      BlocProvider.value(value: blockchainCubit),
-      BlocProvider.value(value: loggerCubit),
-      BlocProvider.value(value: walletsCubit),
-    ], child: child);
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: blockchainCubit),
+          BlocProvider.value(value: loggerCubit),
+          BlocProvider.value(value: walletsCubit),
+        ],
+        child: BlocListener<BlockchainCubit, BlockchainState>(
+          listener: (context, state) {
+            walletsCubit.refresh();
+          },
+          child: child,
+        ));
   }
 }
 
