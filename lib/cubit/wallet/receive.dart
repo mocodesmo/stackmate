@@ -5,6 +5,8 @@ import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/model/wallet.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/pkg/bitcoin.dart';
+import 'package:sats/pkg/clipboard.dart';
+import 'package:sats/pkg/share.dart';
 
 part 'receive.freezed.dart';
 
@@ -23,12 +25,16 @@ class ReceiveCubit extends Cubit<ReceiveState> {
     this._bitcoin,
     this._blockchain,
     this._logger,
+    this._clipBoard,
+    this._share,
   ) : super(ReceiveState());
 
   final Wallet _wallet;
   final IBitcoin _bitcoin;
   final LoggerCubit _logger;
   final BlockchainCubit _blockchain;
+  final IShare _share;
+  final IClipBoard _clipBoard;
 
   void getAddress() async {
     try {
@@ -53,6 +59,23 @@ class ReceiveCubit extends Cubit<ReceiveState> {
         errLoadingAddress: e.toString(),
       ));
       _logger.logException(e, 'ReceiveCubit.getAddress', s);
+    }
+  }
+
+  void copyAddress(String address) {
+    try {
+      _clipBoard.copyToClipBoard(address);
+    } catch (e, s) {
+      _logger.logException(e, 'WalletCubit.copyAddress', s);
+    }
+  }
+
+  void shareAddress(String address) {
+    try {
+      final text = 'This is my bitcoin address:\n' + address;
+      _share.share(text: text, subjectForEmail: 'Bitcoin Address');
+    } catch (e, s) {
+      _logger.logException(e, 'WalletCubit.shareAddress', s);
     }
   }
 }

@@ -49,52 +49,61 @@ class WalletCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-        child: Material(
-            elevation: 4,
-            borderRadius: BorderRadius.circular(16),
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            color: context.colours.background,
-            child: BackdropFilter(
-                filter: ImageFilter.blur(
-                    sigmaX: 0, sigmaY: 0, tileMode: TileMode.mirror),
-                child: Container(
-                  height: 180,
-                  width: 150,
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.centerRight,
-                          stops: [
-                        0.3,
-                        0.99
-                      ],
-                          colors: [
-                        context.colours.surface,
-                        context.colours.surface,
-                      ])),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        wallet.label,
-                        style: context.fonts.caption!.copyWith(
-                          color: context.colours.onBackground,
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          Routes.wallet,
+          arguments: wallet,
+        );
+      },
+      child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          child: Material(
+              elevation: 4,
+              borderRadius: BorderRadius.circular(16),
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              color: context.colours.background,
+              child: BackdropFilter(
+                  filter: ImageFilter.blur(
+                      sigmaX: 0, sigmaY: 0, tileMode: TileMode.mirror),
+                  child: Container(
+                    height: 180,
+                    width: 150,
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.centerRight,
+                            stops: [
+                          0.3,
+                          0.99
+                        ],
+                            colors: [
+                          context.colours.surface,
+                          context.colours.surface,
+                        ])),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          wallet.label,
+                          style: context.fonts.caption!.copyWith(
+                            color: context.colours.onBackground,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        wallet.descriptor,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 10,
-                        style: context.fonts.caption!.copyWith(
-                            color: context.colours.onBackground, fontSize: 8),
-                      ),
-                    ],
-                  ),
-                ))));
+                        SizedBox(height: 8),
+                        Text(
+                          wallet.descriptor,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 10,
+                          style: context.fonts.caption!.copyWith(
+                              color: context.colours.onBackground, fontSize: 8),
+                        ),
+                      ],
+                    ),
+                  )))),
+    );
   }
 }
 

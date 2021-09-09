@@ -210,7 +210,7 @@ class __$TransactionCopyWithImpl<$Res> extends _$TransactionCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 @HiveType(typeId: 4, adapterName: 'TransactionClassAdaper')
-class _$_Transaction implements _Transaction {
+class _$_Transaction extends _Transaction {
   const _$_Transaction(
       {@HiveField(0) required this.timestamp,
       @HiveField(1) required this.height,
@@ -218,7 +218,8 @@ class _$_Transaction implements _Transaction {
       @HiveField(3) required this.txid,
       @HiveField(4) required this.received,
       @HiveField(5) required this.sent,
-      @HiveField(6) required this.fee});
+      @HiveField(6) required this.fee})
+      : super._();
 
   factory _$_Transaction.fromJson(Map<String, dynamic> json) =>
       _$$_TransactionFromJson(json);
@@ -295,7 +296,7 @@ class _$_Transaction implements _Transaction {
   }
 }
 
-abstract class _Transaction implements Transaction {
+abstract class _Transaction extends Transaction {
   const factory _Transaction(
       {@HiveField(0) required int timestamp,
       @HiveField(1) required int height,
@@ -304,6 +305,7 @@ abstract class _Transaction implements Transaction {
       @HiveField(4) required int received,
       @HiveField(5) required int sent,
       @HiveField(6) required int fee}) = _$_Transaction;
+  const _Transaction._() : super._();
 
   factory _Transaction.fromJson(Map<String, dynamic> json) =
       _$_Transaction.fromJson;

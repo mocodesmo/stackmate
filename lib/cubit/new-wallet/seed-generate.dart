@@ -254,7 +254,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
       final newWallet = Wallet(
         label: state.walletLabel,
         descriptor: com.descriptor,
-        blockchain: _blockchainCubit.state.blockchain,
+        blockchain: _blockchainCubit.state.blockchain.name,
         index: len,
       );
 

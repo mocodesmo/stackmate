@@ -24,7 +24,7 @@ class _$WalletTearOff {
   _Wallet call(
       {@HiveField(0) required String label,
       @HiveField(2) required String descriptor,
-      @HiveField(3) required Blockchain blockchain,
+      @HiveField(3) required String blockchain,
       @HiveField(4) List<Transaction>? transactions,
       @HiveField(5) required int index,
       @HiveField(6) int? balance}) {
@@ -53,7 +53,7 @@ mixin _$Wallet {
   @HiveField(2)
   String get descriptor => throw _privateConstructorUsedError;
   @HiveField(3)
-  Blockchain get blockchain => throw _privateConstructorUsedError;
+  String get blockchain => throw _privateConstructorUsedError;
   @HiveField(4)
   List<Transaction>? get transactions => throw _privateConstructorUsedError;
   @HiveField(5)
@@ -73,7 +73,7 @@ abstract class $WalletCopyWith<$Res> {
   $Res call(
       {@HiveField(0) String label,
       @HiveField(2) String descriptor,
-      @HiveField(3) Blockchain blockchain,
+      @HiveField(3) String blockchain,
       @HiveField(4) List<Transaction>? transactions,
       @HiveField(5) int index,
       @HiveField(6) int? balance});
@@ -108,7 +108,7 @@ class _$WalletCopyWithImpl<$Res> implements $WalletCopyWith<$Res> {
       blockchain: blockchain == freezed
           ? _value.blockchain
           : blockchain // ignore: cast_nullable_to_non_nullable
-              as Blockchain,
+              as String,
       transactions: transactions == freezed
           ? _value.transactions
           : transactions // ignore: cast_nullable_to_non_nullable
@@ -133,7 +133,7 @@ abstract class _$WalletCopyWith<$Res> implements $WalletCopyWith<$Res> {
   $Res call(
       {@HiveField(0) String label,
       @HiveField(2) String descriptor,
-      @HiveField(3) Blockchain blockchain,
+      @HiveField(3) String blockchain,
       @HiveField(4) List<Transaction>? transactions,
       @HiveField(5) int index,
       @HiveField(6) int? balance});
@@ -169,7 +169,7 @@ class __$WalletCopyWithImpl<$Res> extends _$WalletCopyWithImpl<$Res>
       blockchain: blockchain == freezed
           ? _value.blockchain
           : blockchain // ignore: cast_nullable_to_non_nullable
-              as Blockchain,
+              as String,
       transactions: transactions == freezed
           ? _value.transactions
           : transactions // ignore: cast_nullable_to_non_nullable
@@ -209,7 +209,7 @@ class _$_Wallet implements _Wallet {
   final String descriptor;
   @override
   @HiveField(3)
-  final Blockchain blockchain;
+  final String blockchain;
   @override
   @HiveField(4)
   final List<Transaction>? transactions;
@@ -271,7 +271,7 @@ abstract class _Wallet implements Wallet {
   const factory _Wallet(
       {@HiveField(0) required String label,
       @HiveField(2) required String descriptor,
-      @HiveField(3) required Blockchain blockchain,
+      @HiveField(3) required String blockchain,
       @HiveField(4) List<Transaction>? transactions,
       @HiveField(5) required int index,
       @HiveField(6) int? balance}) = _$_Wallet;
@@ -286,7 +286,7 @@ abstract class _Wallet implements Wallet {
   String get descriptor => throw _privateConstructorUsedError;
   @override
   @HiveField(3)
-  Blockchain get blockchain => throw _privateConstructorUsedError;
+  String get blockchain => throw _privateConstructorUsedError;
   @override
   @HiveField(4)
   List<Transaction>? get transactions => throw _privateConstructorUsedError;

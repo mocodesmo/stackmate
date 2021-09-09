@@ -5,6 +5,7 @@ import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/model/wallet.dart';
+import 'package:sats/model/blockchain.dart';
 import 'package:sats/pkg/bitcoin.dart';
 import 'package:sats/pkg/clipboard.dart';
 import 'package:sats/pkg/storage.dart';
@@ -97,7 +98,7 @@ class XpubImportCubit extends Cubit<XpubImportState> {
       final newWallet = Wallet(
         label: state.label,
         descriptor: com.descriptor,
-        blockchain: _blockchainCubit.state.blockchain,
+        blockchain: _blockchainCubit.state.blockchain.name,
         index: len,
       );
 

@@ -6,6 +6,8 @@ part 'transaction.freezed.dart';
 
 @freezed
 class Transaction with _$Transaction {
+  const Transaction._();
+
   @HiveType(typeId: 4, adapterName: 'TransactionClassAdaper')
   const factory Transaction({
     @HiveField(0) required int timestamp,
@@ -19,4 +21,49 @@ class Transaction with _$Transaction {
 
   factory Transaction.fromJson(Map<String, dynamic> json) =>
       _$TransactionFromJson(json);
+
+  bool isReceive() => sent == 0;
+
+  String timeStr() {
+    String date = '';
+    DateTime dt = DateTime.fromMillisecondsSinceEpoch(timestamp);
+
+    //date += DateFormat.EEEE().format(dt) + ', ';
+
+    date += dt.day.toString() +
+        '-' +
+        dt.month.toString() +
+        '-' +
+        dt.year.toString() +
+        ' ';
+
+    date += dt.hour.toString() + ':' + dt.minute.toString() + ' ';
+
+    date += dt.hour < 12 ? 'AM' : 'PM';
+
+    date += ' GMT';
+
+    return date;
+  }
+
+  String amountToBtc() =>
+      ((isReceive() ? received : sent) / 10000000).toStringAsFixed(8);
+  String feesToBtc() => (fee / 100000000).toStringAsFixed(8);
+
+  String txIdBlur() {
+    return '****' + txid.substring(txid.length - 3, txid.length);
+  }
+
+  String link() {
+    String url = '';
+    if (txid.startsWith('2') ||
+        txid.startsWith('m') ||
+        txid.startsWith('n') ||
+        txid.startsWith('tb'))
+      url = 'https://blockstream.info/testnet/tx/';
+    else
+      url = 'https://blockstream.info/tx/';
+    url += txid;
+    return url;
+  }
 }

@@ -202,6 +202,36 @@ pub unsafe extern "C" fn sync_balance(
     }
 }
 
+// #[deny(unsafe_op_in_unsafe_fn)]
+// #[no_mangle]
+// pub unsafe extern "C" fn sync_history(
+//     deposit_desc: *const c_char,
+//     network: *const c_char,
+// ) -> *mut c_char {
+//     let deposit_desc_cstr = unsafe { CStr::from_ptr(deposit_desc) };
+//     let deposit_desc: &str = match deposit_desc_cstr.to_str() {
+//         Ok(string) => &string,
+//         Err(_) => return S5Error::new(ErrorKind::InputError, "Deposit-Descriptor").c_stringify(),
+//     };
+
+//     let network_cstr = unsafe { CStr::from_ptr(network) };
+//     let network: &str = match network_cstr.to_str() {
+//         Ok(string) => &string,
+//         Err(_) => "test",
+//     };
+//     let network_enum = match network {
+//         "main" => Network::Bitcoin,
+//         "test" => Network::Testnet,
+//         _ => Network::Testnet,
+//     };
+
+//     let config = WalletConfig::default(deposit_desc, network_enum);
+//     match history::sync_history(config) {
+//         Ok(result) => return "",
+//         Err(e) => return e.c_stringify(),
+//     }
+// }
+
 #[allow(clippy::missing_safety_doc)]
 #[deny(unsafe_op_in_unsafe_fn)]
 #[no_mangle]

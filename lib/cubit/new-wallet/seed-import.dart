@@ -189,7 +189,7 @@ class SeedImportCubit extends Cubit<SeedImportState> {
       final newWallet = Wallet(
         label: state.walletLabel,
         descriptor: com.descriptor,
-        blockchain: _blockchainCubit.state.blockchain,
+        blockchain: _blockchainCubit.state.blockchain.name,
         index: len,
       );
 

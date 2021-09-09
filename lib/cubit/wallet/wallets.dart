@@ -32,7 +32,7 @@ class WalletsCubit extends Cubit<WalletsState> {
       var wallets = _storage.getAll<Wallet>(StoreKeys.Wallet.name);
 
       wallets.removeWhere(
-          (w) => w.blockchain.name != _blockchain.state.blockchain.name);
+          (w) => w.blockchain != _blockchain.state.blockchain.name);
       wallets.sort((a, b) => a.index.compareTo(b.index));
 
       emit(state.copyWith(wallets: wallets));

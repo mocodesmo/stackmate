@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:sats/cubit/calculator.dart';
 import 'package:sats/cubit/new-wallet/seed-import.dart';
 import 'package:sats/cubit/new-wallet/xpub-import.dart';
+import 'package:sats/cubit/wallet/history.dart';
+import 'package:sats/cubit/wallet/receive.dart';
+import 'package:sats/model/wallet.dart';
 import 'package:sats/pkg/clipboard.dart';
+import 'package:sats/pkg/share.dart';
 import 'package:sats/pkg/vibrate.dart';
 import 'package:sats/view/add-wallet-page.dart';
 import 'package:sats/view/calculator-page.dart';
@@ -21,10 +25,12 @@ import 'package:sats/pkg/launcher.dart';
 import 'package:sats/pkg/storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sats/view/logs-page.dart';
+import 'package:sats/view/receive-page.dart';
 import 'package:sats/view/settings-page.dart';
 import 'package:sats/view/wallet-new-seedgenerate-page.dart';
 import 'package:sats/view/wallet-new-seedimport-page.dart';
 import 'package:sats/view/wallet-new-xpub-page.dart';
+import 'package:sats/view/wallet-page.dart';
 
 class Routes {
   static const home = '/';
@@ -35,6 +41,8 @@ class Routes {
   static const calc = 'calc';
   static const setting = 'settings';
   static const logs = 'logs';
+  static const wallet = 'wallet';
+  static const receive = '';
 
   static setupRoutes(RouteSettings settings, BuildContext c) {
     Widget page = Container();
@@ -142,6 +150,42 @@ class Routes {
           child: LogsPage(),
         );
 
+        break;
+
+      case wallet:
+        final w = settings.arguments as Wallet;
+        final history = HistoryCubit(
+          w,
+          locator<IBitcoin>(),
+          locator<IStorage>(),
+          loggerCubit,
+          blockchainCubit,
+          locator<ILauncher>(),
+          locator<IShare>(),
+        );
+
+        page = BlocProvider.value(
+          value: history,
+          child: HistoryPage(),
+        );
+        break;
+
+      case receive:
+        final w = settings.arguments as Wallet;
+
+        final r = ReceiveCubit(
+          w,
+          locator<IBitcoin>(),
+          blockchainCubit,
+          loggerCubit,
+          locator<IClipBoard>(),
+          locator<IShare>(),
+        );
+
+        page = BlocProvider.value(
+          value: r,
+          child: ReceivePage(),
+        );
         break;
     }
 

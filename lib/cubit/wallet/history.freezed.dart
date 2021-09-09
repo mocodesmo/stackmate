@@ -20,11 +20,13 @@ class _$HistoryStateTearOff {
   _HistoryState call(
       {bool loadingTransactions = false,
       String errLoadingTransactions = '',
-      List<Transaction>? transactions}) {
+      List<Transaction>? transactions,
+      Wallet? wallet}) {
     return _HistoryState(
       loadingTransactions: loadingTransactions,
       errLoadingTransactions: errLoadingTransactions,
       transactions: transactions,
+      wallet: wallet,
     );
   }
 }
@@ -37,6 +39,7 @@ mixin _$HistoryState {
   bool get loadingTransactions => throw _privateConstructorUsedError;
   String get errLoadingTransactions => throw _privateConstructorUsedError;
   List<Transaction>? get transactions => throw _privateConstructorUsedError;
+  Wallet? get wallet => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HistoryStateCopyWith<HistoryState> get copyWith =>
@@ -51,7 +54,10 @@ abstract class $HistoryStateCopyWith<$Res> {
   $Res call(
       {bool loadingTransactions,
       String errLoadingTransactions,
-      List<Transaction>? transactions});
+      List<Transaction>? transactions,
+      Wallet? wallet});
+
+  $WalletCopyWith<$Res>? get wallet;
 }
 
 /// @nodoc
@@ -67,6 +73,7 @@ class _$HistoryStateCopyWithImpl<$Res> implements $HistoryStateCopyWith<$Res> {
     Object? loadingTransactions = freezed,
     Object? errLoadingTransactions = freezed,
     Object? transactions = freezed,
+    Object? wallet = freezed,
   }) {
     return _then(_value.copyWith(
       loadingTransactions: loadingTransactions == freezed
@@ -81,7 +88,22 @@ class _$HistoryStateCopyWithImpl<$Res> implements $HistoryStateCopyWith<$Res> {
           ? _value.transactions
           : transactions // ignore: cast_nullable_to_non_nullable
               as List<Transaction>?,
+      wallet: wallet == freezed
+          ? _value.wallet
+          : wallet // ignore: cast_nullable_to_non_nullable
+              as Wallet?,
     ));
+  }
+
+  @override
+  $WalletCopyWith<$Res>? get wallet {
+    if (_value.wallet == null) {
+      return null;
+    }
+
+    return $WalletCopyWith<$Res>(_value.wallet!, (value) {
+      return _then(_value.copyWith(wallet: value));
+    });
   }
 }
 
@@ -95,7 +117,11 @@ abstract class _$HistoryStateCopyWith<$Res>
   $Res call(
       {bool loadingTransactions,
       String errLoadingTransactions,
-      List<Transaction>? transactions});
+      List<Transaction>? transactions,
+      Wallet? wallet});
+
+  @override
+  $WalletCopyWith<$Res>? get wallet;
 }
 
 /// @nodoc
@@ -113,6 +139,7 @@ class __$HistoryStateCopyWithImpl<$Res> extends _$HistoryStateCopyWithImpl<$Res>
     Object? loadingTransactions = freezed,
     Object? errLoadingTransactions = freezed,
     Object? transactions = freezed,
+    Object? wallet = freezed,
   }) {
     return _then(_HistoryState(
       loadingTransactions: loadingTransactions == freezed
@@ -127,6 +154,10 @@ class __$HistoryStateCopyWithImpl<$Res> extends _$HistoryStateCopyWithImpl<$Res>
           ? _value.transactions
           : transactions // ignore: cast_nullable_to_non_nullable
               as List<Transaction>?,
+      wallet: wallet == freezed
+          ? _value.wallet
+          : wallet // ignore: cast_nullable_to_non_nullable
+              as Wallet?,
     ));
   }
 }
@@ -137,7 +168,8 @@ class _$_HistoryState implements _HistoryState {
   const _$_HistoryState(
       {this.loadingTransactions = false,
       this.errLoadingTransactions = '',
-      this.transactions});
+      this.transactions,
+      this.wallet});
 
   @JsonKey(defaultValue: false)
   @override
@@ -147,10 +179,12 @@ class _$_HistoryState implements _HistoryState {
   final String errLoadingTransactions;
   @override
   final List<Transaction>? transactions;
+  @override
+  final Wallet? wallet;
 
   @override
   String toString() {
-    return 'HistoryState(loadingTransactions: $loadingTransactions, errLoadingTransactions: $errLoadingTransactions, transactions: $transactions)';
+    return 'HistoryState(loadingTransactions: $loadingTransactions, errLoadingTransactions: $errLoadingTransactions, transactions: $transactions, wallet: $wallet)';
   }
 
   @override
@@ -165,7 +199,9 @@ class _$_HistoryState implements _HistoryState {
                     other.errLoadingTransactions, errLoadingTransactions)) &&
             (identical(other.transactions, transactions) ||
                 const DeepCollectionEquality()
-                    .equals(other.transactions, transactions)));
+                    .equals(other.transactions, transactions)) &&
+            (identical(other.wallet, wallet) ||
+                const DeepCollectionEquality().equals(other.wallet, wallet)));
   }
 
   @override
@@ -173,7 +209,8 @@ class _$_HistoryState implements _HistoryState {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(loadingTransactions) ^
       const DeepCollectionEquality().hash(errLoadingTransactions) ^
-      const DeepCollectionEquality().hash(transactions);
+      const DeepCollectionEquality().hash(transactions) ^
+      const DeepCollectionEquality().hash(wallet);
 
   @JsonKey(ignore: true)
   @override
@@ -185,7 +222,8 @@ abstract class _HistoryState implements HistoryState {
   const factory _HistoryState(
       {bool loadingTransactions,
       String errLoadingTransactions,
-      List<Transaction>? transactions}) = _$_HistoryState;
+      List<Transaction>? transactions,
+      Wallet? wallet}) = _$_HistoryState;
 
   @override
   bool get loadingTransactions => throw _privateConstructorUsedError;
@@ -193,6 +231,8 @@ abstract class _HistoryState implements HistoryState {
   String get errLoadingTransactions => throw _privateConstructorUsedError;
   @override
   List<Transaction>? get transactions => throw _privateConstructorUsedError;
+  @override
+  Wallet? get wallet => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$HistoryStateCopyWith<_HistoryState> get copyWith =>

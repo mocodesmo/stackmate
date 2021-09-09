@@ -18,6 +18,8 @@ Future<void> initializeHive() async {
   await Hive.initFlutter();
   Hive.registerAdapter(RedditPostClassAdapter());
   Hive.registerAdapter(WalletClassAdaper());
+  Hive.registerAdapter(BlockchainClassAdaper());
+
   await Hive.openBox<RedditPost>(
     StoreKeys.RedditPost.name,
     compactionStrategy: (entries, deletedEntries) => deletedEntries > 50,
@@ -39,6 +41,8 @@ abstract class IStorage {
   void deleteItem<T>(String cls, String key);
   void clearAll<T>(String cls);
   T getItem<T>(String cls, String key);
+  T getFirstItem<T>(String cls);
+
   List<T> getAll<T>(String cls);
 }
 
@@ -60,12 +64,21 @@ class HiveStore implements IStorage {
 
   @override
   T getItem<T>(String cls, String key) {
-    return Hive.box<T>(cls).get(key)!;
+    final obj = Hive.box<T>(cls).get(key);
+    if (obj == null) throw 'empty';
+    return obj;
   }
 
   @override
   List<T> getAll<T>(String cls) {
     return Hive.box<T>(cls).values.toList();
+  }
+
+  @override
+  T getFirstItem<T>(String cls) {
+    final obj = Hive.box<T>(cls).getAt(0);
+    if (obj == null) throw 'empty';
+    return obj;
   }
 }
 

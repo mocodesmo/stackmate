@@ -25,8 +25,9 @@ class BlockchainCubit extends Cubit<BlockchainState> {
 
   _init() async {
     try {
-      final blockchain =
-          await _storage.getItem<Blockchain>(StoreKeys.Blockchain.name, 'bc');
+      final blockchain = await _storage.getFirstItem<Blockchain>(
+        StoreKeys.Blockchain.name,
+      );
 
       emit(BlockchainState(blockchain: blockchain));
       await Future.delayed(Duration(milliseconds: 50));
@@ -38,7 +39,10 @@ class BlockchainCubit extends Cubit<BlockchainState> {
   changeBlockchain(Blockchain blockchain) async {
     try {
       emit(BlockchainState(blockchain: blockchain));
-      _storage.saveItem(StoreKeys.Blockchain.name, 'bc');
+      _storage.saveItem<Blockchain>(
+        StoreKeys.Blockchain.name,
+        blockchain,
+      );
       await Future.delayed(Duration(milliseconds: 50));
     } catch (e, s) {
       _logger.logException(e, 'BlockchainCubit.changeBlockchain', s);
