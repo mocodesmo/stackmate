@@ -2,6 +2,7 @@ import 'dart:ffi';
 import 'dart:io';
 
 import 'package:bitcoin/bitcoin.dart';
+import 'package:sats/model/transaction.dart';
 
 abstract class IBitcoin {
   Future<Nmeu> generateMaster({
@@ -29,15 +30,19 @@ abstract class IBitcoin {
 
   Future<String> syncBalance({
     required String depositDesc,
-    required String changeDesc,
     required String network,
   });
 
   Future<String> getAddress({
     required String depositDesc,
-    required String changeDesc,
     required String network,
     required String index,
+  });
+
+  Future<List<Transaction>> getHistory({
+    required String depositDesc,
+    required String nodeAddress,
+    required String network,
   });
 }
 
@@ -100,12 +105,9 @@ class BitcoinFFI implements IBitcoin {
 
   @override
   Future<String> syncBalance(
-      {required String depositDesc,
-      required String changeDesc,
-      required String network}) async {
+      {required String depositDesc, required String network}) async {
     final resp = await _bitcoin.syncBalance(
       depositDesc: depositDesc,
-      changeDesc: changeDesc,
       network: network,
     );
     return resp;
@@ -114,16 +116,23 @@ class BitcoinFFI implements IBitcoin {
   @override
   Future<String> getAddress(
       {required String depositDesc,
-      required String changeDesc,
       required String network,
       required String index}) async {
     final resp = await _bitcoin.getAddress(
       depositDesc: depositDesc,
-      changeDesc: changeDesc,
       network: network,
       index: index,
     );
     return resp;
+  }
+
+  @override
+  Future<List<Transaction>> getHistory(
+      {required String depositDesc,
+      required String nodeAddress,
+      required String network}) {
+    // TODO: implement getHistory
+    throw UnimplementedError();
   }
 }
 

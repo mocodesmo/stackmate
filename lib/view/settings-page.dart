@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/pkg/extensions.dart';
-import 'package:sats/state.dart';
 import 'package:sats/view/common/back-button.dart';
 import 'package:sats/view/common/header.dart';
 import 'package:sats/model/blockchain.dart';
@@ -40,7 +39,7 @@ class BlockchainRow extends StatelessWidget {
                     // width: 240,
                     child: Text(
                         'Only wallets from selected network will be displayed\n\nCurrent network: ' +
-                            blockchain.name.toUpperCase(),
+                            blockchain.displayName.toUpperCase(),
                         maxLines: 3,
                         style: c.fonts.caption!.copyWith(
                           color: c.colours.onSurface.withOpacity(0.7),

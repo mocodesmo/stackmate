@@ -22,13 +22,11 @@ typedef compileT = Pointer<Utf8> Function(
 
 typedef syncT = Pointer<Utf8> Function(
   Pointer<Utf8> deposit_desc,
-  Pointer<Utf8> change_desc,
   Pointer<Utf8> network,
 );
 
 typedef addressT = Pointer<Utf8> Function(
   Pointer<Utf8> deposit_desc,
-  Pointer<Utf8> change_desc,
   Pointer<Utf8> network,
   Pointer<Utf8> index,
 );

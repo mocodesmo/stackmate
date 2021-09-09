@@ -91,10 +91,14 @@ class XpubImportCubit extends Cubit<XpubImportState> {
         policy: policy,
         scriptType: 'wsh',
       );
+
+      final len = _storage.getAll<Wallet>(StoreKeys.Wallet.name).length;
+
       final newWallet = Wallet(
         label: state.label,
         descriptor: com.descriptor,
         blockchain: _blockchainCubit.state.blockchain,
+        index: len,
       );
 
       _storage.saveItem(StoreKeys.Wallet.name, newWallet);

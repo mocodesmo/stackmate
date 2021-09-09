@@ -77,7 +77,6 @@ class BitcoinFFFI {
 
   Future<String> syncBalance({
     required String depositDesc,
-    required String changeDesc,
     required String network,
   }) async {
     final func = binary.lookupFunction<syncT, syncT>(
@@ -85,7 +84,6 @@ class BitcoinFFFI {
     );
     final response = func(
       depositDesc.toNativeUtf8(),
-      changeDesc.toNativeUtf8(),
       network.toNativeUtf8(),
     );
     return response.toDartString();
@@ -93,7 +91,6 @@ class BitcoinFFFI {
 
   Future<String> getAddress(
       {required String depositDesc,
-      required String changeDesc,
       required String network,
       required String index}) async {
     final func = binary.lookupFunction<addressT, addressT>(
@@ -101,7 +98,6 @@ class BitcoinFFFI {
     );
     final response = func(
       depositDesc.toNativeUtf8(),
-      changeDesc.toNativeUtf8(),
       network.toNativeUtf8(),
       index.toNativeUtf8(),
     );

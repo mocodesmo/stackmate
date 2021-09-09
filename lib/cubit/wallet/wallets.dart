@@ -20,19 +20,20 @@ class WalletsCubit extends Cubit<WalletsState> {
   WalletsCubit(
     this._storage,
     this._logger,
-    this._blockchainCubit,
+    this._blockchain,
   ) : super(WalletsState());
 
   final IStorage _storage;
   final LoggerCubit _logger;
-  final BlockchainCubit _blockchainCubit;
+  final BlockchainCubit _blockchain;
 
   void refresh() {
     try {
       var wallets = _storage.getAll<Wallet>(StoreKeys.Wallet.name);
 
       wallets.removeWhere(
-          (w) => w.blockchain.name != _blockchainCubit.state.blockchain.name);
+          (w) => w.blockchain.name != _blockchain.state.blockchain.name);
+      wallets.sort((a, b) => a.index.compareTo(b.index));
 
       emit(state.copyWith(wallets: wallets));
     } catch (e, s) {

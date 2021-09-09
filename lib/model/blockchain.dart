@@ -13,6 +13,11 @@ enum Blockchain {
 
 extension x on Blockchain {
   String get name => const {
+        Blockchain.mainNet: 'main',
+        Blockchain.testNet: 'test',
+      }[this]!;
+
+  String get displayName => const {
         Blockchain.mainNet: 'mainnet',
         Blockchain.testNet: 'testnet',
       }[this]!;

@@ -184,10 +184,13 @@ class SeedImportCubit extends Cubit<SeedImportState> {
         scriptType: 'wsh',
       );
 
+      final len = _storage.getAll<Wallet>(StoreKeys.Wallet.name).length;
+
       final newWallet = Wallet(
         label: state.walletLabel,
         descriptor: com.descriptor,
         blockchain: _blockchainCubit.state.blockchain,
+        index: len,
       );
 
       _storage.saveItem(StoreKeys.Wallet.name, newWallet);
