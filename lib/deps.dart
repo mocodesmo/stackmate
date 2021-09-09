@@ -17,7 +17,7 @@ setupDependencies({bool useDummies = false}) {
     locator.registerSingleton<ILauncher>(Launcher());
     locator.registerLazySingleton<IRedditAPI>(() => RedditAPI());
     locator.registerLazySingleton<IVibrate>(() => Vibrator());
-    locator.registerLazySingleton<IBitcoin>(() => BitcoinFFI());
+    locator.registerLazySingleton<IBitcoin>(() => DummyBtc());
     return;
   }
 

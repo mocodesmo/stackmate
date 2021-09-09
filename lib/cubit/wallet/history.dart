@@ -30,7 +30,9 @@ class HistoryCubit extends Cubit<HistoryState> {
     this._blockchain,
     this._launcher,
     this._share,
-  ) : super(HistoryState(wallet: wallet));
+  ) : super(HistoryState(wallet: wallet)) {
+    this.getHistory();
+  }
 
   // final Wallet _wallet;
   final IBitcoin _bitcoin;

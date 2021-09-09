@@ -29,11 +29,11 @@ class WalletsCubit extends Cubit<WalletsState> {
 
   void refresh() {
     try {
-      var wallets = _storage.getAll<Wallet>(StoreKeys.Wallet.name);
+      // var wallets = _storage.getAll<Wallet>(StoreKeys.Wallet.name);
 
-      wallets.removeWhere(
-          (w) => w.blockchain != _blockchain.state.blockchain.name);
-      wallets.sort((a, b) => a.index.compareTo(b.index));
+      // wallets.removeWhere(
+      //     (w) => w.blockchain != _blockchain.state.blockchain.name);
+      // wallets.sort((a, b) => a.index.compareTo(b.index));
 
       emit(state.copyWith(wallets: wallets));
     } catch (e, s) {
@@ -41,3 +41,36 @@ class WalletsCubit extends Cubit<WalletsState> {
     }
   }
 }
+
+List<Wallet> wallets = [
+  Wallet(
+    label: 'wallet2',
+    descriptor: 'oooooo',
+    blockchain: 'main',
+    index: 0,
+  ),
+  Wallet(
+    label: 'wallet3',
+    descriptor: 'oooooo',
+    blockchain: 'main',
+    index: 0,
+  ),
+  Wallet(
+    label: 'wallet4',
+    descriptor: 'oooooo',
+    blockchain: 'main',
+    index: 0,
+  ),
+  Wallet(
+    label: 'wallet6',
+    descriptor: 'oooooo',
+    blockchain: 'main',
+    index: 0,
+  ),
+  Wallet(
+    label: 'wallet5',
+    descriptor: 'oooooo',
+    blockchain: 'main',
+    index: 0,
+  ),
+];

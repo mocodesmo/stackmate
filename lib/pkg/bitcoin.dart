@@ -2,6 +2,7 @@ import 'dart:ffi';
 import 'dart:io';
 
 import 'package:bitcoin/bitcoin.dart';
+import 'package:retry/retry.dart';
 import 'package:sats/model/transaction.dart';
 
 abstract class IBitcoin {
@@ -130,81 +131,135 @@ class BitcoinFFI implements IBitcoin {
   Future<List<Transaction>> getHistory(
       {required String depositDesc,
       required String nodeAddress,
-      required String network}) {
-    // TODO: implement getHistory
-    throw UnimplementedError();
+      required String network}) async {
+    return [];
   }
 }
 
-// class DummyBitcoin implements IBitcoin {
-//   List<String> _w = [
-//     'Donkey',
-//     'Monkey',
-//     'Dog',
-//     'Cat',
-//     'Tiger',
-//     'Lion',
-//     'Human',
-//     'Bird',
-//     'Insect',
-//     'Ant',
-//     'Lizard',
-//     'Fish',
-//   ];
+class DummyBtc implements IBitcoin {
+  @override
+  Future<Compile> compile(
+      {required String policy, required String scriptType}) {
+    throw UnimplementedError();
+  }
 
-//   @override
-//   Future<String> generateMaster(
-//       {required String mnemonic,
-//       required String passphrase,
-//       required String network}) async {
-//     return 'abc';
-//   }
+  @override
+  Future<Derive> deriveHardened(
+      {required String masterXPriv,
+      required String account,
+      required String purpose}) {
+    throw UnimplementedError();
+  }
 
-//   @override
-//   Future<String> signPsbt(
-//       {required String fingerprint,
-//       required String accountIndex,
-//       required String xprv,
-//       required String psbt}) async {
-//     return '';
-//   }
+  @override
+  Future<Nmeu> generateMaster(
+      {required String mnemonic,
+      required String passphrase,
+      required String network}) {
+    throw UnimplementedError();
+  }
 
-//   @override
-//   Future<String> deriveHardened(
-//       {required String masterXPriv,
-//       required String account,
-//       required String purpose}) {
-//     throw UnimplementedError();
-//   }
+  @override
+  Future<String> getAddress(
+      {required String depositDesc,
+      required String network,
+      required String index}) async {
+    return '1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX';
+  }
 
-//   @override
-//   Future<String> getAddress(
-//       {required String depositDesc,
-//       required String changeDesc,
-//       required String network,
-//       required String index}) {
-//     throw UnimplementedError();
-//   }
+  @override
+  Future<List<Transaction>> getHistory(
+      {required String depositDesc,
+      required String nodeAddress,
+      required String network}) async {
+    await Future.delayed(Duration(seconds: 1));
+    return [
+      Transaction(
+        timestamp: 9877766,
+        height: 88,
+        verified: true,
+        txid:
+            '32b942eeede3c6d51b79ac83e59436819d52b513cd43cabbb9731d3a004eee77',
+        received: 50000,
+        sent: 0,
+        fee: 5000,
+      ),
+      Transaction(
+        timestamp: 9877766,
+        height: 88,
+        verified: true,
+        txid:
+            '32b942eeede3c6d51b79ac83e59436819d52b513cd43cabbb9731d3a004eee77',
+        received: 0,
+        sent: 50000,
+        fee: 5000,
+      ),
+      Transaction(
+        timestamp: 9877766,
+        height: 88,
+        verified: true,
+        txid:
+            '32b942eeede3c6d51b79ac83e59436819d52b513cd43cabbb9731d3a004eee77',
+        received: 50000,
+        sent: 0,
+        fee: 5000,
+      ),
+      Transaction(
+        timestamp: 9877766,
+        height: 88,
+        verified: true,
+        txid:
+            '32b942eeede3c6d51b79ac83e59436819d52b513cd43cabbb9731d3a004eee77',
+        received: 50000,
+        sent: 0,
+        fee: 5000,
+      ),
+      Transaction(
+        timestamp: 9877766,
+        height: 88,
+        verified: true,
+        txid:
+            '32b942eeede3c6d51b79ac83e59436819d52b513cd43cabbb9731d3a004eee77',
+        received: 50000,
+        sent: 0,
+        fee: 5000,
+      ),
+      Transaction(
+        timestamp: 9877766,
+        height: 88,
+        verified: true,
+        txid:
+            '32b942eeede3c6d51b79ac83e59436819d52b513cd43cabbb9731d3a004eee77',
+        received: 50000,
+        sent: 0,
+        fee: 5000,
+      ),
+      Transaction(
+        timestamp: 9877766,
+        height: 88,
+        verified: true,
+        txid:
+            '32b942eeede3c6d51b79ac83e59436819d52b513cd43cabbb9731d3a004eee77',
+        received: 50000,
+        sent: 0,
+        fee: 5000,
+      ),
+    ];
+  }
 
-//   @override
-//   Future<String> importMaster(
-//       {required String mnemonic,
-//       required String passphrase,
-//       required String network}) {
-//     throw UnimplementedError();
-//   }
+  @override
+  Future<Nmeu> importMaster(
+      {required String mnemonic,
+      required String passphrase,
+      required String network}) {
+    // TODO: implement importMaster
+    throw UnimplementedError();
+  }
 
-//   @override
-//   Future<String> syncBalance(
-//       {required String depositDesc,
-//       required String changeDesc,
-//       required String network}) {
-//     throw UnimplementedError();
-//   }
-
-//   @override
-//   Future<String> compile(
-//       {required String policy, required String scriptType}) async {
-//     return '';
-//   }
-// }
+  @override
+  Future<String> syncBalance(
+      {required String depositDesc, required String network}) {
+    // TODO: implement syncBalance
+    throw UnimplementedError();
+  }
+}

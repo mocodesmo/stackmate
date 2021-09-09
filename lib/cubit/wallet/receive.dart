@@ -27,7 +27,9 @@ class ReceiveCubit extends Cubit<ReceiveState> {
     this._logger,
     this._clipBoard,
     this._share,
-  ) : super(ReceiveState());
+  ) : super(ReceiveState()) {
+    this.getAddress();
+  }
 
   final Wallet _wallet;
   final IBitcoin _bitcoin;
