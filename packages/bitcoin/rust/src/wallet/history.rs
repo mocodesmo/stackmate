@@ -6,7 +6,6 @@ use std::os::raw::c_char;
 
 use serde::{Deserialize, Serialize};
 
-use bitcoin::network::constants::Network;
 
 use bdk::blockchain::{noop_progress, ElectrumBlockchain};
 use bdk::database::MemoryDatabase;
@@ -25,7 +24,7 @@ use bdk::Wallet;
 */
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct WalletHistory {
+pub struct Transaction {
   pub timestamp: u64,
   pub height: u32,
   pub verified: bool,
@@ -34,6 +33,12 @@ pub struct WalletHistory {
   pub sent: u64,
   pub fee: u64,
 }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct WalletHistory {
+  history: Vec<Transaction>
+}
+
 
 impl WalletHistory {
   pub fn c_stringify(&self) -> *mut c_char {
@@ -48,8 +53,23 @@ impl WalletHistory {
 
     CString::new(stringified).unwrap().into_raw()
   }
+}
+
+impl Transaction {
+  pub fn c_stringify(&self) -> *mut c_char {
+    let stringified = match serde_json::to_string(self.clone()) {
+      Ok(result) => result,
+      Err(_) => {
+        return CString::new("Error:JSON Stringify Failed. BAD NEWS! Contact Support.")
+          .unwrap()
+          .into_raw()
+      }
+    };
+
+    CString::new(stringified).unwrap().into_raw()
+  }
   pub fn from_txdetail(txdetail: TransactionDetails) -> Self {
-    WalletHistory {
+    Transaction {
       timestamp: match txdetail.confirmation_time.clone() {
         Some(time) => time.timestamp,
         None => 0,
@@ -70,7 +90,7 @@ impl WalletHistory {
   }
 }
 
-pub fn sync_history(config: WalletConfig) -> Result<Vec<WalletHistory>, S5Error> {
+pub fn sync_history(config: WalletConfig) -> Result<WalletHistory, S5Error> {
   let client = match Client::new(&config.node_address) {
     Ok(result) => result,
     Err(_) => return Err(S5Error::new(ErrorKind::OpError, "Node-Address-Connection")),
@@ -95,11 +115,12 @@ pub fn sync_history(config: WalletConfig) -> Result<Vec<WalletHistory>, S5Error>
   match wallet.list_transactions(false) {
     Ok(history) => {
       return Ok(
-        history
+        WalletHistory{
+          history: history
           .iter()
-          .map(|txdetail| WalletHistory::from_txdetail(txdetail.clone()))
+          .map(|txdetail| Transaction::from_txdetail(txdetail.clone()))
           .collect(),
-      )
+        })
     }
     Err(_) => return Err(S5Error::new(ErrorKind::OpError, "Wallet-History")),
   }
@@ -155,6 +176,7 @@ pub fn sync_balance(config: WalletConfig) -> Result<WalletBalance, S5Error> {
 #[cfg(test)]
 mod tests {
   use super::*;
+  use bitcoin::network::constants::Network;
 
   #[test]
   fn test_balance() {
@@ -174,10 +196,10 @@ mod tests {
     let config = WalletConfig::default(&deposit_desc, network);
     let history = sync_history(config).unwrap();
     // println!("{:#?}",history);
-    assert_eq!(10_000, history[0].received);
+    assert_eq!(10_000, history.history[0].received);
     assert_eq!(
       "ae6275ff3f667e89ea9500e216de8796d413b89ca47ced8fd039c884587f1c8e",
-      &history[0].txid
+      &history.history[0].txid
     )
   }
 }
