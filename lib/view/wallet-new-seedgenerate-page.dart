@@ -7,9 +7,9 @@ import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button2.dart';
 import 'package:sats/view/common/header-text.dart';
 import 'package:sats/view/common/header.dart';
-import 'package:sats/view/common-new-wallet/network-on.dart';
-import 'package:sats/view/common-new-wallet/network-off.dart';
-import 'package:sats/view/common-new-wallet/step.dart';
+import 'package:sats/view/new-wallet/network-on.dart';
+import 'package:sats/view/new-wallet/network-off.dart';
+import 'package:sats/view/new-wallet/step.dart';
 
 class NewGenerateStepper extends StatelessWidget {
   @override

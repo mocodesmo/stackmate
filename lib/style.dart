@@ -45,7 +45,7 @@ ThemeData derivedTheme(ThemeData theme) {
       errorStyle: TextStyle(color: Color(0xFFff9500)),
       filled: true,
       fillColor: theme.colorScheme.onBackground,
-      focusColor: theme.colorScheme.onBackground ,
+      focusColor: theme.colorScheme.onBackground,
     ),
   );
 }

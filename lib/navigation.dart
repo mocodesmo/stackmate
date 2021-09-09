@@ -1,10 +1,13 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sats/cubit/calculator.dart';
 import 'package:sats/cubit/new-wallet/seed-import.dart';
 import 'package:sats/cubit/new-wallet/xpub-import.dart';
 import 'package:sats/pkg/clipboard.dart';
+import 'package:sats/pkg/vibrate.dart';
 import 'package:sats/view/add-wallet-page.dart';
+import 'package:sats/view/calculator-page.dart';
 import 'package:sats/view/home-page.dart';
 import 'package:sats/api/reddit.dart';
 import 'package:sats/state.dart';
@@ -28,6 +31,7 @@ class Routes {
   static const generateSeed = 'generate-seed';
   static const importSeed = 'import-seed';
   static const watchOnly = 'watch-only';
+  static const calc = 'calc';
 
   static const logs = 'logs';
 
@@ -111,6 +115,19 @@ class Routes {
         page = BlocProvider.value(
           value: xpubCubit,
           child: XpubImportPage(),
+        );
+        break;
+
+      case calc:
+        final calcCubit = CalculatorCubit(
+          locator<IStorage>(),
+          loggerCubit,
+          locator<IVibrate>(),
+        );
+
+        page = BlocProvider.value(
+          value: calcCubit,
+          child: CalcPage(),
         );
         break;
 

@@ -9,6 +9,39 @@ import 'package:sats/model/reddit-post.dart';
 import 'package:sats/cubit/reddit.dart';
 import 'package:sats/model/wallet.dart';
 
+class HeaderRow extends StatelessWidget {
+  @override
+  Widget build(BuildContext c) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 32, bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          RedditLoader(),
+          Padding(
+              padding: const EdgeInsets.only(left: 24, right: 16),
+              child: Row(children: [
+                Text(
+                  'STACKMATE',
+                  style: c.fonts.headline5!.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+                Spacer(),
+                LogButton(
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.lightbulb_outline_sharp,
+                        size: 32, color: c.colours.primary),
+                  ),
+                ),
+              ])),
+        ],
+      ),
+    );
+  }
+}
+
 class WalletCard extends StatelessWidget {
   const WalletCard({Key? key, required this.wallet}) : super(key: key);
 
@@ -62,6 +95,70 @@ class WalletCard extends StatelessWidget {
                     ],
                   ),
                 ))));
+  }
+}
+
+class AccountsRow extends StatelessWidget {
+  @override
+  Widget build(BuildContext c) {
+    final wallets = c.select((WalletsCubit w) => w.state.wallets);
+    if (wallets.length == 0)
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(height: 66),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 40),
+            child: Text(
+              'No\nwallets\nadded',
+              style: c.fonts.caption!.copyWith(
+                color: c.colours.onBackground,
+              ),
+            ),
+          ),
+        ],
+      );
+    return Container(
+        width: c.width,
+        child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+              SizedBox(width: 16),
+              for (var w in wallets) WalletCard(wallet: w),
+              SizedBox(width: 16),
+            ])));
+  }
+}
+
+class ActionsRow extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: EdgeInsets.only(top: 8, left: 24, right: 24, bottom: 16),
+        child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.qr_code, size: 32, color: context.colours.primary),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, Routes.addWallet);
+            },
+            icon: Icon(Icons.add, size: 32, color: context.colours.primary),
+          ),
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, Routes.calc);
+              },
+              icon: Icon(Icons.calculate_sharp,
+                  size: 32, color: context.colours.primary)),
+          IconButton(
+            onPressed: () {},
+            icon:
+                Icon(Icons.settings, size: 32, color: context.colours.primary),
+          ),
+        ]));
   }
 }
 
@@ -159,108 +256,6 @@ class FeedItem extends StatelessWidget {
   }
 }
 
-class HeaderRow extends StatelessWidget {
-  @override
-  Widget build(BuildContext c) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 32, bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          RedditLoader(),
-          Padding(
-              padding: const EdgeInsets.only(left: 24, right: 16),
-              child: Row(children: [
-                Text(
-                  'STACKMATE',
-                  style: c.fonts.headline5!.copyWith(
-                    color: Colors.white,
-                  ),
-                ),
-                Spacer(),
-                LogButton(
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.lightbulb_outline_sharp,
-                        size: 32, color: c.colours.primary),
-                  ),
-                ),
-              ])),
-        ],
-      ),
-    );
-  }
-}
-
-class AccountsRow extends StatelessWidget {
-  @override
-  Widget build(BuildContext c) {
-    final wallets = c.select((WalletsCubit w) => w.state.wallets);
-    if (wallets.length == 0)
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(height: 66),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 40),
-            child: Text(
-              'No\nwallets\nadded',
-              style: c.fonts.caption!.copyWith(
-                color: c.colours.onBackground,
-              ),
-            ),
-          ),
-        ],
-      );
-    return Container(
-        width: c.width,
-        child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-              SizedBox(width: 16),
-              for (var w in wallets) WalletCard(wallet: w),
-              SizedBox(width: 16),
-            ])));
-  }
-}
-
-class ActionsRow extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        margin: EdgeInsets.only(top: 8, left: 24, right: 24, bottom: 16),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.qr_code, size: 32, color: context.colours.primary),
-          ),
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, Routes.addWallet);
-            },
-            icon: Icon(Icons.add, size: 32, color: context.colours.primary),
-          ),
-          IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.calculate_sharp,
-                  size: 32, color: context.colours.primary)),
-          IconButton(
-            onPressed: () {},
-            icon:
-                Icon(Icons.settings, size: 32, color: context.colours.primary),
-          ),
-        ]));
-  }
-}
-
-class FeedRow extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return RedditFeed();
-  }
-}
-
 class NewHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
@@ -289,7 +284,7 @@ class NewHomePage extends StatelessWidget {
               )),
           SliverList(
               delegate: SliverChildListDelegate([
-            FeedRow(),
+            RedditFeed(),
           ]))
         ],
       ),
