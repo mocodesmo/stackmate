@@ -96,11 +96,27 @@ class BitcoinFFFI {
     final func = binary.lookupFunction<addressT, addressT>(
       'get_address',
     );
-    final response = func(
+    final resp = func(
       depositDesc.toNativeUtf8(),
       network.toNativeUtf8(),
       index.toNativeUtf8(),
+    ).toDartString();
+    if (resp.startsWith('Error')) throw resp;
+    return resp;
+  }
+
+  Future<String> getHistory({
+    required String depositDesc,
+    required String network,
+  }) async {
+    final func = binary.lookupFunction<syncT, syncT>(
+      'sync_history',
     );
-    return response.toDartString();
+    final resp = func(
+      depositDesc.toNativeUtf8(),
+      network.toNativeUtf8(),
+    ).toDartString();
+    if (resp.startsWith('Error')) throw resp;
+    return resp;
   }
 }

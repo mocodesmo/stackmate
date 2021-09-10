@@ -46,7 +46,7 @@ class ReceiveCubit extends Cubit<ReceiveState> {
       ));
 
       final address = await _bitcoin.getAddress(
-        depositDesc: '',
+        depositDesc: _wallet.descriptor,
         network: _blockchain.state.blockchain.name,
         index: '0',
       );

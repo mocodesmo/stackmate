@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
 
@@ -132,7 +133,16 @@ class BitcoinFFI implements IBitcoin {
       {required String depositDesc,
       required String nodeAddress,
       required String network}) async {
-    return [];
+    final resp = await _bitcoin.getHistory(
+      depositDesc: depositDesc,
+      network: network,
+    );
+    final json = jsonDecode(resp);
+    List<Transaction> transactions = [];
+    for (var t in json['history']) {
+      transactions.add(Transaction.fromJson(t));
+    }
+    return transactions;
   }
 }
 

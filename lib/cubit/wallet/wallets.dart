@@ -21,7 +21,9 @@ class WalletsCubit extends Cubit<WalletsState> {
     this._storage,
     this._logger,
     this._blockchain,
-  ) : super(WalletsState());
+  ) : super(WalletsState()) {
+    this.refresh();
+  }
 
   final IStorage _storage;
   final LoggerCubit _logger;
@@ -29,11 +31,11 @@ class WalletsCubit extends Cubit<WalletsState> {
 
   void refresh() {
     try {
-      // var wallets = _storage.getAll<Wallet>(StoreKeys.Wallet.name);
+      var wallets = _storage.getAll<Wallet>(StoreKeys.Wallet.name);
 
-      // wallets.removeWhere(
-      //     (w) => w.blockchain != _blockchain.state.blockchain.name);
-      // wallets.sort((a, b) => a.index.compareTo(b.index));
+      wallets.removeWhere(
+          (w) => w.blockchain != _blockchain.state.blockchain.name);
+      wallets.sort((a, b) => a.index.compareTo(b.index));
 
       emit(state.copyWith(wallets: wallets));
     } catch (e, s) {
@@ -42,7 +44,7 @@ class WalletsCubit extends Cubit<WalletsState> {
   }
 }
 
-List<Wallet> wallets = [
+List<Wallet> _wallets = [
   Wallet(
     label: 'wallet2',
     descriptor: 'oooooo',

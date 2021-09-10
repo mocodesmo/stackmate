@@ -41,13 +41,13 @@
         //
         "**/**.g.dart": true,
         "**/**.freezed.dart": true,
-        "**/android": true,
+        // "**/android": true,
         "**/ios": true,
         //
         //
         // "**/packages": true, 
         // "zzzz": true,
-        "**/pubspec.yaml": true,
+        // "**/pubspec.yaml": true,
         //
         //
         //

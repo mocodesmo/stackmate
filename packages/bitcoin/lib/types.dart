@@ -37,7 +37,7 @@ class Derive {
     );
   }
 
-  String get policy => 'pk([$fingerPrint/$hardenedPath]$xprv)';
+  String get policy => 'pk([$fingerPrint/$hardenedPath]$xprv/0/*)';
 }
 
 class Compile {

@@ -53,7 +53,7 @@ class TextAddress extends StatelessWidget {
               c.read<ReceiveCubit>().copyAddress(address);
             },
             child: Text('COPY')),
-        SizedBox(height: 32),
+        SizedBox(height: 48),
         SizedBox(
           width: c.width / 4,
           child: TextButton(
@@ -61,7 +61,7 @@ class TextAddress extends StatelessWidget {
               c.read<ReceiveCubit>().shareAddress(address);
             },
             child: Text(
-              'Share'.notLocalised(),
+              'SHARE'.notLocalised(),
             ),
           ),
         )

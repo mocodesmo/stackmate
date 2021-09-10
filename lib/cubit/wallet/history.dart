@@ -73,7 +73,7 @@ class HistoryCubit extends Cubit<HistoryState> {
       //final link = 'https://blockstream.info/tx/' + widget.order.txId;
       _launcher.launchApp(transaction.link());
     } catch (e, s) {
-      _logger.logException(e, 'BtcWalletOrderCell._openLink', s);
+      _logger.logException(e, 'HistoryCubit.openLink', s);
     }
   }
 
@@ -88,7 +88,7 @@ class HistoryCubit extends Cubit<HistoryState> {
 
       _share.share(text: text, subjectForEmail: 'Transaction');
     } catch (e, s) {
-      _logger.logException(e, 'BtcWalletOrderCell._shareOrder', s);
+      _logger.logException(e, 'HistoryCubit.shareTransaction', s);
     }
   }
 }

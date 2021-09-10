@@ -34,7 +34,7 @@ class _TransactionCellState extends State<TransactionCell> {
                 });
               },
               child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  margin: EdgeInsets.symmetric(horizontal: 0, vertical: 4),
                   padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(2),
@@ -134,7 +134,7 @@ class _TransactionCellState extends State<TransactionCell> {
           });
         },
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          margin: EdgeInsets.symmetric(horizontal: 0, vertical: 4),
           padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(2), color: c.colours.surface),

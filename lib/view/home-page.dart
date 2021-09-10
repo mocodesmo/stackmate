@@ -13,13 +13,13 @@ class HeaderRow extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     return Padding(
-      padding: const EdgeInsets.only(top: 32, bottom: 16),
+      padding: const EdgeInsets.only(top: 24, bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           RedditLoader(),
           Padding(
-              padding: const EdgeInsets.only(left: 24, right: 16),
+              padding: const EdgeInsets.only(top: 8, left: 24, right: 16),
               child: Row(children: [
                 Text(
                   'STACKMATE',
