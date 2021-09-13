@@ -379,7 +379,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
     emit(state.copyWith(passPhrase: text));
   }
 
-  seedWordSelected(String text) {
+  void seedWordSelected(String text) {
     if (text != state.quizSeedAnswer) {
       emit(state.copyWith(quizSeedError: 'Incorrect Word Selected'));
       return;

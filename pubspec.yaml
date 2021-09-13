@@ -68,7 +68,7 @@ dev_dependencies:
       url: https://github.com/hivedb/hive.git
       ref: master
       path: hive_generator
-
+  lint: ^1.7.2
 
 # dev_dependencies:
   

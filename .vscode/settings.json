@@ -11,7 +11,7 @@
         "**/README.md": true,
         "**/.flutter-plugins": true,
         "**/.dart_tool": true,
-        "**/analysis_options.yaml": true,
+        // "**/analysis_options.yaml": true,
         "**/.flutter-plugins-dependencies": true,
         "**/generated_plugin_registrant.dart": true,
         "**/CHANGELOG.md": true,

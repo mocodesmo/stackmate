@@ -1,7 +1,9 @@
 import 'dart:ffi';
-import 'package:ffi/ffi.dart';
+
 import 'package:bitcoin/ffi-types.dart';
 import 'package:bitcoin/types.dart';
+import 'package:ffi/ffi.dart';
+
 export 'package:bitcoin/types.dart';
 
 class BitcoinFFFI {
@@ -14,7 +16,7 @@ class BitcoinFFFI {
     required String passphrase,
     required String network,
   }) async {
-    final func = binary.lookupFunction<seedT, seedT>(
+    final func = binary.lookupFunction<SeedT, SeedT>(
       'generate_master',
     );
     final resp = func(
@@ -31,7 +33,7 @@ class BitcoinFFFI {
     required String passphrase,
     required String network,
   }) async {
-    final func = binary.lookupFunction<seedT, seedT>(
+    final func = binary.lookupFunction<SeedT, SeedT>(
       'import_master',
     );
     final resp = func(
@@ -48,7 +50,7 @@ class BitcoinFFFI {
     required String account,
     required String purpose,
   }) async {
-    final func = binary.lookupFunction<deriveT, deriveT>(
+    final func = binary.lookupFunction<DeriveT, DeriveT>(
       'derive_hardened',
     );
     final resp = func(
@@ -64,7 +66,7 @@ class BitcoinFFFI {
     required String policy,
     required String scriptType,
   }) async {
-    final func = binary.lookupFunction<compileT, compileT>(
+    final func = binary.lookupFunction<CompileT, CompileT>(
       'compile',
     );
     final resp = func(
@@ -79,7 +81,7 @@ class BitcoinFFFI {
     required String depositDesc,
     required String network,
   }) async {
-    final func = binary.lookupFunction<syncT, syncT>(
+    final func = binary.lookupFunction<SyncT, SyncT>(
       'sync_balance',
     );
     final response = func(
@@ -89,11 +91,12 @@ class BitcoinFFFI {
     return response.toDartString();
   }
 
-  Future<String> getAddress(
-      {required String depositDesc,
-      required String network,
-      required String index}) async {
-    final func = binary.lookupFunction<addressT, addressT>(
+  Future<String> getAddress({
+    required String depositDesc,
+    required String network,
+    required String index,
+  }) async {
+    final func = binary.lookupFunction<AddressT, AddressT>(
       'get_address',
     );
     final resp = func(
@@ -109,7 +112,7 @@ class BitcoinFFFI {
     required String depositDesc,
     required String network,
   }) async {
-    final func = binary.lookupFunction<syncT, syncT>(
+    final func = binary.lookupFunction<SyncT, SyncT>(
       'sync_history',
     );
     final resp = func(

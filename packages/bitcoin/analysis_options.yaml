@@ -5,7 +5,6 @@ linter:
   rules:
     file_names: false
     curly_braces_in_flow_control_structures: false
-    avoid_classes_with_only_static_members: false
     sort_constructors_first: true
     prefer_single_quotes: true
     # always_specify_types: true

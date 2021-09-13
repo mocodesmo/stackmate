@@ -44,7 +44,7 @@ class Routes {
   static const wallet = 'wallet';
   static const receive = '';
 
-  static setupRoutes(RouteSettings settings, BuildContext c) {
+  static Route<dynamic>? setupRoutes(RouteSettings settings, BuildContext c) {
     Widget page = Container();
 
     switch (settings.name) {

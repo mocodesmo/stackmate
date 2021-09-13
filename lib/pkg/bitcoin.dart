@@ -3,7 +3,6 @@ import 'dart:ffi';
 import 'dart:io';
 
 import 'package:bitcoin/bitcoin.dart';
-import 'package:retry/retry.dart';
 import 'package:sats/model/transaction.dart';
 
 abstract class IBitcoin {
@@ -138,8 +137,8 @@ class BitcoinFFI implements IBitcoin {
       network: network,
     );
     final json = jsonDecode(resp);
-    List<Transaction> transactions = [];
-    for (var t in json['history']) {
+    final List<Transaction> transactions = [];
+    for (final t in json['history'] as List<Map<String, dynamic>>) {
       transactions.add(Transaction.fromJson(t));
     }
     return transactions;
