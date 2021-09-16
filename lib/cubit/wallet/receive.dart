@@ -53,10 +53,11 @@ class ReceiveCubit extends Cubit<ReceiveState> {
 
       // await Future.delayed(const Duration(seconds: 4));
 
-      final w = _walletCubit.state.selectedWallet!.descriptor.split('#')[0];
-
+      // final w = _walletCubit.state.selectedWallet!.descriptor.split('#')[0];
+      final w = _walletCubit.state.selectedWallet!.descriptor;
+      
       final address = await _bitcoin.getAddress(
-        depositDesc: w, //_wallet.descriptor,
+        depositDesc: w,
         network: _blockchain.state.blockchain.name,
         index: '0',
       );

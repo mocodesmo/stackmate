@@ -97,7 +97,7 @@ class XpubImportCubit extends Cubit<XpubImportState> {
 
       final newWallet = Wallet(
         label: state.label,
-        descriptor: com.descriptor,
+        descriptor: com.descriptor.split('#')[0],
         blockchain: _blockchainCubit.state.blockchain.name,
         index: len,
       );

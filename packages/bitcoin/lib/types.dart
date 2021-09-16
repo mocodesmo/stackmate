@@ -33,7 +33,8 @@ class Derive {
   final String xprv;
   final String xpub;
 
-  String get policy => 'pk([$fingerPrint/$hardenedPath]$xprv/0/*)';
+  String get policy =>
+      'pk([$fingerPrint/$hardenedPath]$xprv/0/*)'.replaceFirst('/m', '');
 }
 
 class Compile {

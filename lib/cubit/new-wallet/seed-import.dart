@@ -188,7 +188,7 @@ class SeedImportCubit extends Cubit<SeedImportState> {
 
       final newWallet = Wallet(
         label: state.walletLabel,
-        descriptor: com.descriptor,
+        descriptor: com.descriptor.split('#')[0],
         blockchain: _blockchainCubit.state.blockchain.name,
         index: len,
       );

@@ -253,7 +253,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
 
       final newWallet = Wallet(
         label: state.walletLabel,
-        descriptor: com.descriptor,
+        descriptor: com.descriptor.split('#')[0],
         blockchain: _blockchainCubit.state.blockchain.name,
         index: len,
       );
@@ -375,7 +375,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
     }
   }
 
-  passPhrasedChanged(String text) {
+  void passPhrasedChanged(String text) {
     emit(state.copyWith(passPhrase: text));
   }
 
@@ -386,13 +386,16 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
     }
     emit(state.copyWith(quizSeedError: ''));
 
-    List<String> completedAnswers = state.quizSeedCompletedAnswers.toList();
+    final List<String> completedAnswers =
+        state.quizSeedCompletedAnswers.toList();
     completedAnswers.add(text);
 
-    emit(state.copyWith(
-      quizSeedCompletedAnswers: completedAnswers,
-      quizSeedCompleted: completedAnswers.length,
-    ));
+    emit(
+      state.copyWith(
+        quizSeedCompletedAnswers: completedAnswers,
+        quizSeedCompleted: completedAnswers.length,
+      ),
+    );
 
     if (completedAnswers.length == 3) {
       emit(state.copyWith(currentStep: SeedGenerateSteps.label));
@@ -402,7 +405,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
     _generateQuiz();
   }
 
-  labelChanged(String text) {
+  void labelChanged(String text) {
     emit(state.copyWith(walletLabel: text, walletLabelError: ''));
   }
 

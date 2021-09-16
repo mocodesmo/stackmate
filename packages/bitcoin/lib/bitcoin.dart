@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:bitcoin/ffi-types.dart';
@@ -105,7 +106,8 @@ class BitcoinFFFI {
       index.toNativeUtf8(),
     ).toDartString();
     if (resp.startsWith('Error')) throw resp;
-    return resp;
+    final obj = jsonDecode(resp);
+    return obj['address'] as String;
   }
 
   Future<String> getHistory({
