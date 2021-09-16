@@ -35,7 +35,9 @@ class HistoryCubit extends Cubit<HistoryState> {
     this._blockchain,
     this._launcher,
     this._share,
-  ) : super(HistoryState(wallet: _walletsCubit.state.selectedWallet));
+  ) : super(HistoryState(wallet: _walletsCubit.state.selectedWallet)) {
+    _init();
+  }
 
   final WalletsCubit _walletsCubit;
   final IBitcoin _bitcoin;
@@ -45,6 +47,10 @@ class HistoryCubit extends Cubit<HistoryState> {
   final IShare _share;
   final ILauncher _launcher;
 
+  void _init() async {
+    getHistory();
+  }
+
   void getHistory() async {
     try {
       emit(
@@ -53,6 +59,8 @@ class HistoryCubit extends Cubit<HistoryState> {
           errLoadingTransactions: '',
         ),
       );
+
+      // await Future.delayed(const Duration(seconds: 4));
 
       final transactions = await _bitcoin.getHistory(
         depositDesc: state.wallet!.descriptor,

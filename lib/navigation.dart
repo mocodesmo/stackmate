@@ -167,7 +167,6 @@ class Routes {
           child: const HistoryPage(),
         );
 
-        history.getHistory();
         break;
 
       case receive:

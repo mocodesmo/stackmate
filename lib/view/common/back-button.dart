@@ -13,8 +13,10 @@ class Back extends StatelessWidget {
   Widget build(BuildContext c) {
     return GestureDetector(
       onTap: () {
-        if (onPressed == null) Navigator.pop(c);
-
+        if (onPressed == null) {
+          Navigator.pop(c);
+          return;
+        }
         onPressed!();
       },
       child: Row(

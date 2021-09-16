@@ -28,7 +28,7 @@ class ReceiveCubit extends Cubit<ReceiveState> {
     this._clipBoard,
     this._share,
   ) : super(const ReceiveState()) {
-    getAddress();
+    _init();
   }
 
   final WalletsCubit _walletCubit;
@@ -38,6 +38,10 @@ class ReceiveCubit extends Cubit<ReceiveState> {
   final IShare _share;
   final IClipBoard _clipBoard;
 
+  void _init() async {
+    getAddress();
+  }
+
   void getAddress() async {
     try {
       emit(
@@ -46,6 +50,8 @@ class ReceiveCubit extends Cubit<ReceiveState> {
           errLoadingAddress: '',
         ),
       );
+
+      // await Future.delayed(const Duration(seconds: 4));
 
       final w = _walletCubit.state.selectedWallet!.descriptor.split('#')[0];
 
