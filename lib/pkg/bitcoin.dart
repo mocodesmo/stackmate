@@ -55,10 +55,11 @@ class BitcoinFFI implements IBitcoin {
   );
 
   @override
-  Future<Nmeu> generateMaster(
-      {required String mnemonic,
-      required String passphrase,
-      required String network}) async {
+  Future<Nmeu> generateMaster({
+    required String mnemonic,
+    required String passphrase,
+    required String network,
+  }) async {
     final resp = await _bitcoin.generateMaster(
       mnemonic: mnemonic,
       passphrase: passphrase,
@@ -68,10 +69,11 @@ class BitcoinFFI implements IBitcoin {
   }
 
   @override
-  Future<Nmeu> importMaster(
-      {required String mnemonic,
-      required String passphrase,
-      required String network}) async {
+  Future<Nmeu> importMaster({
+    required String mnemonic,
+    required String passphrase,
+    required String network,
+  }) async {
     final resp = await _bitcoin.importMaster(
       mnemonic: mnemonic,
       passphrase: passphrase,
@@ -95,8 +97,10 @@ class BitcoinFFI implements IBitcoin {
   }
 
   @override
-  Future<Compile> compile(
-      {required String policy, required String scriptType}) async {
+  Future<Compile> compile({
+    required String policy,
+    required String scriptType,
+  }) async {
     final resp = await _bitcoin.compile(
       policy: policy,
       scriptType: scriptType,
@@ -105,8 +109,10 @@ class BitcoinFFI implements IBitcoin {
   }
 
   @override
-  Future<String> syncBalance(
-      {required String depositDesc, required String network}) async {
+  Future<String> syncBalance({
+    required String depositDesc,
+    required String network,
+  }) async {
     final resp = await _bitcoin.syncBalance(
       depositDesc: depositDesc,
       network: network,
@@ -115,10 +121,11 @@ class BitcoinFFI implements IBitcoin {
   }
 
   @override
-  Future<String> getAddress(
-      {required String depositDesc,
-      required String network,
-      required String index}) async {
+  Future<String> getAddress({
+    required String depositDesc,
+    required String network,
+    required String index,
+  }) async {
     final resp = await _bitcoin.getAddress(
       depositDesc: depositDesc,
       network: network,
@@ -128,10 +135,11 @@ class BitcoinFFI implements IBitcoin {
   }
 
   @override
-  Future<List<Transaction>> getHistory(
-      {required String depositDesc,
-      required String nodeAddress,
-      required String network}) async {
+  Future<List<Transaction>> getHistory({
+    required String depositDesc,
+    required String nodeAddress,
+    required String network,
+  }) async {
     final resp = await _bitcoin.getHistory(
       depositDesc: depositDesc,
       network: network,
@@ -147,42 +155,48 @@ class BitcoinFFI implements IBitcoin {
 
 class DummyBtc implements IBitcoin {
   @override
-  Future<Compile> compile(
-      {required String policy, required String scriptType}) {
+  Future<Compile> compile({
+    required String policy,
+    required String scriptType,
+  }) {
     throw UnimplementedError();
   }
 
   @override
-  Future<Derive> deriveHardened(
-      {required String masterXPriv,
-      required String account,
-      required String purpose}) {
+  Future<Derive> deriveHardened({
+    required String masterXPriv,
+    required String account,
+    required String purpose,
+  }) {
     throw UnimplementedError();
   }
 
   @override
-  Future<Nmeu> generateMaster(
-      {required String mnemonic,
-      required String passphrase,
-      required String network}) {
+  Future<Nmeu> generateMaster({
+    required String mnemonic,
+    required String passphrase,
+    required String network,
+  }) {
     throw UnimplementedError();
   }
 
   @override
-  Future<String> getAddress(
-      {required String depositDesc,
-      required String network,
-      required String index}) async {
+  Future<String> getAddress({
+    required String depositDesc,
+    required String network,
+    required String index,
+  }) async {
     return '1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX';
   }
 
   @override
-  Future<List<Transaction>> getHistory(
-      {required String depositDesc,
-      required String nodeAddress,
-      required String network}) async {
-    await Future.delayed(Duration(seconds: 1));
-    return [
+  Future<List<Transaction>> getHistory({
+    required String depositDesc,
+    required String nodeAddress,
+    required String network,
+  }) async {
+    await Future.delayed(const Duration(seconds: 1));
+    return const [
       Transaction(
         timestamp: 9877766,
         height: 88,
@@ -257,17 +271,20 @@ class DummyBtc implements IBitcoin {
   }
 
   @override
-  Future<Nmeu> importMaster(
-      {required String mnemonic,
-      required String passphrase,
-      required String network}) {
+  Future<Nmeu> importMaster({
+    required String mnemonic,
+    required String passphrase,
+    required String network,
+  }) {
     // TODO: implement importMaster
     throw UnimplementedError();
   }
 
   @override
-  Future<String> syncBalance(
-      {required String depositDesc, required String network}) {
+  Future<String> syncBalance({
+    required String depositDesc,
+    required String network,
+  }) {
     // TODO: implement syncBalance
     throw UnimplementedError();
   }

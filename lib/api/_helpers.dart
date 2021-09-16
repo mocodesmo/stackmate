@@ -1,11 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:sats/state.dart';
-export 'dart:io';
-export 'dart:async';
-
-
-const TIMEOUT = Duration(seconds: 40);
 
 final client = Dio(BaseOptions(validateStatus: (status) => true));
 
@@ -25,4 +20,4 @@ Response parseResponse(Response res) {
   return res;
 }
 
-final timeOut = Duration(seconds: 40);
+const timeOut = Duration(seconds: 5);

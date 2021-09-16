@@ -17,7 +17,7 @@ class HeaderRow extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          RedditLoader(),
+          const RedditLoader(),
           Padding(
               padding: const EdgeInsets.only(top: 8, left: 24, right: 16),
               child: Row(children: [
@@ -27,7 +27,7 @@ class HeaderRow extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 LogButton(
                   child: IconButton(
                     onPressed: () {},
@@ -51,10 +51,10 @@ class WalletCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        context.read<WalletsCubit>().walletSelected(wallet);
         Navigator.pushNamed(
           context,
           Routes.wallet,
-          arguments: wallet,
         );
       },
       child: Padding(
@@ -193,15 +193,27 @@ class RedditFeed extends StatelessWidget {
 
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       if (redditState.error != '') ...[
-        SizedBox(height: 32),
-        Center(child: Text(redditState.error)),
+        const SizedBox(height: 32),
         Center(
-            child: GestureDetector(
-                onTap: () {
-                  c.read<RedditCubit>().getPosts();
-                },
-                child: Text('Try Again.',
-                    style: c.fonts.button!.copyWith(color: Colors.white)))),
+            child: Text(
+          redditState.error,
+          style: c.fonts.overline!.copyWith(
+            color: c.colours.onBackground,
+          ),
+        )),
+        Center(
+          child: TextButton(
+            onPressed: () {
+              c.read<RedditCubit>().getPosts();
+            },
+            child: const Text(
+              'Try Again.',
+              // style: c.fonts.button!.copyWith(
+              // color: Colors.white,
+              // ),
+            ),
+          ),
+        ),
         SizedBox(height: 100),
       ] else ...[
         SizedBox(height: 24),
@@ -274,29 +286,36 @@ class NewHomePage extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-              stretch: true,
-              pinned: true,
-              expandedHeight: 350,
-              automaticallyImplyLeading: false,
-              backgroundColor: c.colours.secondary,
-              flexibleSpace: FlexibleSpaceBar(
-                  stretchModes: [
-                    StretchMode.blurBackground,
-                    StretchMode.fadeTitle
-                  ],
-                  collapseMode: CollapseMode.pin,
-                  background: Column(children: [
-                    HeaderRow(),
-                    AccountsRow(),
-                  ])),
-              bottom: PreferredSize(
-                preferredSize: Size(c.width, 24),
-                child: ActionsRow(),
-              )),
+            stretch: true,
+            pinned: true,
+            expandedHeight: 350,
+            automaticallyImplyLeading: false,
+            backgroundColor: c.colours.secondary,
+            flexibleSpace: FlexibleSpaceBar(
+              stretchModes: const [
+                StretchMode.blurBackground,
+                StretchMode.fadeTitle
+              ],
+              collapseMode: CollapseMode.pin,
+              background: Column(
+                children: [
+                  HeaderRow(),
+                  AccountsRow(),
+                ],
+              ),
+            ),
+            bottom: PreferredSize(
+              preferredSize: Size(c.width, 24),
+              child: ActionsRow(),
+            ),
+          ),
           SliverList(
-              delegate: SliverChildListDelegate([
-            RedditFeed(),
-          ]))
+            delegate: SliverChildListDelegate(
+              [
+                RedditFeed(),
+              ],
+            ),
+          )
         ],
       ),
     );

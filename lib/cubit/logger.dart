@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 //import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:sats/pkg/clipboard.dart';
 
 part 'logger.freezed.dart';
 
@@ -43,7 +45,9 @@ class LoggerState with _$LoggerState {
 }
 
 class LoggerCubit extends Cubit<LoggerState> {
-  LoggerCubit() : super(LoggerState());
+  LoggerCubit(this._clipBoard) : super(const LoggerState());
+
+  final IClipBoard _clipBoard;
 
   void logAPI(
     String path,
@@ -73,7 +77,7 @@ class LoggerCubit extends Cubit<LoggerState> {
         event: strs[1],
       );
 
-      await Future.delayed(Duration(milliseconds: 5));
+      await Future.delayed(const Duration(milliseconds: 5));
 
       _addToLog(log);
     } catch (e) {
@@ -112,6 +116,11 @@ class LoggerCubit extends Cubit<LoggerState> {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  void copyToClipboard(String text) {
+    _clipBoard.copyToClipBoard(text);
+    showToast('COPIED');
   }
 
   _addToLog(Log log) {

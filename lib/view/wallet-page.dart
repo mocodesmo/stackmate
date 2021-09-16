@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sats/cubit/wallet/history.dart';
+import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/model/transaction.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
@@ -25,108 +26,133 @@ class _TransactionCellState extends State<TransactionCell> {
 
     if (isReceive)
       return AnimatedSwitcher(
-          key: _isExpanded ? ValueKey(1) : ValueKey(2),
-          duration: Duration(milliseconds: 2000),
-          child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  _isExpanded = !_isExpanded;
-                });
-              },
-              child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 0, vertical: 4),
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(2),
-                      color: c.colours.surface),
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Row(children: [
+        key: _isExpanded ? const ValueKey(1) : const ValueKey(2),
+        duration: const Duration(milliseconds: 2000),
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              _isExpanded = !_isExpanded;
+            });
+          },
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 4),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(2),
+              color: c.colours.surface,
+            ),
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'RECEIVE'.notLocalised(),
+                      style: c.fonts.subtitle2!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: c.colours.onBackground,
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
                           Text(
-                            'RECEIVE'.notLocalised(),
-                            style: c.fonts.subtitle2!.copyWith(
-                              fontWeight: FontWeight.bold,
+                            widget.transaction.received.toString() + ' sats',
+                            style: c.fonts.headline6!.copyWith(
                               color: c.colours.onBackground,
                             ),
+                            textAlign: TextAlign.end,
                           ),
-                          Expanded(
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                Text(
-                                    widget.transaction.received.toString() +
-                                        ' sats',
-                                    style: c.fonts.headline6!.copyWith(
-                                      color: c.colours.onBackground,
-                                    ),
-                                    textAlign: TextAlign.end),
-                                Text(widget.transaction.amountToBtc() + ' BTC',
-                                    style: c.fonts.overline!.copyWith(
-                                      color: c.colours.onBackground,
-                                    ))
-                              ]))
-                        ]),
-                        SizedBox(height: 8),
-                        Text('TRANSACTION ID'.notLocalised(),
+                          Text(
+                            widget.transaction.amountToBtc() + ' BTC',
                             style: c.fonts.overline!.copyWith(
                               color: c.colours.onBackground,
-                            )),
-                        GestureDetector(
-                            onTap: () {
-                              c
-                                  .read<HistoryCubit>()
-                                  .openLink(widget.transaction);
-                            },
-                            child: Container(
-                                width: c.width / 2,
-                                child: Text(
-                                    !_isExpanded
-                                        ? widget.transaction.txIdBlur()
-                                        : widget.transaction.txid,
-                                    style: c.fonts.caption!
-                                        .copyWith(color: c.colours.primary)))),
-                        //SizedBox(height: 16),
-                        if (_isExpanded) ...[
-                          SizedBox(height: 16),
-                          Text('CREATED AT'.notLocalised(),
-                              style: c.fonts.overline!.copyWith(
-                                color: c.colours.onBackground,
-                              )),
-                          Text(widget.transaction.timeStr(),
-                              style: c.fonts.caption!.copyWith(
-                                color: c.colours.onBackground,
-                              )),
-                          SizedBox(height: 16),
-                          //SizedBox(height: 8),
-                          Row(children: [
-                            Expanded(
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                  // Text('ADDRESS'.notLocalised(),
-                                  //     style: c.fonts.overline),
-                                  // Text(widget.transaction.txid,
-                                  //     style: c.fonts.caption)
-                                ])),
-                            SizedBox(
-                                width: c.width / 4,
-                                child: TextButton(
-                                    onPressed: () {
-                                      c
-                                          .read<HistoryCubit>()
-                                          .shareTransaction(widget.transaction);
-                                    },
-                                    child: Text('SHARE'.notLocalised())))
-                          ])
-                        ]
-                      ]))));
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'TRANSACTION ID'.notLocalised(),
+                  style: c.fonts.overline!.copyWith(
+                    color: c.colours.onBackground,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    c.read<HistoryCubit>().openLink(widget.transaction);
+                  },
+                  child: Container(
+                    width: c.width / 2,
+                    child: Text(
+                      !_isExpanded
+                          ? widget.transaction.txIdBlur()
+                          : widget.transaction.txid,
+                      style: c.fonts.caption!.copyWith(
+                        color: c.colours.primary,
+                      ),
+                    ),
+                  ),
+                ),
+                //SizedBox(height: 16),
+                if (_isExpanded) ...[
+                  const SizedBox(height: 16),
+                  Text(
+                    'CREATED AT'.notLocalised(),
+                    style: c.fonts.overline!.copyWith(
+                      color: c.colours.onBackground,
+                    ),
+                  ),
+                  Text(
+                    widget.transaction.timeStr(),
+                    style: c.fonts.caption!.copyWith(
+                      color: c.colours.onBackground,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  //SizedBox(height: 8),
+                  Row(
+                    children: [
+                      const Spacer(),
+                      // Expanded(
+                      //     child: Column(
+                      //         crossAxisAlignment: CrossAxisAlignment.stretch,
+                      //         children: const [
+                      //       // Text('ADDRESS'.notLocalised(),
+                      //       //     style: c.fonts.overline),
+                      //       // Text(widget.transaction.txid,
+                      //       //     style: c.fonts.caption)
+                      //     ])),
+                      SizedBox(
+                        width: c.width / 4,
+                        child: TextButton(
+                          onPressed: () {
+                            c
+                                .read<HistoryCubit>()
+                                .shareTransaction(widget.transaction);
+                          },
+                          child: Text(
+                            'SHARE'.notLocalised(),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                ]
+              ],
+            ),
+          ),
+        ),
+      );
 
     return AnimatedSwitcher(
-      key: _isExpanded ? ValueKey(1) : ValueKey(2),
-      duration: Duration(milliseconds: 2000),
+      key: _isExpanded ? const ValueKey(1) : const ValueKey(2),
+      duration: const Duration(milliseconds: 2000),
       child: GestureDetector(
         onTap: () {
           setState(() {
@@ -134,42 +160,54 @@ class _TransactionCellState extends State<TransactionCell> {
           });
         },
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 0, vertical: 4),
-          padding: EdgeInsets.all(16),
+          margin: const EdgeInsets.symmetric(vertical: 4),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(2), color: c.colours.surface),
+            borderRadius: BorderRadius.circular(2),
+            color: c.colours.surface,
+          ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            // mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Row(children: [
-                Text('SEND'.notLocalised(),
+              Row(
+                children: [
+                  Text(
+                    'SEND'.notLocalised(),
                     style: c.fonts.subtitle2!.copyWith(
                       fontWeight: FontWeight.bold,
                       color: c.colours.onBackground,
-                    )),
-                Expanded(
+                    ),
+                  ),
+                  Expanded(
                     child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                      Text(
-                        widget.transaction.sent.toString() + ' sats',
-                        style: c.fonts.headline6!.copyWith(
-                          color: c.colours.onBackground,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          widget.transaction.sent.toString() + ' sats',
+                          style: c.fonts.headline6!.copyWith(
+                            color: c.colours.onBackground,
+                          ),
+                          textAlign: TextAlign.end,
                         ),
-                        textAlign: TextAlign.end,
-                      ),
-                      Text(widget.transaction.amountToBtc() + ' BTC',
+                        Text(
+                          widget.transaction.amountToBtc() + ' BTC',
                           style: c.fonts.overline!.copyWith(
                             color: c.colours.onBackground,
-                          ))
-                    ]))
-              ]),
-              SizedBox(height: 8),
-              Text('TRANSACTION ID'.notLocalised(),
-                  style: c.fonts.overline!.copyWith(
-                    color: c.colours.onBackground,
-                  )),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'TRANSACTION ID'.notLocalised(),
+                style: c.fonts.overline!.copyWith(
+                  color: c.colours.onBackground,
+                ),
+              ),
               GestureDetector(
                 onTap: () {
                   c.read<HistoryCubit>().openLink(widget.transaction);
@@ -187,7 +225,7 @@ class _TransactionCellState extends State<TransactionCell> {
                 ),
               ),
               if (_isExpanded) ...[
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 //if (!widget.transaction.confirmed) ...[
                 // Text('CONFIRMATIONS'.notLocalised(),
                 //     style: c.fonts.overline),
@@ -200,37 +238,49 @@ class _TransactionCellState extends State<TransactionCell> {
                 //      alignment: Alignment.centerLeft,
                 //      child: Icon(Icons.check_rounded)),
                 //],
-                SizedBox(height: 16),
-                Text('CREATED AT'.notLocalised(),
-                    style: c.fonts.overline!.copyWith(
-                      color: c.colours.onBackground,
-                    )),
-                Text(widget.transaction.timeStr(),
-                    style: c.fonts.caption!.copyWith(
-                      color: c.colours.onBackground,
-                    )),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
+                Text(
+                  'CREATED AT'.notLocalised(),
+                  style: c.fonts.overline!.copyWith(
+                    color: c.colours.onBackground,
+                  ),
+                ),
+                Text(
+                  widget.transaction.timeStr(),
+                  style: c.fonts.caption!.copyWith(
+                    color: c.colours.onBackground,
+                  ),
+                ),
+                const SizedBox(height: 16),
                 // Text('TO ADDRESS'.notLocalised(), style: c.fonts.overline),
                 // Text(widget.transaction.txid, style: c.fonts.caption),
-                SizedBox(height: 16),
-                Text('AMOUNT'.notLocalised(),
-                    style: c.fonts.overline!.copyWith(
-                      color: c.colours.onBackground,
-                    )),
-                Text(widget.transaction.sent.toString(),
-                    style: c.fonts.caption!.copyWith(
-                      color: c.colours.onBackground,
-                    )),
-                SizedBox(height: 16),
-                Text('Fees'.notLocalised(),
-                    style: c.fonts.overline!.copyWith(
-                      color: c.colours.onBackground,
-                    )),
-                Text(widget.transaction.fee.toString(),
-                    style: c.fonts.caption!.copyWith(
-                      color: c.colours.onBackground,
-                    )),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
+                Text(
+                  'AMOUNT'.notLocalised(),
+                  style: c.fonts.overline!.copyWith(
+                    color: c.colours.onBackground,
+                  ),
+                ),
+                Text(
+                  widget.transaction.sent.toString(),
+                  style: c.fonts.caption!.copyWith(
+                    color: c.colours.onBackground,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Fees'.notLocalised(),
+                  style: c.fonts.overline!.copyWith(
+                    color: c.colours.onBackground,
+                  ),
+                ),
+                Text(
+                  widget.transaction.fee.toString(),
+                  style: c.fonts.caption!.copyWith(
+                    color: c.colours.onBackground,
+                  ),
+                ),
+                const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -255,7 +305,7 @@ class _TransactionCellState extends State<TransactionCell> {
                       },
                       child: Text('SHARE'.notLocalised()),
                     ),
-                    SizedBox(width: 32),
+                    const SizedBox(width: 32),
                   ],
                 )
               ]
@@ -272,31 +322,36 @@ class TransactionsView extends StatelessWidget {
   Widget build(BuildContext c) {
     final transactions = c.select((HistoryCubit h) => h.state.transactions);
 
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      if (transactions == null || transactions.length == 0)
-        Container()
-      else ...[
-        Padding(
-          padding: const EdgeInsets.only(left: 16, top: 32, bottom: 24),
-          child: Text('HISTORY',
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (transactions == null || transactions.isEmpty)
+          Container()
+        else ...[
+          Padding(
+            padding: const EdgeInsets.only(left: 16, top: 32, bottom: 24),
+            child: Text(
+              'HISTORY',
               style: c.fonts.overline!.copyWith(
                 color: c.colours.onBackground,
-              )),
-        ),
-        for (var transaction in transactions)
-          TransactionCell(transaction: transaction),
-      ]
-      // if (!state.loadingTransactions) ...[
-      //   SizedBox(height: 24),
-      //   Center(
-      //       child: TextButton(
-      //           onPressed: () {
-      //             c.read<HistoryCubit>().getHistory();
-      //           },
-      //           child: Text('Load More'))),
-      //   SizedBox(height: 24),
-      // ]
-    ]);
+              ),
+            ),
+          ),
+          for (var transaction in transactions)
+            TransactionCell(transaction: transaction),
+        ]
+        // if (!state.loadingTransactions) ...[
+        //   SizedBox(height: 24),
+        //   Center(
+        //       child: TextButton(
+        //           onPressed: () {
+        //             c.read<HistoryCubit>().getHistory();
+        //           },
+        //           child: Text('Load More'))),
+        //   SizedBox(height: 24),
+        // ]
+      ],
+    );
   }
 }
 
@@ -306,40 +361,58 @@ class HistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     final state = c.select((HistoryCubit h) => h.state);
-    return Scaffold(
-      body: SafeArea(
+    return WillPopScope(
+      onWillPop: () async {
+        c.read<WalletsCubit>().clearSelectedWallet();
+        return true;
+      },
+      child: Scaffold(
+        body: SafeArea(
           child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (state.loadingTransactions) LinearProgressIndicator(),
-            Header(cornerTitle: 'STACKMATE', children: [
-              SizedBox(height: 8),
-              Back(),
-              SizedBox(height: 60),
-              Text(' ' + state.wallet!.label.toUpperCase(),
-                  style: c.fonts.headline4!.copyWith(
-                    color: Colors.white,
-                  )),
-              SizedBox(height: 24),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        c,
-                        Routes.receive,
-                        arguments: state.wallet!,
-                      );
-                    },
-                    child: Text('Receive')),
-              ),
-              SizedBox(height: 48),
-            ]),
-            TransactionsView()
-          ],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (state.loadingTransactions) const LinearProgressIndicator(),
+                Header(
+                  cornerTitle: 'STACKMATE',
+                  children: [
+                    const SizedBox(height: 8),
+                    Back(
+                      onPressed: () {
+                        c.read<WalletsCubit>().clearSelectedWallet();
+                        Navigator.of(c).pop();
+                      },
+                    ),
+                    const SizedBox(height: 60),
+                    Text(
+                      ' ' + state.wallet!.label.toUpperCase(),
+                      style: c.fonts.headline4!.copyWith(
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            c,
+                            Routes.receive,
+                            // arguments: state.wallet!,
+                          );
+                        },
+                        child: const Text('Receive'),
+                      ),
+                    ),
+                    const SizedBox(height: 48),
+                  ],
+                ),
+                TransactionsView()
+              ],
+            ),
+          ),
         ),
-      )),
+      ),
     );
   }
 }

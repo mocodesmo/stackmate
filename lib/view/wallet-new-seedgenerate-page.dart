@@ -7,56 +7,63 @@ import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button2.dart';
 import 'package:sats/view/common/header-text.dart';
 import 'package:sats/view/common/header.dart';
-import 'package:sats/view/new-wallet/network-on.dart';
 import 'package:sats/view/new-wallet/network-off.dart';
+import 'package:sats/view/new-wallet/network-on.dart';
 import 'package:sats/view/new-wallet/step.dart';
 
 class NewGenerateStepper extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     return BlocBuilder<SeedGenerateCubit, SeedGenerateState>(
-        buildWhen: (previous, current) =>
-            previous.currentStep != current.currentStep,
-        builder: (context, state) {
-          final stepLabel = state.currentStepLabel();
-          final steps = SeedGenerateSteps.values.length;
-          final idx = state.currentStep.index;
+      buildWhen: (previous, current) =>
+          previous.currentStep != current.currentStep,
+      builder: (context, state) {
+        final stepLabel = state.currentStepLabel();
+        final steps = SeedGenerateSteps.values.length;
+        final idx = state.currentStep.index;
 
-          return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              stepLabel,
+              style: c.fonts.headline6!.copyWith(color: Colors.white),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text(
-                  stepLabel,
-                  style: c.fonts.headline6!.copyWith(color: Colors.white),
-                ),
-                SizedBox(height: 24),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      for (var i = 0; i < steps; i++)
-                        Container(
-                          height: 8,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              color: i <= idx
-                                  ? Colors.blue.withOpacity(0.4)
-                                  : Colors.white,
-                              borderRadius: BorderRadius.circular(8)),
-                        ),
-                    ]),
-                SizedBox(height: 24),
-              ]);
-        });
+                for (var i = 0; i < steps; i++)
+                  Container(
+                    height: 8,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      color: i <= idx
+                          ? Colors.blue.withOpacity(0.4)
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 24),
+          ],
+        );
+      },
+    );
   }
 }
 
 class SeedGenerateWarning extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      HeaderTextDark(text: 'Security Information'),
-      SizedBox(height: 24),
-      Text('''
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const HeaderTextDark(text: 'Security Information'),
+        const SizedBox(height: 24),
+        Text(
+          '''
 Write down your seed phrase on a piece of paper
 and store in a safe place.
 
@@ -68,14 +75,20 @@ locked out of the app or get a new device.
 
 For maximum security, you will be forced to turn off
 all networking for your device during this process.
-      ''', style: c.fonts.caption!.copyWith(color: Colors.white)),
-      SizedBox(height: 24),
-      TextButton(
+      ''',
+          style: c.fonts.caption!.copyWith(color: Colors.white),
+        ),
+        const SizedBox(height: 24),
+        TextButton(
           onPressed: () {
             c.read<SeedGenerateCubit>().nextClicked();
           },
-          child: Text('I Understand'.notLocalised())),
-    ]);
+          child: Text(
+            'I Understand'.notLocalised(),
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -83,36 +96,46 @@ class SeedGeneratePassphrase extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     return BlocBuilder<SeedGenerateCubit, SeedGenerateState>(
-        buildWhen: (previous, current) =>
-            previous.errPassphrase != current.errPassphrase,
-        builder: (context, state) {
-          return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(height: 24),
-                HeaderTextDark(text: 'Enter an\noptional\npassphrase'),
-                SizedBox(height: 24),
-                Padding(
-                    padding: EdgeInsets.all(0),
-                    child: TextField(
-                        onChanged: (text) {
-                          c.read<SeedGenerateCubit>().passPhrasedChanged(text);
-                        },
-                        decoration: InputDecoration(labelText: 'Passphrase'))),
-                SizedBox(height: 40),
-                if (state.errPassphrase != '')
-                  Text(state.errPassphrase,
-                      style: c.fonts.caption!.copyWith(color: c.colours.error)),
-                SizedBox(height: 24),
-                Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextButton(
-                        onPressed: () {
-                          c.read<SeedGenerateCubit>().nextClicked();
-                        },
-                        child: Text('Confirm')))
-              ]);
-        });
+      buildWhen: (previous, current) =>
+          previous.errPassphrase != current.errPassphrase,
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 24),
+            const HeaderTextDark(text: 'Enter an\noptional\npassphrase'),
+            const SizedBox(height: 24),
+            Padding(
+              padding: EdgeInsets.zero,
+              child: TextField(
+                onChanged: (text) {
+                  c.read<SeedGenerateCubit>().passPhrasedChanged(text);
+                },
+                decoration: const InputDecoration(labelText: 'Passphrase'),
+              ),
+            ),
+            const SizedBox(height: 40),
+            if (state.errPassphrase != '')
+              Text(
+                state.errPassphrase,
+                style: c.fonts.caption!.copyWith(
+                  color: c.colours.error,
+                ),
+              ),
+            const SizedBox(height: 24),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextButton(
+                onPressed: () {
+                  c.read<SeedGenerateCubit>().nextClicked();
+                },
+                child: const Text('Confirm'),
+              ),
+            )
+          ],
+        );
+      },
+    );
   }
 }
 
@@ -130,21 +153,26 @@ class SeedWord extends StatelessWidget {
   Widget build(BuildContext c) {
     return Expanded(
       child: GestureDetector(
-          onTap: () {
-            if (onTap == null) return;
-            onTap!();
-          },
-          child: Container(
-              margin: EdgeInsets.symmetric(vertical: 8),
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              decoration: BoxDecoration(
-                  color: c.colours.secondary,
-                  borderRadius: BorderRadius.circular(4)),
-              child: Text(text,
-                  textAlign: TextAlign.left,
-                  style: c.fonts.subtitle2!.copyWith(
-                    color: onTap == null ? Colors.white : c.colours.primary,
-                  )))),
+        onTap: () {
+          if (onTap == null) return;
+          onTap!();
+        },
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          decoration: BoxDecoration(
+            color: c.colours.secondary,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Text(
+            text,
+            textAlign: TextAlign.left,
+            style: c.fonts.subtitle2!.copyWith(
+              color: onTap == null ? Colors.white : c.colours.primary,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -155,44 +183,59 @@ class SeedGenerate extends StatelessWidget {
     final words = c.select((SeedGenerateCubit c) => c.state.seed);
 
     return SingleChildScrollView(
-        child:
-            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      HeaderTextDark(text: 'Write down your\nseed phrase'.notLocalised()),
-      SizedBox(height: 16),
-      Text(
-        'Make sure that no one can view,\nwhat you are writing'.notLocalised(),
-        style: c.fonts.caption!.copyWith(color: Colors.white),
-      ),
-      SizedBox(height: 16),
-      Container(
-          padding: EdgeInsets.symmetric(horizontal: 0, vertical: 16),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            if (words != null)
-              for (var i = 0; i < words.length; i++)
-                if (i % 2 == 0 && i < 12)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Row(children: [
-                      if (i == 0)
-                        SeedWord(text: '1. ' + words[i])
-                      else
-                        SeedWord(text: (i + 1).toString() + '. ' + words[i]),
-                      SizedBox(width: 8),
-                      SeedWord(text: (i + 2).toString() + '. ' + words[i + 1])
-                    ]),
-                  )
-          ])),
-      SizedBox(height: 24),
-      Padding(
-          padding: EdgeInsets.all(16),
-          child: TextButton(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          HeaderTextDark(text: 'Write down your\nseed phrase'.notLocalised()),
+          const SizedBox(height: 16),
+          Text(
+            'Make sure that no one can view,\nwhat you are writing'
+                .notLocalised(),
+            style: c.fonts.caption!.copyWith(color: Colors.white),
+          ),
+          const SizedBox(height: 16),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (words != null)
+                  for (var i = 0; i < words.length; i++)
+                    if (i % 2 == 0 && i < 12)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Row(
+                          children: [
+                            if (i == 0)
+                              SeedWord(text: '1. ' + words[i])
+                            else
+                              SeedWord(
+                                text: (i + 1).toString() + '. ' + words[i],
+                              ),
+                            const SizedBox(width: 8),
+                            SeedWord(
+                              text: (i + 2).toString() + '. ' + words[i + 1],
+                            )
+                          ],
+                        ),
+                      )
+              ],
+            ),
+          ),
+          const SizedBox(height: 24),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: TextButton(
               onPressed: () {
                 c.read<SeedGenerateCubit>().nextClicked();
               },
-              child: Text('Next'))),
-      SizedBox(height: 24)
-    ]));
+              child: const Text('Next'),
+            ),
+          ),
+          const SizedBox(height: 24)
+        ],
+      ),
+    );
   }
 }
 
@@ -209,57 +252,80 @@ class SeedConfirm extends StatelessWidget {
 
     final error = c.select((SeedGenerateCubit c) => c.state.quizSeedError);
 
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: HeaderTextDark(text: 'Confirm seed\nphrase'),
-      ),
-      SizedBox(height: 8),
-      Container(
-          margin: EdgeInsets.all(24),
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: HeaderTextDark(text: 'Confirm seed\nphrase'),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          margin: const EdgeInsets.all(24),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(width: 2)),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(width: 2),
+          ),
           child: SizedBox(
-              height: 88,
-              child: Center(
-                  child: Text(answerIdx + '.',
-                      style: c.fonts.headline5!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ))))),
-      if (error != '')
+            height: 88,
+            child: Center(
+              child: Text(
+                answerIdx + '.',
+                style: c.fonts.headline5!.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+        if (error != '')
+          Center(
+            child: Text(
+              error,
+              style: c.fonts.caption!.copyWith(color: c.colours.error),
+            ),
+          ),
+        const SizedBox(height: 8),
         Center(
-            child: Text(error,
-                style: c.fonts.caption!.copyWith(color: c.colours.error))),
-      SizedBox(height: 8),
-      Center(
-          child: Text('Select the correct answer',
-              style: c.fonts.subtitle1!.copyWith(color: Colors.white))),
-      SizedBox(height: 16),
-      for (var i = 0; i < words.length; i++)
-        if (i % 2 == 0)
-          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-            SeedWord(
-                text: words[i],
-                onTap: () {
-                  c.read<SeedGenerateCubit>().seedWordSelected(words[i]);
-                }),
-            SizedBox(width: 8),
-            SeedWord(
-                text: words[i + 1],
-                onTap: () {
-                  c.read<SeedGenerateCubit>().seedWordSelected(words[i + 1]);
-                })
-          ]),
-      SizedBox(height: 32),
-      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        StepCell(isOn: true, isSelected: true, text: ''),
-        StepCell(isOn: completedIdx > 1, isSelected: true, text: ''),
-        StepCell(isOn: completedIdx > 2, isSelected: true, text: '')
-      ])
-    ]);
+          child: Text(
+            'Select the correct answer',
+            style: c.fonts.subtitle1!.copyWith(color: Colors.white),
+          ),
+        ),
+        const SizedBox(height: 16),
+        for (var i = 0; i < words.length; i++)
+          if (i % 2 == 0)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SeedWord(
+                  text: words[i],
+                  onTap: () {
+                    c.read<SeedGenerateCubit>().seedWordSelected(words[i]);
+                  },
+                ),
+                const SizedBox(width: 8),
+                SeedWord(
+                  text: words[i + 1],
+                  onTap: () {
+                    c.read<SeedGenerateCubit>().seedWordSelected(words[i + 1]);
+                  },
+                )
+              ],
+            ),
+        const SizedBox(height: 32),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const StepCell(isOn: true, isSelected: true, text: ''),
+            StepCell(isOn: completedIdx > 1, isSelected: true, text: ''),
+            StepCell(isOn: completedIdx > 2, isSelected: true, text: '')
+          ],
+        )
+      ],
+    );
   }
 }
 
@@ -269,39 +335,47 @@ class SeedGenerateLabel extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     return BlocBuilder<SeedGenerateCubit, SeedGenerateState>(
-        buildWhen: (previous, current) =>
-            previous.walletLabelError != current.walletLabelError,
-        builder: (context, state) {
-          return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(height: 24),
-                HeaderTextDark(text: 'Name your wallet'),
-                SizedBox(height: 24),
-                Padding(
-                    padding: EdgeInsets.all(0),
-                    child: TextField(
-                        onChanged: (text) {
-                          c.read<SeedGenerateCubit>().labelChanged(text);
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'Wallet Name',
-                          labelStyle: TextStyle(color: Colors.transparent),
-                        ))),
-                SizedBox(height: 40),
-                if (state.walletLabelError != '')
-                  Text(state.walletLabelError,
-                      style: c.fonts.caption!.copyWith(color: c.colours.error)),
-                SizedBox(height: 24),
-                Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextButton(
-                        onPressed: () {
-                          c.read<SeedGenerateCubit>().nextClicked();
-                        },
-                        child: Text('Confirm')))
-              ]);
-        });
+      buildWhen: (previous, current) =>
+          previous.walletLabelError != current.walletLabelError,
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 24),
+            const HeaderTextDark(text: 'Name your wallet'),
+            const SizedBox(height: 24),
+            Padding(
+              padding: EdgeInsets.zero,
+              child: TextField(
+                onChanged: (text) {
+                  c.read<SeedGenerateCubit>().labelChanged(text);
+                },
+                decoration: const InputDecoration(
+                  labelText: 'Wallet Name',
+                  labelStyle: TextStyle(color: Colors.transparent),
+                ),
+              ),
+            ),
+            const SizedBox(height: 40),
+            if (state.walletLabelError != '')
+              Text(
+                state.walletLabelError,
+                style: c.fonts.caption!.copyWith(color: c.colours.error),
+              ),
+            const SizedBox(height: 24),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextButton(
+                onPressed: () {
+                  c.read<SeedGenerateCubit>().nextClicked();
+                },
+                child: const Text('Confirm'),
+              ),
+            )
+          ],
+        );
+      },
+    );
   }
 }
 
@@ -322,86 +396,104 @@ class _SeedGeneratePageState extends State<SeedGeneratePage> {
   @override
   Widget build(BuildContext c) {
     return BlocConsumer<SeedGenerateCubit, SeedGenerateState>(
-        listenWhen: (previous, current) =>
-            previous.currentStep != current.currentStep ||
-            previous.newWalletSaved != current.newWalletSaved,
-        listener: (context, state) {
-          _scrollController!.animateTo(0,
-              duration: Duration(milliseconds: 300), curve: Curves.bounceIn);
+      listenWhen: (previous, current) =>
+          previous.currentStep != current.currentStep ||
+          previous.newWalletSaved != current.newWalletSaved,
+      listener: (context, state) {
+        _scrollController!.animateTo(
+          0,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.bounceIn,
+        );
 
-          if (state.newWalletSaved) {
-            Navigator.pushReplacementNamed(context, Routes.home);
-          }
-        },
-        buildWhen: (previous, current) =>
-            previous.currentStep != current.currentStep,
-        builder: (context, state) {
-          return WillPopScope(
-              onWillPop: () async {
-                if (!state.canGoBack()) {
-                  c.read<SeedGenerateCubit>().backClicked();
-                  return false;
-                }
-                return true;
-              },
-              child: Scaffold(
-                  backgroundColor: c.colours.secondary,
-                  body: SafeArea(
-                      child: SingleChildScrollView(
-                          controller: _scrollController,
-                          child: Column(children: [
-                            Header(cornerTitle: 'Generate Seed', children: [
-                              BckButton(
-                                  text: 'EXIT',
-                                  onTapped: () {
-                                    if (!state.canGoBack()) {
-                                      c.read<SeedGenerateCubit>().backClicked();
-                                      return;
-                                    }
+        if (state.newWalletSaved) {
+          Navigator.pushReplacementNamed(context, Routes.home);
+        }
+      },
+      buildWhen: (previous, current) =>
+          previous.currentStep != current.currentStep,
+      builder: (context, state) {
+        return WillPopScope(
+          onWillPop: () async {
+            if (!state.canGoBack()) {
+              c.read<SeedGenerateCubit>().backClicked();
+              return false;
+            }
+            return true;
+          },
+          child: Scaffold(
+            backgroundColor: c.colours.secondary,
+            body: SafeArea(
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                child: Column(
+                  children: [
+                    Header(
+                      cornerTitle: 'Generate Seed',
+                      children: [
+                        BckButton(
+                          text: 'EXIT',
+                          onTapped: () {
+                            if (!state.canGoBack()) {
+                              c.read<SeedGenerateCubit>().backClicked();
+                              return;
+                            }
 
-                                    Navigator.pop(c);
-                                  }),
-                              SizedBox(height: 24),
-                            ]),
-                            Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 24.0),
-                                child: NewGenerateStepper()),
-                            FadeInLeft(
-                              key: Key(state.currentStepLabel()),
-                              child: Container(
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 32, vertical: 24),
-                                  padding: EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                                      color: c.colours.surface,
-                                      borderRadius: BorderRadius.circular(8)),
-                                  child: () {
-                                    switch (state.currentStep) {
-                                      case SeedGenerateSteps.warning:
-                                        return SeedGenerateWarning();
+                            Navigator.pop(c);
+                          },
+                        ),
+                        const SizedBox(height: 24),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      child: NewGenerateStepper(),
+                    ),
+                    FadeInLeft(
+                      key: Key(state.currentStepLabel()),
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 32,
+                          vertical: 24,
+                        ),
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: c.colours.surface,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: () {
+                          switch (state.currentStep) {
+                            case SeedGenerateSteps.warning:
+                              return SeedGenerateWarning();
 
-                                      case SeedGenerateSteps.security:
-                                        return SeedNetworkOff(isImport: false);
+                            case SeedGenerateSteps.security:
+                              return const SeedNetworkOff(isImport: false);
 
-                                      case SeedGenerateSteps.generate:
-                                        return SeedGenerate();
+                            case SeedGenerateSteps.generate:
+                              return SeedGenerate();
 
-                                      case SeedGenerateSteps.confirm:
-                                        return SeedConfirm();
+                            case SeedGenerateSteps.confirm:
+                              return SeedConfirm();
 
-                                      case SeedGenerateSteps.passphrase:
-                                        return SeedGeneratePassphrase();
+                            case SeedGenerateSteps.passphrase:
+                              return SeedGeneratePassphrase();
 
-                                      case SeedGenerateSteps.label:
-                                        return SeedGenerateLabel();
+                            case SeedGenerateSteps.label:
+                              return const SeedGenerateLabel();
 
-                                      case SeedGenerateSteps.networkOn:
-                                        return SeedNetworkOn(isImport: false);
-                                    }
-                                  }()),
-                            )
-                          ])))));
-        });
+                            case SeedGenerateSteps.networkOn:
+                              return const SeedNetworkOn(isImport: false);
+                          }
+                        }(),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

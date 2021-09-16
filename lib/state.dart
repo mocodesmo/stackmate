@@ -5,9 +5,12 @@ import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/deps.dart';
+import 'package:sats/pkg/clipboard.dart';
 import 'package:sats/pkg/storage.dart';
 
-final loggerCubit = LoggerCubit();
+final loggerCubit = LoggerCubit(
+  locator<IClipBoard>(),
+);
 
 final blockchainCubit = BlockchainCubit(
   locator<IStorage>(),

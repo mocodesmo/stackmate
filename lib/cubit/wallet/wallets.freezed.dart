@@ -17,9 +17,11 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$WalletsStateTearOff {
   const _$WalletsStateTearOff();
 
-  _WalletsState call({List<Wallet> wallets = const []}) {
+  _WalletsState call(
+      {List<Wallet> wallets = const [], Wallet? selectedWallet}) {
     return _WalletsState(
       wallets: wallets,
+      selectedWallet: selectedWallet,
     );
   }
 }
@@ -30,6 +32,7 @@ const $WalletsState = _$WalletsStateTearOff();
 /// @nodoc
 mixin _$WalletsState {
   List<Wallet> get wallets => throw _privateConstructorUsedError;
+  Wallet? get selectedWallet => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $WalletsStateCopyWith<WalletsState> get copyWith =>
@@ -41,7 +44,9 @@ abstract class $WalletsStateCopyWith<$Res> {
   factory $WalletsStateCopyWith(
           WalletsState value, $Res Function(WalletsState) then) =
       _$WalletsStateCopyWithImpl<$Res>;
-  $Res call({List<Wallet> wallets});
+  $Res call({List<Wallet> wallets, Wallet? selectedWallet});
+
+  $WalletCopyWith<$Res>? get selectedWallet;
 }
 
 /// @nodoc
@@ -55,13 +60,29 @@ class _$WalletsStateCopyWithImpl<$Res> implements $WalletsStateCopyWith<$Res> {
   @override
   $Res call({
     Object? wallets = freezed,
+    Object? selectedWallet = freezed,
   }) {
     return _then(_value.copyWith(
       wallets: wallets == freezed
           ? _value.wallets
           : wallets // ignore: cast_nullable_to_non_nullable
               as List<Wallet>,
+      selectedWallet: selectedWallet == freezed
+          ? _value.selectedWallet
+          : selectedWallet // ignore: cast_nullable_to_non_nullable
+              as Wallet?,
     ));
+  }
+
+  @override
+  $WalletCopyWith<$Res>? get selectedWallet {
+    if (_value.selectedWallet == null) {
+      return null;
+    }
+
+    return $WalletCopyWith<$Res>(_value.selectedWallet!, (value) {
+      return _then(_value.copyWith(selectedWallet: value));
+    });
   }
 }
 
@@ -72,7 +93,10 @@ abstract class _$WalletsStateCopyWith<$Res>
           _WalletsState value, $Res Function(_WalletsState) then) =
       __$WalletsStateCopyWithImpl<$Res>;
   @override
-  $Res call({List<Wallet> wallets});
+  $Res call({List<Wallet> wallets, Wallet? selectedWallet});
+
+  @override
+  $WalletCopyWith<$Res>? get selectedWallet;
 }
 
 /// @nodoc
@@ -88,12 +112,17 @@ class __$WalletsStateCopyWithImpl<$Res> extends _$WalletsStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? wallets = freezed,
+    Object? selectedWallet = freezed,
   }) {
     return _then(_WalletsState(
       wallets: wallets == freezed
           ? _value.wallets
           : wallets // ignore: cast_nullable_to_non_nullable
               as List<Wallet>,
+      selectedWallet: selectedWallet == freezed
+          ? _value.selectedWallet
+          : selectedWallet // ignore: cast_nullable_to_non_nullable
+              as Wallet?,
     ));
   }
 }
@@ -101,15 +130,17 @@ class __$WalletsStateCopyWithImpl<$Res> extends _$WalletsStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_WalletsState with DiagnosticableTreeMixin implements _WalletsState {
-  const _$_WalletsState({this.wallets = const []});
+  const _$_WalletsState({this.wallets = const [], this.selectedWallet});
 
   @JsonKey(defaultValue: const [])
   @override
   final List<Wallet> wallets;
+  @override
+  final Wallet? selectedWallet;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'WalletsState(wallets: $wallets)';
+    return 'WalletsState(wallets: $wallets, selectedWallet: $selectedWallet)';
   }
 
   @override
@@ -117,7 +148,8 @@ class _$_WalletsState with DiagnosticableTreeMixin implements _WalletsState {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'WalletsState'))
-      ..add(DiagnosticsProperty('wallets', wallets));
+      ..add(DiagnosticsProperty('wallets', wallets))
+      ..add(DiagnosticsProperty('selectedWallet', selectedWallet));
   }
 
   @override
@@ -125,12 +157,18 @@ class _$_WalletsState with DiagnosticableTreeMixin implements _WalletsState {
     return identical(this, other) ||
         (other is _WalletsState &&
             (identical(other.wallets, wallets) ||
-                const DeepCollectionEquality().equals(other.wallets, wallets)));
+                const DeepCollectionEquality()
+                    .equals(other.wallets, wallets)) &&
+            (identical(other.selectedWallet, selectedWallet) ||
+                const DeepCollectionEquality()
+                    .equals(other.selectedWallet, selectedWallet)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(wallets);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(wallets) ^
+      const DeepCollectionEquality().hash(selectedWallet);
 
   @JsonKey(ignore: true)
   @override
@@ -139,10 +177,13 @@ class _$_WalletsState with DiagnosticableTreeMixin implements _WalletsState {
 }
 
 abstract class _WalletsState implements WalletsState {
-  const factory _WalletsState({List<Wallet> wallets}) = _$_WalletsState;
+  const factory _WalletsState({List<Wallet> wallets, Wallet? selectedWallet}) =
+      _$_WalletsState;
 
   @override
   List<Wallet> get wallets => throw _privateConstructorUsedError;
+  @override
+  Wallet? get selectedWallet => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$WalletsStateCopyWith<_WalletsState> get copyWith =>

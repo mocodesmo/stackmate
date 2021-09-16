@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/wallet/blockchain.dart';
-import 'package:sats/model/wallet.dart';
+import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/pkg/bitcoin.dart';
 import 'package:sats/pkg/clipboard.dart';
@@ -21,17 +21,17 @@ class ReceiveState with _$ReceiveState {
 
 class ReceiveCubit extends Cubit<ReceiveState> {
   ReceiveCubit(
-    this._wallet,
+    this._walletCubit,
     this._bitcoin,
     this._blockchain,
     this._logger,
     this._clipBoard,
     this._share,
-  ) : super(ReceiveState()) {
-    this.getAddress();
+  ) : super(const ReceiveState()) {
+    getAddress();
   }
 
-  final Wallet _wallet;
+  final WalletsCubit _walletCubit;
   final IBitcoin _bitcoin;
   final LoggerCubit _logger;
   final BlockchainCubit _blockchain;
@@ -40,26 +40,42 @@ class ReceiveCubit extends Cubit<ReceiveState> {
 
   void getAddress() async {
     try {
-      emit(state.copyWith(
-        loadingAddress: true,
-        errLoadingAddress: '',
-      ));
+      emit(
+        state.copyWith(
+          loadingAddress: true,
+          errLoadingAddress: '',
+        ),
+      );
+
+      final w = _walletCubit.state.selectedWallet!.descriptor.split('#')[0];
 
       final address = await _bitcoin.getAddress(
-        depositDesc: _wallet.descriptor,
+        depositDesc: w, //_wallet.descriptor,
         network: _blockchain.state.blockchain.name,
         index: '0',
       );
 
-      emit(state.copyWith(
-        loadingAddress: false,
-        address: address,
-      ));
+      _logger.logAPI(
+        'get address',
+        'desc: $w\nnetwork: ' +
+            _blockchain.state.blockchain.name +
+            '\n\nresp:\n$address',
+        000,
+      );
+
+      emit(
+        state.copyWith(
+          loadingAddress: false,
+          address: address,
+        ),
+      );
     } catch (e, s) {
-      emit(state.copyWith(
-        loadingAddress: false,
-        errLoadingAddress: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          loadingAddress: false,
+          errLoadingAddress: e.toString(),
+        ),
+      );
       _logger.logException(e, 'ReceiveCubit.getAddress', s);
     }
   }
@@ -74,7 +90,7 @@ class ReceiveCubit extends Cubit<ReceiveState> {
 
   void shareAddress(String address) {
     try {
-      final text = 'This is my bitcoin address:\n' + address;
+      final text = 'This is my bitcoin address:\n$address';
       _share.share(text: text, subjectForEmail: 'Bitcoin Address');
     } catch (e, s) {
       _logger.logException(e, 'WalletCubit.shareAddress', s);

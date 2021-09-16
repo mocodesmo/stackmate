@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/api/reddit.dart';
-import 'package:sats/model/reddit-post.dart';
 import 'package:sats/cubit/logger.dart';
+import 'package:sats/model/reddit-post.dart';
 import 'package:sats/pkg/launcher.dart';
 import 'package:sats/pkg/storage.dart';
 
@@ -24,8 +24,8 @@ class RedditCubit extends Cubit<RedditState> {
     this._logger,
     this._launcher,
     this._storage,
-  ) : super(RedditState()) {
-    this.getPosts();
+  ) : super(const RedditState()) {
+    getPosts();
   }
 
   final IRedditAPI _reddit;
@@ -43,21 +43,21 @@ class RedditCubit extends Cubit<RedditState> {
       // }
 
       emit(state.copyWith(loading: true, error: ''));
-      var response = await _reddit.fetchPosts('bitcoin');
+      final response = await _reddit.fetchPosts('bitcoin');
       if (response.data == null || response.statusCode != 200) throw '';
 
       final posts = await compute(_parsePosts, response.data);
 
       emit(state.copyWith(posts: posts, loading: false));
 
-      for (var p in posts) _storage.saveItem(StoreKeys.RedditPost.name, p);
+      // for (final p in posts) _storage.saveItem(StoreKeys.RedditPost.name, p);
     } catch (e, s) {
       _logger.logException(e, 'RedditBloc._mapGetPostsToState', s);
       emit(state.copyWith(loading: false, error: 'Error Occured.'));
     }
   }
 
-  openPostLink(RedditPost post) {
+  void openPostLink(RedditPost post) {
     try {
       _launcher.launchApp(post.link());
     } catch (e, s) {
@@ -65,7 +65,7 @@ class RedditCubit extends Cubit<RedditState> {
     }
   }
 
-  openLink(String link) {
+  void openLink(String link) {
     try {
       _launcher.launchApp(link);
     } catch (e, s) {
