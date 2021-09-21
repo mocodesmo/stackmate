@@ -1,4 +1,6 @@
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// ignore_for_file: constant_identifier_names
+
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/model/reddit-post.dart';

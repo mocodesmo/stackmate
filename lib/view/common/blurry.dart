@@ -11,7 +11,6 @@ const kDemoText = Center(
       letterSpacing: 2,
     ),
     textAlign: TextAlign.center,
-
   ),
 );
 const double kBlur = 1.0;
@@ -21,17 +20,7 @@ const BorderRadius kBorderRadius = BorderRadius.all(Radius.circular(20));
 const double kColorOpacity = 0.0;
 
 class BlurryContainer extends StatelessWidget {
-  final Widget child;
-  final double blur;
-  final double? height, width;
-  final EdgeInsetsGeometry padding;
-  final Color bgColor;
-
-  final BorderRadius borderRadius;
-
-  //final double colorOpacity;
-
-  BlurryContainer({
+  const BlurryContainer({
     this.child = kDemoText,
     this.blur = 5,
     required this.height,
@@ -41,6 +30,17 @@ class BlurryContainer extends StatelessWidget {
     this.borderRadius = kBorderRadius,
     //this.colorOpacity = kColorOpacity,
   });
+  
+  final Widget child;
+  final double blur;
+  final double? height;
+  final double? width;
+  final EdgeInsetsGeometry padding;
+  final Color bgColor;
+
+  final BorderRadius borderRadius;
+
+  //final double colorOpacity;
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +49,8 @@ class BlurryContainer extends StatelessWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
         child: Container(
-          height: height!,
-          width: width!,
+          height: height,
+          width: width,
           padding: padding,
           color: bgColor == Colors.transparent
               ? bgColor

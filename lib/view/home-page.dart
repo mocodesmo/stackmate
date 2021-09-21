@@ -1,13 +1,14 @@
 import 'dart:ui';
+
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:sats/cubit/reddit.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
+import 'package:sats/model/reddit-post.dart';
+import 'package:sats/model/wallet.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/log-button.dart';
-import 'package:animate_do/animate_do.dart';
-import 'package:sats/model/reddit-post.dart';
-import 'package:sats/cubit/reddit.dart';
-import 'package:sats/model/wallet.dart';
 
 class HeaderRow extends StatelessWidget {
   @override
@@ -19,8 +20,9 @@ class HeaderRow extends StatelessWidget {
         children: [
           const RedditLoader(),
           Padding(
-              padding: const EdgeInsets.only(top: 8, left: 24, right: 16),
-              child: Row(children: [
+            padding: const EdgeInsets.only(top: 8, left: 24, right: 16),
+            child: Row(
+              children: [
                 Text(
                   'STACKMATE',
                   style: c.fonts.headline5!.copyWith(
@@ -31,11 +33,16 @@ class HeaderRow extends StatelessWidget {
                 LogButton(
                   child: IconButton(
                     onPressed: () {},
-                    icon: Icon(Icons.lightbulb_outline_sharp,
-                        size: 32, color: c.colours.primary),
+                    icon: Icon(
+                      Icons.lightbulb_outline_sharp,
+                      size: 32,
+                      color: c.colours.primary,
+                    ),
                   ),
                 ),
-              ])),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -58,51 +65,58 @@ class WalletCard extends StatelessWidget {
         );
       },
       child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          child: Material(
-              elevation: 4,
-              borderRadius: BorderRadius.circular(16),
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              color: context.colours.background,
-              child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                      sigmaX: 0, sigmaY: 0, tileMode: TileMode.mirror),
-                  child: Container(
-                    height: 180,
-                    width: 150,
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.centerRight,
-                            stops: [
-                          0.3,
-                          0.99
-                        ],
-                            colors: [
-                          context.colours.surface,
-                          context.colours.surface,
-                        ])),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          wallet.label,
-                          style: context.fonts.caption!.copyWith(
-                            color: context.colours.onBackground,
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          wallet.descriptor,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 10,
-                          style: context.fonts.caption!.copyWith(
-                              color: context.colours.onBackground, fontSize: 8),
-                        ),
-                      ],
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        child: Material(
+          elevation: 4,
+          borderRadius: BorderRadius.circular(16),
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          color: context.colours.background,
+          child: BackdropFilter(
+            filter: ImageFilter.blur(
+              // sigmaX: 0,
+              // sigmaY: 0,
+              tileMode: TileMode.mirror,
+            ),
+            child: Container(
+              height: 180,
+              width: 150,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  // end: Alignment.centerRight,
+                  stops: const [0.3, 0.99],
+                  colors: [
+                    context.colours.surface,
+                    context.colours.surface,
+                  ],
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    wallet.label,
+                    style: context.fonts.caption!.copyWith(
+                      color: context.colours.onBackground,
                     ),
-                  )))),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    wallet.descriptor,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 10,
+                    style: context.fonts.caption!.copyWith(
+                      color: context.colours.onBackground,
+                      fontSize: 8,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -111,13 +125,13 @@ class AccountsRow extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     final wallets = c.select((WalletsCubit w) => w.state.wallets);
-    if (wallets.length == 0)
+    if (wallets.isEmpty)
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(height: 66),
+          const SizedBox(height: 66),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 40),
+            padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Text(
               'No\nwallets\nadded',
               style: c.fonts.caption!.copyWith(
@@ -128,15 +142,20 @@ class AccountsRow extends StatelessWidget {
         ],
       );
     return Container(
-        width: c.width,
-        child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-              SizedBox(width: 16),
-              for (var w in wallets) WalletCard(wallet: w),
-              SizedBox(width: 16),
-            ])));
+      width: c.width,
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          // mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const SizedBox(width: 16),
+            for (var w in wallets) WalletCard(wallet: w),
+            const SizedBox(width: 16),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -144,8 +163,10 @@ class ActionsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.only(top: 8, left: 24, right: 24, bottom: 16),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+      margin: const EdgeInsets.only(top: 8, left: 24, right: 24, bottom: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
           IconButton(
             onPressed: () {},
             icon: Icon(Icons.qr_code, size: 32, color: context.colours.primary),
@@ -157,11 +178,15 @@ class ActionsRow extends StatelessWidget {
             icon: Icon(Icons.add, size: 32, color: context.colours.primary),
           ),
           IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, Routes.calc);
-              },
-              icon: Icon(Icons.calculate_sharp,
-                  size: 32, color: context.colours.primary)),
+            onPressed: () {
+              Navigator.pushNamed(context, Routes.calc);
+            },
+            icon: Icon(
+              Icons.calculate_sharp,
+              size: 32,
+              color: context.colours.primary,
+            ),
+          ),
           IconButton(
             onPressed: () {
               Navigator.pushNamed(context, Routes.setting);
@@ -169,7 +194,9 @@ class ActionsRow extends StatelessWidget {
             icon:
                 Icon(Icons.settings, size: 32, color: context.colours.primary),
           ),
-        ]));
+        ],
+      ),
+    );
   }
 }
 
@@ -180,7 +207,7 @@ class RedditLoader extends StatelessWidget {
   Widget build(BuildContext c) {
     final loading = c.select((RedditCubit c) => c.state.loading);
 
-    if (loading) return LinearProgressIndicator();
+    if (loading) return const LinearProgressIndicator();
 
     return Container();
   }
@@ -191,44 +218,50 @@ class RedditFeed extends StatelessWidget {
   Widget build(BuildContext c) {
     final redditState = c.select((RedditCubit c) => c.state);
 
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      if (redditState.error != '') ...[
-        const SizedBox(height: 32),
-        Center(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (redditState.error != '') ...[
+          const SizedBox(height: 32),
+          Center(
             child: Text(
-          redditState.error,
-          style: c.fonts.overline!.copyWith(
-            color: c.colours.onBackground,
-          ),
-        )),
-        Center(
-          child: TextButton(
-            onPressed: () {
-              c.read<RedditCubit>().getPosts();
-            },
-            child: const Text(
-              'Try Again.',
-              // style: c.fonts.button!.copyWith(
-              // color: Colors.white,
-              // ),
+              redditState.error,
+              style: c.fonts.overline!.copyWith(
+                color: c.colours.onBackground,
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 100),
-      ] else ...[
-        SizedBox(height: 24),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-          child: Text('REDDIT FEED',
+          Center(
+            child: TextButton(
+              onPressed: () {
+                c.read<RedditCubit>().getPosts();
+              },
+              child: const Text(
+                'Try Again.',
+                // style: c.fonts.button!.copyWith(
+                // color: Colors.white,
+                // ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 100),
+        ] else ...[
+          const SizedBox(height: 24),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            child: Text(
+              'REDDIT FEED',
               style: c.fonts.overline!.copyWith(
                 color: Colors.white,
-              )),
-        ),
-        SizedBox(height: 8),
-        for (var post in redditState.posts) FeedItem(post: post),
-        SizedBox(height: 40),
-      ]
-    ]);
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          for (var post in redditState.posts) FeedItem(post: post),
+          const SizedBox(height: 40),
+        ]
+      ],
+    );
   }
 }
 
@@ -243,38 +276,53 @@ class FeedItem extends StatelessWidget {
   Widget build(BuildContext c) {
     return FadeIn(
       child: GestureDetector(
-          onTap: () {
-            c.read<RedditCubit>().openPostLink(post);
-          },
-          child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-              margin: EdgeInsets.symmetric(
-                vertical: 4,
+        onTap: () {
+          c.read<RedditCubit>().openPostLink(post);
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          margin: const EdgeInsets.symmetric(
+            vertical: 4,
+          ),
+          decoration: BoxDecoration(
+            color: c.colours.surface,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 8.0,
+                    right: 16,
+                    bottom: 8,
+                    top: 8,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        post.time(),
+                        style: c.fonts.overline!.copyWith(
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        post.title,
+                        style: c.fonts.caption!.copyWith(
+                          color: c.colours.onSurface,
+                        ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              decoration: BoxDecoration(
-                color: c.colours.surface,
-              ),
-              child: Row(children: [
-                Expanded(
-                    child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8.0, right: 16, bottom: 8, top: 8),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Text(post.time(),
-                                  style: c.fonts.overline!.copyWith(
-                                    color: Colors.white,
-                                  )),
-                              SizedBox(height: 4),
-                              Text(post.title,
-                                  style: c.fonts.caption!.copyWith(
-                                    color: c.colours.onSurface,
-                                  ),
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis),
-                            ]))),
-              ]))),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

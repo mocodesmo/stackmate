@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
-import 'package:sats/model/blockchain.dart';
 import 'package:sats/model/transaction.dart';
 
 part 'wallet.g.dart';

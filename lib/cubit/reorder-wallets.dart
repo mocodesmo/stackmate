@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/model/wallet.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/pkg/storage.dart';
 import 'package:sats/state.dart';
 
@@ -23,7 +23,7 @@ class ReorderWalletsCubit extends Cubit<ReorderWalletsState> {
     this._storage,
     this._logger,
     this._blockchain,
-  ) : super(ReorderWalletsState());
+  ) : super(const ReorderWalletsState());
 
   final IStorage _storage;
   final LoggerCubit _logger;
@@ -32,7 +32,7 @@ class ReorderWalletsCubit extends Cubit<ReorderWalletsState> {
 
   void getWallets() async {
     try {
-      var wallets = _storage.getAll<Wallet>(StoreKeys.Wallet.name);
+      final wallets = _storage.getAll<Wallet>(StoreKeys.Wallet.name);
       wallets.sort((a, b) => a.index.compareTo(b.index));
 
       emit(state.copyWith(wallets: wallets));
@@ -44,9 +44,9 @@ class ReorderWalletsCubit extends Cubit<ReorderWalletsState> {
   void rearrange(int oldIdx, int newIdx) {
     try {
       emit(state.copyWith(arranging: true));
-      var wallets = _storage.getAll<Wallet>(StoreKeys.Wallet.name);
+      final wallets = _storage.getAll<Wallet>(StoreKeys.Wallet.name);
       wallets.sort((a, b) => a.index.compareTo(b.index));
-      var movedWallet = wallets.removeAt(oldIdx);
+      final movedWallet = wallets.removeAt(oldIdx);
       wallets.insert(newIdx, movedWallet);
       _storage.clearAll(StoreKeys.Wallet.name);
       for (var i = 0; i < wallets.length; i++) {

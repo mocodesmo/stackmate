@@ -10,33 +10,48 @@ class HeaderRow extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     return Padding(
-        padding: const EdgeInsets.only(left: 16, right: 0, top: 8, bottom: 32),
-        child: Row(crossAxisAlignment: CrossAxisAlignment.start,
-            // mainAxisAlignment: MainAxisAlignment.spaceAround,
+      padding: const EdgeInsets.only(
+        left: 16,
+        // right: 0,
+        top: 8,
+        bottom: 32,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        // mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                SizedBox(height: 16),
-                Back(),
-                SizedBox(height: 60),
-                Text(' Select Wallet'.toUpperCase(),
-                    style: c.fonts.headline4!.copyWith(
-                      color: Colors.white,
-                      // color: Colors.blue[400],
-                    )),
-                SizedBox(height: 48),
-              ]),
-              Spacer(),
-              LogButton(
-                child: IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.lightbulb_outline_sharp,
-                      size: 32,
-                      // color: Colors.blue[400],
-                      color: c.colours.primary),
+              const SizedBox(height: 16),
+              const Back(),
+              const SizedBox(height: 60),
+              Text(
+                ' Select Wallet'.toUpperCase(),
+                style: c.fonts.headline4!.copyWith(
+                  color: Colors.white,
+                  // color: Colors.blue[400],
                 ),
               ),
-              SizedBox(width: 16),
-            ]));
+              const SizedBox(height: 48),
+            ],
+          ),
+          const Spacer(),
+          LogButton(
+            child: IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.lightbulb_outline_sharp,
+                size: 32,
+                // color: Colors.blue[400],
+                color: c.colours.primary,
+              ),
+            ),
+          ),
+          const SizedBox(width: 16),
+        ],
+      ),
+    );
   }
 }
 
@@ -57,51 +72,65 @@ class WalletSelection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        onPressed: () {
-          onPressed();
-        },
-        style: ElevatedButton.styleFrom(
-          elevation: 0,
-          // borderRadius: BorderRadius.circular(8),
-          // shadowColor: Colors.,
-          // color: colour,
+      onPressed: () {
+        onPressed();
+      },
+      style: ElevatedButton.styleFrom(
+        elevation: 0,
+        // borderRadius: BorderRadius.circular(8),
+        // shadowColor: Colors.,
+        // color: colour,
 
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-          primary: colour,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+        primary: colour,
+      ),
+      child: Container(
+        height: 100,
+        padding: const EdgeInsets.only(
+          // left: 0,
+          top: 16,
+          bottom: 16,
+          // right: 0,
         ),
-        child: Container(
-            height: 100,
-            padding: EdgeInsets.only(left: 0, top: 16, bottom: 16, right: 0),
-            child: Row(
+        child: Row(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(text,
-                      style: context.fonts.button!.copyWith(
-                        color: context.colours.primary,
-                        fontSize: 16,
-                      )),
-                  SizedBox(height: 4),
-                  Container(
-                    width: 240,
-                    // height: 45,
-                    child: Text(description,
-                        maxLines: 3,
-                        // softWrap: true,
-                        // overflow: TextOverflow.fade,
-                        style: context.fonts.caption!.copyWith(
-                          color: context.colours.onSurface.withOpacity(0.7),
-                          // fontWeight: FontWeight.w100,
-                        )),
+                Text(
+                  text,
+                  style: context.fonts.button!.copyWith(
+                    color: context.colours.primary,
+                    fontSize: 16,
                   ),
-                ]),
-                Spacer(),
-                Icon(
-                  Icons.navigate_next_sharp,
-                  size: 40,
-                  color: context.colours.primary,
+                ),
+                const SizedBox(height: 4),
+                Container(
+                  width: 240,
+                  // height: 45,
+                  child: Text(
+                    description,
+                    maxLines: 3,
+                    // softWrap: true,
+                    // overflow: TextOverflow.fade,
+                    style: context.fonts.caption!.copyWith(
+                      color: context.colours.onSurface.withOpacity(0.7),
+                      // fontWeight: FontWeight.w100,
+                    ),
+                  ),
                 ),
               ],
-            )));
+            ),
+            const Spacer(),
+            Icon(
+              Icons.navigate_next_sharp,
+              size: 40,
+              color: context.colours.primary,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -136,7 +165,7 @@ class AddWalletPage extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               WalletSelection(
                 text: 'Generate Seed',
                 description: lorem,
@@ -145,7 +174,7 @@ class AddWalletPage extends StatelessWidget {
                   Navigator.pushNamed(c, Routes.generateSeed);
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               WalletSelection(
                 text: 'Import Seed',
                 description: lorem,
@@ -154,7 +183,7 @@ class AddWalletPage extends StatelessWidget {
                   Navigator.pushNamed(c, Routes.importSeed);
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               WalletSelection(
                 text: 'Import Watch-only Wallet',
                 description: lorem,
@@ -163,7 +192,7 @@ class AddWalletPage extends StatelessWidget {
                   Navigator.pushNamed(c, Routes.watchOnly);
                 },
               ),
-              SizedBox(height: 48),
+              const SizedBox(height: 48),
               Padding(
                 padding: const EdgeInsets.only(left: 16),
                 child: Text(
@@ -173,7 +202,7 @@ class AddWalletPage extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
               Opacity(
                 opacity: 0.5,
                 child: Column(
@@ -186,14 +215,14 @@ class AddWalletPage extends StatelessWidget {
                         style: c.fonts.overline!.copyWith(color: Colors.white),
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     WalletSelection(
                       text: 'Raft Policy',
                       description: lorem,
                       colour: c.colours.surface,
                       onPressed: () {},
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     WalletSelection(
                       text: 'Corporate Settings',
                       description: lorem,
@@ -203,7 +232,7 @@ class AddWalletPage extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 100)
+              const SizedBox(height: 100)
             ],
           ),
         ),

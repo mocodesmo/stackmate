@@ -75,8 +75,8 @@ class RedditCubit extends Cubit<RedditState> {
 }
 
 List<RedditPost> _parsePosts(dynamic body) {
-  List<RedditPost> posts = [];
-  for (var post in body['data']['children'])
+  final List<RedditPost> posts = [];
+  for (final post in body['data']['children'])
     posts.add(RedditPost.fromJson(post['data'] as Map<String, dynamic>));
   posts.removeWhere((post) => post.score < 100);
 

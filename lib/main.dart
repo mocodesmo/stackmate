@@ -1,23 +1,22 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:sats/pkg/bitcoin.dart';
-import 'package:sats/pkg/storage.dart';
-import 'package:sats/state.dart';
-import 'package:sats/deps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:sats/deps.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
+import 'package:sats/pkg/storage.dart';
+import 'package:sats/state.dart';
 import 'package:sats/style.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   await initializeHive();
-  testBitcoin();
-  await setupDependencies(useDummies: false);
+  // testBitcoin();
+  setupDependencies(useDummies: false);
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocObserver();
 
@@ -36,12 +35,12 @@ class SatsApp extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     return Cubits(
-        child: OKToast(
-      duration: Duration(milliseconds: 600),
-      position: ToastPosition.bottom,
-      textStyle: c.fonts.caption!.copyWith(color: c.colours.onBackground),
-      child: MaterialApp(
-          locale: null,
+      child: OKToast(
+        duration: const Duration(milliseconds: 600),
+        position: ToastPosition.bottom,
+        textStyle: c.fonts.caption!.copyWith(color: c.colours.onBackground),
+        child: MaterialApp(
+          // locale: null,
           localizationsDelegates: const [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -50,29 +49,32 @@ class SatsApp extends StatelessWidget {
           builder: (context, child) {
             final mediaQueryData = MediaQuery.of(context);
             return MediaQuery(
-                data: mediaQueryData.copyWith(textScaleFactor: 1.0),
-                child: child!);
+              data: mediaQueryData.copyWith(textScaleFactor: 1.0),
+              child: child!,
+            );
           },
           navigatorKey: homeNavigator,
           debugShowCheckedModeBanner: false,
           theme: derivedTheme(mainTheme()),
-          onGenerateRoute: (settings) => Routes.setupRoutes(settings, c)),
-    ));
+          onGenerateRoute: (settings) => Routes.setupRoutes(settings, c),
+        ),
+      ),
+    );
   }
 }
 
-testBitcoin() async {
-  print("\n\n::::::::::::::::::::::\n\n");
-  try {
-    BitcoinFFI b = BitcoinFFI();
-    final res =
-        await b.generateMaster(mnemonic: '12', passphrase: '', network: '');
-    print(res);
-  } catch (e) {
-    print(e.toString());
-  }
-  print("\n\n::::::::::::::::::::::\n\n");
-}
+// testBitcoin() async {
+//   print("\n\n::::::::::::::::::::::\n\n");
+//   try {
+//     BitcoinFFI b = BitcoinFFI();
+//     final res =
+//         await b.generateMaster(mnemonic: '12', passphrase: '', network: '');
+//     print(res);
+//   } catch (e) {
+//     print(e.toString());
+//   }
+//   print('\n\n::::::::::::::::::::::\n\n');
+// }
 
 
 //   //await SentryFlutter.init(

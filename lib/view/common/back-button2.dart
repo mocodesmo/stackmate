@@ -11,22 +11,26 @@ class BckButton extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     return InkWell(
-        onTap: () {
-          onTapped();
-        },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Icon(
-              Icons.arrow_back_ios_sharp,
-              color: c.colours.onSurface,
-              size: 13,
+      onTap: () {
+        onTapped();
+      },
+      child: Row(
+        // mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Icon(
+            Icons.arrow_back_ios_sharp,
+            color: c.colours.onSurface,
+            size: 13,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 2, left: 4),
+            child: Text(
+              text,
+              style: c.fonts.button!.copyWith(color: c.colours.onSurface),
             ),
-            Padding(
-                padding: const EdgeInsets.only(bottom: 2, left: 4),
-                child: Text(text,
-                    style: c.fonts.button!.copyWith(color: c.colours.onSurface)))
-          ],
-        ));
+          )
+        ],
+      ),
+    );
   }
 }

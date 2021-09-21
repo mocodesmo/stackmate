@@ -18,31 +18,42 @@ class ImportSaveButton extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     return BlocBuilder<SeedImportCubit, SeedImportState>(
-        builder: (context, state) {
-      if (state.savingWallet)
-        return Padding(
-            padding: EdgeInsets.all(16), child: Loading(text: 'Saving'));
+      builder: (context, state) {
+        if (state.savingWallet)
+          return const Padding(
+            padding: EdgeInsets.all(16),
+            child: Loading(text: 'Saving'),
+          );
 
-      if (state.newWalletSaved) return Container();
+        if (state.newWalletSaved) return Container();
 
-      return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: AnimatedOpacity(
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: AnimatedOpacity(
                 opacity: hasOnError ? 0.3 : 1,
-                duration: Duration(milliseconds: 500),
+                duration: const Duration(milliseconds: 500),
                 child: TextButton(
-                    onPressed: () {
-                      if (hasOnError) return;
-                      c.read<SeedImportCubit>().nextClicked();
-                    },
-                    child: Text('Done')))),
-        SizedBox(height: 8),
-        if (state.savingWalletError != '')
-          Text(state.savingWalletError,
-              style: c.fonts.caption!.copyWith(color: c.colours.error))
-      ]);
-    });
+                  onPressed: () {
+                    if (hasOnError) return;
+                    c.read<SeedImportCubit>().nextClicked();
+                  },
+                  child: const Text('Done'),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            if (state.savingWalletError != '')
+              Text(
+                state.savingWalletError,
+                style: c.fonts.caption!.copyWith(color: c.colours.error),
+              )
+          ],
+        );
+      },
+    );
   }
 }
 
@@ -57,31 +68,42 @@ class GenerateSaveButton extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     return BlocBuilder<SeedGenerateCubit, SeedGenerateState>(
-        builder: (context, state) {
-      if (state.savinngWallet)
-        return Padding(
-            padding: EdgeInsets.all(16), child: Loading(text: 'Saving'));
+      builder: (context, state) {
+        if (state.savinngWallet)
+          return const Padding(
+            padding: EdgeInsets.all(16),
+            child: Loading(text: 'Saving'),
+          );
 
-      if (state.newWalletSaved) return Container();
+        if (state.newWalletSaved) return Container();
 
-      return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: AnimatedOpacity(
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: AnimatedOpacity(
                 opacity: hasOnError ? 0.3 : 1,
-                duration: Duration(milliseconds: 500),
+                duration: const Duration(milliseconds: 500),
                 child: TextButton(
-                    onPressed: () {
-                      if (hasOnError) return;
-                      c.read<SeedGenerateCubit>().nextClicked();
-                    },
-                    child: Text('Done')))),
-        SizedBox(height: 8),
-        if (state.savingWalletError != '')
-          Text(state.savingWalletError,
-              style: c.fonts.caption!.copyWith(color: c.colours.error))
-      ]);
-    });
+                  onPressed: () {
+                    if (hasOnError) return;
+                    c.read<SeedGenerateCubit>().nextClicked();
+                  },
+                  child: const Text('Done'),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            if (state.savingWalletError != '')
+              Text(
+                state.savingWalletError,
+                style: c.fonts.caption!.copyWith(color: c.colours.error),
+              )
+          ],
+        );
+      },
+    );
   }
 }
 
@@ -94,35 +116,40 @@ class SeedNetworkOn extends StatelessWidget {
   Widget build(BuildContext c) {
     final network = c.select((NetworkCubit c) => c.state);
 
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      HeaderTextDark(text: 'Turn on\nnetworking'.notLocalised()),
-      SizedBox(height: 16),
-      Padding(
-          padding: const EdgeInsets.all(0.0),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        HeaderTextDark(text: 'Turn on\nnetworking'.notLocalised()),
+        const SizedBox(height: 16),
+        Padding(
+          padding: EdgeInsets.zero,
           child: Text(
-              'For maximum security, turn off all\nnetworking on your device.'
-                  .notLocalised(),
-              style: c.fonts.subtitle2!.copyWith(
-                color: Colors.white,
-              ))),
-      SizedBox(height: 40),
-      NetworkRow(
-        isOnline: network.mobileOnline,
-        shouldTurnOn: true,
-        text: 'Mobile Network',
-      ),
-      SizedBox(height: 24),
-      NetworkRow(
-        isOnline: network.wifiOnline,
-        shouldTurnOn: true,
-        text: 'WiFi Network    ',
-      ),
-      SizedBox(height: 32),
-      if (isImport)
-        ImportSaveButton(hasOnError: network.hasOnError() != '')
-      else
-        GenerateSaveButton(hasOnError: network.hasOnError() != ''),
-      SizedBox(height: 16)
-    ]);
+            'For maximum security, turn off all\nnetworking on your device.'
+                .notLocalised(),
+            style: c.fonts.subtitle2!.copyWith(
+              color: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(height: 40),
+        NetworkRow(
+          isOnline: network.mobileOnline,
+          shouldTurnOn: true,
+          text: 'Mobile Network',
+        ),
+        const SizedBox(height: 24),
+        NetworkRow(
+          isOnline: network.wifiOnline,
+          shouldTurnOn: true,
+          text: 'WiFi Network    ',
+        ),
+        const SizedBox(height: 32),
+        if (isImport)
+          ImportSaveButton(hasOnError: network.hasOnError() != '')
+        else
+          GenerateSaveButton(hasOnError: network.hasOnError() != ''),
+        const SizedBox(height: 16)
+      ],
+    );
   }
 }

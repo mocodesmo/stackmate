@@ -1,18 +1,14 @@
 import 'dart:async';
 import 'dart:math';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
-// import 'package:sats/zold/api/_helpers.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/new-wallet/network.dart';
 import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
-import 'package:sats/model/wallet.dart';
 import 'package:sats/model/blockchain.dart';
-
-// import 'package:sats/cubit/network.dart' as net;
-// import 'package:sats/zold/cubit/wallet.dart';
+import 'package:sats/model/wallet.dart';
 import 'package:sats/pkg/bitcoin.dart';
-//import 'package:sats/pkg/bitcoin/bitcoin.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/pkg/storage.dart';
 
@@ -30,7 +26,6 @@ enum SeedGenerateSteps {
 
 @freezed
 class SeedGenerateState with _$SeedGenerateState {
-  const SeedGenerateState._();
   const factory SeedGenerateState({
     @Default(SeedGenerateSteps.warning) SeedGenerateSteps currentStep,
     List<String>? seed,
@@ -53,6 +48,7 @@ class SeedGenerateState with _$SeedGenerateState {
     @Default('') String savingWalletError,
     @Default(false) bool newWalletSaved,
   }) = _SeedGenerateState;
+  const SeedGenerateState._();
 
   bool showWalletConfirmButton() {
     if (walletLabel.length > 4) return true;
@@ -108,7 +104,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
     this._logger,
     this._wallets,
     this._blockchainCubit,
-  ) : super(SeedGenerateState()) {
+  ) : super(const SeedGenerateState()) {
     _networkCubitSub = _networkCubit.stream.listen((NetworkState nState) {
       if (nState.hasOffError() != '') _goToNetworkAndReset();
     });
@@ -126,14 +122,14 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
   final WalletsCubit _wallets;
   final BlockchainCubit _blockchainCubit;
 
-  _goToNetworkAndReset() {
+  void _goToNetworkAndReset() {
     if (state.currentStep == SeedGenerateSteps.networkOn ||
         state.currentStep == SeedGenerateSteps.warning ||
         state.currentStep == SeedGenerateSteps.security) return;
-    emit(SeedGenerateState(currentStep: SeedGenerateSteps.security));
+    emit(const SeedGenerateState(currentStep: SeedGenerateSteps.security));
   }
 
-  _checkPassphrase() {
+  void _checkPassphrase() {
     if (state.passPhrase.length > 8 || state.passPhrase.contains(' ')) {
       emit(state.copyWith(errPassphrase: 'Invalid Passphrase'));
       return;
@@ -141,18 +137,22 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
 
     _generateSeed();
 
-    emit(state.copyWith(
-      currentStep: SeedGenerateSteps.generate,
-      errPassphrase: '',
-    ));
+    emit(
+      state.copyWith(
+        currentStep: SeedGenerateSteps.generate,
+        errPassphrase: '',
+      ),
+    );
   }
 
-  _generateSeed() async {
+  void _generateSeed() async {
     try {
-      emit(state.copyWith(
-        generatingSeed: true,
-        seedError: '',
-      ));
+      emit(
+        state.copyWith(
+          generatingSeed: true,
+          seedError: '',
+        ),
+      );
 
       final neu = await _bitcoin.generateMaster(
         mnemonic: '12',
@@ -160,35 +160,41 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
         network: _blockchainCubit.state.blockchain.name,
       );
 
-      emit(state.copyWith(
-        generatingSeed: false,
-        currentStep: SeedGenerateSteps.generate,
-        seed: neu.neuList,
-        xpriv: neu.xprv,
-        fingerPrint: neu.fingerprint,
-      ));
+      emit(
+        state.copyWith(
+          generatingSeed: false,
+          currentStep: SeedGenerateSteps.generate,
+          seed: neu.neuList,
+          xpriv: neu.xprv,
+          fingerPrint: neu.fingerprint,
+        ),
+      );
     } catch (e, s) {
       _logger.logException(e, 'SeedGenerateCubit._generateSeed', s);
 
-      emit(state.copyWith(
-        generatingSeed: false,
-        seedError: 'Error Occured.',
-      ));
+      emit(
+        state.copyWith(
+          generatingSeed: false,
+          seedError: 'Error Occured.',
+        ),
+      );
       _logger.logException(e, 'SeedGenerateCubit._generateSeed', s);
     }
   }
 
-  _confirmSeed() {
-    emit(state.copyWith(
-      currentStep: SeedGenerateSteps.confirm,
-      quizSeedCompleted: 0,
-    ));
+  void _confirmSeed() {
+    emit(
+      state.copyWith(
+        currentStep: SeedGenerateSteps.confirm,
+        quizSeedCompleted: 0,
+      ),
+    );
 
     _generateQuiz();
   }
 
-  _generateQuiz() {
-    List<String> quizList = [...state.seed!];
+  void _generateQuiz() {
+    final List<String> quizList = [...state.seed!];
 
     String answer = '';
     while (answer == '') {
@@ -198,29 +204,31 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
     }
     final answerIdx = quizList.indexOf(answer);
 
-    for (var completed in state.quizSeedCompletedAnswers)
+    for (final completed in state.quizSeedCompletedAnswers)
       quizList.remove(completed);
 
-    List<String> answerList = [answer];
+    final List<String> answerList = [answer];
     quizList.remove(answer);
     for (var i = 0; i < 5; i++) {
       final randIdx = Random().nextInt(quizList.length);
       answerList.add(quizList[randIdx]);
       quizList.remove(quizList[randIdx]);
-      if (quizList.length > 0) quizList.removeLast();
+      if (quizList.isNotEmpty) quizList.removeLast();
     }
 
     answerList.shuffle();
 
-    emit(state.copyWith(
-      quizSeedError: '',
-      quizSeedAnswer: answer,
-      quizSeedList: answerList,
-      quizSeedAnswerIdx: answerIdx + 1,
-    ));
+    emit(
+      state.copyWith(
+        quizSeedError: '',
+        quizSeedAnswer: answer,
+        quizSeedList: answerList,
+        quizSeedAnswerIdx: answerIdx + 1,
+      ),
+    );
   }
 
-  _checkLabel() async {
+  void _checkLabel() async {
     if (state.walletLabel.length < 4 ||
         state.walletLabel.length > 10 ||
         state.walletLabel.contains(' ')) {
@@ -236,7 +244,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
     _createNewLocalWallet();
   }
 
-  _createNewLocalWallet() async {
+  void _createNewLocalWallet() async {
     try {
       final der = await _bitcoin.deriveHardened(
         masterXPriv: state.xpriv!,
@@ -259,21 +267,25 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
       );
 
       _storage.saveItem(StoreKeys.Wallet.name, newWallet);
-      emit(state.copyWith(
-        currentStep: SeedGenerateSteps.networkOn,
-      ));
+      emit(
+        state.copyWith(
+          currentStep: SeedGenerateSteps.networkOn,
+        ),
+      );
     } catch (e, s) {
       _logger.logException(e, 'SeedGenerateCubit._createNewLocalWallet', s);
     }
   }
 
-  _saveWallet() async {
+  void _saveWallet() async {
     _wallets.refresh();
-    emit(state.copyWith(
-      savingWalletError: '',
-      savinngWallet: false,
-      newWalletSaved: true,
-    ));
+    emit(
+      state.copyWith(
+        savingWalletError: '',
+        savinngWallet: false,
+        newWalletSaved: true,
+      ),
+    );
     // emit(state.copyWith(
     //   savinngWallet: true,
     //   savingWalletError: '',
@@ -303,14 +315,16 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
       // ));
     } catch (e, s) {
       _logger.logException(e, 'SeedGenerateCubit._saveWallet', s);
-      emit(state.copyWith(
-        savingWalletError: 'Error Occured.',
-        newWalletSaved: true,
-      ));
+      emit(
+        state.copyWith(
+          savingWalletError: 'Error Occured.',
+          newWalletSaved: true,
+        ),
+      );
     }
   }
 
-  nextClicked() {
+  void nextClicked() {
     switch (state.currentStep) {
       case SeedGenerateSteps.warning:
         emit(state.copyWith(currentStep: SeedGenerateSteps.security));
@@ -335,7 +349,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
     }
   }
 
-  backClicked() {
+  void backClicked() {
     switch (state.currentStep) {
       case SeedGenerateSteps.warning:
         break;
@@ -343,30 +357,36 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
         emit(state.copyWith(currentStep: SeedGenerateSteps.warning));
         break;
       case SeedGenerateSteps.passphrase:
-        emit(state.copyWith(
-          currentStep: SeedGenerateSteps.security,
-          passPhrase: '',
-          xpriv: null,
-          fingerPrint: null,
-        ));
+        emit(
+          state.copyWith(
+            currentStep: SeedGenerateSteps.security,
+            passPhrase: '',
+            xpriv: null,
+            fingerPrint: null,
+          ),
+        );
         break;
       case SeedGenerateSteps.generate:
-        emit(state.copyWith(
-          currentStep: SeedGenerateSteps.passphrase,
-          xpriv: null,
-          fingerPrint: null,
-        ));
+        emit(
+          state.copyWith(
+            currentStep: SeedGenerateSteps.passphrase,
+            xpriv: null,
+            fingerPrint: null,
+          ),
+        );
         break;
       case SeedGenerateSteps.confirm:
-        emit(state.copyWith(
-          currentStep: SeedGenerateSteps.passphrase,
-          quizSeedAnswer: '',
-          quizSeedList: [],
-          quizSeedError: '',
-          quizSeedCompletedAnswers: [],
-          xpriv: null,
-          fingerPrint: null,
-        ));
+        emit(
+          state.copyWith(
+            currentStep: SeedGenerateSteps.passphrase,
+            quizSeedAnswer: '',
+            quizSeedList: [],
+            quizSeedError: '',
+            quizSeedCompletedAnswers: [],
+            xpriv: null,
+            fingerPrint: null,
+          ),
+        );
         break;
       case SeedGenerateSteps.label:
         break;

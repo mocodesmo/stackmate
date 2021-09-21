@@ -4,8 +4,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
-import 'package:sats/model/wallet.dart';
 import 'package:sats/model/blockchain.dart';
+import 'package:sats/model/wallet.dart';
 import 'package:sats/pkg/bitcoin.dart';
 import 'package:sats/pkg/clipboard.dart';
 import 'package:sats/pkg/storage.dart';
@@ -16,7 +16,6 @@ enum XpubImportStep { import, label }
 
 @freezed
 class XpubImportState with _$XpubImportState {
-  const XpubImportState._();
   const factory XpubImportState({
     @Default(XpubImportStep.import) XpubImportStep currentStep,
     @Default('') String xpub,
@@ -29,6 +28,7 @@ class XpubImportState with _$XpubImportState {
     @Default('') String errSavingWallet,
     @Default(false) bool newWalletSaved,
   }) = _SeedImportXpubState;
+  const XpubImportState._();
 
   double completePercent() => currentStep.index / XpubImportStep.values.length;
 
@@ -63,7 +63,7 @@ class XpubImportCubit extends Cubit<XpubImportState> {
     this._storage,
     this._wallets,
     this._blockchainCubit,
-  ) : super(XpubImportState());
+  ) : super(const XpubImportState());
 
   final IClipBoard _clipboard;
   // final ISoloWalletAPI _soloWalletAPI;
@@ -74,10 +74,12 @@ class XpubImportCubit extends Cubit<XpubImportState> {
   final BlockchainCubit _blockchainCubit;
 
   void _saveWallet() async {
-    emit(state.copyWith(
-      savingWallet: true,
-      errSavingWallet: '',
-    ));
+    emit(
+      state.copyWith(
+        savingWallet: true,
+        errSavingWallet: '',
+      ),
+    );
 
     try {
       final fingerprint = state.fingerPrint;
@@ -106,17 +108,21 @@ class XpubImportCubit extends Cubit<XpubImportState> {
 
       _wallets.refresh();
 
-      emit(state.copyWith(
-        savingWallet: false,
-        newWalletSaved: true,
-      ));
+      emit(
+        state.copyWith(
+          savingWallet: false,
+          newWalletSaved: true,
+        ),
+      );
     } catch (e, s) {
       _logger.logException(e, 'SeedImportCubit._saveWallet', s);
 
-      emit(state.copyWith(
-        errSavingWallet: 'Error Occured.',
-        newWalletSaved: true,
-      ));
+      emit(
+        state.copyWith(
+          errSavingWallet: 'Error Occured.',
+          newWalletSaved: true,
+        ),
+      );
     }
   }
 
@@ -125,7 +131,11 @@ class XpubImportCubit extends Cubit<XpubImportState> {
       emit(state.copyWith(cameraOpened: true, errXpub: ''));
 
       String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          '#ff6666', 'Cancel', false, ScanMode.QR);
+        '#ff6666',
+        'Cancel',
+        false,
+        ScanMode.QR,
+      );
 
       if (barcodeScanRes == '-1') barcodeScanRes = '';
 
@@ -184,21 +194,27 @@ class XpubImportCubit extends Cubit<XpubImportState> {
     switch (state.currentStep) {
       case XpubImportStep.import:
         if (state.xpub == '' || state.xpub.length < 10) {
-          emit(state.copyWith(
-            errXpub: 'Invalid xPub. Try again.',
-          ));
+          emit(
+            state.copyWith(
+              errXpub: 'Invalid xPub. Try again.',
+            ),
+          );
           return;
         }
         if (state.showOtherDetails() && state.fingerPrint.length < 8) {
-          emit(state.copyWith(
-            errXpub: 'Invalid Fingerprint. Try again.',
-          ));
+          emit(
+            state.copyWith(
+              errXpub: 'Invalid Fingerprint. Try again.',
+            ),
+          );
           return;
         }
         if (state.showOtherDetails() && state.path == '') {
-          emit(state.copyWith(
-            errXpub: 'Invalid Path. Try again.',
-          ));
+          emit(
+            state.copyWith(
+              errXpub: 'Invalid Path. Try again.',
+            ),
+          );
           return;
         }
 
@@ -219,10 +235,12 @@ class XpubImportCubit extends Cubit<XpubImportState> {
       case XpubImportStep.import:
         break;
       case XpubImportStep.label:
-        emit(state.copyWith(
-          currentStep: XpubImportStep.import,
-          label: '',
-        ));
+        emit(
+          state.copyWith(
+            currentStep: XpubImportStep.import,
+            label: '',
+          ),
+        );
         break;
     }
   }

@@ -14,35 +14,44 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     return Material(
-      elevation: 0,
+      // elevation: 0,
       type: MaterialType.transparency,
       child: Container(
-          width: c.width,
-          padding: EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 0),
-          decoration: BoxDecoration(
-            color: c.colours.secondary,
-            //boxShadow: [
-            //  BoxShadow(
-            //    offset: Offset(0, 2),
-            //    blurRadius: 3,
-            //    spreadRadius: 3,
-            //  ),
-            //],
-          ),
-          child: Stack(children: [
+        width: c.width,
+        padding: const EdgeInsets.only(
+          top: 16,
+          left: 16,
+          right: 16,
+          // bottom: 0,
+        ),
+        decoration: BoxDecoration(
+          color: c.colours.secondary,
+          //boxShadow: [
+          //  BoxShadow(
+          //    offset: Offset(0, 2),
+          //    blurRadius: 3,
+          //    spreadRadius: 3,
+          //  ),
+          //],
+        ),
+        child: Stack(
+          children: [
             FadeIn(
-              delay: Duration(milliseconds: 200),
-              duration: Duration(seconds: 1),
+              delay: const Duration(milliseconds: 200),
+              duration: const Duration(seconds: 1),
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: children),
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: children,
+              ),
             ),
             PositionedDirectional(
               top: 0,
               end: 0,
               child: LogButton(child: CornerTitle(text: cornerTitle)),
             )
-          ])),
+          ],
+        ),
+      ),
     );
   }
 }

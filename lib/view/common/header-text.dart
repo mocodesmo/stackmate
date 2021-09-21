@@ -12,12 +12,15 @@ class HeaderText extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     return Padding(
-        padding: const EdgeInsets.only(left: 8.0),
-        child: Text(text,
-            style: c.fonts.headline4!.copyWith(
-              color: c.colours.surface,
-              fontWeight: FontWeight.bold,
-            )));
+      padding: const EdgeInsets.only(left: 8.0),
+      child: Text(
+        text,
+        style: c.fonts.headline4!.copyWith(
+          color: c.colours.surface,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
   }
 }
 
@@ -31,8 +34,10 @@ class HeaderTextDark extends StatelessWidget {
 
   @override
   Widget build(BuildContext c) {
-    return Text(text,
-        style: c.fonts.headline4!
-            .copyWith(color: Colors.white, fontWeight: FontWeight.bold));
+    return Text(
+      text,
+      style: c.fonts.headline4!
+          .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+    );
   }
 }

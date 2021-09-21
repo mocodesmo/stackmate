@@ -16,34 +16,34 @@ class BlockchainCubit extends Cubit<BlockchainState> {
   BlockchainCubit(
     this._storage,
     this._logger,
-  ) : super(BlockchainState()) {
-    this._init();
+  ) : super(const BlockchainState()) {
+    _init();
   }
 
   final IStorage _storage;
   final LoggerCubit _logger;
 
-  _init() async {
+  void _init() async {
     try {
-      final blockchain = await _storage.getFirstItem<Blockchain>(
+      final blockchain = _storage.getFirstItem<Blockchain>(
         StoreKeys.Blockchain.name,
       );
 
       emit(BlockchainState(blockchain: blockchain));
-      await Future.delayed(Duration(milliseconds: 50));
+      await Future.delayed(const Duration(milliseconds: 50));
     } catch (e, s) {
       _logger.logException(e, 'BlockchainCubit._init', s);
     }
   }
 
-  changeBlockchain(Blockchain blockchain) async {
+  void changeBlockchain(Blockchain blockchain) async {
     try {
       emit(BlockchainState(blockchain: blockchain));
       _storage.saveItem<Blockchain>(
         StoreKeys.Blockchain.name,
         blockchain,
       );
-      await Future.delayed(Duration(milliseconds: 50));
+      await Future.delayed(const Duration(milliseconds: 50));
     } catch (e, s) {
       _logger.logException(e, 'BlockchainCubit.changeBlockchain', s);
     }

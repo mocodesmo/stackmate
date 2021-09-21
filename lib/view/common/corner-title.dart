@@ -8,11 +8,13 @@ class CornerTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext c) {
-    return Text(text,
-        textAlign: TextAlign.end,
-        style: c.fonts.headline6!.copyWith(
-          color: Colors.white,
-          // fontWeight: FontWeight.bold,
-        ));
+    return Text(
+      text,
+      textAlign: TextAlign.end,
+      style: c.fonts.headline6!.copyWith(
+        color: Colors.white,
+        // fontWeight: FontWeight.bold,
+      ),
+    );
   }
 }

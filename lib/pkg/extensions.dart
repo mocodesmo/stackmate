@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-export 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-extension contextUtils on BuildContext {
+export 'package:flutter_bloc/flutter_bloc.dart';
+
+extension ContextUtils on BuildContext {
   ColorScheme get colours => Theme.of(this).colorScheme;
   TextTheme get fonts => Theme.of(this).textTheme;
   ThemeData get theme => Theme.of(this);
@@ -11,7 +12,7 @@ extension contextUtils on BuildContext {
   AppLocalizations get word => AppLocalizations.of(this);
 }
 
-extension strings on String {
+extension Strings on String {
   String notLocalised() {
     //print('"' + this + '" not localised');
     return this;
@@ -23,7 +24,7 @@ extension strings on String {
   }
 
   String? nullIfEmpty() {
-    if (this == "") return null;
+    if (this == '') return null;
     return this;
   }
 
@@ -32,13 +33,13 @@ extension strings on String {
   }
 }
 
-extension bools on bool {
+extension Bools on bool {
   bool not(bool other) {
     return this != other;
   }
 }
 
-extension nums on num {
+extension Nums on num {
   bool not(num other) {
     return this != other;
   }

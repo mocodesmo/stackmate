@@ -1,5 +1,5 @@
-import 'package:url_launcher/url_launcher.dart';
 import 'package:open_mail_app/open_mail_app.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 abstract class ILauncher {
   Future<bool> canLaunchApp(String link);
@@ -10,11 +10,13 @@ abstract class ILauncher {
 }
 
 class Launcher implements ILauncher {
+  @override
   Future<bool> canLaunchApp(String link) async {
     final c = await canLaunch(link);
     return c;
   }
 
+  @override
   Future launchApp(String link) async {
     final can = await canLaunch(link);
     if (can)
@@ -25,6 +27,7 @@ class Launcher implements ILauncher {
       );
   }
 
+  @override
   Future openInAppStore(String link) {
     throw Exception();
   }
@@ -36,7 +39,7 @@ class Launcher implements ILauncher {
 
   @override
   Future openEmailInbox() async {
-    var result = await OpenMailApp.openMailApp();
+    final result = await OpenMailApp.openMailApp();
     if (!result.didOpen && !result.canOpen) {
       throw 'didnt open';
     }

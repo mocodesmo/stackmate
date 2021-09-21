@@ -6,8 +6,6 @@ part 'transaction.freezed.dart';
 
 @freezed
 class Transaction with _$Transaction {
-  const Transaction._();
-
   @HiveType(typeId: 4, adapterName: 'TransactionClassAdaper')
   const factory Transaction({
     @HiveField(0) required int timestamp,
@@ -18,6 +16,7 @@ class Transaction with _$Transaction {
     @HiveField(5) required int sent,
     @HiveField(6) required int fee,
   }) = _Transaction;
+  const Transaction._();
 
   factory Transaction.fromJson(Map<String, dynamic> json) =>
       _$TransactionFromJson(json);
@@ -26,7 +25,7 @@ class Transaction with _$Transaction {
 
   String timeStr() {
     String date = '';
-    DateTime dt = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    final DateTime dt = DateTime.fromMillisecondsSinceEpoch(timestamp);
 
     //date += DateFormat.EEEE().format(dt) + ', ';
 

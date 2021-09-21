@@ -15,21 +15,28 @@ class StepCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext c) {
-    return Column(children: [
-      Container(
-          margin: EdgeInsets.symmetric(horizontal: 4),
+    return Column(
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 4),
           height: 8,
           width: c.width * 0.2,
           decoration: BoxDecoration(
-              color: isOn ? c.colours.secondary : Colors.white,
-              borderRadius: BorderRadius.circular(2))),
-      SizedBox(height: 4),
-      Center(
-          child: Text(text,
-              style: c.fonts.caption!.copyWith(
-                  color: isSelected
-                      ? c.colours.secondary
-                      : c.colours.secondaryVariant)))
-    ]);
+            color: isOn ? c.colours.secondary : Colors.white,
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Center(
+          child: Text(
+            text,
+            style: c.fonts.caption!.copyWith(
+              color:
+                  isSelected ? c.colours.secondary : c.colours.secondaryVariant,
+            ),
+          ),
+        )
+      ],
+    );
   }
 }

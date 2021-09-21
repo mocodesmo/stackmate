@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_annotation_target
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
@@ -6,8 +8,6 @@ part 'reddit-post.freezed.dart';
 
 @freezed
 class RedditPost with _$RedditPost {
-  const RedditPost._();
-
   @HiveType(typeId: 0, adapterName: 'RedditPostClassAdapter')
   const factory RedditPost({
     @HiveField(0) required String title,
@@ -17,6 +17,7 @@ class RedditPost with _$RedditPost {
     @HiveField(4) required String url,
     @HiveField(5) @JsonKey(name: 'created_utc') required double createdAt,
   }) = _RedditPost;
+  const RedditPost._();
 
   factory RedditPost.fromJson(Map<String, dynamic> json) =>
       _$RedditPostFromJson(json);
@@ -24,7 +25,7 @@ class RedditPost with _$RedditPost {
   String time() {
     String date = '';
     final inttime = createdAt.toInt();
-    DateTime dt =
+    final DateTime dt =
         DateTime.fromMillisecondsSinceEpoch(inttime * 1000, isUtc: true);
     date += dt.day.toString() +
         '-' +

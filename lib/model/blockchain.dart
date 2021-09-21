@@ -11,7 +11,7 @@ enum Blockchain {
   testNet,
 }
 
-extension x on Blockchain {
+extension Blo on Blockchain {
   String get name => const {
         Blockchain.mainNet: 'main',
         Blockchain.testNet: 'test',

@@ -25,24 +25,25 @@ final walletsCubit = WalletsCubit(
 );
 
 class Cubits extends StatelessWidget {
-  Cubits({Key? key, required this.child}) : super(key: key);
+  const Cubits({Key? key, required this.child}) : super(key: key);
 
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-        providers: [
-          BlocProvider.value(value: blockchainCubit),
-          BlocProvider.value(value: loggerCubit),
-          BlocProvider.value(value: walletsCubit),
-        ],
-        child: BlocListener<BlockchainCubit, BlockchainState>(
-          listener: (context, state) {
-            walletsCubit.refresh();
-          },
-          child: child,
-        ));
+      providers: [
+        BlocProvider.value(value: blockchainCubit),
+        BlocProvider.value(value: loggerCubit),
+        BlocProvider.value(value: walletsCubit),
+      ],
+      child: BlocListener<BlockchainCubit, BlockchainState>(
+        listener: (context, state) {
+          walletsCubit.refresh();
+        },
+        child: child,
+      ),
+    );
   }
 }
 
@@ -79,8 +80,8 @@ class SimpleBlocObserver extends BlocObserver {
     super.onError(bloc, error, stackTrace);
   }
 
-  @override
-  void onTransition(Bloc bloc, Transition transition) {
-    super.onTransition(bloc, transition);
-  }
+  // @override
+  // void onTransition(Bloc bloc, Transition transition) {
+  //   super.onTransition(bloc, transition);
+  // }
 }

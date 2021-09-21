@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter_blue/flutter_blue.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/pkg/extensions.dart';
@@ -10,12 +10,12 @@ part 'network.freezed.dart';
 
 @freezed
 class NetworkState with _$NetworkState {
-  const NetworkState._();
   const factory NetworkState({
     @Default(false) bool bluetoothOnline,
     @Default(false) bool wifiOnline,
     @Default(false) bool mobileOnline,
   }) = _NetworkState;
+  const NetworkState._();
 
   String hasOffError() =>
       // bluetoothOnline ||
@@ -28,7 +28,7 @@ class NetworkState with _$NetworkState {
 }
 
 class NetworkCubit extends Cubit<NetworkState> {
-  NetworkCubit(this.logger) : super(NetworkState()) {
+  NetworkCubit(this.logger) : super(const NetworkState()) {
     networkSub = Connectivity()
         .onConnectivityChanged
         .listen((ConnectivityResult result) => networkStatusChanged(result));

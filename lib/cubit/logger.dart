@@ -98,13 +98,15 @@ class LoggerCubit extends Cubit<LoggerState> {
         stackTrace: (s as StackTrace).toString(),
       );
 
-      print('\n\nERROR @ ' +
-          log.exceptionSource! +
-          '\nMessage: ' +
-          log.exceptionType! +
-          '\nTrace: ' +
-          log.stackTrace! +
-          '\n\n');
+      print(
+        '\n\nERROR @ ' +
+            log.exceptionSource! +
+            '\nMessage: ' +
+            log.exceptionType! +
+            '\nTrace: ' +
+            log.stackTrace! +
+            '\n\n',
+      );
 
       _addToLog(log);
 
@@ -123,8 +125,8 @@ class LoggerCubit extends Cubit<LoggerState> {
     showToast('COPIED');
   }
 
-  _addToLog(Log log) {
-    List<Log> logs = state.logs.toList();
+  void _addToLog(Log log) {
+    final List<Log> logs = state.logs.toList();
     logs.add(log);
     emit(state.copyWith(logs: logs));
   }
