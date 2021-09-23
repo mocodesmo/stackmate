@@ -78,7 +78,9 @@ class HiveStore implements IStorage {
 
   @override
   T getFirstItem<T>(String cls) {
-    final obj = Hive.box<T>(cls).getAt(0);
+    final bx = Hive.box<T>(cls);
+    if (bx.isEmpty) throw 'empty';
+    final obj = bx.getAt(0);
     if (obj == null) throw 'empty';
     return obj;
   }

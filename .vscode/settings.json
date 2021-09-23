@@ -40,11 +40,11 @@
         //
         "**/**.g.dart": true,
         "**/**.freezed.dart": true,
-        // "**/android": true,
-        "**/ios": true,
+        "**/android": true,
+        // "**/ios": true,
         //
         //
-        // "**/analysis_options.yaml": true,
+        "**/analysis_options.yaml": true,
         // "**/packages": true, 
         "zzzz": true,
         // "**/pubspec.yaml": true,

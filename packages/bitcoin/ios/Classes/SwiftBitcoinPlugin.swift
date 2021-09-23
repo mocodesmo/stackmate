@@ -14,6 +14,11 @@ public class SwiftBitcoinPlugin: NSObject, FlutterPlugin {
 
    public func dummyMethodToEnforceBundling() {
     // This will never be executed
-    // generate_master("","","");
+    generate_master("","","");
+    import_master("","","");
+    derive_hardened("","","");
+    compile("","");
+    sync_balance("","");
+    get_address("","","");
   }
 }

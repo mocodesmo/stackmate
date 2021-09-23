@@ -15,4 +15,4 @@ char *sync_balance(const char *deposit_desc, const char *network);
 
 char *get_address(const char *deposit_desc, const char *network, const char *index);
 
-void cstring_free(char *ptr);
+void cstring_free(char *s);
