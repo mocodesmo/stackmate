@@ -60,7 +60,7 @@ pub fn compile(
 #[cfg(test)]
 mod tests {
   use super::*;
-  use crate::wallet::address::{WalletAddress,generate};
+  use crate::wallet::address::{generate};
   use crate::wallet::config::{WalletConfig};
   use bitcoin::network::constants::Network;
 

@@ -21,8 +21,8 @@ use crate::wallet::history;
 use crate::wallet::policy;
 
 mod network;
-use crate::network::fees;
-use crate::network::height;
+// use crate::network::fees;
+// use crate::network::height;
 
 use e::{ErrorKind, S5Error};
 

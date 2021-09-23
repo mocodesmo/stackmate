@@ -56,18 +56,18 @@ impl WalletHistory {
 }
 
 impl Transaction {
-  pub fn c_stringify(&self) -> *mut c_char {
-    let stringified = match serde_json::to_string(self.clone()) {
-      Ok(result) => result,
-      Err(_) => {
-        return CString::new("Error:JSON Stringify Failed. BAD NEWS! Contact Support.")
-          .unwrap()
-          .into_raw()
-      }
-    };
+  // pub fn c_stringify(&self) -> *mut c_char {
+  //   let stringified = match serde_json::to_string(self.clone()) {
+  //     Ok(result) => result,
+  //     Err(_) => {
+  //       return CString::new("Error:JSON Stringify Failed. BAD NEWS! Contact Support.")
+  //         .unwrap()
+  //         .into_raw()
+  //     }
+  //   };
 
-    CString::new(stringified).unwrap().into_raw()
-  }
+  //   CString::new(stringified).unwrap().into_raw()
+  // }
   pub fn from_txdetail(txdetail: TransactionDetails) -> Self {
     Transaction {
       timestamp: match txdetail.confirmation_time.clone() {

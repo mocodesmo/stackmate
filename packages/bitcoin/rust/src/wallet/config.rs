@@ -1,6 +1,6 @@
 
-use std::ffi::{CString};
-use std::os::raw::c_char;
+// use std::ffi::{CString};
+// use std::os::raw::c_char;
 
 use serde::{Serialize,Deserialize};
 use bitcoin::network::constants::Network;
@@ -15,14 +15,14 @@ pub struct WalletConfig {
 }
 
 impl WalletConfig{
-  pub fn c_stringify(&self)->*mut c_char{
-    let stringified = match serde_json::to_string(&self.clone()){
-        Ok(result)=>result,
-        Err(_)=>return CString::new("Error:JSON Stringify Failed. BAD NEWS! Contact Support.").unwrap().into_raw()
-    };
+  // pub fn c_stringify(&self)->*mut c_char{
+  //   let stringified = match serde_json::to_string(&self.clone()){
+  //       Ok(result)=>result,
+  //       Err(_)=>return CString::new("Error:JSON Stringify Failed. BAD NEWS! Contact Support.").unwrap().into_raw()
+  //   };
 
-    CString::new(stringified).unwrap().into_raw()
-  }
+  //   CString::new(stringified).unwrap().into_raw()
+  // }
 
   pub fn default(deposit_desc: &str,network: Network)->Self{
     let change_desc = deposit_desc.replace("/0/*", "/1/*");
