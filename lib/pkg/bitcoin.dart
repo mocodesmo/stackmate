@@ -146,8 +146,8 @@ class BitcoinFFI implements IBitcoin {
     );
     final json = jsonDecode(resp);
     final List<Transaction> transactions = [];
-    for (final t in json['history'] as List<Map<String, dynamic>>) {
-      transactions.add(Transaction.fromJson(t));
+    for (final t in json['history'] as List) {
+      transactions.add(Transaction.fromJson(t as Map<String, dynamic>));
     }
     return transactions;
   }

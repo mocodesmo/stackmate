@@ -46,7 +46,7 @@ class Transaction with _$Transaction {
   }
 
   String amountToBtc() =>
-      ((isReceive() ? received : sent) / 10000000).toStringAsFixed(8);
+      ((isReceive() ? received : sent) / 100000000).toStringAsFixed(8);
   String feesToBtc() => (fee / 100000000).toStringAsFixed(8);
 
   String txIdBlur() {

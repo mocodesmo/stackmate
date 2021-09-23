@@ -29,20 +29,20 @@ class NetworkState with _$NetworkState {
 
 class NetworkCubit extends Cubit<NetworkState> {
   NetworkCubit(this.logger) : super(const NetworkState()) {
-    // networkSub = Connectivity()
-    //     .onConnectivityChanged
-    //     .listen((ConnectivityResult result) => networkStatusChanged(result));
+    networkSub = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) => networkStatusChanged(result));
 
     //flutterBlue.startScan();
     ////flutterBlue.
-    //bluetoothSub = flutterBlue.state.listen((result) {
-    //  bluetoothStatusChanged(result);
-    //});
+    // bluetoothSub = flutterBlue.state.listen((result) {
+    //   bluetoothStatusChanged(result);
+    // });
 
-    // _checkConnectivity();
+    _checkConnectivity();
   }
 
-  //FlutterBlue flutterBlue = FlutterBlue.instance;
+  // FlutterBlue flutterBlue = FlutterBlue.instance;
 
   StreamSubscription? networkSub;
   StreamSubscription? bluetoothSub;

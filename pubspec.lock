@@ -51,12 +51,12 @@ packages:
     source: path
     version: "0.0.1"
   bloc:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.1.0"
+    version: "7.2.0"
   build:
     dependency: transitive
     description:
@@ -218,13 +218,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
-  equatable:
-    dependency: "direct main"
-    description:
-      name: equatable
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.3"
   ffi:
     dependency: transitive
     description:
@@ -264,7 +257,7 @@ packages:
       name: flutter_bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.2.0"
+    version: "7.3.0"
   flutter_blue:
     dependency: "direct main"
     description:
@@ -536,13 +529,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.1.0"
-  pin_input_text_field:
-    dependency: "direct main"
-    description:
-      name: pin_input_text_field
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.0.0"
   platform:
     dependency: transitive
     description:
@@ -579,7 +565,7 @@ packages:
     source: hosted
     version: "2.0.0"
   provider:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: provider
       url: "https://pub.dartlang.org"
