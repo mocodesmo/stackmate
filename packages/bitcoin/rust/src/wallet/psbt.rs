@@ -189,6 +189,62 @@ pub fn sign(config: WalletConfig, psbt: &str) -> Result<WalletPSBT, S5Error> {
   })
 }
 
+#[derive(Serialize, Deserialize, Debug,Clone)]
+pub struct Txid {
+  pub txid: String,
+}
+impl Txid {
+  pub fn c_stringify(&self) -> *mut c_char {
+    let stringified = match serde_json::to_string(&self.clone()) {
+      Ok(result) => result,
+      Err(_) => {
+        return CString::new("Error:JSON Stringify Failed. BAD NEWS! Contact Support.")
+          .unwrap()
+          .into_raw()
+      }
+    };
+
+    CString::new(stringified).unwrap().into_raw()
+  }
+}
+
+pub fn broadcast(config: WalletConfig, psbt: &str) -> Result<Txid, S5Error> {
+  let client = match Client::new(&config.node_address) {
+    Ok(result) => result,
+    Err(_) => return Err(S5Error::new(ErrorKind::OpError, "Node-Address-Connection")),
+  };
+
+  let wallet = match Wallet::new(
+    &config.deposit_desc,
+    Some(&config.change_desc),
+    config.network,
+    MemoryDatabase::default(),
+    ElectrumBlockchain::from(client),
+  ) {
+    Ok(result) => result,
+    Err(_) => return Err(S5Error::new(ErrorKind::OpError, "Wallet-Initialization")),
+  };
+
+  match wallet.sync(noop_progress(), None) {
+    Ok(_) => (),
+    Err(_) => return Err(S5Error::new(ErrorKind::OpError, "Wallet-Sync")),
+  };
+
+  let decoded_psbt = match base64::decode(&psbt){
+    Ok(result) => result,
+    Err(_)=> return Err(S5Error::new(ErrorKind::OpError, "PSBT-Decode"))
+  };
+  let psbt_struct: PartiallySignedTransaction = match deserialize(&decoded_psbt){
+    Ok(result)=> result,
+    Err(_)=> return Err(S5Error::new(ErrorKind::OpError, "PSBT-Deserialize")),
+  };
+  let tx = psbt_struct.extract_tx();
+  
+  let txid = wallet.broadcast(tx).unwrap();
+
+  Ok(Txid { txid: txid.to_string() })
+}
+
 #[cfg(test)]
 mod tests {
   use super::*;
@@ -223,17 +279,20 @@ mod tests {
     };
 
     let to = "mkHS9ne12qx9pS9VojpwU5xtRd4T7X7ZUt";
-    let amount = 10_000;
+    let amount = 1_000;
     let fee_rate = 1.0;
 
     let psbt_origin = build(config.clone(), to, amount, fee_rate);
     println!("{:#?}",psbt_origin);
     let decoded = decode(Network::Testnet, &psbt_origin.clone().unwrap().psbt);
     println!("{:#?}",decoded.clone().unwrap());
-    assert_eq!(decoded.unwrap()[0].value, amount);
+    // assert_eq!(decoded.unwrap()[0].value, amount);
     let signed = sign(sign_config, &psbt_origin.unwrap().psbt);
     println!("{:#?}",signed.clone().unwrap());
-    assert_eq!(signed.unwrap().is_finalized, true);
+    assert_eq!(signed.clone().unwrap().is_finalized, true);
+    let broadcasted = broadcast(config, &signed.unwrap().psbt);
+    println!("{:#?}",broadcasted.clone().unwrap());
+    assert_eq!(broadcasted.clone().unwrap().txid.len(), 64);
 
   }
 }
