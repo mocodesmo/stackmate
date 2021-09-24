@@ -1,7 +1,7 @@
 use crate::e::{S5Error,ErrorKind};
 
-// use std::ffi::{CString};
-// use std::os::raw::c_char;
+use std::ffi::{CString};
+use std::os::raw::c_char;
 
 use serde::{Serialize,Deserialize};
 
@@ -14,17 +14,17 @@ pub struct NetworkFee {
     pub fee: f32,
 }
 impl NetworkFee{
-  // pub fn c_stringify(&self)->*mut c_char{
-  //   let stringified = match serde_json::to_string(self.clone()){
-  //       Ok(result)=>result,
-  //       Err(_)=>return CString::new("Error:JSON Stringify Failed. BAD NEWS! Contact Support.").unwrap().into_raw()
-  //   };
+  pub fn c_stringify(&self)->*mut c_char{
+    let stringified = match serde_json::to_string(self.clone()){
+        Ok(result)=>result,
+        Err(_)=>return CString::new("Error:JSON Stringify Failed. BAD NEWS! Contact Support.").unwrap().into_raw()
+    };
 
-  //   CString::new(stringified).unwrap().into_raw()
-  // }
+    CString::new(stringified).unwrap().into_raw()
+  }
 }
 
-pub fn estimate_sats_per_byte(node_address: &str,target: usize)->Result<NetworkFee, S5Error>{
+pub fn estimate_sats_per_byte(node_address: &str, target: usize)->Result<NetworkFee, S5Error>{
   let client = match Client::new(node_address) {
     Ok(result) => result,
     Err(_) => return Err(S5Error::new(ErrorKind::OpError,"Node-Address-Connection"))
