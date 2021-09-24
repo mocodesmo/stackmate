@@ -251,8 +251,8 @@ mod tests {
   use crate::wallet::config::WalletConfig;
   use bitcoin::network::constants::Network;
 
-  #[test]
-  fn test_psbt() {
+  #[test] #[ignore]
+  fn test_send() {
     let xkey = "[db7d25b5/84'/1'/6']tpubDCCh4SuT3pSAQ1qAN86qKEzsLoBeiugoGGQeibmieRUKv8z6fCTTmEXsb9yeueBkUWjGVzJr91bCzeCNShorbBqjZV4WRGjz3CrJsCboXUe";
     let deposit_desc = format!("wpkh({}/0/*)", xkey);
     let change_desc = format!("wpkh({}/1/*)", xkey);
@@ -279,7 +279,7 @@ mod tests {
     };
 
     let to = "mkHS9ne12qx9pS9VojpwU5xtRd4T7X7ZUt";
-    let amount = 1_000;
+    let amount = 500;
     let fee_rate = 1.0;
 
     let psbt_origin = build(config.clone(), to, amount, fee_rate);
