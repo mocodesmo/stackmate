@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/model/blockchain.dart';
+import 'package:sats/model/transaction.dart';
 import 'package:sats/model/wallet.dart';
 import 'package:sats/pkg/storage.dart';
 
@@ -46,6 +47,20 @@ class WalletsCubit extends Cubit<WalletsState> {
   }
 
   void walletSelected(Wallet wallet) async {
+    emit(state.copyWith(selectedWallet: wallet));
+  }
+
+  void addTransactionsToSelectedWallet(List<Transaction> transactions) {
+    final wallet = state.selectedWallet!.copyWith(
+      transactions: transactions,
+    );
+    emit(state.copyWith(selectedWallet: wallet));
+  }
+
+  void addBalanceToSelectedWallet(int balance) {
+    final wallet = state.selectedWallet!.copyWith(
+      balance: balance,
+    );
     emit(state.copyWith(selectedWallet: wallet));
   }
 

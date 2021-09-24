@@ -320,12 +320,14 @@ class _TransactionCellState extends State<TransactionCell> {
 class TransactionsView extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
-    final transactions = c.select((HistoryCubit h) => h.state.transactions);
+    final wallet = c.select(
+      (WalletsCubit w) => w.state.selectedWallet!,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (transactions == null || transactions.isEmpty)
+        if (wallet.transactions == null || wallet.transactions!.isEmpty)
           Container()
         else ...[
           Padding(
@@ -337,7 +339,7 @@ class TransactionsView extends StatelessWidget {
               ),
             ),
           ),
-          for (var transaction in transactions)
+          for (var transaction in wallet.transactions!)
             TransactionCell(transaction: transaction),
         ]
         // if (!state.loadingTransactions) ...[
@@ -360,7 +362,10 @@ class HistoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext c) {
-    final state = c.select((HistoryCubit h) => h.state);
+    final history = c.select((HistoryCubit h) => h.state);
+    final wallet = c.select(
+      (WalletsCubit w) => w.state.selectedWallet!,
+    );
     return WillPopScope(
       onWillPop: () async {
         c.read<WalletsCubit>().clearSelectedWallet();
@@ -372,7 +377,8 @@ class HistoryPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                if (state.loadingTransactions) const LinearProgressIndicator(),
+                if (history.loadingTransactions)
+                  const LinearProgressIndicator(),
                 Header(
                   cornerTitle: 'STACKMATE',
                   children: [
@@ -385,26 +391,67 @@ class HistoryPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 60),
                     Text(
-                      ' ' + state.wallet!.label.toUpperCase(),
+                      ' ' + wallet.label.toUpperCase(),
                       style: c.fonts.headline4!.copyWith(
                         color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 24),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                            c,
-                            Routes.receive,
-                            // arguments: state.wallet!,
-                          );
-                        },
-                        child: const Text('Receive'),
+                    if (wallet.balance != null)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              'Balance'.toUpperCase(),
+                              style: c.fonts.overline!.copyWith(
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              wallet.balance!.toString() + ' sats',
+                              style: c.fonts.headline6!.copyWith(
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              wallet.balanceToBtc() + ' BTC',
+                              style: c.fonts.caption!.copyWith(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
+                    const SizedBox(height: 32),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              c,
+                              Routes.receive,
+                              // arguments: state.wallet!,
+                            );
+                          },
+                          child: const Text('RECEIVE'),
+                        ),
+                        const SizedBox(height: 32),
+                        TextButton(
+                          onPressed: () {
+                            // Navigator.pushNamed(
+                            //   c,
+                            //   Routes.receive,
+                            //   // arguments: state.wallet!,
+                            // );
+                          },
+                          child: const Text('SEND'),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 48),
+                    // const SizedBox(height: 48),
                   ],
                 ),
                 TransactionsView()

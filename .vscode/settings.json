@@ -28,7 +28,6 @@
         ".gitlab-ci.yml": true,
         //
         "sats.xd": true,
-        "zzz": true,
         "**/assets": true,
         "**/zandroid": true,
         "**/zios": true,
@@ -46,7 +45,8 @@
         //
         "**/analysis_options.yaml": true,
         // "**/packages": true, 
-        "zzzz": true,
+        // "zzzz": true,
+        // "zzz": true,
         // "**/pubspec.yaml": true,
         //
         //

@@ -29,7 +29,7 @@ abstract class IBitcoin {
     required String scriptType,
   });
 
-  Future<String> syncBalance({
+  Future<int> syncBalance({
     required String depositDesc,
     required String network,
   });
@@ -109,7 +109,7 @@ class BitcoinFFI implements IBitcoin {
   }
 
   @override
-  Future<String> syncBalance({
+  Future<int> syncBalance({
     required String depositDesc,
     required String network,
   }) async {
@@ -117,7 +117,9 @@ class BitcoinFFI implements IBitcoin {
       depositDesc: depositDesc,
       network: network,
     );
-    return resp;
+    final bal = jsonDecode(resp)['balance'];
+
+    return bal as int;
   }
 
   @override
@@ -281,7 +283,7 @@ class DummyBtc implements IBitcoin {
   }
 
   @override
-  Future<String> syncBalance({
+  Future<int> syncBalance({
     required String depositDesc,
     required String network,
   }) {

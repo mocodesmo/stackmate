@@ -16,6 +16,10 @@ class Wallet with _$Wallet {
     @HiveField(5) required int index,
     @HiveField(6) int? balance,
   }) = _Wallet;
+  const Wallet._();
 
   factory Wallet.fromJson(Map<String, dynamic> json) => _$WalletFromJson(json);
+
+  String balanceToBtc() =>
+      balance == null ? '0' : (balance! / 100000000).toStringAsFixed(8);
 }

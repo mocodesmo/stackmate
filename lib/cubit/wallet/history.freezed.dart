@@ -20,13 +20,13 @@ class _$HistoryStateTearOff {
   _HistoryState call(
       {bool loadingTransactions = false,
       String errLoadingTransactions = '',
-      List<Transaction>? transactions,
-      Wallet? wallet}) {
+      bool loadingBalance = false,
+      String errLoadingBalance = ''}) {
     return _HistoryState(
       loadingTransactions: loadingTransactions,
       errLoadingTransactions: errLoadingTransactions,
-      transactions: transactions,
-      wallet: wallet,
+      loadingBalance: loadingBalance,
+      errLoadingBalance: errLoadingBalance,
     );
   }
 }
@@ -38,8 +38,8 @@ const $HistoryState = _$HistoryStateTearOff();
 mixin _$HistoryState {
   bool get loadingTransactions => throw _privateConstructorUsedError;
   String get errLoadingTransactions => throw _privateConstructorUsedError;
-  List<Transaction>? get transactions => throw _privateConstructorUsedError;
-  Wallet? get wallet => throw _privateConstructorUsedError;
+  bool get loadingBalance => throw _privateConstructorUsedError;
+  String get errLoadingBalance => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HistoryStateCopyWith<HistoryState> get copyWith =>
@@ -54,10 +54,8 @@ abstract class $HistoryStateCopyWith<$Res> {
   $Res call(
       {bool loadingTransactions,
       String errLoadingTransactions,
-      List<Transaction>? transactions,
-      Wallet? wallet});
-
-  $WalletCopyWith<$Res>? get wallet;
+      bool loadingBalance,
+      String errLoadingBalance});
 }
 
 /// @nodoc
@@ -72,8 +70,8 @@ class _$HistoryStateCopyWithImpl<$Res> implements $HistoryStateCopyWith<$Res> {
   $Res call({
     Object? loadingTransactions = freezed,
     Object? errLoadingTransactions = freezed,
-    Object? transactions = freezed,
-    Object? wallet = freezed,
+    Object? loadingBalance = freezed,
+    Object? errLoadingBalance = freezed,
   }) {
     return _then(_value.copyWith(
       loadingTransactions: loadingTransactions == freezed
@@ -84,26 +82,15 @@ class _$HistoryStateCopyWithImpl<$Res> implements $HistoryStateCopyWith<$Res> {
           ? _value.errLoadingTransactions
           : errLoadingTransactions // ignore: cast_nullable_to_non_nullable
               as String,
-      transactions: transactions == freezed
-          ? _value.transactions
-          : transactions // ignore: cast_nullable_to_non_nullable
-              as List<Transaction>?,
-      wallet: wallet == freezed
-          ? _value.wallet
-          : wallet // ignore: cast_nullable_to_non_nullable
-              as Wallet?,
+      loadingBalance: loadingBalance == freezed
+          ? _value.loadingBalance
+          : loadingBalance // ignore: cast_nullable_to_non_nullable
+              as bool,
+      errLoadingBalance: errLoadingBalance == freezed
+          ? _value.errLoadingBalance
+          : errLoadingBalance // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
-  }
-
-  @override
-  $WalletCopyWith<$Res>? get wallet {
-    if (_value.wallet == null) {
-      return null;
-    }
-
-    return $WalletCopyWith<$Res>(_value.wallet!, (value) {
-      return _then(_value.copyWith(wallet: value));
-    });
   }
 }
 
@@ -117,11 +104,8 @@ abstract class _$HistoryStateCopyWith<$Res>
   $Res call(
       {bool loadingTransactions,
       String errLoadingTransactions,
-      List<Transaction>? transactions,
-      Wallet? wallet});
-
-  @override
-  $WalletCopyWith<$Res>? get wallet;
+      bool loadingBalance,
+      String errLoadingBalance});
 }
 
 /// @nodoc
@@ -138,8 +122,8 @@ class __$HistoryStateCopyWithImpl<$Res> extends _$HistoryStateCopyWithImpl<$Res>
   $Res call({
     Object? loadingTransactions = freezed,
     Object? errLoadingTransactions = freezed,
-    Object? transactions = freezed,
-    Object? wallet = freezed,
+    Object? loadingBalance = freezed,
+    Object? errLoadingBalance = freezed,
   }) {
     return _then(_HistoryState(
       loadingTransactions: loadingTransactions == freezed
@@ -150,14 +134,14 @@ class __$HistoryStateCopyWithImpl<$Res> extends _$HistoryStateCopyWithImpl<$Res>
           ? _value.errLoadingTransactions
           : errLoadingTransactions // ignore: cast_nullable_to_non_nullable
               as String,
-      transactions: transactions == freezed
-          ? _value.transactions
-          : transactions // ignore: cast_nullable_to_non_nullable
-              as List<Transaction>?,
-      wallet: wallet == freezed
-          ? _value.wallet
-          : wallet // ignore: cast_nullable_to_non_nullable
-              as Wallet?,
+      loadingBalance: loadingBalance == freezed
+          ? _value.loadingBalance
+          : loadingBalance // ignore: cast_nullable_to_non_nullable
+              as bool,
+      errLoadingBalance: errLoadingBalance == freezed
+          ? _value.errLoadingBalance
+          : errLoadingBalance // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -168,8 +152,8 @@ class _$_HistoryState implements _HistoryState {
   const _$_HistoryState(
       {this.loadingTransactions = false,
       this.errLoadingTransactions = '',
-      this.transactions,
-      this.wallet});
+      this.loadingBalance = false,
+      this.errLoadingBalance = ''});
 
   @JsonKey(defaultValue: false)
   @override
@@ -177,14 +161,16 @@ class _$_HistoryState implements _HistoryState {
   @JsonKey(defaultValue: '')
   @override
   final String errLoadingTransactions;
+  @JsonKey(defaultValue: false)
   @override
-  final List<Transaction>? transactions;
+  final bool loadingBalance;
+  @JsonKey(defaultValue: '')
   @override
-  final Wallet? wallet;
+  final String errLoadingBalance;
 
   @override
   String toString() {
-    return 'HistoryState(loadingTransactions: $loadingTransactions, errLoadingTransactions: $errLoadingTransactions, transactions: $transactions, wallet: $wallet)';
+    return 'HistoryState(loadingTransactions: $loadingTransactions, errLoadingTransactions: $errLoadingTransactions, loadingBalance: $loadingBalance, errLoadingBalance: $errLoadingBalance)';
   }
 
   @override
@@ -197,11 +183,12 @@ class _$_HistoryState implements _HistoryState {
             (identical(other.errLoadingTransactions, errLoadingTransactions) ||
                 const DeepCollectionEquality().equals(
                     other.errLoadingTransactions, errLoadingTransactions)) &&
-            (identical(other.transactions, transactions) ||
+            (identical(other.loadingBalance, loadingBalance) ||
                 const DeepCollectionEquality()
-                    .equals(other.transactions, transactions)) &&
-            (identical(other.wallet, wallet) ||
-                const DeepCollectionEquality().equals(other.wallet, wallet)));
+                    .equals(other.loadingBalance, loadingBalance)) &&
+            (identical(other.errLoadingBalance, errLoadingBalance) ||
+                const DeepCollectionEquality()
+                    .equals(other.errLoadingBalance, errLoadingBalance)));
   }
 
   @override
@@ -209,8 +196,8 @@ class _$_HistoryState implements _HistoryState {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(loadingTransactions) ^
       const DeepCollectionEquality().hash(errLoadingTransactions) ^
-      const DeepCollectionEquality().hash(transactions) ^
-      const DeepCollectionEquality().hash(wallet);
+      const DeepCollectionEquality().hash(loadingBalance) ^
+      const DeepCollectionEquality().hash(errLoadingBalance);
 
   @JsonKey(ignore: true)
   @override
@@ -222,17 +209,17 @@ abstract class _HistoryState implements HistoryState {
   const factory _HistoryState(
       {bool loadingTransactions,
       String errLoadingTransactions,
-      List<Transaction>? transactions,
-      Wallet? wallet}) = _$_HistoryState;
+      bool loadingBalance,
+      String errLoadingBalance}) = _$_HistoryState;
 
   @override
   bool get loadingTransactions => throw _privateConstructorUsedError;
   @override
   String get errLoadingTransactions => throw _privateConstructorUsedError;
   @override
-  List<Transaction>? get transactions => throw _privateConstructorUsedError;
+  bool get loadingBalance => throw _privateConstructorUsedError;
   @override
-  Wallet? get wallet => throw _privateConstructorUsedError;
+  String get errLoadingBalance => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$HistoryStateCopyWith<_HistoryState> get copyWith =>

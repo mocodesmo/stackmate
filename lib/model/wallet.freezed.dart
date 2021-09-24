@@ -189,14 +189,15 @@ class __$WalletCopyWithImpl<$Res> extends _$WalletCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 @HiveType(typeId: 1, adapterName: 'WalletClassAdaper')
-class _$_Wallet implements _Wallet {
+class _$_Wallet extends _Wallet {
   const _$_Wallet(
       {@HiveField(0) required this.label,
       @HiveField(2) required this.descriptor,
       @HiveField(3) required this.blockchain,
       @HiveField(4) this.transactions,
       @HiveField(5) required this.index,
-      @HiveField(6) this.balance});
+      @HiveField(6) this.balance})
+      : super._();
 
   factory _$_Wallet.fromJson(Map<String, dynamic> json) =>
       _$$_WalletFromJson(json);
@@ -267,7 +268,7 @@ class _$_Wallet implements _Wallet {
   }
 }
 
-abstract class _Wallet implements Wallet {
+abstract class _Wallet extends Wallet {
   const factory _Wallet(
       {@HiveField(0) required String label,
       @HiveField(2) required String descriptor,
@@ -275,6 +276,7 @@ abstract class _Wallet implements Wallet {
       @HiveField(4) List<Transaction>? transactions,
       @HiveField(5) required int index,
       @HiveField(6) int? balance}) = _$_Wallet;
+  const _Wallet._() : super._();
 
   factory _Wallet.fromJson(Map<String, dynamic> json) = _$_Wallet.fromJson;
 

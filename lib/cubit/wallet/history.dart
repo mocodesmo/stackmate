@@ -18,8 +18,8 @@ class HistoryState with _$HistoryState {
   const factory HistoryState({
     @Default(false) bool loadingTransactions,
     @Default('') String errLoadingTransactions,
-    List<Transaction>? transactions,
-    Wallet? wallet,
+    @Default(false) bool loadingBalance,
+    @Default('') String errLoadingBalance,
   }) = _HistoryState;
 }
 
@@ -32,7 +32,7 @@ class HistoryCubit extends Cubit<HistoryState> {
     this._blockchain,
     this._launcher,
     this._share,
-  ) : super(HistoryState(wallet: _walletsCubit.state.selectedWallet)) {
+  ) : super(const HistoryState()) {
     _init();
   }
 
@@ -60,22 +60,58 @@ class HistoryCubit extends Cubit<HistoryState> {
       // await Future.delayed(const Duration(seconds: 4));
 
       final transactions = await _bitcoin.getHistory(
-        depositDesc: state.wallet!.descriptor,
+        depositDesc: _walletsCubit.state.selectedWallet!.descriptor,
         nodeAddress: '',
         network: _blockchain.state.blockchain.name,
       );
 
+      _walletsCubit.addTransactionsToSelectedWallet(transactions);
+
       emit(
         state.copyWith(
           loadingTransactions: false,
-          transactions: transactions,
+          // transactions: transactions,
         ),
       );
+
+      getBalance();
     } catch (e, s) {
       emit(
         state.copyWith(
           loadingTransactions: false,
           errLoadingTransactions: e.toString(),
+        ),
+      );
+      _logger.logException(e, 'HistoryCubit.getHistory', s);
+    }
+  }
+
+  void getBalance() async {
+    try {
+      emit(
+        state.copyWith(
+          loadingBalance: true,
+          errLoadingTransactions: '',
+        ),
+      );
+
+      final bal = await _bitcoin.syncBalance(
+        depositDesc: _walletsCubit.state.selectedWallet!.descriptor,
+        network: _blockchain.state.blockchain.name,
+      );
+
+      _walletsCubit.addBalanceToSelectedWallet(bal);
+
+      emit(
+        state.copyWith(
+          loadingBalance: false,
+        ),
+      );
+    } catch (e, s) {
+      emit(
+        state.copyWith(
+          loadingBalance: false,
+          errLoadingBalance: e.toString(),
         ),
       );
       _logger.logException(e, 'HistoryCubit.getHistory', s);
