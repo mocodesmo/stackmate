@@ -6,8 +6,8 @@ use std::os::raw::c_char;
 
 use serde::{Serialize,Deserialize};
 
-use bdk::database::MemoryDatabase;
 use bdk::Wallet;
+use bdk::database::MemoryDatabase;
 use bdk::blockchain::{ElectrumBlockchain};
 use bdk::electrum_client::Client;
 use bdk::wallet::AddressIndex::Peek;

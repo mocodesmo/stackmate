@@ -3,6 +3,7 @@ pub mod history;
 pub mod coldcard;
 pub mod policy;
 pub mod config;
+pub mod psbt;
 // pub fn list_transactions
 // pub fn public_policy
 // pub fn create_tx
