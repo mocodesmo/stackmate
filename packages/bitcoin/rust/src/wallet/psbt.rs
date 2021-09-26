@@ -12,7 +12,7 @@ use bitcoin::util::address::Address;
 use bdk::blockchain::noop_progress;
 use bdk::blockchain::ElectrumBlockchain;
 use bdk::database::MemoryDatabase;
-use bdk::TransactionDetails;
+// use bdk::TransactionDetails;
 use bitcoin::consensus::deserialize;
 use bitcoin::util::psbt::PartiallySignedTransaction;
 use std::str::FromStr;
@@ -26,7 +26,7 @@ use bitcoin::network::constants::Network;
 pub struct WalletPSBT {
   pub psbt: String,
   pub is_finalized: bool,
-  pub details: Option<TransactionDetails>,
+  // pub details: Option<TransactionDetails>,
 }
 
 // impl Clone for WalletPSBT {
@@ -104,7 +104,7 @@ pub fn build(
   Ok(WalletPSBT {
     psbt: psbt.to_string(),
     is_finalized: false,
-    details: Some(details),
+    // details: Some(details),
   })
 }
 
@@ -190,7 +190,7 @@ pub fn sign(config: WalletConfig, psbt: &str) -> Result<WalletPSBT, S5Error> {
   Ok(WalletPSBT {
     psbt: final_psbt.to_string(),
     is_finalized: finalized,
-    details: None,
+    // details: None,
   })
 }
 
