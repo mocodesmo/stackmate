@@ -45,6 +45,31 @@ abstract class IBitcoin {
     required String nodeAddress,
     required String network,
   });
+
+  Future<int> getFees({
+    required String targetSize,
+    required String network,
+  });
+
+  Future<String> buildTransaction({
+    required String depositDesc,
+    required String network,
+    required String toAddress,
+    required String amount,
+    required String feeRate,
+  });
+
+  Future<String> signTransaction({
+    required String depositDesc,
+    required String network,
+    required String unsignedPSBT,
+  });
+
+  Future<String> broadcastTransaction({
+    required String depositDesc,
+    required String network,
+    required String signedPSBT,
+  });
 }
 
 class BitcoinFFI implements IBitcoin {
@@ -152,6 +177,68 @@ class BitcoinFFI implements IBitcoin {
       transactions.add(Transaction.fromJson(t as Map<String, dynamic>));
     }
     return transactions;
+  }
+
+  @override
+  Future<int> getFees({
+    required String targetSize,
+    required String network,
+  }) async {
+    final resp = await _bitcoin.getFees(
+      targetSize: targetSize,
+      network: network,
+    );
+    final data = jsonDecode(resp);
+    return data['fee'] as int;
+  }
+
+  @override
+  Future<String> buildTransaction({
+    required String depositDesc,
+    required String network,
+    required String toAddress,
+    required String amount,
+    required String feeRate,
+  }) async {
+    final resp = await _bitcoin.buildTransaction(
+      depositDesc: depositDesc,
+      network: network,
+      toAddress: toAddress,
+      amount: amount,
+      feeRate: feeRate,
+    );
+    final data = jsonDecode(resp);
+    return data['psbt'] as String;
+  }
+
+  @override
+  Future<String> signTransaction({
+    required String depositDesc,
+    required String network,
+    required String unsignedPSBT,
+  }) async {
+    final resp = await _bitcoin.signTransaction(
+      depositDesc: depositDesc,
+      network: network,
+      unsignedPSBT: unsignedPSBT,
+    );
+    final data = jsonDecode(resp);
+    return data['psbt'] as String;
+  }
+
+  @override
+  Future<String> broadcastTransaction({
+    required String depositDesc,
+    required String network,
+    required String signedPSBT,
+  }) async {
+    final resp = await _bitcoin.broadcastTransaction(
+      depositDesc: depositDesc,
+      network: network,
+      signedPSBT: signedPSBT,
+    );
+    final data = jsonDecode(resp);
+    return data['txid'] as String;
   }
 }
 
@@ -288,6 +375,41 @@ class DummyBtc implements IBitcoin {
     required String network,
   }) {
     // TODO: implement syncBalance
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> broadcastTransaction(
+      {required String depositDesc,
+      required String network,
+      required String signedPSBT}) {
+    // TODO: implement broadcastTransaction
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> buildTransaction(
+      {required String depositDesc,
+      required String network,
+      required String toAddress,
+      required String amount,
+      required String feeRate}) {
+    // TODO: implement buildTransaction
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<int> getFees({required String targetSize, required String network}) {
+    // TODO: implement getFees
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> signTransaction(
+      {required String depositDesc,
+      required String network,
+      required String unsignedPSBT}) {
+    // TODO: implement signTransaction
     throw UnimplementedError();
   }
 }

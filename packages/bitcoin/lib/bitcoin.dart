@@ -124,4 +124,74 @@ class BitcoinFFFI {
     if (resp.startsWith('Error')) throw resp;
     return resp;
   }
+
+  Future<String> getFees({
+    required String targetSize,
+    required String network,
+  }) async {
+    final func = binary.lookupFunction<SyncT, SyncT>(
+      'get_fees',
+    );
+    final resp = func(
+      targetSize.toNativeUtf8(),
+      network.toNativeUtf8(),
+    ).toDartString();
+    if (resp.startsWith('Error')) throw resp;
+    return resp;
+  }
+
+  Future<String> buildTransaction({
+    required String depositDesc,
+    required String network,
+    required String toAddress,
+    required String amount,
+    required String feeRate,
+  }) async {
+    final func = binary.lookupFunction<BuildT, BuildT>(
+      'build_tx',
+    );
+    final resp = func(
+      depositDesc.toNativeUtf8(),
+      network.toNativeUtf8(),
+      toAddress.toNativeUtf8(),
+      amount.toNativeUtf8(),
+      feeRate.toNativeUtf8(),
+    ).toDartString();
+    if (resp.startsWith('Error')) throw resp;
+    return resp;
+  }
+
+  Future<String> signTransaction({
+    required String depositDesc,
+    required String network,
+    required String unsignedPSBT,
+  }) async {
+    final func = binary.lookupFunction<SignT, SignT>(
+      'sign_tx',
+    );
+    final resp = func(
+      depositDesc.toNativeUtf8(),
+      network.toNativeUtf8(),
+      unsignedPSBT.toNativeUtf8(),
+    ).toDartString();
+    if (resp.startsWith('Error')) throw resp;
+    return resp;
+  }
+
+  Future<String> broadcastTransaction({
+    required String depositDesc,
+    required String network,
+    required String signedPSBT,
+  }) async {
+    final func = binary.lookupFunction<BroadcastT, BroadcastT>(
+      'broadcast_tx',
+    );
+    final resp = func(
+      depositDesc.toNativeUtf8(),
+      network.toNativeUtf8(),
+      signedPSBT.toNativeUtf8(),
+    ).toDartString();
+    if (resp.startsWith('Error')) throw resp;
+    return resp;
+  }
 }
