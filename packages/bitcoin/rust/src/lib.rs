@@ -19,6 +19,7 @@ use crate::wallet::address;
 use crate::wallet::config::WalletConfig;
 use crate::wallet::history;
 use crate::wallet::policy;
+use crate::wallet::psbt;
 
 mod network;
 use crate::network::fees;
@@ -312,6 +313,143 @@ pub unsafe extern "C" fn get_fees(
     let config = WalletConfig::default("/0/*", network_enum);
 
     match fees::estimate_sats_per_byte(string_to_static_str(config.node_address), target_size_int) {
+        Ok(result) => return result.c_stringify(),
+        Err(e) => return e.c_stringify(),
+    }
+}
+
+#[allow(clippy::missing_safety_doc)]
+#[deny(unsafe_op_in_unsafe_fn)]
+#[no_mangle]
+pub unsafe extern "C" fn build_tx(
+    deposit_desc: *const c_char,
+    network: *const c_char,
+    to_address: *const c_char,
+    amount: *const c_char,
+    fee_rate: *const c_char,
+) -> *mut c_char {
+    let deposit_desc_cstr = unsafe { CStr::from_ptr(deposit_desc) };
+    let deposit_desc: &str = match deposit_desc_cstr.to_str() {
+        Ok(string) => &string,
+        Err(_) => return S5Error::new(ErrorKind::InputError, "Deposit-Descriptor").c_stringify(),
+    };
+
+    let network_cstr = unsafe { CStr::from_ptr(network) };
+    let network: &str = match network_cstr.to_str() {
+        Ok(string) => &string,
+        Err(_) => "test",
+    };
+    let network_enum = match network {
+        "main" => Network::Bitcoin,
+        "test" => Network::Testnet,
+        _ => Network::Testnet,
+    };
+
+    let config = WalletConfig::default(deposit_desc, network_enum);
+
+    let to_address_cstr = unsafe { CStr::from_ptr(to_address) };
+    let to_address: &str = match to_address_cstr.to_str() {
+        Ok(string) => &string,
+        Err(_) => return S5Error::new(ErrorKind::InputError, "To-Address").c_stringify(),
+    };
+
+    let amount_cstr = unsafe { CStr::from_ptr(amount) };
+    let amount: u64 = match amount_cstr.to_str() {
+        Ok(string) => match string.parse::<u64>() {
+            Ok(i) => i,
+            Err(_) => return CString::new("Error: Amount Input.").unwrap().into_raw(),
+        },
+        Err(_) => return S5Error::new(ErrorKind::InputError, "Amount").c_stringify(),
+    };
+
+    let fee_rate_cstr = unsafe { CStr::from_ptr(fee_rate) };
+    let fee_rate: f32 = match fee_rate_cstr.to_str() {
+        Ok(string) => match string.parse::<f32>() {
+            Ok(i) => i,
+            Err(_) => return CString::new("Error: Amount Input.").unwrap().into_raw(),
+        },
+        Err(_) => return S5Error::new(ErrorKind::InputError, "Amount").c_stringify(),
+    };
+
+    match psbt::build(config, to_address, amount, fee_rate) {
+        Ok(result) => return result.c_stringify(),
+        Err(e) => return e.c_stringify(),
+    }
+}
+
+#[allow(clippy::missing_safety_doc)]
+#[deny(unsafe_op_in_unsafe_fn)]
+#[no_mangle]
+pub unsafe extern "C" fn sign_tx(
+    deposit_desc: *const c_char,
+    network: *const c_char,
+    unsigned_psbt: *const c_char,
+) -> *mut c_char {
+    let deposit_desc_cstr = unsafe { CStr::from_ptr(deposit_desc) };
+    let deposit_desc: &str = match deposit_desc_cstr.to_str() {
+        Ok(string) => &string,
+        Err(_) => return S5Error::new(ErrorKind::InputError, "Deposit-Descriptor").c_stringify(),
+    };
+
+    let network_cstr = unsafe { CStr::from_ptr(network) };
+    let network: &str = match network_cstr.to_str() {
+        Ok(string) => &string,
+        Err(_) => "test",
+    };
+    let network_enum = match network {
+        "main" => Network::Bitcoin,
+        "test" => Network::Testnet,
+        _ => Network::Testnet,
+    };
+
+    let config = WalletConfig::default(deposit_desc, network_enum);
+
+    let unsigned_psbt_cstr = unsafe { CStr::from_ptr(unsigned_psbt) };
+    let unsigned_psbt: &str = match unsigned_psbt_cstr.to_str() {
+        Ok(string) => &string,
+        Err(_) => return S5Error::new(ErrorKind::InputError, "Deposit-Descriptor").c_stringify(),
+    };
+
+    match psbt::sign(config, unsigned_psbt) {
+        Ok(result) => return result.c_stringify(),
+        Err(e) => return e.c_stringify(),
+    }
+}
+
+#[allow(clippy::missing_safety_doc)]
+#[deny(unsafe_op_in_unsafe_fn)]
+#[no_mangle]
+pub unsafe extern "C" fn broadcast_tx(
+    deposit_desc: *const c_char,
+    network: *const c_char,
+    signed_psbt: *const c_char,
+) -> *mut c_char {
+    let deposit_desc_cstr = unsafe { CStr::from_ptr(deposit_desc) };
+    let deposit_desc: &str = match deposit_desc_cstr.to_str() {
+        Ok(string) => &string,
+        Err(_) => return S5Error::new(ErrorKind::InputError, "Deposit-Descriptor").c_stringify(),
+    };
+
+    let network_cstr = unsafe { CStr::from_ptr(network) };
+    let network: &str = match network_cstr.to_str() {
+        Ok(string) => &string,
+        Err(_) => "test",
+    };
+    let network_enum = match network {
+        "main" => Network::Bitcoin,
+        "test" => Network::Testnet,
+        _ => Network::Testnet,
+    };
+
+    let config = WalletConfig::default(deposit_desc, network_enum);
+
+    let psbt_cstr = unsafe { CStr::from_ptr(signed_psbt) };
+    let signed_psbt: &str = match psbt_cstr.to_str() {
+        Ok(string) => &string,
+        Err(_) => return S5Error::new(ErrorKind::InputError, "Deposit-Descriptor").c_stringify(),
+    };
+
+    match psbt::broadcast(config, signed_psbt) {
         Ok(result) => return result.c_stringify(),
         Err(e) => return e.c_stringify(),
     }
