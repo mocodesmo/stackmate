@@ -21,7 +21,7 @@ use crate::wallet::history;
 use crate::wallet::policy;
 
 mod network;
-// use crate::network::fees;
+use crate::network::fees;
 // use crate::network::height;
 
 use e::{ErrorKind, S5Error};
@@ -277,6 +277,53 @@ pub unsafe extern "C" fn get_address(
         Err(e) => return e.c_stringify(),
     }
 }
+
+#[allow(clippy::missing_safety_doc)]
+#[deny(unsafe_op_in_unsafe_fn)]
+#[no_mangle]
+pub unsafe extern "C" fn get_fees(
+    target_size: *const c_char,
+    network: *const c_char,
+) -> *mut c_char {
+    let target_size_cstr = unsafe { CStr::from_ptr(target_size) };
+    let target_size_int: usize = match target_size_cstr.to_str() {
+        Ok(string) => match string.parse::<usize>() {
+            Ok(i) => i,
+            Err(_) => {
+                return CString::new("Error: Target Size Input.")
+                    .unwrap()
+                    .into_raw()
+            }
+        },
+        Err(_) => return S5Error::new(ErrorKind::InputError, "Target-Size").c_stringify(),
+    };
+
+    let network_cstr = unsafe { CStr::from_ptr(network) };
+    let network: &str = match network_cstr.to_str() {
+        Ok(string) => &string,
+        Err(_) => "test",
+    };
+    let network_enum = match network {
+        "main" => Network::Bitcoin,
+        "test" => Network::Testnet,
+        _ => Network::Testnet,
+    };
+
+    let config = WalletConfig::default("/0/*", network_enum);
+
+    match fees::estimate_sats_per_byte(string_to_static_str(config.node_address), target_size_int) {
+        Ok(result) => return result.c_stringify(),
+        Err(e) => return e.c_stringify(),
+    }
+}
+
+fn string_to_static_str(s: String) -> &'static str {
+    Box::leak(s.into_boxed_str())
+}
+
+// build
+// sign
+// broadcast
 
 #[allow(clippy::missing_safety_doc)]
 #[no_mangle]
