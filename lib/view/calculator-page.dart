@@ -7,6 +7,7 @@ import 'package:sats/pkg/validation.dart';
 import 'package:sats/style.dart';
 import 'package:sats/view/common/back-button.dart';
 import 'package:sats/view/common/header.dart';
+import 'package:sats/view/common/loading.dart';
 
 class RatesHeader extends StatelessWidget {
   const RatesHeader({
@@ -308,7 +309,10 @@ class CalcPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            if (loading) const LinearProgressIndicator(),
+            if (loading)
+              const Loading(
+                text: 'Fetching Rates',
+              ),
             if (!loading)
               const Header(
                 cornerTitle: 'STACKMATE',

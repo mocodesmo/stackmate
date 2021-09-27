@@ -20,6 +20,7 @@ class WalletDetails extends StatelessWidget {
     );
     final balance = context.select((SendCubit sc) => sc.state.balance);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
           walletName,
@@ -159,7 +160,7 @@ class _AmountRowState extends State<AmountRow> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '    BTC: ' + int.parse(amount).toBtc(),
+              '    BTC: ' + amount.toBtc(),
               style: context.fonts.caption!.copyWith(
                 color: context.colours.onBackground.withOpacity(0.7),
               ),

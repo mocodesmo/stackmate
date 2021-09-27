@@ -28,9 +28,9 @@ class _$SendStateTearOff {
       String address = '',
       String amount = '',
       String fees = '',
-      int? feeSlow,
-      int? feeMedium,
-      int? feefast,
+      double? feeSlow,
+      double? feeMedium,
+      double? feefast,
       int? balance,
       int feesOption = 1,
       String psbt = '',
@@ -72,9 +72,9 @@ mixin _$SendState {
   String get address => throw _privateConstructorUsedError;
   String get amount => throw _privateConstructorUsedError;
   String get fees => throw _privateConstructorUsedError;
-  int? get feeSlow => throw _privateConstructorUsedError;
-  int? get feeMedium => throw _privateConstructorUsedError;
-  int? get feefast => throw _privateConstructorUsedError;
+  double? get feeSlow => throw _privateConstructorUsedError;
+  double? get feeMedium => throw _privateConstructorUsedError;
+  double? get feefast => throw _privateConstructorUsedError;
   int? get balance => throw _privateConstructorUsedError;
   int get feesOption => throw _privateConstructorUsedError;
   String get psbt => throw _privateConstructorUsedError;
@@ -100,9 +100,9 @@ abstract class $SendStateCopyWith<$Res> {
       String address,
       String amount,
       String fees,
-      int? feeSlow,
-      int? feeMedium,
-      int? feefast,
+      double? feeSlow,
+      double? feeMedium,
+      double? feefast,
       int? balance,
       int feesOption,
       String psbt,
@@ -181,15 +181,15 @@ class _$SendStateCopyWithImpl<$Res> implements $SendStateCopyWith<$Res> {
       feeSlow: feeSlow == freezed
           ? _value.feeSlow
           : feeSlow // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       feeMedium: feeMedium == freezed
           ? _value.feeMedium
           : feeMedium // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       feefast: feefast == freezed
           ? _value.feefast
           : feefast // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       balance: balance == freezed
           ? _value.balance
           : balance // ignore: cast_nullable_to_non_nullable
@@ -227,9 +227,9 @@ abstract class _$SendStateCopyWith<$Res> implements $SendStateCopyWith<$Res> {
       String address,
       String amount,
       String fees,
-      int? feeSlow,
-      int? feeMedium,
-      int? feefast,
+      double? feeSlow,
+      double? feeMedium,
+      double? feefast,
       int? balance,
       int feesOption,
       String psbt,
@@ -309,15 +309,15 @@ class __$SendStateCopyWithImpl<$Res> extends _$SendStateCopyWithImpl<$Res>
       feeSlow: feeSlow == freezed
           ? _value.feeSlow
           : feeSlow // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       feeMedium: feeMedium == freezed
           ? _value.feeMedium
           : feeMedium // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       feefast: feefast == freezed
           ? _value.feefast
           : feefast // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       balance: balance == freezed
           ? _value.balance
           : balance // ignore: cast_nullable_to_non_nullable
@@ -392,11 +392,11 @@ class _$_SendState extends _SendState {
   @override
   final String fees;
   @override
-  final int? feeSlow;
+  final double? feeSlow;
   @override
-  final int? feeMedium;
+  final double? feeMedium;
   @override
-  final int? feefast;
+  final double? feefast;
   @override
   final int? balance;
   @JsonKey(defaultValue: 1)
@@ -506,9 +506,9 @@ abstract class _SendState extends SendState {
       String address,
       String amount,
       String fees,
-      int? feeSlow,
-      int? feeMedium,
-      int? feefast,
+      double? feeSlow,
+      double? feeMedium,
+      double? feefast,
       int? balance,
       int feesOption,
       String psbt,
@@ -536,11 +536,11 @@ abstract class _SendState extends SendState {
   @override
   String get fees => throw _privateConstructorUsedError;
   @override
-  int? get feeSlow => throw _privateConstructorUsedError;
+  double? get feeSlow => throw _privateConstructorUsedError;
   @override
-  int? get feeMedium => throw _privateConstructorUsedError;
+  double? get feeMedium => throw _privateConstructorUsedError;
   @override
-  int? get feefast => throw _privateConstructorUsedError;
+  double? get feefast => throw _privateConstructorUsedError;
   @override
   int? get balance => throw _privateConstructorUsedError;
   @override

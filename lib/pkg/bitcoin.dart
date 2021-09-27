@@ -46,7 +46,7 @@ abstract class IBitcoin {
     required String network,
   });
 
-  Future<int> getFees({
+  Future<double> getFees({
     required String targetSize,
     required String network,
   });
@@ -180,7 +180,7 @@ class BitcoinFFI implements IBitcoin {
   }
 
   @override
-  Future<int> getFees({
+  Future<double> getFees({
     required String targetSize,
     required String network,
   }) async {
@@ -189,7 +189,7 @@ class BitcoinFFI implements IBitcoin {
       network: network,
     );
     final data = jsonDecode(resp);
-    return data['fee'] as int;
+    return data['fee'] as double;
   }
 
   @override
@@ -388,18 +388,19 @@ class DummyBtc implements IBitcoin {
   }
 
   @override
-  Future<String> buildTransaction(
-      {required String depositDesc,
-      required String network,
-      required String toAddress,
-      required String amount,
-      required String feeRate}) {
+  Future<String> buildTransaction({
+    required String depositDesc,
+    required String network,
+    required String toAddress,
+    required String amount,
+    required String feeRate,
+  }) {
     // TODO: implement buildTransaction
     throw UnimplementedError();
   }
 
   @override
-  Future<int> getFees({required String targetSize, required String network}) {
+  Future<double> getFees({required String targetSize, required String network}) {
     // TODO: implement getFees
     throw UnimplementedError();
   }

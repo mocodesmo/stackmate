@@ -31,6 +31,17 @@ extension Strings on String {
   bool not(String other) {
     return this != other;
   }
+
+  String toBtc() {
+    try {
+      if (this == '') return '0.00000000';
+      final amt = int.parse(this);
+      return amt.toBtc();
+    } catch (e) {
+      print(e.toString());
+      return '0.00000000';
+    }
+  }
 }
 
 extension Bools on bool {

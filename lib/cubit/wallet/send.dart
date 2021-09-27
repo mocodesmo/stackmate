@@ -25,9 +25,9 @@ class SendState with _$SendState {
     @Default('') String address,
     @Default('') String amount,
     @Default('') String fees,
-    int? feeSlow,
-    int? feeMedium,
-    int? feefast,
+    double? feeSlow,
+    double? feeMedium,
+    double? feefast,
     int? balance,
     @Default(1) int feesOption,
     @Default('') String psbt,
@@ -38,11 +38,15 @@ class SendState with _$SendState {
   bool confirmStep() => psbt != '' && txId == '';
   bool confirmedStep() => txId != '';
 
-  int feeRate() {
-    if (fees != '') return int.parse(fees);
-    if (feesOption == 0) return feeSlow!;
-    if (feesOption == 1) return feeMedium!;
-    if (feesOption == 2) return feefast!;
+  double feeRate() {
+    try {
+      if (fees != '') return double.parse(fees);
+      if (feesOption == 0) return feeSlow!;
+      if (feesOption == 1) return feeMedium!;
+      if (feesOption == 2) return feefast!;
+    } catch (e) {
+      print(e.toString());
+    }
     return 0;
   }
 
@@ -50,7 +54,7 @@ class SendState with _$SendState {
     try {
       final amountInt = int.parse(amount);
       final feeInt = feeRate();
-      return amountInt + feeInt;
+      return amountInt; //+ feeInt;
     } catch (e) {
       print(e);
     }
@@ -193,8 +197,10 @@ class SendCubit extends Cubit<SendState> {
 
       if (onStart) getFees();
     } catch (e, s) {
+      if (onStart) getFees();
       emit(
         state.copyWith(
+          // loadingStart: false,
           errLoading: e.toString(),
         ),
       );
