@@ -18,7 +18,7 @@ void main() async {
   await initializeHive();
   // testBitcoin();
   setupDependencies(useDummies: false);
-  await locator<ILocalAuth>().authenticate();
+
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocObserver();
 

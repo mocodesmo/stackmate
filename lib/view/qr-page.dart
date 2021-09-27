@@ -67,22 +67,24 @@ class Buttons extends StatelessWidget {
         children: [
           TextButton(
             onPressed: () {
-              Navigator.pushNamed(
-                c,
-                Routes.receive,
-                // arguments: state.wallet!,
-              );
+              if (selected != null)
+                Navigator.pushNamed(
+                  c,
+                  Routes.receive,
+                  // arguments: state.wallet!,
+                );
             },
             child: Text('receive'.toUpperCase()),
           ),
           const SizedBox(height: 24),
           TextButton(
             onPressed: () {
-              Navigator.pushNamed(
-                c,
-                Routes.sendFromQR,
-                // arguments: state.wallet!,
-              );
+              if (selected != null)
+                Navigator.pushNamed(
+                  c,
+                  Routes.sendFromQR,
+                  // arguments: state.wallet!,
+                );
             },
             child: Text('send'.toUpperCase()),
           ),

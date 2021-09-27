@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/deps.dart';
+import 'package:sats/navigation.dart';
 import 'package:sats/pkg/clipboard.dart';
+import 'package:sats/pkg/local-auth.dart';
 import 'package:sats/pkg/storage.dart';
 
 final loggerCubit = LoggerCubit(
@@ -24,10 +27,26 @@ final walletsCubit = WalletsCubit(
   blockchainCubit,
 );
 
-class Cubits extends StatelessWidget {
+class Cubits extends StatefulWidget {
   const Cubits({Key? key, required this.child}) : super(key: key);
 
   final Widget child;
+
+  @override
+  State<Cubits> createState() => _CubitsState();
+}
+
+class _CubitsState extends State<Cubits> {
+  @override
+  void initState() {
+    _authenticate();
+    super.initState();
+  }
+
+  void _authenticate() async {
+    final auth = await locator<ILocalAuth>().authenticate();
+    if (!auth) SystemNavigator.pop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +60,7 @@ class Cubits extends StatelessWidget {
         listener: (context, state) {
           walletsCubit.refresh();
         },
-        child: child,
+        child: widget.child,
       ),
     );
   }
