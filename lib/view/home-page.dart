@@ -50,19 +50,26 @@ class HeaderRow extends StatelessWidget {
 }
 
 class WalletCard extends StatelessWidget {
-  const WalletCard({Key? key, required this.wallet}) : super(key: key);
+  const WalletCard({
+    Key? key,
+    required this.wallet,
+    this.isSelection = false,
+  }) : super(key: key);
 
   final Wallet wallet;
+  final bool isSelection;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         context.read<WalletsCubit>().walletSelected(wallet);
-        Navigator.pushNamed(
-          context,
-          Routes.wallet,
-        );
+        if (!isSelection) {
+          Navigator.pushNamed(
+            context,
+            Routes.wallet,
+          );
+        }
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),

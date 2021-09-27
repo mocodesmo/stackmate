@@ -13,6 +13,7 @@ import 'package:sats/cubit/new-wallet/xpub-import.dart';
 import 'package:sats/cubit/reddit.dart';
 import 'package:sats/cubit/wallet/history.dart';
 import 'package:sats/cubit/wallet/receive.dart';
+import 'package:sats/cubit/wallet/send.dart';
 import 'package:sats/deps.dart';
 import 'package:sats/pkg/bitcoin.dart';
 import 'package:sats/pkg/clipboard.dart';
@@ -47,6 +48,7 @@ class Routes {
   static const wallet = 'wallet';
   static const receive = 'receive';
   static const send = 'send';
+  static const sendFromQR = 'send-from-qr';
   static const qr = 'qr';
 
   static Route<dynamic>? setupRoutes(RouteSettings settings, BuildContext c) {
@@ -197,7 +199,39 @@ class Routes {
         break;
 
       case send:
-        page = const WalletSendPage();
+        final s = SendCubit(
+          false,
+          walletsCubit,
+          locator<IBitcoin>(),
+          blockchainCubit,
+          loggerCubit,
+          locator<IClipBoard>(),
+          locator<IShare>(),
+        );
+
+        page = BlocProvider.value(
+          value: s,
+          child: const WalletSendPage(),
+        );
+
+        break;
+
+      case sendFromQR:
+        final s = SendCubit(
+          true,
+          walletsCubit,
+          locator<IBitcoin>(),
+          blockchainCubit,
+          loggerCubit,
+          locator<IClipBoard>(),
+          locator<IShare>(),
+        );
+
+        page = BlocProvider.value(
+          value: s,
+          child: const WalletSendPage(),
+        );
+
         break;
 
       case qr:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
+import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button.dart';
 import 'package:sats/view/common/log-button.dart';
@@ -8,7 +9,10 @@ import 'package:sats/view/home-page.dart';
 class AccountsRowSelection extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
-    final wallets = c.select((WalletsCubit w) => w.state.wallets);
+    final state = c.select((WalletsCubit w) => w.state);
+    final wallets = state.wallets;
+    final selected = state.selectedWallet;
+
     if (wallets.isEmpty)
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -34,10 +38,60 @@ class AccountsRowSelection extends StatelessWidget {
           // mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(width: 16),
-            for (var w in wallets) WalletCard(wallet: w),
+            for (var w in wallets)
+              if (selected != null && selected == w)
+                WalletCard(wallet: w, isSelection: true)
+              else
+                Opacity(
+                  opacity: 0.6,
+                  child: WalletCard(
+                    wallet: w,
+                    isSelection: true,
+                  ),
+                ),
             const SizedBox(width: 16),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class Buttons extends StatelessWidget {
+  const Buttons({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext c) {
+    final selected = c.select((WalletsCubit w) => w.state.selectedWallet);
+
+    return Opacity(
+      opacity: selected != null ? 1.0 : 0.5,
+      child: Column(
+        children: [
+          TextButton(
+            onPressed: () {
+              Navigator.pushNamed(
+                c,
+                Routes.receive,
+                // arguments: state.wallet!,
+              );
+            },
+            child: Text('receive'.toUpperCase()),
+          ),
+          const SizedBox(height: 24),
+          TextButton(
+            onPressed: () {
+              Navigator.pushNamed(
+                c,
+                Routes.sendFromQR,
+                // arguments: state.wallet!,
+              );
+            },
+            child: Text('send'.toUpperCase()),
+          ),
+        ],
       ),
     );
   }
@@ -95,22 +149,7 @@ class QRPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              Opacity(
-                opacity: 0.5,
-                child: Column(
-                  children: [
-                    TextButton(
-                      onPressed: () {},
-                      child: Text('receive'.toUpperCase()),
-                    ),
-                    const SizedBox(height: 24),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text('send'.toUpperCase()),
-                    ),
-                  ],
-                ),
-              ),
+              const Buttons(),
             ],
           ),
         ),
