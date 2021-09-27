@@ -18,7 +18,9 @@ class _$SendStateTearOff {
   const _$SendStateTearOff();
 
   _SendState call(
-      {bool loading = true,
+      {bool loadingStart = true,
+      bool buildingTx = false,
+      bool sendingTx = false,
       String errLoading = '',
       String errAddress = '',
       String errAmount = '',
@@ -32,11 +34,11 @@ class _$SendStateTearOff {
       int? balance,
       int feesOption = 1,
       String psbt = '',
-      int total = 0,
-      bool psbtSigned = true,
       String txId = ''}) {
     return _SendState(
-      loading: loading,
+      loadingStart: loadingStart,
+      buildingTx: buildingTx,
+      sendingTx: sendingTx,
       errLoading: errLoading,
       errAddress: errAddress,
       errAmount: errAmount,
@@ -50,8 +52,6 @@ class _$SendStateTearOff {
       balance: balance,
       feesOption: feesOption,
       psbt: psbt,
-      total: total,
-      psbtSigned: psbtSigned,
       txId: txId,
     );
   }
@@ -62,7 +62,9 @@ const $SendState = _$SendStateTearOff();
 
 /// @nodoc
 mixin _$SendState {
-  bool get loading => throw _privateConstructorUsedError;
+  bool get loadingStart => throw _privateConstructorUsedError;
+  bool get buildingTx => throw _privateConstructorUsedError;
+  bool get sendingTx => throw _privateConstructorUsedError;
   String get errLoading => throw _privateConstructorUsedError;
   String get errAddress => throw _privateConstructorUsedError;
   String get errAmount => throw _privateConstructorUsedError;
@@ -76,8 +78,6 @@ mixin _$SendState {
   int? get balance => throw _privateConstructorUsedError;
   int get feesOption => throw _privateConstructorUsedError;
   String get psbt => throw _privateConstructorUsedError;
-  int get total => throw _privateConstructorUsedError;
-  bool get psbtSigned => throw _privateConstructorUsedError;
   String get txId => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -90,7 +90,9 @@ abstract class $SendStateCopyWith<$Res> {
   factory $SendStateCopyWith(SendState value, $Res Function(SendState) then) =
       _$SendStateCopyWithImpl<$Res>;
   $Res call(
-      {bool loading,
+      {bool loadingStart,
+      bool buildingTx,
+      bool sendingTx,
       String errLoading,
       String errAddress,
       String errAmount,
@@ -104,8 +106,6 @@ abstract class $SendStateCopyWith<$Res> {
       int? balance,
       int feesOption,
       String psbt,
-      int total,
-      bool psbtSigned,
       String txId});
 }
 
@@ -119,7 +119,9 @@ class _$SendStateCopyWithImpl<$Res> implements $SendStateCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? loading = freezed,
+    Object? loadingStart = freezed,
+    Object? buildingTx = freezed,
+    Object? sendingTx = freezed,
     Object? errLoading = freezed,
     Object? errAddress = freezed,
     Object? errAmount = freezed,
@@ -133,14 +135,20 @@ class _$SendStateCopyWithImpl<$Res> implements $SendStateCopyWith<$Res> {
     Object? balance = freezed,
     Object? feesOption = freezed,
     Object? psbt = freezed,
-    Object? total = freezed,
-    Object? psbtSigned = freezed,
     Object? txId = freezed,
   }) {
     return _then(_value.copyWith(
-      loading: loading == freezed
-          ? _value.loading
-          : loading // ignore: cast_nullable_to_non_nullable
+      loadingStart: loadingStart == freezed
+          ? _value.loadingStart
+          : loadingStart // ignore: cast_nullable_to_non_nullable
+              as bool,
+      buildingTx: buildingTx == freezed
+          ? _value.buildingTx
+          : buildingTx // ignore: cast_nullable_to_non_nullable
+              as bool,
+      sendingTx: sendingTx == freezed
+          ? _value.sendingTx
+          : sendingTx // ignore: cast_nullable_to_non_nullable
               as bool,
       errLoading: errLoading == freezed
           ? _value.errLoading
@@ -194,14 +202,6 @@ class _$SendStateCopyWithImpl<$Res> implements $SendStateCopyWith<$Res> {
           ? _value.psbt
           : psbt // ignore: cast_nullable_to_non_nullable
               as String,
-      total: total == freezed
-          ? _value.total
-          : total // ignore: cast_nullable_to_non_nullable
-              as int,
-      psbtSigned: psbtSigned == freezed
-          ? _value.psbtSigned
-          : psbtSigned // ignore: cast_nullable_to_non_nullable
-              as bool,
       txId: txId == freezed
           ? _value.txId
           : txId // ignore: cast_nullable_to_non_nullable
@@ -217,7 +217,9 @@ abstract class _$SendStateCopyWith<$Res> implements $SendStateCopyWith<$Res> {
       __$SendStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {bool loading,
+      {bool loadingStart,
+      bool buildingTx,
+      bool sendingTx,
       String errLoading,
       String errAddress,
       String errAmount,
@@ -231,8 +233,6 @@ abstract class _$SendStateCopyWith<$Res> implements $SendStateCopyWith<$Res> {
       int? balance,
       int feesOption,
       String psbt,
-      int total,
-      bool psbtSigned,
       String txId});
 }
 
@@ -247,7 +247,9 @@ class __$SendStateCopyWithImpl<$Res> extends _$SendStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? loading = freezed,
+    Object? loadingStart = freezed,
+    Object? buildingTx = freezed,
+    Object? sendingTx = freezed,
     Object? errLoading = freezed,
     Object? errAddress = freezed,
     Object? errAmount = freezed,
@@ -261,14 +263,20 @@ class __$SendStateCopyWithImpl<$Res> extends _$SendStateCopyWithImpl<$Res>
     Object? balance = freezed,
     Object? feesOption = freezed,
     Object? psbt = freezed,
-    Object? total = freezed,
-    Object? psbtSigned = freezed,
     Object? txId = freezed,
   }) {
     return _then(_SendState(
-      loading: loading == freezed
-          ? _value.loading
-          : loading // ignore: cast_nullable_to_non_nullable
+      loadingStart: loadingStart == freezed
+          ? _value.loadingStart
+          : loadingStart // ignore: cast_nullable_to_non_nullable
+              as bool,
+      buildingTx: buildingTx == freezed
+          ? _value.buildingTx
+          : buildingTx // ignore: cast_nullable_to_non_nullable
+              as bool,
+      sendingTx: sendingTx == freezed
+          ? _value.sendingTx
+          : sendingTx // ignore: cast_nullable_to_non_nullable
               as bool,
       errLoading: errLoading == freezed
           ? _value.errLoading
@@ -322,14 +330,6 @@ class __$SendStateCopyWithImpl<$Res> extends _$SendStateCopyWithImpl<$Res>
           ? _value.psbt
           : psbt // ignore: cast_nullable_to_non_nullable
               as String,
-      total: total == freezed
-          ? _value.total
-          : total // ignore: cast_nullable_to_non_nullable
-              as int,
-      psbtSigned: psbtSigned == freezed
-          ? _value.psbtSigned
-          : psbtSigned // ignore: cast_nullable_to_non_nullable
-              as bool,
       txId: txId == freezed
           ? _value.txId
           : txId // ignore: cast_nullable_to_non_nullable
@@ -342,7 +342,9 @@ class __$SendStateCopyWithImpl<$Res> extends _$SendStateCopyWithImpl<$Res>
 
 class _$_SendState extends _SendState {
   const _$_SendState(
-      {this.loading = true,
+      {this.loadingStart = true,
+      this.buildingTx = false,
+      this.sendingTx = false,
       this.errLoading = '',
       this.errAddress = '',
       this.errAmount = '',
@@ -356,14 +358,18 @@ class _$_SendState extends _SendState {
       this.balance,
       this.feesOption = 1,
       this.psbt = '',
-      this.total = 0,
-      this.psbtSigned = true,
       this.txId = ''})
       : super._();
 
   @JsonKey(defaultValue: true)
   @override
-  final bool loading;
+  final bool loadingStart;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool buildingTx;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool sendingTx;
   @JsonKey(defaultValue: '')
   @override
   final String errLoading;
@@ -399,28 +405,28 @@ class _$_SendState extends _SendState {
   @JsonKey(defaultValue: '')
   @override
   final String psbt;
-  @JsonKey(defaultValue: 0)
-  @override
-  final int total;
-  @JsonKey(defaultValue: true)
-  @override
-  final bool psbtSigned;
   @JsonKey(defaultValue: '')
   @override
   final String txId;
 
   @override
   String toString() {
-    return 'SendState(loading: $loading, errLoading: $errLoading, errAddress: $errAddress, errAmount: $errAmount, errFees: $errFees, address: $address, amount: $amount, fees: $fees, feeSlow: $feeSlow, feeMedium: $feeMedium, feefast: $feefast, balance: $balance, feesOption: $feesOption, psbt: $psbt, total: $total, psbtSigned: $psbtSigned, txId: $txId)';
+    return 'SendState(loadingStart: $loadingStart, buildingTx: $buildingTx, sendingTx: $sendingTx, errLoading: $errLoading, errAddress: $errAddress, errAmount: $errAmount, errFees: $errFees, address: $address, amount: $amount, fees: $fees, feeSlow: $feeSlow, feeMedium: $feeMedium, feefast: $feefast, balance: $balance, feesOption: $feesOption, psbt: $psbt, txId: $txId)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _SendState &&
-            (identical(other.loading, loading) ||
+            (identical(other.loadingStart, loadingStart) ||
                 const DeepCollectionEquality()
-                    .equals(other.loading, loading)) &&
+                    .equals(other.loadingStart, loadingStart)) &&
+            (identical(other.buildingTx, buildingTx) ||
+                const DeepCollectionEquality()
+                    .equals(other.buildingTx, buildingTx)) &&
+            (identical(other.sendingTx, sendingTx) ||
+                const DeepCollectionEquality()
+                    .equals(other.sendingTx, sendingTx)) &&
             (identical(other.errLoading, errLoading) ||
                 const DeepCollectionEquality()
                     .equals(other.errLoading, errLoading)) &&
@@ -457,11 +463,6 @@ class _$_SendState extends _SendState {
                     .equals(other.feesOption, feesOption)) &&
             (identical(other.psbt, psbt) ||
                 const DeepCollectionEquality().equals(other.psbt, psbt)) &&
-            (identical(other.total, total) ||
-                const DeepCollectionEquality().equals(other.total, total)) &&
-            (identical(other.psbtSigned, psbtSigned) ||
-                const DeepCollectionEquality()
-                    .equals(other.psbtSigned, psbtSigned)) &&
             (identical(other.txId, txId) ||
                 const DeepCollectionEquality().equals(other.txId, txId)));
   }
@@ -469,7 +470,9 @@ class _$_SendState extends _SendState {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(loading) ^
+      const DeepCollectionEquality().hash(loadingStart) ^
+      const DeepCollectionEquality().hash(buildingTx) ^
+      const DeepCollectionEquality().hash(sendingTx) ^
       const DeepCollectionEquality().hash(errLoading) ^
       const DeepCollectionEquality().hash(errAddress) ^
       const DeepCollectionEquality().hash(errAmount) ^
@@ -483,8 +486,6 @@ class _$_SendState extends _SendState {
       const DeepCollectionEquality().hash(balance) ^
       const DeepCollectionEquality().hash(feesOption) ^
       const DeepCollectionEquality().hash(psbt) ^
-      const DeepCollectionEquality().hash(total) ^
-      const DeepCollectionEquality().hash(psbtSigned) ^
       const DeepCollectionEquality().hash(txId);
 
   @JsonKey(ignore: true)
@@ -495,7 +496,9 @@ class _$_SendState extends _SendState {
 
 abstract class _SendState extends SendState {
   const factory _SendState(
-      {bool loading,
+      {bool loadingStart,
+      bool buildingTx,
+      bool sendingTx,
       String errLoading,
       String errAddress,
       String errAmount,
@@ -509,13 +512,15 @@ abstract class _SendState extends SendState {
       int? balance,
       int feesOption,
       String psbt,
-      int total,
-      bool psbtSigned,
       String txId}) = _$_SendState;
   const _SendState._() : super._();
 
   @override
-  bool get loading => throw _privateConstructorUsedError;
+  bool get loadingStart => throw _privateConstructorUsedError;
+  @override
+  bool get buildingTx => throw _privateConstructorUsedError;
+  @override
+  bool get sendingTx => throw _privateConstructorUsedError;
   @override
   String get errLoading => throw _privateConstructorUsedError;
   @override
@@ -542,10 +547,6 @@ abstract class _SendState extends SendState {
   int get feesOption => throw _privateConstructorUsedError;
   @override
   String get psbt => throw _privateConstructorUsedError;
-  @override
-  int get total => throw _privateConstructorUsedError;
-  @override
-  bool get psbtSigned => throw _privateConstructorUsedError;
   @override
   String get txId => throw _privateConstructorUsedError;
   @override

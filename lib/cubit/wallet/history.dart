@@ -26,6 +26,10 @@ class HistoryState with _$HistoryState {
     int? balance,
     List<Transaction>? transactions,
   }) = _HistoryState;
+  const HistoryState._();
+
+  bool zeroBalance() => balance == null || balance == 0;
+  bool zeroBalanceAmt() => balance != null && balance == 0;
 }
 
 class HistoryCubit extends Cubit<HistoryState> {

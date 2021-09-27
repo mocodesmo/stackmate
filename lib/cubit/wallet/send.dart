@@ -15,7 +15,9 @@ part 'send.freezed.dart';
 @freezed
 class SendState with _$SendState {
   const factory SendState({
-    @Default(true) bool loading,
+    @Default(true) bool loadingStart,
+    @Default(false) bool buildingTx,
+    @Default(false) bool sendingTx,
     @Default('') String errLoading,
     @Default('') String errAddress,
     @Default('') String errAmount,
@@ -29,13 +31,11 @@ class SendState with _$SendState {
     int? balance,
     @Default(1) int feesOption,
     @Default('') String psbt,
-    @Default(0) int total,
-    @Default(true) bool psbtSigned,
     @Default('') String txId,
   }) = _SendState;
   const SendState._();
 
-  bool confirmStep() => psbt != '' && !psbtSigned;
+  bool confirmStep() => psbt != '' && txId == '';
   bool confirmedStep() => txId != '';
 
   int feeRate() {
@@ -45,6 +45,20 @@ class SendState with _$SendState {
     if (feesOption == 2) return feefast!;
     return 0;
   }
+
+  int total() {
+    try {
+      final amountInt = int.parse(amount);
+      final feeInt = feeRate();
+      return amountInt + feeInt;
+    } catch (e) {
+      print(e);
+    }
+
+    return 0;
+  }
+
+  bool zeroBalanceAmt() => balance != null && balance == 0;
 }
 
 class SendCubit extends Cubit<SendState> {
@@ -68,18 +82,20 @@ class SendCubit extends Cubit<SendState> {
   final IClipBoard _clipBoard;
 
   void _init(bool withQR) async {
-    await Future.delayed(const Duration(milliseconds: 1000));
-    if (withQR)
+    if (withQR) {
+      await Future.delayed(const Duration(milliseconds: 500));
       scanAddress(true);
-    else
+    } else {
+      await Future.delayed(const Duration(milliseconds: 1000));
       getFees();
+    }
   }
 
   void getFees() async {
     try {
       emit(
         state.copyWith(
-          loading: true,
+          loadingStart: true,
         ),
       );
 
@@ -110,7 +126,7 @@ class SendCubit extends Cubit<SendState> {
     } catch (e, s) {
       emit(
         state.copyWith(
-          loading: false,
+          loadingStart: false,
           errLoading: e.toString(),
         ),
       );
@@ -140,13 +156,13 @@ class SendCubit extends Cubit<SendState> {
       emit(
         state.copyWith(
           balance: bal,
-          loading: false,
+          loadingStart: false,
         ),
       );
     } catch (e, s) {
       emit(
         state.copyWith(
-          loading: false,
+          loadingStart: false,
           errLoading: e.toString(),
         ),
       );
@@ -179,7 +195,6 @@ class SendCubit extends Cubit<SendState> {
     } catch (e, s) {
       emit(
         state.copyWith(
-          loading: false,
           errLoading: e.toString(),
         ),
       );
@@ -212,7 +227,7 @@ class SendCubit extends Cubit<SendState> {
 
   void feeChanged(String fee) {
     final checked = fee.replaceAll('.', '');
-    emit(state.copyWith(address: checked));
+    emit(state.copyWith(address: checked, feesOption: 4));
   }
 
   void confirmClicked() async {
@@ -241,7 +256,7 @@ class SendCubit extends Cubit<SendState> {
           state.errAmount != '' ||
           state.errFees != '') return;
 
-      emit(state.copyWith(loading: true, errLoading: ''));
+      emit(state.copyWith(buildingTx: true, errLoading: ''));
 
       final psbt = await _bitcoin.buildTransaction(
         depositDesc: _walletCubit.state.selectedWallet!.descriptor,
@@ -253,14 +268,14 @@ class SendCubit extends Cubit<SendState> {
 
       emit(
         state.copyWith(
-          loading: false,
+          buildingTx: false,
           psbt: psbt,
         ),
       );
     } catch (e, s) {
       emit(
         state.copyWith(
-          loading: false,
+          buildingTx: false,
           errLoading: e.toString(),
         ),
       );
@@ -283,7 +298,7 @@ class SendCubit extends Cubit<SendState> {
 
   void sendClicked() async {
     try {
-      emit(state.copyWith(loading: true, errLoading: ''));
+      emit(state.copyWith(sendingTx: true, errLoading: ''));
 
       final signed = await _bitcoin.signTransaction(
         depositDesc: _walletCubit.state.selectedWallet!.descriptor,
@@ -299,7 +314,7 @@ class SendCubit extends Cubit<SendState> {
 
       emit(
         state.copyWith(
-          loading: false,
+          sendingTx: false,
           errLoading: '',
           txId: txid,
         ),
@@ -307,7 +322,7 @@ class SendCubit extends Cubit<SendState> {
     } catch (e, s) {
       emit(
         state.copyWith(
-          loading: false,
+          sendingTx: false,
           errLoading: e.toString(),
         ),
       );

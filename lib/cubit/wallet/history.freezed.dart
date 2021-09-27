@@ -178,14 +178,15 @@ class __$HistoryStateCopyWithImpl<$Res> extends _$HistoryStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_HistoryState with DiagnosticableTreeMixin implements _HistoryState {
+class _$_HistoryState extends _HistoryState with DiagnosticableTreeMixin {
   const _$_HistoryState(
       {this.loadingTransactions = true,
       this.errLoadingTransactions = '',
       this.loadingBalance = false,
       this.errLoadingBalance = '',
       this.balance,
-      this.transactions});
+      this.transactions})
+      : super._();
 
   @JsonKey(defaultValue: true)
   @override
@@ -263,7 +264,7 @@ class _$_HistoryState with DiagnosticableTreeMixin implements _HistoryState {
       __$HistoryStateCopyWithImpl<_HistoryState>(this, _$identity);
 }
 
-abstract class _HistoryState implements HistoryState {
+abstract class _HistoryState extends HistoryState {
   const factory _HistoryState(
       {bool loadingTransactions,
       String errLoadingTransactions,
@@ -271,6 +272,7 @@ abstract class _HistoryState implements HistoryState {
       String errLoadingBalance,
       int? balance,
       List<Transaction>? transactions}) = _$_HistoryState;
+  const _HistoryState._() : super._();
 
   @override
   bool get loadingTransactions => throw _privateConstructorUsedError;

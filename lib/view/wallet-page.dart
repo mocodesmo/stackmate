@@ -440,6 +440,8 @@ class HistoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext c) {
+    final zeroBal = c.select((HistoryCubit hc) => hc.state.zeroBalance());
+
     return WillPopScope(
       onWillPop: () async {
         c.read<WalletsCubit>().clearSelectedWallet();
@@ -481,15 +483,20 @@ class HistoryPage extends StatelessWidget {
                           child: const Text('RECEIVE'),
                         ),
                         const SizedBox(height: 32),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              c,
-                              Routes.send,
-                              // arguments: state.wallet!,
-                            );
-                          },
-                          child: const Text('SEND'),
+                        AnimatedOpacity(
+                          duration: const Duration(milliseconds: 300),
+                          opacity: zeroBal ? 0.4 : 1,
+                          child: TextButton(
+                            onPressed: () {
+                              if (!zeroBal)
+                                Navigator.pushNamed(
+                                  c,
+                                  Routes.send,
+                                  // arguments: state.wallet!,
+                                );
+                            },
+                            child: const Text('SEND'),
+                          ),
                         ),
                       ],
                     ),
