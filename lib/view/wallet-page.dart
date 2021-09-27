@@ -320,9 +320,9 @@ class _TransactionCellState extends State<TransactionCell> {
 class TransactionsView extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
-    final wallet = c.select(
-      (WalletsCubit w) => w.state.selectedWallet!,
-    );
+    final wallet = c.select((WalletsCubit w) => w.state.selectedWallet);
+
+    if (wallet == null) return Container();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -363,9 +363,10 @@ class HistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     final history = c.select((HistoryCubit h) => h.state);
-    final wallet = c.select(
-      (WalletsCubit w) => w.state.selectedWallet!,
-    );
+    final wallet = c.select((WalletsCubit w) => w.state.selectedWallet);
+
+    if (wallet == null) return Container();
+
     return WillPopScope(
       onWillPop: () async {
         c.read<WalletsCubit>().clearSelectedWallet();
@@ -441,11 +442,11 @@ class HistoryPage extends StatelessWidget {
                         const SizedBox(height: 32),
                         TextButton(
                           onPressed: () {
-                            // Navigator.pushNamed(
-                            //   c,
-                            //   Routes.receive,
-                            //   // arguments: state.wallet!,
-                            // );
+                            Navigator.pushNamed(
+                              c,
+                              Routes.send,
+                              // arguments: state.wallet!,
+                            );
                           },
                           child: const Text('SEND'),
                         ),

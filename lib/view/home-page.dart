@@ -168,7 +168,9 @@ class ActionsRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, Routes.qr);
+            },
             icon: Icon(Icons.qr_code, size: 32, color: context.colours.primary),
           ),
           IconButton(

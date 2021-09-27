@@ -1,35 +1,17 @@
-// import 'package:bloc/bloc.dart';
-// import 'package:flutter/foundation.dart';
-// import 'package:freezed_annotation/freezed_annotation.dart';
-// import 'package:sats/zold/api/_helpers.dart';
-// import 'package:sats/zold/api/wallet.dart';
-// import 'package:sats/zold/cubit/btc-send/fee.dart';
-// import 'package:sats/zold/cubit/wallet.dart';
-// import 'package:sats/pkg/storage.dart';
-// import 'package:sats/pkg/validation.dart';
-// import 'package:sats/cubit/logger.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-// part 'amount.freezed.dart';
+part 'amount.freezed.dart';
 
-// @freezed
-// class BtcSendAmountState with _$BtcSendAmountState {
-//   const BtcSendAmountState._();
-//   const factory BtcSendAmountState({
-//     @Default('') String amountEntered,
-//     @Default(0) double amountEnteredD,
-//     @Default('') String amountError,
-//     @Default(0) double finalAmountD,
-//     @Default('0.00 BTC') String amountEnteredSmall,
-//     //@Default(false) bool useMaxBalance,
-//   }) = _BtcSendAmountState;
+@freezed
+class BtcSendAmountState with _$BtcSendAmountState {
+  const factory BtcSendAmountState({
+    @Default('') String amountEntered,
+    @Default('') String errAmount,
+  }) = _BtcSendAmountState;
+  const BtcSendAmountState._();
 
-//   String finalAmountBtc() => (finalAmountD / 100000000).toStringAsFixed(8);
-
-//   String finalAmountSats() =>
-//       Validation.addCommas(finalAmountD.toStringAsFixed(0));
-
-//   bool hasError() => amountError != '';
-// }
+  bool hasError() => errAmount != '';
+}
 
 // class BtcSendAmountCubit extends Cubit<BtcSendAmountState> {
 //   BtcSendAmountCubit(

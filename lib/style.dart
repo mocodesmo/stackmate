@@ -13,16 +13,16 @@ ThemeData mainTheme() => ThemeData(
         error: const Color(0xFFff0000),
         onPrimary: Colors.white,
         onSecondary: Colors.white,
-        onSurface: Colors.white.withOpacity(0.8),
-        onBackground: Colors.white.withOpacity(0.8),
+        onSurface: Colors.white, //.withOpacity(0.8),
+        onBackground: Colors.white, //.withOpacity(0.8),
         onError: Colors.white,
-        brightness: Brightness.light,
+        brightness: Brightness.dark,
       ),
     );
 
 ThemeData derivedTheme(ThemeData theme) {
   return theme.copyWith(
-    scaffoldBackgroundColor: const Color(0xFF13161f),
+    scaffoldBackgroundColor: theme.colorScheme.background,
     //Colors.blue[50], //_background,
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: theme.colorScheme.primary,
@@ -49,10 +49,12 @@ ThemeData derivedTheme(ThemeData theme) {
           color: Color(0xFFff9500),
         ),
       ),
-      errorStyle: const TextStyle(color: Color(0xFFff9500)),
+      errorStyle: TextStyle(color: theme.colorScheme.error),
       filled: true,
-      fillColor: theme.colorScheme.onBackground,
+      fillColor: theme.colorScheme.surface,
       focusColor: theme.colorScheme.onBackground,
+      labelStyle: TextStyle(color: theme.colorScheme.onBackground),
+      hintStyle: TextStyle(color: theme.colorScheme.primary.withOpacity(0.7)),
     ),
   );
 }

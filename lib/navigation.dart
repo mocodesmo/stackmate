@@ -24,12 +24,14 @@ import 'package:sats/view/add-wallet-page.dart';
 import 'package:sats/view/calculator-page.dart';
 import 'package:sats/view/home-page.dart';
 import 'package:sats/view/logs-page.dart';
-import 'package:sats/view/receive-page.dart';
+import 'package:sats/view/qr-page.dart';
+import 'package:sats/view/wallet-receive-page.dart';
 import 'package:sats/view/settings-page.dart';
 import 'package:sats/view/wallet-new-seedgenerate-page.dart';
 import 'package:sats/view/wallet-new-seedimport-page.dart';
 import 'package:sats/view/wallet-new-xpub-page.dart';
 import 'package:sats/view/wallet-page.dart';
+import 'package:sats/view/wallet-send-page.dart';
 
 class Routes {
   static const home = '/';
@@ -42,6 +44,8 @@ class Routes {
   static const logs = 'logs';
   static const wallet = 'wallet';
   static const receive = 'receive';
+  static const send = 'send';
+  static const qr = 'qr';
 
   static Route<dynamic>? setupRoutes(RouteSettings settings, BuildContext c) {
     Widget page = Container();
@@ -183,6 +187,14 @@ class Routes {
           value: r,
           child: const ReceivePage(),
         );
+        break;
+
+      case send:
+        page = const WalletSendPage();
+        break;
+
+      case qr:
+        page = const QRPage();
         break;
     }
 
