@@ -9,6 +9,7 @@ import 'package:oktoast/oktoast.dart';
 import 'package:sats/deps.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
+import 'package:sats/pkg/local-auth.dart';
 import 'package:sats/pkg/storage.dart';
 import 'package:sats/state.dart';
 import 'package:sats/style.dart';
@@ -17,6 +18,7 @@ void main() async {
   await initializeHive();
   // testBitcoin();
   setupDependencies(useDummies: false);
+  await locator<ILocalAuth>().authenticate();
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocObserver();
 

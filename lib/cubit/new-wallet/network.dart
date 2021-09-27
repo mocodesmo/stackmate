@@ -29,33 +29,49 @@ class NetworkState with _$NetworkState {
 
 class NetworkCubit extends Cubit<NetworkState> {
   NetworkCubit(this.logger) : super(const NetworkState()) {
-    networkSub = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult result) => networkStatusChanged(result));
-
-    //flutterBlue.startScan();
-    ////flutterBlue.
-    // bluetoothSub = flutterBlue.state.listen((result) {
-    //   bluetoothStatusChanged(result);
-    // });
-
-    _checkConnectivity();
+    _init();
   }
 
-  // FlutterBlue flutterBlue = FlutterBlue.instance;
+  FlutterBlue flutterBlue = FlutterBlue.instance;
 
   StreamSubscription? networkSub;
   StreamSubscription? bluetoothSub;
   final LoggerCubit logger;
 
+  void _init() {
+    try {
+      networkSub = Connectivity()
+          .onConnectivityChanged
+          .listen((ConnectivityResult result) => networkStatusChanged(result));
+    } catch (e, s) {
+      logger.logException(e, 'NetworkCubit._init.net', s);
+    }
+
+    try {
+      flutterBlue.startScan();
+      // bluetoothSub = flutterBlue.state.listen((result) {
+      //   bluetoothStatusChanged(result);
+      // });
+    } catch (e, s) {
+      logger.logException(e, 'NetworkCubit._init.bt', s);
+    }
+
+    _checkConnectivity();
+  }
+
   void _checkConnectivity() async {
+    print(':::_checkConnectivity');
     try {
       final networkResult = await Connectivity().checkConnectivity();
-      //final blueResult = await flutterBlue.state.last;
       networkStatusChanged(networkResult);
-      //bluetoothStatusChanged(blueResult);
     } catch (e) {
       print('NETWORK ERROR ::: ' + e.toString());
+    }
+    try {
+      final blueResult = await flutterBlue.state.last;
+      bluetoothStatusChanged(blueResult);
+    } catch (e) {
+      print('BT ERROR ::: ' + e.toString());
     }
   }
 
@@ -92,7 +108,7 @@ class NetworkCubit extends Cubit<NetworkState> {
     if (networkSub != null) networkSub!.cancel();
     if (bluetoothSub != null) {
       bluetoothSub!.cancel();
-      //flutterBlue.stopScan();
+      flutterBlue.stopScan();
     }
     return super.close();
   }

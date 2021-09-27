@@ -27,7 +27,8 @@ class RatesHeader extends StatelessWidget {
               const SizedBox(height: 32),
               if (!calcState.loadingRates && calcState.rates != null) ...[
                 FadeIn(
-                  duration: const Duration(milliseconds: 800),
+                  duration: const Duration(milliseconds: 400),
+                  // delay: const Duration(milliseconds: 400),
                   child: GestureDetector(
                     onTap: () {
                       c.read<CalculatorCubit>().fieldSelected(false);
@@ -89,15 +90,15 @@ class RatesHeader extends StatelessWidget {
                   ),
                 ),
                 FadeIn(
-                  duration: const Duration(milliseconds: 800),
-                  delay: const Duration(milliseconds: 400),
+                  duration: const Duration(milliseconds: 400),
+                  // delay: const Duration(milliseconds: 400),
                   child: Divider(
                     color: c.colours.primary.withOpacity(0.5),
                   ),
                 ),
                 FadeIn(
-                  duration: const Duration(milliseconds: 800),
-                  delay: const Duration(milliseconds: 600),
+                  duration: const Duration(milliseconds: 400),
+                  // delay: const Duration(milliseconds: 400),
                   child: GestureDetector(
                     onTap: () {
                       c.read<CalculatorCubit>().fieldSelected(true);
@@ -305,28 +306,31 @@ class CalcPage extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              if (loading) const LinearProgressIndicator(),
-              if (!loading)
-                const Header(
-                  cornerTitle: 'STACKMATE',
-                  children: [
-                    SizedBox(height: 8),
-                    Back(),
-                    SizedBox(height: 24),
-                    RatesHeader(),
-                  ],
-                ),
-              const SizedBox(height: 40),
-              if (!loading)
-                FadeIn(
-                  delay: const Duration(milliseconds: 800),
-                  child: const Calculator(),
-                )
-            ],
-          ),
+        child: Column(
+          children: [
+            if (loading) const LinearProgressIndicator(),
+            if (!loading)
+              const Header(
+                cornerTitle: 'STACKMATE',
+                children: [
+                  SizedBox(height: 8),
+                  Back(),
+                ],
+              ),
+            const Spacer(),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: RatesHeader(),
+            ),
+            // const SizedBox(height: 40),
+            const Spacer(flex: 4),
+            if (!loading)
+              FadeInUp(
+                delay: const Duration(milliseconds: 1000),
+                child: const Calculator(),
+              ),
+            const SizedBox(height: 8),
+          ],
         ),
       ),
     );

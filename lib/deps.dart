@@ -3,6 +3,7 @@ import 'package:sats/api/reddit.dart';
 import 'package:sats/pkg/bitcoin.dart';
 import 'package:sats/pkg/clipboard.dart';
 import 'package:sats/pkg/launcher.dart';
+import 'package:sats/pkg/local-auth.dart';
 import 'package:sats/pkg/share.dart';
 import 'package:sats/pkg/storage.dart';
 import 'package:sats/pkg/vibrate.dart';
@@ -18,6 +19,7 @@ void setupDependencies({required bool useDummies}) {
     locator.registerLazySingleton<IRedditAPI>(() => RedditAPI());
     locator.registerLazySingleton<IVibrate>(() => Vibrator());
     locator.registerLazySingleton<IBitcoin>(() => DummyBtc());
+    locator.registerLazySingleton<ILocalAuth>(() => LocalAuth());
     return;
   }
 
@@ -28,4 +30,5 @@ void setupDependencies({required bool useDummies}) {
   locator.registerLazySingleton<IStorage>(() => HiveStore());
   locator.registerLazySingleton<IBitcoin>(() => BitcoinFFI());
   locator.registerLazySingleton<IVibrate>(() => Vibrator());
+  locator.registerLazySingleton<ILocalAuth>(() => LocalAuth());
 }
