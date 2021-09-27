@@ -18,13 +18,14 @@ part 'history.freezed.dart';
 
 @freezed
 class HistoryState with _$HistoryState {
-  const factory HistoryState(
-      {@Default(true) bool loadingTransactions,
-      @Default('') String errLoadingTransactions,
-      @Default(false) bool loadingBalance,
-      @Default('') String errLoadingBalance,
-      int? balance,
-      List<Transaction>? transactions}) = _HistoryState;
+  const factory HistoryState({
+    @Default(true) bool loadingTransactions,
+    @Default('') String errLoadingTransactions,
+    @Default(false) bool loadingBalance,
+    @Default('') String errLoadingBalance,
+    int? balance,
+    List<Transaction>? transactions,
+  }) = _HistoryState;
 }
 
 class HistoryCubit extends Cubit<HistoryState> {
@@ -71,7 +72,6 @@ class HistoryCubit extends Cubit<HistoryState> {
           errLoadingTransactions: '',
         ),
       );
-      
 
       // final transactions = await compute<dynamic, List<Transaction>>(
       //   (d) async {
