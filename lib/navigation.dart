@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,12 +27,12 @@ import 'package:sats/view/calculator-page.dart';
 import 'package:sats/view/home-page.dart';
 import 'package:sats/view/logs-page.dart';
 import 'package:sats/view/qr-page.dart';
-import 'package:sats/view/wallet-receive-page.dart';
 import 'package:sats/view/settings-page.dart';
 import 'package:sats/view/wallet-new-seedgenerate-page.dart';
 import 'package:sats/view/wallet-new-seedimport-page.dart';
 import 'package:sats/view/wallet-new-xpub-page.dart';
 import 'package:sats/view/wallet-page.dart';
+import 'package:sats/view/wallet-receive-page.dart';
 import 'package:sats/view/wallet-send-page.dart';
 
 class Routes {
@@ -170,6 +172,11 @@ class Routes {
           value: history,
           child: const HistoryPage(),
         );
+
+        // scheduleMicrotask(() async {
+        //   await Future.delayed(const Duration(milliseconds: 1000));
+        //   history.getHistory();
+        // });
 
         break;
 

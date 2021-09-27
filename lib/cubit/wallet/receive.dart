@@ -13,7 +13,7 @@ part 'receive.freezed.dart';
 @freezed
 class ReceiveState with _$ReceiveState {
   const factory ReceiveState({
-    @Default(false) bool loadingAddress,
+    @Default(true) bool loadingAddress,
     @Default('') String errLoadingAddress,
     String? address,
   }) = _ReceiveState;
@@ -39,11 +39,14 @@ class ReceiveCubit extends Cubit<ReceiveState> {
   final IClipBoard _clipBoard;
 
   void _init() async {
+    await Future.delayed(const Duration(milliseconds: 1000));
     getAddress();
   }
 
   void getAddress() async {
     try {
+      // await Future.delayed(const Duration(milliseconds: 500));
+
       emit(
         state.copyWith(
           loadingAddress: true,
@@ -55,7 +58,7 @@ class ReceiveCubit extends Cubit<ReceiveState> {
 
       // final w = _walletCubit.state.selectedWallet!.descriptor.split('#')[0];
       final w = _walletCubit.state.selectedWallet!.descriptor;
-      
+
       final address = await _bitcoin.getAddress(
         depositDesc: w,
         network: _blockchain.state.blockchain.name,
@@ -69,6 +72,7 @@ class ReceiveCubit extends Cubit<ReceiveState> {
             '\n\nresp:\n$address',
         000,
       );
+
 
       emit(
         state.copyWith(

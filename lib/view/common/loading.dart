@@ -14,8 +14,13 @@ class Loading extends StatelessWidget {
           backgroundColor: c.colours.background,
           valueColor: AlwaysStoppedAnimation<Color>(c.colours.primary),
         ),
-       const  SizedBox(height: 4),
-        Text(text, style: c.fonts.caption)
+        const SizedBox(height: 4),
+        Text(
+          text,
+          style: c.fonts.caption!.copyWith(
+            color: c.colours.onBackground,
+          ),
+        )
       ],
     );
   }

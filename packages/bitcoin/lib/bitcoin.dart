@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
+import 'dart:isolate';
 
 import 'package:bitcoin/ffi-types.dart';
 import 'package:bitcoin/types.dart';
 import 'package:ffi/ffi.dart';
+// import 'package:isolate/ports.dart';
 
 export 'package:bitcoin/types.dart';
 
@@ -97,16 +100,49 @@ class BitcoinFFFI {
     required String network,
     required String index,
   }) async {
+    print('0000');
+    await Future.delayed(const Duration(milliseconds: 2000));
+    // final completer = Completer<String>();
+
+    // String resp = '';
+    // final ReceivePort receivePort = ReceivePort();
+
+    // final i = await Isolate.spawn(
+    //   (SendPort sendPort) async {
+    //     print('mmmm');
+
+    //     final resp = func(
+    //       depositDesc.toNativeUtf8(),
+    //       network.toNativeUtf8(),
+    //       index.toNativeUtf8(),
+    //     );
+    //     print('xxxx');
+    //     sendPort.send(resp.toDartString());
+    //     // sendPort.send('Error  xmmm');
+    //   },
+    //   receivePort.sendPort,
+    // );
+
+    // final n = await receivePort.first;
+
+    // resp = n as String;
+    // i.kill();
+    // final sendPort = singleCompletePort(completer);
     final func = binary.lookupFunction<AddressT, AddressT>(
       'get_address',
+      // isLeaf: true,
     );
     final resp = func(
       depositDesc.toNativeUtf8(),
       network.toNativeUtf8(),
       index.toNativeUtf8(),
     ).toDartString();
+    print('1111');
+    await Future.delayed(const Duration(milliseconds: 2000));
+    // final data = resp;
     if (resp.startsWith('Error')) throw resp;
     final obj = jsonDecode(resp);
+
     return obj['address'] as String;
   }
 

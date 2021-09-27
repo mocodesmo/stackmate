@@ -45,4 +45,8 @@ extension Nums on num {
   }
 }
 
+extension Ints on int? {
+  String toBtc() => this == null ? '0' : (this! / 100000000).toStringAsFixed(8);
+}
+
 class CCC {}

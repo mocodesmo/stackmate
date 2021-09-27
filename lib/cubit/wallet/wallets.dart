@@ -57,7 +57,7 @@ class WalletsCubit extends Cubit<WalletsState> {
     emit(state.copyWith(selectedWallet: wallet));
   }
 
-  void addBalanceToSelectedWallet(int balance) {
+  Future<void> addBalanceToSelectedWallet(int balance) async {
     final wallet = state.selectedWallet!.copyWith(
       balance: balance,
     );

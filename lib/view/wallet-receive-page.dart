@@ -5,6 +5,7 @@ import 'package:sats/cubit/wallet/receive.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button.dart';
 import 'package:sats/view/common/header.dart';
+import 'package:sats/view/common/loading.dart';
 
 class QR extends StatelessWidget {
   const QR({
@@ -86,7 +87,7 @@ class ReceivePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (state.loadingAddress) const LinearProgressIndicator(),
+              const Loader(),
               Header(
                 cornerTitle: 'STACKMATE',
                 children: [
@@ -119,5 +120,20 @@ class ReceivePage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class Loader extends StatelessWidget {
+  const Loader({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext c) {
+    final loading = c.select((ReceiveCubit h) => h.state.loadingAddress);
+
+    if (!loading) return Container();
+    
+    return const Loading(text: 'Gettting Address');
   }
 }

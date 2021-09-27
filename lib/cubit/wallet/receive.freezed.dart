@@ -18,7 +18,7 @@ class _$ReceiveStateTearOff {
   const _$ReceiveStateTearOff();
 
   _ReceiveState call(
-      {bool loadingAddress = false,
+      {bool loadingAddress = true,
       String errLoadingAddress = '',
       String? address}) {
     return _ReceiveState(
@@ -129,9 +129,9 @@ class __$ReceiveStateCopyWithImpl<$Res> extends _$ReceiveStateCopyWithImpl<$Res>
 
 class _$_ReceiveState implements _ReceiveState {
   const _$_ReceiveState(
-      {this.loadingAddress = false, this.errLoadingAddress = '', this.address});
+      {this.loadingAddress = true, this.errLoadingAddress = '', this.address});
 
-  @JsonKey(defaultValue: false)
+  @JsonKey(defaultValue: true)
   @override
   final bool loadingAddress;
   @JsonKey(defaultValue: '')

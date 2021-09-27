@@ -6,6 +6,87 @@ import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button.dart';
 import 'package:sats/view/common/header.dart';
+import 'package:sats/view/common/loading.dart';
+
+class WalletLoader extends StatelessWidget {
+  const WalletLoader({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final history = context.select((HistoryCubit hc) => hc.state);
+    if (!history.loadingTransactions && !history.loadingBalance)
+      return Container();
+
+    return Loading(
+      text: history.loadingTransactions ? 'Loading History' : 'Loading Balance',
+    );
+  }
+}
+
+class WalletName extends StatelessWidget {
+  const WalletName({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final wallet = context.select((WalletsCubit wc) => wc.state.selectedWallet);
+    if (wallet == null) return Container();
+
+    return GestureDetector(
+      onTap: () {
+        context.read<HistoryCubit>().getHistory();
+      },
+      child: Text(
+        ' ' + wallet.label.toUpperCase(),
+        style: context.fonts.headline4!.copyWith(
+          color: context.colours.onBackground,
+        ),
+      ),
+    );
+  }
+}
+
+class Balance extends StatelessWidget {
+  const Balance({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext c) {
+    final balance = c.select((HistoryCubit hc) => hc.state.balance);
+    if (balance == null) return Container();
+
+    return Padding(
+      padding: const EdgeInsets.only(left: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            'Balance'.toUpperCase(),
+            style: c.fonts.overline!.copyWith(
+              color: Colors.white,
+            ),
+          ),
+          Text(
+            balance.toString() + ' sats',
+            style: c.fonts.headline6!.copyWith(
+              color: Colors.white,
+            ),
+          ),
+          Text(
+            balance.toBtc() + ' BTC',
+            style: c.fonts.caption!.copyWith(
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 class TransactionCell extends StatefulWidget {
   const TransactionCell({Key? key, required this.transaction})
@@ -320,28 +401,25 @@ class _TransactionCellState extends State<TransactionCell> {
 class TransactionsView extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
-    final wallet = c.select((WalletsCubit w) => w.state.selectedWallet);
+    final transactions = c.select((HistoryCubit w) => w.state.transactions);
 
-    if (wallet == null) return Container();
+    if (transactions == null || transactions.isEmpty) return Container();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (wallet.transactions == null || wallet.transactions!.isEmpty)
-          Container()
-        else ...[
-          Padding(
-            padding: const EdgeInsets.only(left: 16, top: 32, bottom: 24),
-            child: Text(
-              'HISTORY',
-              style: c.fonts.overline!.copyWith(
-                color: c.colours.onBackground,
-              ),
+        Padding(
+          padding: const EdgeInsets.only(left: 16, top: 32, bottom: 24),
+          child: Text(
+            'HISTORY',
+            style: c.fonts.overline!.copyWith(
+              color: c.colours.onBackground,
             ),
           ),
-          for (var transaction in wallet.transactions!)
-            TransactionCell(transaction: transaction),
-        ]
+        ),
+        for (var transaction in transactions)
+          TransactionCell(transaction: transaction),
+
         // if (!state.loadingTransactions) ...[
         //   SizedBox(height: 24),
         //   Center(
@@ -362,11 +440,6 @@ class HistoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext c) {
-    final history = c.select((HistoryCubit h) => h.state);
-    final wallet = c.select((WalletsCubit w) => w.state.selectedWallet);
-
-    if (wallet == null) return Container();
-
     return WillPopScope(
       onWillPop: () async {
         c.read<WalletsCubit>().clearSelectedWallet();
@@ -378,8 +451,7 @@ class HistoryPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                if (history.loadingTransactions)
-                  const LinearProgressIndicator(),
+                const WalletLoader(),
                 Header(
                   cornerTitle: 'STACKMATE',
                   children: [
@@ -391,40 +463,9 @@ class HistoryPage extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 60),
-                    Text(
-                      ' ' + wallet.label.toUpperCase(),
-                      style: c.fonts.headline4!.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
+                    const WalletName(),
                     const SizedBox(height: 24),
-                    if (wallet.balance != null)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              'Balance'.toUpperCase(),
-                              style: c.fonts.overline!.copyWith(
-                                color: Colors.white,
-                              ),
-                            ),
-                            Text(
-                              wallet.balance!.toString() + ' sats',
-                              style: c.fonts.headline6!.copyWith(
-                                color: Colors.white,
-                              ),
-                            ),
-                            Text(
-                              wallet.balanceToBtc() + ' BTC',
-                              style: c.fonts.caption!.copyWith(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                    const Balance(),
                     const SizedBox(height: 32),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
