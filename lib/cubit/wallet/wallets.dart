@@ -64,7 +64,8 @@ class WalletsCubit extends Cubit<WalletsState> {
     emit(state.copyWith(selectedWallet: wallet));
   }
 
-  void clearSelectedWallet() {
+  void clearSelectedWallet() async {
+    await Future.delayed(const Duration(milliseconds: 500));
     emit(state.copyWith(selectedWallet: null));
   }
 }

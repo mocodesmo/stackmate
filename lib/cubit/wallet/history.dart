@@ -126,7 +126,7 @@ class HistoryCubit extends Cubit<HistoryState> {
         ),
       );
 
-      await Future.delayed(const Duration(milliseconds: 1000));
+      await Future.delayed(const Duration(milliseconds: 100));
 
       final bal = await _bitcoin.syncBalance(
         depositDesc: _walletsCubit.state.selectedWallet!.descriptor,
@@ -135,7 +135,7 @@ class HistoryCubit extends Cubit<HistoryState> {
 
       // await _walletsCubit.addBalanceToSelectedWallet(bal);
 
-      await Future.delayed(const Duration(milliseconds: 1000));
+      // await Future.delayed(const Duration(milliseconds: 1000));
 
       emit(
         state.copyWith(

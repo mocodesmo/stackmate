@@ -102,16 +102,28 @@ class WalletCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  const SizedBox(height: 16),
                   Text(
                     wallet.label,
-                    style: context.fonts.caption!.copyWith(
-                      color: context.colours.onBackground,
+                    style: context.fonts.subtitle1!.copyWith(
+                      color: context.colours.primary,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     wallet.descriptor,
                     overflow: TextOverflow.ellipsis,
+                    maxLines: 10,
+                    style: context.fonts.caption!.copyWith(
+                      color: context.colours.onBackground.withOpacity(0.8),
+                      fontSize: 8,
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    'SINGLE SIGNATURE',
+                    overflow: TextOverflow.ellipsis,
+                    // textAlign: TextAlign.end,
                     maxLines: 10,
                     style: context.fonts.caption!.copyWith(
                       color: context.colours.onBackground,

@@ -39,16 +39,11 @@ class AccountsRowSelection extends StatelessWidget {
           children: [
             const SizedBox(width: 16),
             for (var w in wallets)
-              if (selected != null && selected == w)
-                WalletCard(wallet: w, isSelection: true)
-              else
-                Opacity(
-                  opacity: 0.6,
-                  child: WalletCard(
-                    wallet: w,
-                    isSelection: true,
-                  ),
-                ),
+              AnimatedOpacity(
+                opacity: (selected != null && selected == w) ? 1.0 : 0.4,
+                duration: const Duration(milliseconds: 300),
+                child: WalletCard(wallet: w, isSelection: true),
+              ),
             const SizedBox(width: 16),
           ],
         ),
@@ -102,55 +97,66 @@ class QRPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Back(),
-                    LogButton(
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.lightbulb_outline_sharp,
-                          size: 32,
-                          color: context.colours.primary,
+    return WillPopScope(
+      onWillPop: () async {
+        context.read<WalletsCubit>().clearSelectedWallet();
+        return true;
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Back(
+                        onPressed: () {
+                          context.read<WalletsCubit>().clearSelectedWallet();
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      LogButton(
+                        child: IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.lightbulb_outline_sharp,
+                            size: 32,
+                            color: context.colours.primary,
+                          ),
                         ),
                       ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Center(
+                  child: Text(
+                    'select account'.toUpperCase(),
+                    style: context.fonts.overline!.copyWith(
+                      color: context.colours.onBackground,
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              Center(
-                child: Text(
-                  'select account'.toUpperCase(),
-                  style: context.fonts.overline!.copyWith(
-                    color: context.colours.onBackground,
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              AccountsRowSelection(),
-              const SizedBox(height: 40),
-              Center(
-                child: Text(
-                  'select action'.toUpperCase(),
-                  style: context.fonts.overline!.copyWith(
-                    color: context.colours.onBackground,
+                const SizedBox(height: 16),
+                AccountsRowSelection(),
+                const SizedBox(height: 40),
+                Center(
+                  child: Text(
+                    'select action'.toUpperCase(),
+                    style: context.fonts.overline!.copyWith(
+                      color: context.colours.onBackground,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 32),
-              const Buttons(),
-            ],
+                const SizedBox(height: 32),
+                const Buttons(),
+              ],
+            ),
           ),
         ),
       ),

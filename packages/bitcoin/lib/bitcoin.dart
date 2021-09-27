@@ -100,8 +100,8 @@ class BitcoinFFFI {
     required String network,
     required String index,
   }) async {
-    print('0000');
-    await Future.delayed(const Duration(milliseconds: 2000));
+    // print('0000');
+    // await Future.delayed(const Duration(milliseconds: 2000));
     // final completer = Completer<String>();
 
     // String resp = '';
@@ -137,8 +137,8 @@ class BitcoinFFFI {
       network.toNativeUtf8(),
       index.toNativeUtf8(),
     ).toDartString();
-    print('1111');
-    await Future.delayed(const Duration(milliseconds: 2000));
+    // print('1111');
+    // await Future.delayed(const Duration(milliseconds: 2000));
     // final data = resp;
     if (resp.startsWith('Error')) throw resp;
     final obj = jsonDecode(resp);

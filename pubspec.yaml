@@ -26,6 +26,7 @@ dependencies:
   hive: ^2.0.4
   hive_flutter: ^1.1.0
   intl: ^0.17.0
+  local_auth: ^1.1.8
   oktoast: ^3.0.0
   open_mail_app: ^0.1.1
   path_provider: ^2.0.1
