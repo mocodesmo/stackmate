@@ -7,6 +7,21 @@ import 'package:sats/view/common/back-button.dart';
 import 'package:sats/view/common/header.dart';
 import 'package:sats/view/common/loading.dart';
 
+class Loader extends StatelessWidget {
+  const Loader({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext c) {
+    final loading = c.select((ReceiveCubit h) => h.state.loadingAddress);
+
+    if (!loading) return Container();
+
+    return const Loading(text: 'Gettting Address');
+  }
+}
+
 class QR extends StatelessWidget {
   const QR({
     Key? key,
@@ -54,7 +69,8 @@ class TextAddress extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            c.read<ReceiveCubit>().copyAddress(address);
+            c.read<ReceiveCubit>().add(CopyAddress());
+            //.copyAddress(address);
           },
           child: const Text('COPY'),
         ),
@@ -63,7 +79,8 @@ class TextAddress extends StatelessWidget {
           width: c.width / 4,
           child: TextButton(
             onPressed: () {
-              c.read<ReceiveCubit>().shareAddress(address);
+              c.read<ReceiveCubit>().add(ShareAddress());
+              //.shareAddress(address);
             },
             child: Text(
               'SHARE'.notLocalised(),
@@ -120,20 +137,5 @@ class ReceivePage extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class Loader extends StatelessWidget {
-  const Loader({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext c) {
-    final loading = c.select((ReceiveCubit h) => h.state.loadingAddress);
-
-    if (!loading) return Container();
-    
-    return const Loading(text: 'Gettting Address');
   }
 }

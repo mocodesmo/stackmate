@@ -195,6 +195,8 @@ class SendCubit extends Cubit<SendState> {
 
       emit(state.copyWith(address: barcodeScanRes));
 
+      await Future.delayed(const Duration(milliseconds: 1000));
+
       if (onStart) getFees();
     } catch (e, s) {
       if (onStart) getFees();
@@ -210,7 +212,7 @@ class SendCubit extends Cubit<SendState> {
 
   void amountChanged(String amount) {
     final checked = amount.replaceAll('.', '');
-    emit(state.copyWith(address: checked));
+    emit(state.copyWith(amount: checked));
   }
 
   void emptyWallet() {
@@ -233,7 +235,7 @@ class SendCubit extends Cubit<SendState> {
 
   void feeChanged(String fee) {
     final checked = fee.replaceAll('.', '');
-    emit(state.copyWith(address: checked, feesOption: 4));
+    emit(state.copyWith(fees: checked, feesOption: 4));
   }
 
   void confirmClicked() async {

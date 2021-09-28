@@ -1,4 +1,4 @@
-import 'package:local_auth/local_auth.dart';
+// import 'package:local_auth/local_auth.dart';
 
 abstract class ILocalAuth {
   Future<bool> authenticate();
@@ -6,26 +6,27 @@ abstract class ILocalAuth {
 }
 
 class LocalAuth implements ILocalAuth {
-  final localAuth = LocalAuthentication();
+  // final localAuth = LocalAuthentication();
 
   @override
   Future<bool> authenticate() async {
-    try {
-      // final canCheckBiometrics = await localAuth.canCheckBiometrics;
+    // try {
+    //   // final canCheckBiometrics = await localAuth.canCheckBiometrics;
 
-      final didAuthenticate = await localAuth.authenticate(
-        localizedReason: 'Please authenticate to view wallets',
-      );
+    //   final didAuthenticate = await localAuth.authenticate(
+    //     localizedReason: 'Please authenticate to view wallets',
+    //   );
 
-      return didAuthenticate;
-    } catch (e) {
-      print(e.toString());
-      return false;
-    }
+    //   return didAuthenticate;
+    // } catch (e) {
+    //   print(e.toString());
+    //   return false;
+    // }
+    return false;
   }
 
   @override
   Future stopAuth() async {
-    localAuth.stopAuthentication();
+    // localAuth.stopAuthentication();
   }
 }

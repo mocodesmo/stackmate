@@ -1,3 +1,7 @@
+// ignore_for_file: type_annotate_public_apis
+
+import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
@@ -10,6 +14,14 @@ import 'package:sats/pkg/share.dart';
 
 part 'receive.freezed.dart';
 
+abstract class ReceiveEvent {}
+
+class GetAddress extends ReceiveEvent {}
+
+class CopyAddress extends ReceiveEvent {}
+
+class ShareAddress extends ReceiveEvent {}
+
 @freezed
 class ReceiveState with _$ReceiveState {
   const factory ReceiveState({
@@ -19,7 +31,7 @@ class ReceiveState with _$ReceiveState {
   }) = _ReceiveState;
 }
 
-class ReceiveCubit extends Cubit<ReceiveState> {
+class ReceiveCubit extends Bloc<ReceiveEvent, ReceiveState> {
   ReceiveCubit(
     this._walletCubit,
     this._bitcoin,
@@ -28,6 +40,9 @@ class ReceiveCubit extends Cubit<ReceiveState> {
     this._clipBoard,
     this._share,
   ) : super(const ReceiveState()) {
+    on<GetAddress>(getAddress, transformer: concurrent());
+    on<CopyAddress>(copyAddress, transformer: concurrent());
+    on<ShareAddress>(shareAddress, transformer: concurrent());
     _init();
   }
 
@@ -40,10 +55,10 @@ class ReceiveCubit extends Cubit<ReceiveState> {
 
   void _init() async {
     await Future.delayed(const Duration(milliseconds: 1000));
-    getAddress();
+    add(GetAddress());
   }
 
-  void getAddress() async {
+  void getAddress(event, emit) async {
     try {
       // await Future.delayed(const Duration(milliseconds: 500));
 
@@ -73,7 +88,6 @@ class ReceiveCubit extends Cubit<ReceiveState> {
         000,
       );
 
-
       emit(
         state.copyWith(
           loadingAddress: false,
@@ -91,16 +105,17 @@ class ReceiveCubit extends Cubit<ReceiveState> {
     }
   }
 
-  void copyAddress(String address) {
+  void copyAddress(event, emit) {
     try {
-      _clipBoard.copyToClipBoard(address);
+      _clipBoard.copyToClipBoard(state.address!);
     } catch (e, s) {
       _logger.logException(e, 'WalletCubit.copyAddress', s);
     }
   }
 
-  void shareAddress(String address) {
+  void shareAddress(event, emit) {
     try {
+      final address = state.address!;
       final text = 'This is my bitcoin address:\n$address';
       _share.share(text: text, subjectForEmail: 'Bitcoin Address');
     } catch (e, s) {

@@ -39,7 +39,7 @@ class Cubits extends StatefulWidget {
 class _CubitsState extends State<Cubits> {
   @override
   void initState() {
-    _authenticate();
+    // _authenticate();
     super.initState();
   }
 

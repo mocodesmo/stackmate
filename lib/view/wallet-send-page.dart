@@ -263,7 +263,7 @@ class _NetworkRowState extends State<NetworkRow> {
                       opacity: state.feesOption == 2 ? 1 : 0.6,
                       child: TextButton(
                         onPressed: () {
-                          context.read<SendCubit>().feeSelected(3);
+                          context.read<SendCubit>().feeSelected(2);
                         },
                         child: Text('Fast'.toUpperCase()),
                       ),
@@ -457,7 +457,7 @@ class WalletSendPage extends StatelessWidget {
           context.read<SendCubit>().clearPsbt();
           return false;
         }
-        if (confirmedStep) context.read<HistoryCubit>().getHistory();
+        // if (confirmedStep) context.read<HistoryCubit>().getHistory();
         return true;
       },
       child: Scaffold(
@@ -500,8 +500,8 @@ class WalletSendPage extends StatelessWidget {
                                 context.read<SendCubit>().clearPsbt();
                                 return;
                               }
-                              if (confirmedStep)
-                                context.read<HistoryCubit>().getHistory();
+                              // if (confirmedStep)
+                              //   context.read<HistoryCubit>().getHistory();
                               Navigator.pop(context);
                             },
                           ),
@@ -528,7 +528,7 @@ class WalletSendPage extends StatelessWidget {
                       ],
                       if (!confirmstep &&
                           !state.zeroBalanceAmt() &&
-                          !state.confirmStep() &&
+                          !confirmedStep &&
                           !state.loadingStart &&
                           !state.buildingTx) ...[
                         const WalletDetails(),
@@ -569,7 +569,7 @@ class WalletSendPage extends StatelessWidget {
                       ],
                       if (confirmstep && !state.sendingTx)
                         FadeIn(child: const ConfirmTransaction()),
-                      if (state.confirmedStep())
+                      if (confirmedStep)
                         FadeIn(child: const TransactionComplete()),
                       const SizedBox(height: 80),
                     ],

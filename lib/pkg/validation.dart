@@ -28,9 +28,12 @@ class Validation {
             address.startsWith('tb') ||
             address.startsWith('m') ||
             address.startsWith('n') ||
-            address.startsWith('tb')) &&
-        address.length >= 25 &&
-        address.length <= 35) return true;
+            address.startsWith('tb'))
+        // &&
+        // address.length >= 25 &&
+        // address.length <= 35
+
+        ) return true;
 
     if ((address.startsWith('bc1') || address.startsWith('tb')) &&
         address.length > 25 &&
