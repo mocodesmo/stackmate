@@ -125,7 +125,7 @@ class HistoryCubit extends Cubit<HistoryState> {
         state.copyWith(
           loadingTransactions: false,
           loadingBalance: true,
-          transactions: transactions,
+          // transactions: transactions,
           errLoadingTransactions: '',
         ),
       );
@@ -139,10 +139,11 @@ class HistoryCubit extends Cubit<HistoryState> {
 
       // await _walletsCubit.addBalanceToSelectedWallet(bal);
 
-      // await Future.delayed(const Duration(milliseconds: 1000));
+      await Future.delayed(const Duration(milliseconds: 400));
 
       emit(
         state.copyWith(
+          transactions: transactions,
           loadingBalance: false,
           balance: bal,
         ),

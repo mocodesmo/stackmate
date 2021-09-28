@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:sats/cubit/wallet/history.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
@@ -59,30 +60,32 @@ class Balance extends StatelessWidget {
     final balance = c.select((HistoryCubit hc) => hc.state.balance);
     if (balance == null) return Container();
 
-    return Padding(
-      padding: const EdgeInsets.only(left: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            'Balance'.toUpperCase(),
-            style: c.fonts.overline!.copyWith(
-              color: Colors.white,
+    return FadeIn(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Balance'.toUpperCase(),
+              style: c.fonts.overline!.copyWith(
+                color: Colors.white,
+              ),
             ),
-          ),
-          Text(
-            balance.toString() + ' sats',
-            style: c.fonts.headline6!.copyWith(
-              color: Colors.white,
+            Text(
+              balance.toString() + ' sats',
+              style: c.fonts.headline6!.copyWith(
+                color: Colors.white,
+              ),
             ),
-          ),
-          Text(
-            balance.toBtc() + ' BTC',
-            style: c.fonts.caption!.copyWith(
-              color: Colors.white,
+            Text(
+              balance.toBtc() + ' BTC',
+              style: c.fonts.caption!.copyWith(
+                color: Colors.white,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -405,32 +408,35 @@ class TransactionsView extends StatelessWidget {
 
     if (transactions == null || transactions.isEmpty) return Container();
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 16, top: 32, bottom: 24),
-          child: Text(
-            'HISTORY',
-            style: c.fonts.overline!.copyWith(
-              color: c.colours.onBackground,
+    return FadeIn(
+      delay: const Duration(milliseconds: 300),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 16, top: 32, bottom: 24),
+            child: Text(
+              'HISTORY',
+              style: c.fonts.overline!.copyWith(
+                color: c.colours.onBackground,
+              ),
             ),
           ),
-        ),
-        for (var transaction in transactions)
-          TransactionCell(transaction: transaction),
+          for (var transaction in transactions)
+            TransactionCell(transaction: transaction),
 
-        // if (!state.loadingTransactions) ...[
-        //   SizedBox(height: 24),
-        //   Center(
-        //       child: TextButton(
-        //           onPressed: () {
-        //             c.read<HistoryCubit>().getHistory();
-        //           },
-        //           child: Text('Load More'))),
-        //   SizedBox(height: 24),
-        // ]
-      ],
+          // if (!state.loadingTransactions) ...[
+          //   SizedBox(height: 24),
+          //   Center(
+          //       child: TextButton(
+          //           onPressed: () {
+          //             c.read<HistoryCubit>().getHistory();
+          //           },
+          //           child: Text('Load More'))),
+          //   SizedBox(height: 24),
+          // ]
+        ],
+      ),
     );
   }
 }
