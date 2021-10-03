@@ -95,6 +95,40 @@ class BitcoinFFFI {
     return response.toDartString();
   }
 
+  String syncBalanceF({
+    required String depositDesc,
+    required String network,
+  }) {
+    final func = binary.lookupFunction<SyncT, SyncT>(
+      'sync_balance',
+    );
+    final response = func(
+      depositDesc.toNativeUtf8(),
+      network.toNativeUtf8(),
+    );
+    return response.toDartString();
+  }
+
+  String getAddressF({
+    required String depositDesc,
+    required String network,
+    required String index,
+  }) {
+    final func = binary.lookupFunction<AddressT, AddressT>(
+      'get_address',
+      // isLeaf: true,
+    );
+    final resp = func(
+      depositDesc.toNativeUtf8(),
+      network.toNativeUtf8(),
+      index.toNativeUtf8(),
+    ).toDartString();
+    if (resp.startsWith('Error')) throw resp;
+    final obj = jsonDecode(resp);
+
+    return obj['address'] as String;
+  }
+
   Future<String> getAddress({
     required String depositDesc,
     required String network,
@@ -144,6 +178,21 @@ class BitcoinFFFI {
     final obj = jsonDecode(resp);
 
     return obj['address'] as String;
+  }
+
+  String getHistoryF({
+    required String depositDesc,
+    required String network,
+  }) {
+    final func = binary.lookupFunction<SyncT, SyncT>(
+      'sync_history',
+    );
+    final resp = func(
+      depositDesc.toNativeUtf8(),
+      network.toNativeUtf8(),
+    ).toDartString();
+    if (resp.startsWith('Error')) throw resp;
+    return resp;
   }
 
   Future<String> getHistory({

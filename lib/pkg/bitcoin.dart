@@ -34,13 +34,30 @@ abstract class IBitcoin {
     required String network,
   });
 
+  int syncBalanceF({
+    required String depositDesc,
+    required String network,
+  });
+
   Future<String> getAddress({
     required String depositDesc,
     required String network,
     required String index,
   });
 
+  String getAddressF({
+    required String depositDesc,
+    required String network,
+    required String index,
+  });
+
   Future<List<Transaction>> getHistory({
+    required String depositDesc,
+    required String nodeAddress,
+    required String network,
+  });
+
+  List<Transaction> getHistoryF({
     required String depositDesc,
     required String nodeAddress,
     required String network,
@@ -240,6 +257,49 @@ class BitcoinFFI implements IBitcoin {
     final data = jsonDecode(resp);
     return data['txid'] as String;
   }
+
+  @override
+  String getAddressF({
+    required String depositDesc,
+    required String network,
+    required String index,
+  }) {
+    final resp = _bitcoin.getAddressF(
+      depositDesc: depositDesc,
+      network: network,
+      index: index,
+    );
+    return resp;
+  }
+
+  @override
+  List<Transaction> getHistoryF({
+    required String depositDesc,
+    required String nodeAddress,
+    required String network,
+  }) {
+    final resp = _bitcoin.getHistoryF(
+      depositDesc: depositDesc,
+      network: network,
+    );
+    final json = jsonDecode(resp);
+    final List<Transaction> transactions = [];
+    for (final t in json['history'] as List) {
+      transactions.add(Transaction.fromJson(t as Map<String, dynamic>));
+    }
+    return transactions;
+  }
+
+  @override
+  int syncBalanceF({required String depositDesc, required String network}) {
+    final resp = _bitcoin.syncBalanceF(
+      depositDesc: depositDesc,
+      network: network,
+    );
+    final bal = jsonDecode(resp)['balance'];
+
+    return bal as int;
+  }
 }
 
 class DummyBtc implements IBitcoin {
@@ -400,7 +460,8 @@ class DummyBtc implements IBitcoin {
   }
 
   @override
-  Future<double> getFees({required String targetSize, required String network}) {
+  Future<double> getFees(
+      {required String targetSize, required String network}) {
     // TODO: implement getFees
     throw UnimplementedError();
   }
@@ -411,6 +472,30 @@ class DummyBtc implements IBitcoin {
       required String network,
       required String unsignedPSBT}) {
     // TODO: implement signTransaction
+    throw UnimplementedError();
+  }
+
+  @override
+  String getAddressF(
+      {required String depositDesc,
+      required String network,
+      required String index}) {
+    // TODO: implement getAddressF
+    throw UnimplementedError();
+  }
+
+  @override
+  List<Transaction> getHistoryF(
+      {required String depositDesc,
+      required String nodeAddress,
+      required String network}) {
+    // TODO: implement getHistoryF
+    throw UnimplementedError();
+  }
+
+  @override
+  int syncBalanceF({required String depositDesc, required String network}) {
+    // TODO: implement syncBalanceF
     throw UnimplementedError();
   }
 }

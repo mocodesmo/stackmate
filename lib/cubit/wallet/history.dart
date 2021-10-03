@@ -115,11 +115,11 @@ class HistoryCubit extends Cubit<HistoryState> {
       //   return [];
       // });
 
-      final transactions = await _bitcoin.getHistory(
-        depositDesc: _walletsCubit.state.selectedWallet!.descriptor,
-        nodeAddress: '',
-        network: _blockchain.state.blockchain.name,
-      );
+      final transactions = await compute(computeHistory, {
+        'depositDesc': _walletsCubit.state.selectedWallet!.descriptor,
+        'nodeAddress': '',
+        'network': _blockchain.state.blockchain.name,
+      });
 
       emit(
         state.copyWith(
@@ -130,16 +130,16 @@ class HistoryCubit extends Cubit<HistoryState> {
         ),
       );
 
-      await Future.delayed(const Duration(milliseconds: 100));
+      // await Future.delayed(const Duration(milliseconds: 100));
 
-      final bal = await _bitcoin.syncBalance(
-        depositDesc: _walletsCubit.state.selectedWallet!.descriptor,
-        network: _blockchain.state.blockchain.name,
-      );
+      final bal = await compute(computeBalance, {
+        'depositDesc': _walletsCubit.state.selectedWallet!.descriptor,
+        'network': _blockchain.state.blockchain.name,
+      });
 
       // await _walletsCubit.addBalanceToSelectedWallet(bal);
 
-      await Future.delayed(const Duration(milliseconds: 400));
+      // await Future.delayed(const Duration(milliseconds: 400));
 
       emit(
         state.copyWith(
@@ -256,6 +256,21 @@ class HistoryCubit extends Cubit<HistoryState> {
   }
 }
 
-computeHistory(dynamic data) {}
+List<Transaction> computeHistory(dynamic obj) {
+  final data = obj as Map<String, String>;
+  final resp = BitcoinFFI().getHistoryF(
+    depositDesc: data['depositDesc']!,
+    nodeAddress: data['nodeAddress']!,
+    network: data['network']!,
+  );
+  return resp;
+}
 
-computeBalance(dynamic data) {}
+int computeBalance(dynamic obj) {
+  final data = obj as Map<String, String>;
+  final resp = BitcoinFFI().syncBalanceF(
+    depositDesc: data['depositDesc']!,
+    network: data['network']!,
+  );
+  return resp;
+}

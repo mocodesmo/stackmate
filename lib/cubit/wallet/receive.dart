@@ -2,11 +2,13 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
+import 'package:sats/deps.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/pkg/bitcoin.dart';
 import 'package:sats/pkg/clipboard.dart';
@@ -69,16 +71,21 @@ class ReceiveCubit extends Bloc<ReceiveEvent, ReceiveState> {
         ),
       );
 
-      // await Future.delayed(const Duration(seconds: 4));
+      // await Future.delayed(const Duration(seconds: 1));
 
       // final w = _walletCubit.state.selectedWallet!.descriptor.split('#')[0];
       final w = _walletCubit.state.selectedWallet!.descriptor;
 
-      final address = await _bitcoin.getAddress(
-        depositDesc: w,
-        network: _blockchain.state.blockchain.name,
-        index: '0',
-      );
+      final address = await compute(getAdrr, {
+        'depositDesc': w,
+        'network': _blockchain.state.blockchain.name,
+      });
+      //await _bitcoin.getAddress(
+      //   depositDesc: w,
+      //   network: _blockchain.state.blockchain.name,
+      //   index: '0',
+      // );
+      // await Future.delayed(const Duration(seconds: 1));
 
       _logger.logAPI(
         'get address',
@@ -122,4 +129,14 @@ class ReceiveCubit extends Bloc<ReceiveEvent, ReceiveState> {
       _logger.logException(e, 'WalletCubit.shareAddress', s);
     }
   }
+}
+
+String getAdrr(dynamic msg) {
+  final data = msg as Map<String, String>;
+  final resp = BitcoinFFI().getAddressF(
+    depositDesc: data['depositDesc']!,
+    network: data['network']!,
+    index: '0',
+  );
+  return resp;
 }
