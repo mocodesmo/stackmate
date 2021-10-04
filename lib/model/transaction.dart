@@ -24,25 +24,29 @@ class Transaction with _$Transaction {
   bool isReceive() => sent == 0;
 
   String timeStr() {
-    String date = '';
-    final DateTime dt = DateTime.fromMillisecondsSinceEpoch(timestamp);
-
+    // String date = '';
+    final t = timestamp;
+    final dt = DateTime.fromMillisecondsSinceEpoch(
+      t * 1000,
+      // isUtc: true,
+    ).toString();
+    return dt;
     //date += DateFormat.EEEE().format(dt) + ', ';
 
-    date += dt.day.toString() +
-        '-' +
-        dt.month.toString() +
-        '-' +
-        dt.year.toString() +
-        ' ';
+    // date += dt.day.toString() +
+    //     '-' +
+    //     dt.month.toString() +
+    //     '-' +
+    //     dt.year.toString() +
+    //     ' ';
 
-    date += dt.hour.toString() + ':' + dt.minute.toString() + ' ';
+    // date += dt.hour.toString() + ':' + dt.minute.toString() + ' ';
 
-    date += dt.hour < 12 ? 'AM' : 'PM';
+    // date += dt.hour < 12 ? 'AM' : 'PM';
 
-    date += ' GMT';
+    // date += ' GMT';
 
-    return date;
+    // return date;
   }
 
   String amountToBtc() =>

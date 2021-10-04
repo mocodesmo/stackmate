@@ -19,9 +19,9 @@ part 'history.freezed.dart';
 @freezed
 class HistoryState with _$HistoryState {
   const factory HistoryState({
-    @Default(true) bool loadingTransactions,
+    @Default(false) bool loadingTransactions,
     @Default('') String errLoadingTransactions,
-    @Default(false) bool loadingBalance,
+    @Default(true) bool loadingBalance,
     @Default('') String errLoadingBalance,
     int? balance,
     List<Transaction>? transactions,

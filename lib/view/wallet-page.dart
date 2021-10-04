@@ -187,7 +187,7 @@ class _TransactionCellState extends State<TransactionCell> {
                 if (_isExpanded) ...[
                   const SizedBox(height: 16),
                   Text(
-                    'CREATED AT'.notLocalised(),
+                    'TIME'.notLocalised(),
                     style: c.fonts.overline!.copyWith(
                       color: c.colours.onBackground,
                     ),

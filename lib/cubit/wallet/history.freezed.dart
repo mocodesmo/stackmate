@@ -18,9 +18,9 @@ class _$HistoryStateTearOff {
   const _$HistoryStateTearOff();
 
   _HistoryState call(
-      {bool loadingTransactions = true,
+      {bool loadingTransactions = false,
       String errLoadingTransactions = '',
-      bool loadingBalance = false,
+      bool loadingBalance = true,
       String errLoadingBalance = '',
       int? balance,
       List<Transaction>? transactions}) {
@@ -180,21 +180,21 @@ class __$HistoryStateCopyWithImpl<$Res> extends _$HistoryStateCopyWithImpl<$Res>
 
 class _$_HistoryState extends _HistoryState with DiagnosticableTreeMixin {
   const _$_HistoryState(
-      {this.loadingTransactions = true,
+      {this.loadingTransactions = false,
       this.errLoadingTransactions = '',
-      this.loadingBalance = false,
+      this.loadingBalance = true,
       this.errLoadingBalance = '',
       this.balance,
       this.transactions})
       : super._();
 
-  @JsonKey(defaultValue: true)
+  @JsonKey(defaultValue: false)
   @override
   final bool loadingTransactions;
   @JsonKey(defaultValue: '')
   @override
   final String errLoadingTransactions;
-  @JsonKey(defaultValue: false)
+  @JsonKey(defaultValue: true)
   @override
   final bool loadingBalance;
   @JsonKey(defaultValue: '')
