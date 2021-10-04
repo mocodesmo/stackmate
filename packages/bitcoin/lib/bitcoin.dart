@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
-import 'dart:isolate';
-
 import 'package:bitcoin/ffi-types.dart';
 import 'package:bitcoin/types.dart';
 import 'package:ffi/ffi.dart';
@@ -81,21 +79,7 @@ class BitcoinFFFI {
     return Compile.fromJson(resp);
   }
 
-  Future<String> syncBalance({
-    required String depositDesc,
-    required String network,
-  }) async {
-    final func = binary.lookupFunction<SyncT, SyncT>(
-      'sync_balance',
-    );
-    final response = func(
-      depositDesc.toNativeUtf8(),
-      network.toNativeUtf8(),
-    );
-    return response.toDartString();
-  }
-
-  String syncBalanceF({
+  String syncBalance({
     required String depositDesc,
     required String network,
   }) {
@@ -109,7 +93,7 @@ class BitcoinFFFI {
     return response.toDartString();
   }
 
-  String getAddressF({
+  String getAddress({
     required String depositDesc,
     required String network,
     required String index,
@@ -129,58 +113,7 @@ class BitcoinFFFI {
     return obj['address'] as String;
   }
 
-  Future<String> getAddress({
-    required String depositDesc,
-    required String network,
-    required String index,
-  }) async {
-    // print('0000');
-    // await Future.delayed(const Duration(milliseconds: 2000));
-    // final completer = Completer<String>();
-
-    // String resp = '';
-    // final ReceivePort receivePort = ReceivePort();
-
-    // final i = await Isolate.spawn(
-    //   (SendPort sendPort) async {
-    //     print('mmmm');
-
-    //     final resp = func(
-    //       depositDesc.toNativeUtf8(),
-    //       network.toNativeUtf8(),
-    //       index.toNativeUtf8(),
-    //     );
-    //     print('xxxx');
-    //     sendPort.send(resp.toDartString());
-    //     // sendPort.send('Error  xmmm');
-    //   },
-    //   receivePort.sendPort,
-    // );
-
-    // final n = await receivePort.first;
-
-    // resp = n as String;
-    // i.kill();
-    // final sendPort = singleCompletePort(completer);
-    final func = binary.lookupFunction<AddressT, AddressT>(
-      'get_address',
-      // isLeaf: true,
-    );
-    final resp = func(
-      depositDesc.toNativeUtf8(),
-      network.toNativeUtf8(),
-      index.toNativeUtf8(),
-    ).toDartString();
-    // print('1111');
-    // await Future.delayed(const Duration(milliseconds: 2000));
-    // final data = resp;
-    if (resp.startsWith('Error')) throw resp;
-    final obj = jsonDecode(resp);
-
-    return obj['address'] as String;
-  }
-
-  String getHistoryF({
+  String getHistory({
     required String depositDesc,
     required String network,
   }) {
@@ -195,25 +128,10 @@ class BitcoinFFFI {
     return resp;
   }
 
-  Future<String> getHistory({
-    required String depositDesc,
-    required String network,
-  }) async {
-    final func = binary.lookupFunction<SyncT, SyncT>(
-      'sync_history',
-    );
-    final resp = func(
-      depositDesc.toNativeUtf8(),
-      network.toNativeUtf8(),
-    ).toDartString();
-    if (resp.startsWith('Error')) throw resp;
-    return resp;
-  }
-
-  Future<String> getFees({
+  String getFees({
     required String targetSize,
     required String network,
-  }) async {
+  }) {
     final func = binary.lookupFunction<SyncT, SyncT>(
       'get_fees',
     );
@@ -225,13 +143,13 @@ class BitcoinFFFI {
     return resp;
   }
 
-  Future<String> buildTransaction({
+  String buildTransaction({
     required String depositDesc,
     required String network,
     required String toAddress,
     required String amount,
     required String feeRate,
-  }) async {
+  }) {
     final func = binary.lookupFunction<BuildT, BuildT>(
       'build_tx',
     );
@@ -246,11 +164,11 @@ class BitcoinFFFI {
     return resp;
   }
 
-  Future<String> signTransaction({
+  String signTransaction({
     required String depositDesc,
     required String network,
     required String unsignedPSBT,
-  }) async {
+  }) {
     final func = binary.lookupFunction<SignT, SignT>(
       'sign_tx',
     );
@@ -263,11 +181,11 @@ class BitcoinFFFI {
     return resp;
   }
 
-  Future<String> broadcastTransaction({
+  String broadcastTransaction({
     required String depositDesc,
     required String network,
     required String signedPSBT,
-  }) async {
+  }) {
     final func = binary.lookupFunction<BroadcastT, BroadcastT>(
       'broadcast_tx',
     );

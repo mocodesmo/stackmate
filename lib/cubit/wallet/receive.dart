@@ -133,7 +133,7 @@ class ReceiveCubit extends Bloc<ReceiveEvent, ReceiveState> {
 
 String getAdrr(dynamic msg) {
   final data = msg as Map<String, String>;
-  final resp = BitcoinFFI().getAddressF(
+  final resp = BitcoinFFI().getAddress(
     depositDesc: data['depositDesc']!,
     network: data['network']!,
     index: '0',

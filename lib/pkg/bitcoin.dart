@@ -29,46 +29,29 @@ abstract class IBitcoin {
     required String scriptType,
   });
 
-  Future<int> syncBalance({
+  int syncBalance({
     required String depositDesc,
     required String network,
   });
 
-  int syncBalanceF({
-    required String depositDesc,
-    required String network,
-  });
-
-  Future<String> getAddress({
+  String getAddress({
     required String depositDesc,
     required String network,
     required String index,
   });
 
-  String getAddressF({
-    required String depositDesc,
-    required String network,
-    required String index,
-  });
-
-  Future<List<Transaction>> getHistory({
+  List<Transaction> getHistory({
     required String depositDesc,
     required String nodeAddress,
     required String network,
   });
 
-  List<Transaction> getHistoryF({
-    required String depositDesc,
-    required String nodeAddress,
-    required String network,
-  });
-
-  Future<double> getFees({
+  double getFees({
     required String targetSize,
     required String network,
   });
 
-  Future<String> buildTransaction({
+  String buildTransaction({
     required String depositDesc,
     required String network,
     required String toAddress,
@@ -76,13 +59,13 @@ abstract class IBitcoin {
     required String feeRate,
   });
 
-  Future<String> signTransaction({
+  String signTransaction({
     required String depositDesc,
     required String network,
     required String unsignedPSBT,
   });
 
-  Future<String> broadcastTransaction({
+  String broadcastTransaction({
     required String depositDesc,
     required String network,
     required String signedPSBT,
@@ -151,11 +134,11 @@ class BitcoinFFI implements IBitcoin {
   }
 
   @override
-  Future<int> syncBalance({
+  int syncBalance({
     required String depositDesc,
     required String network,
-  }) async {
-    final resp = await _bitcoin.syncBalance(
+  }) {
+    final resp = _bitcoin.syncBalance(
       depositDesc: depositDesc,
       network: network,
     );
@@ -165,12 +148,12 @@ class BitcoinFFI implements IBitcoin {
   }
 
   @override
-  Future<String> getAddress({
+  String getAddress({
     required String depositDesc,
     required String network,
     required String index,
-  }) async {
-    final resp = await _bitcoin.getAddress(
+  }) {
+    final resp = _bitcoin.getAddress(
       depositDesc: depositDesc,
       network: network,
       index: index,
@@ -179,12 +162,12 @@ class BitcoinFFI implements IBitcoin {
   }
 
   @override
-  Future<List<Transaction>> getHistory({
+  List<Transaction> getHistory({
     required String depositDesc,
     required String nodeAddress,
     required String network,
-  }) async {
-    final resp = await _bitcoin.getHistory(
+  }) {
+    final resp = _bitcoin.getHistory(
       depositDesc: depositDesc,
       network: network,
     );
@@ -197,11 +180,11 @@ class BitcoinFFI implements IBitcoin {
   }
 
   @override
-  Future<double> getFees({
+  double getFees({
     required String targetSize,
     required String network,
-  }) async {
-    final resp = await _bitcoin.getFees(
+  }) {
+    final resp = _bitcoin.getFees(
       targetSize: targetSize,
       network: network,
     );
@@ -210,14 +193,14 @@ class BitcoinFFI implements IBitcoin {
   }
 
   @override
-  Future<String> buildTransaction({
+  String buildTransaction({
     required String depositDesc,
     required String network,
     required String toAddress,
     required String amount,
     required String feeRate,
-  }) async {
-    final resp = await _bitcoin.buildTransaction(
+  }) {
+    final resp = _bitcoin.buildTransaction(
       depositDesc: depositDesc,
       network: network,
       toAddress: toAddress,
@@ -229,12 +212,12 @@ class BitcoinFFI implements IBitcoin {
   }
 
   @override
-  Future<String> signTransaction({
+  String signTransaction({
     required String depositDesc,
     required String network,
     required String unsignedPSBT,
-  }) async {
-    final resp = await _bitcoin.signTransaction(
+  }) {
+    final resp = _bitcoin.signTransaction(
       depositDesc: depositDesc,
       network: network,
       unsignedPSBT: unsignedPSBT,
@@ -244,258 +227,17 @@ class BitcoinFFI implements IBitcoin {
   }
 
   @override
-  Future<String> broadcastTransaction({
+  String broadcastTransaction({
     required String depositDesc,
     required String network,
     required String signedPSBT,
-  }) async {
-    final resp = await _bitcoin.broadcastTransaction(
+  }) {
+    final resp = _bitcoin.broadcastTransaction(
       depositDesc: depositDesc,
       network: network,
       signedPSBT: signedPSBT,
     );
     final data = jsonDecode(resp);
     return data['txid'] as String;
-  }
-
-  @override
-  String getAddressF({
-    required String depositDesc,
-    required String network,
-    required String index,
-  }) {
-    final resp = _bitcoin.getAddressF(
-      depositDesc: depositDesc,
-      network: network,
-      index: index,
-    );
-    return resp;
-  }
-
-  @override
-  List<Transaction> getHistoryF({
-    required String depositDesc,
-    required String nodeAddress,
-    required String network,
-  }) {
-    final resp = _bitcoin.getHistoryF(
-      depositDesc: depositDesc,
-      network: network,
-    );
-    final json = jsonDecode(resp);
-    final List<Transaction> transactions = [];
-    for (final t in json['history'] as List) {
-      transactions.add(Transaction.fromJson(t as Map<String, dynamic>));
-    }
-    return transactions;
-  }
-
-  @override
-  int syncBalanceF({required String depositDesc, required String network}) {
-    final resp = _bitcoin.syncBalanceF(
-      depositDesc: depositDesc,
-      network: network,
-    );
-    final bal = jsonDecode(resp)['balance'];
-
-    return bal as int;
-  }
-}
-
-class DummyBtc implements IBitcoin {
-  @override
-  Future<Compile> compile({
-    required String policy,
-    required String scriptType,
-  }) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Derive> deriveHardened({
-    required String masterXPriv,
-    required String account,
-    required String purpose,
-  }) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Nmeu> generateMaster({
-    required String mnemonic,
-    required String passphrase,
-    required String network,
-  }) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<String> getAddress({
-    required String depositDesc,
-    required String network,
-    required String index,
-  }) async {
-    return '1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX';
-  }
-
-  @override
-  Future<List<Transaction>> getHistory({
-    required String depositDesc,
-    required String nodeAddress,
-    required String network,
-  }) async {
-    await Future.delayed(const Duration(seconds: 1));
-    return const [
-      Transaction(
-        timestamp: 9877766,
-        height: 88,
-        verified: true,
-        txid:
-            '32b942eeede3c6d51b79ac83e59436819d52b513cd43cabbb9731d3a004eee77',
-        received: 50000,
-        sent: 0,
-        fee: 5000,
-      ),
-      Transaction(
-        timestamp: 9877766,
-        height: 88,
-        verified: true,
-        txid:
-            '32b942eeede3c6d51b79ac83e59436819d52b513cd43cabbb9731d3a004eee77',
-        received: 0,
-        sent: 50000,
-        fee: 5000,
-      ),
-      Transaction(
-        timestamp: 9877766,
-        height: 88,
-        verified: true,
-        txid:
-            '32b942eeede3c6d51b79ac83e59436819d52b513cd43cabbb9731d3a004eee77',
-        received: 50000,
-        sent: 0,
-        fee: 5000,
-      ),
-      Transaction(
-        timestamp: 9877766,
-        height: 88,
-        verified: true,
-        txid:
-            '32b942eeede3c6d51b79ac83e59436819d52b513cd43cabbb9731d3a004eee77',
-        received: 50000,
-        sent: 0,
-        fee: 5000,
-      ),
-      Transaction(
-        timestamp: 9877766,
-        height: 88,
-        verified: true,
-        txid:
-            '32b942eeede3c6d51b79ac83e59436819d52b513cd43cabbb9731d3a004eee77',
-        received: 50000,
-        sent: 0,
-        fee: 5000,
-      ),
-      Transaction(
-        timestamp: 9877766,
-        height: 88,
-        verified: true,
-        txid:
-            '32b942eeede3c6d51b79ac83e59436819d52b513cd43cabbb9731d3a004eee77',
-        received: 50000,
-        sent: 0,
-        fee: 5000,
-      ),
-      Transaction(
-        timestamp: 9877766,
-        height: 88,
-        verified: true,
-        txid:
-            '32b942eeede3c6d51b79ac83e59436819d52b513cd43cabbb9731d3a004eee77',
-        received: 50000,
-        sent: 0,
-        fee: 5000,
-      ),
-    ];
-  }
-
-  @override
-  Future<Nmeu> importMaster({
-    required String mnemonic,
-    required String passphrase,
-    required String network,
-  }) {
-    // TODO: implement importMaster
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<int> syncBalance({
-    required String depositDesc,
-    required String network,
-  }) {
-    // TODO: implement syncBalance
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<String> broadcastTransaction(
-      {required String depositDesc,
-      required String network,
-      required String signedPSBT}) {
-    // TODO: implement broadcastTransaction
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<String> buildTransaction({
-    required String depositDesc,
-    required String network,
-    required String toAddress,
-    required String amount,
-    required String feeRate,
-  }) {
-    // TODO: implement buildTransaction
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<double> getFees(
-      {required String targetSize, required String network}) {
-    // TODO: implement getFees
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<String> signTransaction(
-      {required String depositDesc,
-      required String network,
-      required String unsignedPSBT}) {
-    // TODO: implement signTransaction
-    throw UnimplementedError();
-  }
-
-  @override
-  String getAddressF(
-      {required String depositDesc,
-      required String network,
-      required String index}) {
-    // TODO: implement getAddressF
-    throw UnimplementedError();
-  }
-
-  @override
-  List<Transaction> getHistoryF(
-      {required String depositDesc,
-      required String nodeAddress,
-      required String network}) {
-    // TODO: implement getHistoryF
-    throw UnimplementedError();
-  }
-
-  @override
-  int syncBalanceF({required String depositDesc, required String network}) {
-    // TODO: implement syncBalanceF
-    throw UnimplementedError();
   }
 }

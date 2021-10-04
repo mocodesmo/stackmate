@@ -340,7 +340,7 @@ class __$SendStateCopyWithImpl<$Res> extends _$SendStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_SendState extends _SendState {
+class _$_SendState extends _SendState with DiagnosticableTreeMixin {
   const _$_SendState(
       {this.loadingStart = true,
       this.buildingTx = false,
@@ -410,8 +410,32 @@ class _$_SendState extends _SendState {
   final String txId;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'SendState(loadingStart: $loadingStart, buildingTx: $buildingTx, sendingTx: $sendingTx, errLoading: $errLoading, errAddress: $errAddress, errAmount: $errAmount, errFees: $errFees, address: $address, amount: $amount, fees: $fees, feeSlow: $feeSlow, feeMedium: $feeMedium, feefast: $feefast, balance: $balance, feesOption: $feesOption, psbt: $psbt, txId: $txId)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'SendState'))
+      ..add(DiagnosticsProperty('loadingStart', loadingStart))
+      ..add(DiagnosticsProperty('buildingTx', buildingTx))
+      ..add(DiagnosticsProperty('sendingTx', sendingTx))
+      ..add(DiagnosticsProperty('errLoading', errLoading))
+      ..add(DiagnosticsProperty('errAddress', errAddress))
+      ..add(DiagnosticsProperty('errAmount', errAmount))
+      ..add(DiagnosticsProperty('errFees', errFees))
+      ..add(DiagnosticsProperty('address', address))
+      ..add(DiagnosticsProperty('amount', amount))
+      ..add(DiagnosticsProperty('fees', fees))
+      ..add(DiagnosticsProperty('feeSlow', feeSlow))
+      ..add(DiagnosticsProperty('feeMedium', feeMedium))
+      ..add(DiagnosticsProperty('feefast', feefast))
+      ..add(DiagnosticsProperty('balance', balance))
+      ..add(DiagnosticsProperty('feesOption', feesOption))
+      ..add(DiagnosticsProperty('psbt', psbt))
+      ..add(DiagnosticsProperty('txId', txId));
   }
 
   @override

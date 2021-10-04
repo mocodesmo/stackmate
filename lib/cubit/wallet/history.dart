@@ -68,52 +68,25 @@ class HistoryCubit extends Cubit<HistoryState> {
 
   void getHistory() async {
     try {
-      // await Future.delayed(const Duration(milliseconds: 50));
-
       emit(
         state.copyWith(
-          loadingTransactions: true,
+          loadingBalance: true,
           errLoadingTransactions: '',
         ),
       );
 
-      // final transactions = await compute<dynamic, List<Transaction>>(
-      //   (d) async {
-      //     print('ooo');
-      //     final t = await _bitcoin.getHistory(
-      //       depositDesc: _walletsCubit.state.selectedWallet!.descriptor,
-      //       nodeAddress: '',
-      //       network: _blockchain.state.blockchain.name,
-      //     );
-      //     return t;
-      //   },
-      //   {},
-      //   debugLabel: 'YOOOOOOO',
-      // ).onError((e, s) {
-      //   _logger.logException(e, 'errrHistoryCubit.getHistory', s);
-      //   return [];
-      // });
+      final bal = await compute(computeBalance, {
+        'depositDesc': _walletsCubit.state.selectedWallet!.descriptor,
+        'network': _blockchain.state.blockchain.name,
+      });
 
-      // final transactions = await compute(
-      //   (Map d) async {
-      //     print('ooo');
-      //     final t = await _bitcoin.getHistory(
-      //       depositDesc: d['depositDesc'] as String,
-      //       nodeAddress: d['nodeAddress'] as String,
-      //       network: d['network'] as String,
-      //     );
-      //     return t;
-      //   },
-      //   {
-      //     'depositDesc': _walletsCubit.state.selectedWallet!.descriptor,
-      //     'nodeAddress': '',
-      //     'network': _blockchain.state.blockchain.name,
-      //   },
-      //   debugLabel: 'YOOOOOOO',
-      // ).onError((e, s) {
-      //   _logger.logException(e, 'HistoryCubit.getHistory', s);
-      //   return [];
-      // });
+      emit(
+        state.copyWith(
+          loadingBalance: false,
+          loadingTransactions: true,
+          balance: bal,
+        ),
+      );
 
       final transactions = await compute(computeHistory, {
         'depositDesc': _walletsCubit.state.selectedWallet!.descriptor,
@@ -124,30 +97,22 @@ class HistoryCubit extends Cubit<HistoryState> {
       emit(
         state.copyWith(
           loadingTransactions: false,
-          loadingBalance: true,
-          // transactions: transactions,
+          transactions: transactions,
           errLoadingTransactions: '',
         ),
       );
-
-      // await Future.delayed(const Duration(milliseconds: 100));
-
-      final bal = await compute(computeBalance, {
-        'depositDesc': _walletsCubit.state.selectedWallet!.descriptor,
-        'network': _blockchain.state.blockchain.name,
-      });
 
       // await _walletsCubit.addBalanceToSelectedWallet(bal);
 
       // await Future.delayed(const Duration(milliseconds: 400));
 
-      emit(
-        state.copyWith(
-          transactions: transactions,
-          loadingBalance: false,
-          balance: bal,
-        ),
-      );
+      // emit(
+      //   state.copyWith(
+      //     transactions: transactions,
+      //     loadingBalance: false,
+      //     balance: bal,
+      //   ),
+      // );
       // });
 
       // emit(
@@ -196,40 +161,40 @@ class HistoryCubit extends Cubit<HistoryState> {
     }
   }
 
-  void getBalance() async {
-    try {
-      emit(
-        state.copyWith(
-          // loadingBalance: true,
-          errLoadingTransactions: '',
-        ),
-      );
+  // void getBalance() async {
+  //   try {
+  //     emit(
+  //       state.copyWith(
+  //         // loadingBalance: true,
+  //         errLoadingTransactions: '',
+  //       ),
+  //     );
 
-      final bal = await _bitcoin.syncBalance(
-        depositDesc: _walletsCubit.state.selectedWallet!.descriptor,
-        network: _blockchain.state.blockchain.name,
-      );
+  //     final bal =  _bitcoin.syncBalance(
+  //       depositDesc: _walletsCubit.state.selectedWallet!.descriptor,
+  //       network: _blockchain.state.blockchain.name,
+  //     );
 
-      // await _walletsCubit.addBalanceToSelectedWallet(bal);
+  //     // await _walletsCubit.addBalanceToSelectedWallet(bal);
 
-      await Future.delayed(const Duration(milliseconds: 1000));
+  //     await Future.delayed(const Duration(milliseconds: 1000));
 
-      emit(
-        state.copyWith(
-          loadingBalance: false,
-          balance: bal,
-        ),
-      );
-    } catch (e, s) {
-      emit(
-        state.copyWith(
-          loadingBalance: false,
-          errLoadingBalance: e.toString(),
-        ),
-      );
-      _logger.logException(e, 'HistoryCubit.getHistory', s);
-    }
-  }
+  //     emit(
+  //       state.copyWith(
+  //         loadingBalance: false,
+  //         balance: bal,
+  //       ),
+  //     );
+  //   } catch (e, s) {
+  //     emit(
+  //       state.copyWith(
+  //         loadingBalance: false,
+  //         errLoadingBalance: e.toString(),
+  //       ),
+  //     );
+  //     _logger.logException(e, 'HistoryCubit.getHistory', s);
+  //   }
+  // }
 
   void openLink(Transaction transaction) {
     try {
@@ -258,7 +223,7 @@ class HistoryCubit extends Cubit<HistoryState> {
 
 List<Transaction> computeHistory(dynamic obj) {
   final data = obj as Map<String, String>;
-  final resp = BitcoinFFI().getHistoryF(
+  final resp = BitcoinFFI().getHistory(
     depositDesc: data['depositDesc']!,
     nodeAddress: data['nodeAddress']!,
     network: data['network']!,
@@ -268,7 +233,7 @@ List<Transaction> computeHistory(dynamic obj) {
 
 int computeBalance(dynamic obj) {
   final data = obj as Map<String, String>;
-  final resp = BitcoinFFI().syncBalanceF(
+  final resp = BitcoinFFI().syncBalance(
     depositDesc: data['depositDesc']!,
     network: data['network']!,
   );

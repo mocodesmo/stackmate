@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/wallet/blockchain.dart';
+import 'package:sats/cubit/wallet/history.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/pkg/bitcoin.dart';
@@ -103,20 +105,20 @@ class SendCubit extends Cubit<SendState> {
         ),
       );
 
-      final feeFast = await _bitcoin.getFees(
-        targetSize: '1',
-        network: _blockchain.state.blockchain.name,
-      );
+      final feeFast = await compute(getFeees, {
+        'targetSize': '1',
+        'network': _blockchain.state.blockchain.name,
+      });
 
-      final feeMedium = await _bitcoin.getFees(
-        targetSize: '3',
-        network: _blockchain.state.blockchain.name,
-      );
+      final feeMedium = await compute(getFeees, {
+        'targetSize': '3',
+        'network': _blockchain.state.blockchain.name,
+      });
 
-      final feeSlow = await _bitcoin.getFees(
-        targetSize: '6',
-        network: _blockchain.state.blockchain.name,
-      );
+      final feeSlow = await compute(getFeees, {
+        'targetSize': '6',
+        'network': _blockchain.state.blockchain.name,
+      });
 
       emit(
         state.copyWith(
@@ -152,10 +154,10 @@ class SendCubit extends Cubit<SendState> {
         ),
       );
 
-      final bal = await _bitcoin.syncBalance(
-        depositDesc: _walletCubit.state.selectedWallet!.descriptor,
-        network: _blockchain.state.blockchain.name,
-      );
+      final bal = await compute(computeBalance, {
+        'depositDesc': _walletCubit.state.selectedWallet!.descriptor,
+        'network': _blockchain.state.blockchain.name,
+      });
 
       emit(
         state.copyWith(
@@ -266,13 +268,13 @@ class SendCubit extends Cubit<SendState> {
 
       emit(state.copyWith(buildingTx: true, errLoading: ''));
 
-      final psbt = await _bitcoin.buildTransaction(
-        depositDesc: _walletCubit.state.selectedWallet!.descriptor,
-        network: _blockchain.state.blockchain.name,
-        toAddress: state.address,
-        amount: state.amount,
-        feeRate: state.feeRate().toString(),
-      );
+      final psbt = await compute(buildTx, {
+        'depositDesc': _walletCubit.state.selectedWallet!.descriptor,
+        'network': _blockchain.state.blockchain.name,
+        'toAddress': state.address,
+        'amount': state.amount,
+        'feeRate': state.feeRate().toString(),
+      });
 
       emit(
         state.copyWith(
@@ -308,17 +310,17 @@ class SendCubit extends Cubit<SendState> {
     try {
       emit(state.copyWith(sendingTx: true, errLoading: ''));
 
-      final signed = await _bitcoin.signTransaction(
-        depositDesc: _walletCubit.state.selectedWallet!.descriptor,
-        network: _blockchain.state.blockchain.name,
-        unsignedPSBT: state.psbt,
-      );
+      final signed = await compute(signTx, {
+        'depositDesc': _walletCubit.state.selectedWallet!.descriptor,
+        'network': _blockchain.state.blockchain.name,
+        'unsignedPSBT': state.psbt,
+      });
 
-      final txid = await _bitcoin.broadcastTransaction(
-        depositDesc: _walletCubit.state.selectedWallet!.descriptor,
-        network: _blockchain.state.blockchain.name,
-        signedPSBT: signed,
-      );
+      final txid = await compute(broadcastTx, {
+        'depositDesc': _walletCubit.state.selectedWallet!.descriptor,
+        'network': _blockchain.state.blockchain.name,
+        'signedPSBT': signed,
+      });
 
       emit(
         state.copyWith(
@@ -344,4 +346,47 @@ class SendCubit extends Cubit<SendState> {
       subjectForEmail: 'transaction',
     );
   }
+}
+
+double getFeees(dynamic data) {
+  final obj = data as Map<String, String>;
+  final resp = BitcoinFFI().getFees(
+    targetSize: obj['targetSize']!,
+    network: obj['network']!,
+  );
+  return resp;
+}
+
+String buildTx(dynamic data) {
+  final obj = data as Map<String, String>;
+  final resp = BitcoinFFI().buildTransaction(
+    network: obj['network']!,
+    amount: obj['amount']!,
+    depositDesc: obj['depositDesc']!,
+    feeRate: obj['feeRate']!,
+    toAddress: obj['toAddress']!,
+  );
+  return resp;
+}
+
+String signTx(dynamic data) {
+  final obj = data as Map<String, String>;
+
+  final resp = BitcoinFFI().signTransaction(
+    network: obj['network']!,
+    depositDesc: obj['depositDesc']!,
+    unsignedPSBT: obj['unsignedPSBT']!,
+  );
+  return resp;
+}
+
+String broadcastTx(dynamic data) {
+  final obj = data as Map<String, String>;
+
+  final resp = BitcoinFFI().broadcastTransaction(
+    network: obj['network']!,
+    depositDesc: obj['depositDesc']!,
+    signedPSBT: obj['signedPSBT']!,
+  );
+  return resp;
 }
