@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/model/address-book.dart';
+import 'package:sats/pkg/clipboard.dart';
 import 'package:sats/pkg/storage.dart';
 import 'package:sats/pkg/vibrate.dart';
 
@@ -35,11 +36,15 @@ class AddressBookCubit extends Cubit<AddressBookState> {
     this._storage,
     this._logger,
     this._vibrate,
-  ) : super(const AddressBookState());
+    this._clipBoard,
+  ) : super(const AddressBookState()) {
+    loadAddressUsers();
+  }
 
   final IStorage _storage;
   final LoggerCubit _logger;
   final IVibrate _vibrate;
+  final IClipBoard _clipBoard;
 
   void loadAddressUsers() {
     try {
@@ -50,6 +55,13 @@ class AddressBookCubit extends Cubit<AddressBookState> {
       _logger.logException(e, 'AddressBookCubit.loadAddresses', s);
       emit(state.copyWith());
     }
+  }
+
+  void onBackPress() {
+    if (state.editKeyDetails) cancelKeyEdit();
+    if (state.selectedKey != null) clearSelectedKey();
+    if (state.editUserDetails) cancelUserEdit();
+    if (state.selectedUser != null) clearSelectedKey();
   }
 
   void userSelected(AddressBookUser user) {
@@ -140,6 +152,20 @@ class AddressBookCubit extends Cubit<AddressBookState> {
         errEditPublicKey: '',
       ),
     );
+  }
+
+  void pasteKey() async {
+    final text = await _clipBoard.pasteFromClipBoard();
+    emit(
+      state.copyWith(
+        editPublicKey: text,
+        errEditPublicKey: '',
+      ),
+    );
+  }
+
+  void copyKey() async {
+    await _clipBoard.copyToClipBoard(state.selectedKey!.publicKey);
   }
 
   void saveUserClicked() {
