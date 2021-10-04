@@ -14,6 +14,8 @@ pub struct WalletConfig {
     pub network: Network,
 }
 
+pub const DEFAULT_NODE_ADDRESS: &str = "default";
+
 impl WalletConfig{
   // pub fn c_stringify(&self)->*mut c_char{
   //   let stringified = match serde_json::to_string(&self.clone()){
@@ -24,13 +26,14 @@ impl WalletConfig{
   //   CString::new(stringified).unwrap().into_raw()
   // }
 
-  pub fn default(deposit_desc: &str,network: Network)->Self{
+  pub fn default(deposit_desc: &str,network: Network, node_address: &str)->Self{
     let change_desc = deposit_desc.replace("/0/*", "/1/*");
     let node_address = match network{
-        Network::Bitcoin => "ssl://electrum.blockstream.info:50002",
-        Network::Testnet => "ssl://electrum.blockstream.info:60002",
-        _=>"ssl://electrum.blockstream.info:60002"
+        Network::Bitcoin => if node_address == DEFAULT_NODE_ADDRESS {"ssl://electrum.blockstream.info:50002"} else {node_address},
+        Network::Testnet => if node_address == DEFAULT_NODE_ADDRESS {"ssl://electrum.blockstream.info:60002"} else{node_address},
+        _=>if node_address == DEFAULT_NODE_ADDRESS {"ssl://electrum.blockstream.info:60002"} else{node_address}
     };
+    
     WalletConfig{
         deposit_desc: deposit_desc.to_string(),
         change_desc: change_desc,

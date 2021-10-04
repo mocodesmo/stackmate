@@ -1,5 +1,5 @@
 use crate::e::{ErrorKind, S5Error};
-use crate::wallet::config::WalletConfig;
+use crate::wallet::config::{WalletConfig};
 
 use std::ffi::CString;
 use std::os::raw::c_char;
@@ -177,13 +177,14 @@ pub fn sync_balance(config: WalletConfig) -> Result<WalletBalance, S5Error> {
 mod tests {
   use super::*;
   use bitcoin::network::constants::Network;
+  use crate::wallet::config::{WalletConfig,DEFAULT_NODE_ADDRESS};
 
   #[test]
   fn test_balance() {
     let xkey = "[db7d25b5/84'/1'/6']tpubDCCh4SuT3pSAQ1qAN86qKEzsLoBeiugoGGQeibmieRUKv8z6fCTTmEXsb9yeueBkUWjGVzJr91bCzeCNShorbBqjZV4WRGjz3CrJsCboXUe";
     let deposit_desc = format!("wsh(pk({}/0/*))", xkey);
     let network = Network::Testnet;
-    let config = WalletConfig::default(&deposit_desc, network);
+    let config = WalletConfig::default(&deposit_desc, network,DEFAULT_NODE_ADDRESS);
 
     let balance = sync_balance(config).unwrap();
     assert_eq!(balance.balance, 10_000)
@@ -193,7 +194,7 @@ mod tests {
     let xkey = "[db7d25b5/84'/1'/6']tpubDCCh4SuT3pSAQ1qAN86qKEzsLoBeiugoGGQeibmieRUKv8z6fCTTmEXsb9yeueBkUWjGVzJr91bCzeCNShorbBqjZV4WRGjz3CrJsCboXUe";
     let deposit_desc = format!("wsh(pk({}/0/*))", xkey);
     let network = Network::Testnet;
-    let config = WalletConfig::default(&deposit_desc, network);
+    let config = WalletConfig::default(&deposit_desc, network,DEFAULT_NODE_ADDRESS);
     let history = sync_history(config).unwrap();
     // println!("{:#?}",history);
     assert_eq!(10_000, history.history[0].received);

@@ -61,7 +61,7 @@ pub fn compile(
 mod tests {
   use super::*;
   use crate::wallet::address::{generate};
-  use crate::wallet::config::{WalletConfig};
+  use crate::wallet::config::{WalletConfig,DEFAULT_NODE_ADDRESS};
   use bitcoin::network::constants::Network;
 
   #[test]
@@ -100,9 +100,9 @@ mod tests {
     let single_split = expected_single_bech32.split("#").collect::<Vec<&str>>()[0];
     let watchonly_split = expected_single_watchonly_bech32.split("#").collect::<Vec<&str>>()[0];
 
-    let raft_config: WalletConfig = WalletConfig::default(raft_split, Network::Testnet);
-    let single_config: WalletConfig = WalletConfig::default(single_split, Network::Testnet);
-    let watchonly_config: WalletConfig = WalletConfig::default(watchonly_split, Network::Testnet);
+    let raft_config: WalletConfig = WalletConfig::default(raft_split, Network::Testnet,DEFAULT_NODE_ADDRESS);
+    let single_config: WalletConfig = WalletConfig::default(single_split, Network::Testnet,DEFAULT_NODE_ADDRESS);
+    let watchonly_config: WalletConfig = WalletConfig::default(watchonly_split, Network::Testnet,DEFAULT_NODE_ADDRESS);
 
     let raft_bech32_address = generate(raft_config,0);
     let single_bech32_address = generate(single_config,0);

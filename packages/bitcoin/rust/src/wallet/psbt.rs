@@ -172,10 +172,10 @@ pub fn sign(config: WalletConfig, psbt: &str) -> Result<WalletPSBT, S5Error> {
     Err(_) => return Err(S5Error::new(ErrorKind::OpError, "Wallet-Initialization")),
   };
 
-  match wallet.sync(noop_progress(), None) {
-    Ok(_) => (),
-    Err(_) => return Err(S5Error::new(ErrorKind::OpError, "Wallet-Sync")),
-  };
+  // match wallet.sync(noop_progress(), None) {
+  //   Ok(_) => (),
+  //   Err(_) => return Err(S5Error::new(ErrorKind::OpError, "Wallet-Sync")),
+  // };
 
   let mut final_psbt = match deserialize(&base64::decode(psbt).unwrap()) {
     Ok(psbt) => psbt,

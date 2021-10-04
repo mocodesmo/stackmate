@@ -16,7 +16,7 @@ use crate::key::master;
 
 mod wallet;
 use crate::wallet::address;
-use crate::wallet::config::WalletConfig;
+use crate::wallet::config::{WalletConfig,DEFAULT_NODE_ADDRESS};
 use crate::wallet::history;
 use crate::wallet::policy;
 use crate::wallet::psbt;
@@ -178,6 +178,7 @@ pub unsafe extern "C" fn compile(policy: *const c_char, script_type: *const c_ch
 pub unsafe extern "C" fn sync_balance(
     deposit_desc: *const c_char,
     network: *const c_char,
+    node_address: *const c_char
 ) -> *mut c_char {
     let deposit_desc_cstr = unsafe { CStr::from_ptr(deposit_desc) };
     let deposit_desc: &str = match deposit_desc_cstr.to_str() {
@@ -195,8 +196,12 @@ pub unsafe extern "C" fn sync_balance(
         "test" => Network::Testnet,
         _ => Network::Testnet,
     };
-
-    let config = WalletConfig::default(deposit_desc, network_enum);
+    let node_address_cstr = unsafe { CStr::from_ptr(node_address) };
+    let node_address: &str = match node_address_cstr.to_str(){
+        Ok(string) => string,
+        Err(_)=>DEFAULT_NODE_ADDRESS
+    };
+    let config = WalletConfig::default(deposit_desc, network_enum,node_address);
     match history::sync_balance(config) {
         Ok(result) => return result.c_stringify(),
         Err(e) => return e.c_stringify(),
@@ -208,6 +213,7 @@ pub unsafe extern "C" fn sync_balance(
 pub unsafe extern "C" fn sync_history(
     deposit_desc: *const c_char,
     network: *const c_char,
+    node_address: *const c_char
 ) -> *mut c_char {
     let deposit_desc_cstr = unsafe { CStr::from_ptr(deposit_desc) };
     let deposit_desc: &str = match deposit_desc_cstr.to_str() {
@@ -225,8 +231,12 @@ pub unsafe extern "C" fn sync_history(
         "test" => Network::Testnet,
         _ => Network::Testnet,
     };
-
-    let config = WalletConfig::default(deposit_desc, network_enum);
+    let node_address_cstr = unsafe { CStr::from_ptr(node_address) };
+    let node_address: &str = match node_address_cstr.to_str(){
+        Ok(string) => string,
+        Err(_)=>DEFAULT_NODE_ADDRESS
+    };
+    let config = WalletConfig::default(deposit_desc, network_enum,node_address);
     match history::sync_history(config) {
         Ok(result) => return result.c_stringify(),
         Err(e) => return e.c_stringify(),
@@ -240,6 +250,7 @@ pub unsafe extern "C" fn get_address(
     deposit_desc: *const c_char,
     network: *const c_char,
     index: *const c_char,
+    node_address: *const c_char
 ) -> *mut c_char {
     let deposit_desc_cstr = unsafe { CStr::from_ptr(deposit_desc) };
     let deposit_desc: &str = match deposit_desc_cstr.to_str() {
@@ -271,7 +282,12 @@ pub unsafe extern "C" fn get_address(
         Err(_) => return S5Error::new(ErrorKind::InputError, "Address-Index").c_stringify(),
     };
 
-    let config = WalletConfig::default(deposit_desc, network_enum);
+    let node_address_cstr = unsafe { CStr::from_ptr(node_address) };
+    let node_address: &str = match node_address_cstr.to_str(){
+        Ok(string) => string,
+        Err(_)=>DEFAULT_NODE_ADDRESS
+    };
+    let config = WalletConfig::default(deposit_desc, network_enum, node_address);
 
     match address::generate(config, address_index) {
         Ok(result) => return result.c_stringify(),
@@ -285,6 +301,7 @@ pub unsafe extern "C" fn get_address(
 pub unsafe extern "C" fn get_fees(
     target_size: *const c_char,
     network: *const c_char,
+    node_address: *const c_char
 ) -> *mut c_char {
     let target_size_cstr = unsafe { CStr::from_ptr(target_size) };
     let target_size_int: usize = match target_size_cstr.to_str() {
@@ -309,10 +326,14 @@ pub unsafe extern "C" fn get_fees(
         "test" => Network::Testnet,
         _ => Network::Testnet,
     };
+    let node_address_cstr = unsafe { CStr::from_ptr(node_address) };
+    let node_address: &str = match node_address_cstr.to_str(){
+        Ok(string) => string,
+        Err(_)=>DEFAULT_NODE_ADDRESS
+    };
+    let config = WalletConfig::default("/0/*", network_enum,node_address);
 
-    let config = WalletConfig::default("/0/*", network_enum);
-
-    match fees::estimate_sats_per_byte(string_to_static_str(config.node_address), target_size_int) {
+    match fees::estimate_sats_per_byte(&config.node_address, target_size_int) {
         Ok(result) => return result.c_stringify(),
         Err(e) => return e.c_stringify(),
     }
@@ -327,6 +348,7 @@ pub unsafe extern "C" fn build_tx(
     to_address: *const c_char,
     amount: *const c_char,
     fee_rate: *const c_char,
+    node_address: *const c_char
 ) -> *mut c_char {
     let deposit_desc_cstr = unsafe { CStr::from_ptr(deposit_desc) };
     let deposit_desc: &str = match deposit_desc_cstr.to_str() {
@@ -345,7 +367,13 @@ pub unsafe extern "C" fn build_tx(
         _ => Network::Testnet,
     };
 
-    let config = WalletConfig::default(deposit_desc, network_enum);
+    let node_address_cstr = unsafe { CStr::from_ptr(node_address) };
+    let node_address: &str = match node_address_cstr.to_str(){
+        Ok(string) => string,
+        Err(_)=>DEFAULT_NODE_ADDRESS
+    };
+
+    let config = WalletConfig::default(deposit_desc, network_enum,node_address);
 
     let to_address_cstr = unsafe { CStr::from_ptr(to_address) };
     let to_address: &str = match to_address_cstr.to_str() {
@@ -402,7 +430,7 @@ pub unsafe extern "C" fn sign_tx(
         _ => Network::Testnet,
     };
 
-    let config = WalletConfig::default(deposit_desc, network_enum);
+    let config = WalletConfig::default(deposit_desc, network_enum,DEFAULT_NODE_ADDRESS);
 
     let unsigned_psbt_cstr = unsafe { CStr::from_ptr(unsigned_psbt) };
     let unsigned_psbt: &str = match unsigned_psbt_cstr.to_str() {
@@ -423,6 +451,7 @@ pub unsafe extern "C" fn broadcast_tx(
     deposit_desc: *const c_char,
     network: *const c_char,
     signed_psbt: *const c_char,
+    node_address: *const c_char
 ) -> *mut c_char {
     let deposit_desc_cstr = unsafe { CStr::from_ptr(deposit_desc) };
     let deposit_desc: &str = match deposit_desc_cstr.to_str() {
@@ -441,7 +470,13 @@ pub unsafe extern "C" fn broadcast_tx(
         _ => Network::Testnet,
     };
 
-    let config = WalletConfig::default(deposit_desc, network_enum);
+    let node_address_cstr = unsafe { CStr::from_ptr(node_address) };
+    let node_address: &str = match node_address_cstr.to_str(){
+        Ok(string) => string,
+        Err(_)=>DEFAULT_NODE_ADDRESS
+    };
+
+    let config = WalletConfig::default(deposit_desc, network_enum,node_address);
 
     let psbt_cstr = unsafe { CStr::from_ptr(signed_psbt) };
     let signed_psbt: &str = match psbt_cstr.to_str() {
@@ -556,15 +591,16 @@ mod tests {
         unsafe {
             let xkey = "[db7d25b5/84'/1'/6']tpubDCCh4SuT3pSAQ1qAN86qKEzsLoBeiugoGGQeibmieRUKv8z6fCTTmEXsb9yeueBkUWjGVzJr91bCzeCNShorbBqjZV4WRGjz3CrJsCboXUe";
             let network_cstr = CString::new("test").unwrap().into_raw();
+            let node_address_cstr = CString::new("default").unwrap().into_raw();
 
             let deposit_desc = format!("wsh(pk({}/0/*))", xkey);
             let deposit_desc_cstr = CString::new(deposit_desc).unwrap().into_raw();
-            let balance_ptr = sync_balance(deposit_desc_cstr, network_cstr);
+            let balance_ptr = sync_balance(deposit_desc_cstr, network_cstr, node_address_cstr);
             let balance_str = CStr::from_ptr(balance_ptr).to_str().unwrap();
             let balance: history::WalletBalance = serde_json::from_str(balance_str).unwrap();
             assert_eq!(balance.balance, 10_000);
             let index_cstr = CString::new("0").unwrap().into_raw();
-            let address_ptr = get_address(deposit_desc_cstr, network_cstr, index_cstr);
+            let address_ptr = get_address(deposit_desc_cstr, network_cstr, index_cstr,node_address_cstr);
             let address_str = CStr::from_ptr(address_ptr).to_str().unwrap();
             let address: address::WalletAddress = serde_json::from_str(address_str).unwrap();
             assert_eq!(
