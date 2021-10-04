@@ -30,6 +30,16 @@ class HeaderRow extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
+                IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(c, Routes.addressBook);
+                  },
+                  icon: Icon(
+                    Icons.list_alt_sharp,
+                    size: 32,
+                    color: c.colours.primary,
+                  ),
+                ),
                 LogButton(
                   child: IconButton(
                     onPressed: () {},

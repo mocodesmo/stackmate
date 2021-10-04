@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +23,7 @@ import 'package:sats/pkg/storage.dart';
 import 'package:sats/pkg/vibrate.dart';
 import 'package:sats/state.dart';
 import 'package:sats/view/add-wallet-page.dart';
+import 'package:sats/view/address-book-page.dart';
 import 'package:sats/view/calculator-page.dart';
 import 'package:sats/view/home-page.dart';
 import 'package:sats/view/logs-page.dart';
@@ -51,6 +50,7 @@ class Routes {
   static const send = 'send';
   static const sendFromQR = 'send-from-qr';
   static const qr = 'qr';
+  static const addressBook = 'address-book';
 
   static Route<dynamic>? setupRoutes(RouteSettings settings, BuildContext c) {
     Widget page = Container();
@@ -238,6 +238,10 @@ class Routes {
 
       case qr:
         page = const QRPage();
+        break;
+
+      case addressBook:
+        page = const AddressBookPage();
         break;
     }
 

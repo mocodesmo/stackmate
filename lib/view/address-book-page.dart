@@ -14,16 +14,29 @@ class UserList extends StatelessWidget {
     );
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const SizedBox(height: 40),
+        Text(
+          ' Address Book',
+          style: context.fonts.headline4!.copyWith(
+            color: context.colours.onBackground,
+          ),
+        ),
         TextButton(
           onPressed: () {
             context.read<AddressBookCubit>().editUserSelected();
           },
-          child: const Text('New User'),
+          child: const Text('Create New User'),
         ),
+        const SizedBox(height: 40),
         if (users.isEmpty) ...[
-          const Text('No Contacts'),
+          Text(
+            ' No Contacts',
+            style: context.fonts.headline6!.copyWith(
+              color: context.colours.onBackground,
+            ),
+          ),
         ] else
           for (final user in users) ...[
             TextButton(
@@ -43,27 +56,55 @@ class KeyList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final keys = context.select(
-      (AddressBookCubit abc) => abc.state.selectedUser!.keys,
-    );
     final user = context.select(
-      (AddressBookCubit abc) => abc.state.selectedUser!,
+      (AddressBookCubit abc) => abc.state.selectedUser,
     );
 
+    if (user == null) return Container();
+
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(user.name),
-        TextButton(
-          onPressed: () {
-            context.read<AddressBookCubit>().editKeySelected();
-          },
-          child: const Text('New Public Key'),
+        const SizedBox(height: 40),
+        Text(
+          ' ' + user.name,
+          style: context.fonts.headline4!.copyWith(
+            color: context.colours.onBackground,
+          ),
         ),
-        if (key == null || keys!.isEmpty) ...[
-          const Text('No Contacts'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextButton(
+              onPressed: () {
+                context.read<AddressBookCubit>().editKeySelected();
+              },
+              child: const Text('NEW PUBLIC KEY'),
+            ),
+            TextButton(
+              onPressed: () {
+                context.read<AddressBookCubit>().editUserSelected();
+              },
+              child: const Text('EDIT'),
+            ),
+            TextButton(
+              onPressed: () {
+                context.read<AddressBookCubit>().deleteUserClicked();
+              },
+              child: const Text('DELETE'),
+            ),
+          ],
+        ),
+        const SizedBox(height: 40),
+        if (user.keys == null || user.keys!.isEmpty) ...[
+          Text(
+            ' No Public Keys',
+            style: context.fonts.headline6!.copyWith(
+              color: context.colours.onBackground,
+            ),
+          ),
         ] else
-          for (final key in keys) ...[
+          for (final key in user.keys!) ...[
             TextButton(
               onPressed: () {
                 context.read<AddressBookCubit>().keySelected(key);
@@ -72,19 +113,6 @@ class KeyList extends StatelessWidget {
             )
           ],
         const SizedBox(height: 100),
-        TextButton(
-          onPressed: () {
-            context.read<AddressBookCubit>().editUserSelected();
-          },
-          child: const Text('EDIT'),
-        ),
-        const SizedBox(height: 40),
-        TextButton(
-          onPressed: () {
-            context.read<AddressBookCubit>().deleteUserClicked();
-          },
-          child: const Text('DELETE'),
-        ),
       ],
     );
   }
@@ -100,29 +128,51 @@ class KeyProfile extends StatelessWidget {
     );
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(key.name),
-        Text(key.publicKey),
+        const SizedBox(height: 80),
+        Text(
+          key.name,
+          style: context.fonts.headline4!.copyWith(
+            color: context.colours.onBackground,
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            TextButton(
+              onPressed: () {
+                context.read<AddressBookCubit>().editKeySelected();
+              },
+              child: const Text('EDIT'),
+            ),
+            TextButton(
+              onPressed: () {
+                context.read<AddressBookCubit>().deleteKeyClicked();
+              },
+              child: const Text('DELETE'),
+            ),
+          ],
+        ),
+        const SizedBox(height: 40),
+        Text(
+          'PUBLIC KEY',
+          style: context.fonts.overline!.copyWith(
+            color: context.colours.onBackground,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          key.publicKey,
+          style: context.fonts.bodyText1!.copyWith(
+            color: context.colours.onBackground,
+          ),
+        ),
         TextButton(
           onPressed: () {
             context.read<AddressBookCubit>().copyKey();
           },
           child: const Text('COPY'),
-        ),
-        const SizedBox(height: 100),
-        TextButton(
-          onPressed: () {
-            context.read<AddressBookCubit>().editKeySelected();
-          },
-          child: const Text('EDIT'),
-        ),
-        const SizedBox(height: 40),
-        TextButton(
-          onPressed: () {
-            context.read<AddressBookCubit>().deleteKeyClicked();
-          },
-          child: const Text('DELETE'),
         ),
       ],
     );
@@ -137,8 +187,9 @@ class EditUser extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        const SizedBox(height: 80),
         const UserNameField(),
-        const SizedBox(height: 100),
+        const SizedBox(height: 40),
         TextButton(
           onPressed: () {
             context.read<AddressBookCubit>().saveUserClicked();
@@ -165,6 +216,7 @@ class EditKey extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        const SizedBox(height: 80),
         const KeyNameField(),
         const SizedBox(height: 40),
         const KeyValueField(),
@@ -339,13 +391,12 @@ class AddressBookPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userSelected =
-        context.select((AddressBookCubit abc) => abc.state.selectedUser) !=
-            null;
+    final canGoBack =
+        context.select((AddressBookCubit abc) => abc.state.canGoBack());
 
     return WillPopScope(
       onWillPop: () async {
-        if (userSelected) {
+        if (!canGoBack) {
           context.read<AddressBookCubit>().onBackPress();
           return false;
         }
@@ -363,7 +414,7 @@ class AddressBookPage extends StatelessWidget {
                     children: [
                       Back(
                         onPressed: () {
-                          if (userSelected) {
+                          if (!canGoBack) {
                             context.read<AddressBookCubit>().onBackPress();
                           } else
                             Navigator.pop(context);

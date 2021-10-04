@@ -29,6 +29,9 @@ class AddressBookState with _$AddressBookState {
     AddressBookUser? selectedUser,
     AddressBookKey? selectedKey,
   }) = _AddressBookState;
+  const AddressBookState._();
+
+  bool canGoBack() => selectedUser == null && !editUserDetails;
 }
 
 class AddressBookCubit extends Cubit<AddressBookState> {
@@ -58,10 +61,13 @@ class AddressBookCubit extends Cubit<AddressBookState> {
   }
 
   void onBackPress() {
-    if (state.editKeyDetails) cancelKeyEdit();
-    if (state.selectedKey != null) clearSelectedKey();
-    if (state.editUserDetails) cancelUserEdit();
-    if (state.selectedUser != null) clearSelectedKey();
+    if (state.editKeyDetails)
+      cancelKeyEdit();
+    else if (state.selectedKey != null)
+      clearSelectedKey();
+    else if (state.editUserDetails)
+      cancelUserEdit();
+    else if (state.selectedUser != null) clearSelectedUser();
   }
 
   void userSelected(AddressBookUser user) {
@@ -170,15 +176,22 @@ class AddressBookCubit extends Cubit<AddressBookState> {
 
   void saveUserClicked() {
     try {
-      final newUser = AddressBookUser(
-        name: state.editUserName,
-        keys: state.selectedUser!.keys,
-      );
+      if (state.selectedUser != null) {
+        final newUser = AddressBookUser(
+          name: state.editUserName,
+          keys: state.selectedUser!.keys,
+        );
 
-      final idx = state.users.indexOf(state.selectedUser!);
+        final idx = state.users.indexOf(state.selectedUser!);
 
-      _storage.deleteItemAt(StoreKeys.AddressBookUser.name, idx);
-      _storage.saveItemAt(StoreKeys.AddressBookUser.name, idx, newUser);
+        _storage.deleteItemAt(StoreKeys.AddressBookUser.name, idx);
+        _storage.saveItemAt(StoreKeys.AddressBookUser.name, idx, newUser);
+      } else {
+        final newUser = AddressBookUser(
+          name: state.editUserName,
+        );
+        _storage.saveItem(StoreKeys.AddressBookUser.name, newUser);
+      }
 
       cancelUserEdit();
       loadAddressUsers();
@@ -208,18 +221,30 @@ class AddressBookCubit extends Cubit<AddressBookState> {
         publicKey: state.editPublicKey,
         createdAt: DateTime.now().millisecondsSinceEpoch,
       );
-      final keys = state.selectedUser!.keys!.toList();
-      keys.add(newKey);
+      if (state.selectedUser!.keys != null) {
+        final keys = state.selectedUser!.keys!.toList();
+        keys.add(newKey);
 
-      final newUser = AddressBookUser(
-        name: state.selectedUser!.name,
-        keys: keys,
-      );
+        final newUser = AddressBookUser(
+          name: state.selectedUser!.name,
+          keys: keys,
+        );
 
-      final idx = state.users.indexOf(state.selectedUser!);
+        final idx = state.users.indexOf(state.selectedUser!);
 
-      _storage.deleteItemAt(StoreKeys.AddressBookUser.name, idx);
-      _storage.saveItemAt(StoreKeys.AddressBookUser.name, idx, newUser);
+        _storage.deleteItemAt(StoreKeys.AddressBookUser.name, idx);
+        _storage.saveItemAt(StoreKeys.AddressBookUser.name, idx, newUser);
+      } else {
+        final newUser = AddressBookUser(
+          name: state.selectedUser!.name,
+          keys: [newKey],
+        );
+
+        final idx = state.users.indexOf(state.selectedUser!);
+
+        _storage.deleteItemAt(StoreKeys.AddressBookUser.name, idx);
+        _storage.saveItemAt(StoreKeys.AddressBookUser.name, idx, newUser);
+      }
 
       cancelUserEdit();
       loadAddressUsers();

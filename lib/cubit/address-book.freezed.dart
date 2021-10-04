@@ -286,7 +286,7 @@ class __$AddressBookStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_AddressBookState implements _AddressBookState {
+class _$_AddressBookState extends _AddressBookState {
   const _$_AddressBookState(
       {this.users = const [],
       this.editUserDetails = false,
@@ -298,7 +298,8 @@ class _$_AddressBookState implements _AddressBookState {
       this.editPublicKey = '',
       this.errEditPublicKey = '',
       this.selectedUser,
-      this.selectedKey});
+      this.selectedKey})
+      : super._();
 
   @JsonKey(defaultValue: const [])
   @override
@@ -397,7 +398,7 @@ class _$_AddressBookState implements _AddressBookState {
       __$AddressBookStateCopyWithImpl<_AddressBookState>(this, _$identity);
 }
 
-abstract class _AddressBookState implements AddressBookState {
+abstract class _AddressBookState extends AddressBookState {
   const factory _AddressBookState(
       {List<AddressBookUser> users,
       bool editUserDetails,
@@ -410,6 +411,7 @@ abstract class _AddressBookState implements AddressBookState {
       String errEditPublicKey,
       AddressBookUser? selectedUser,
       AddressBookKey? selectedKey}) = _$_AddressBookState;
+  const _AddressBookState._() : super._();
 
   @override
   List<AddressBookUser> get users => throw _privateConstructorUsedError;
