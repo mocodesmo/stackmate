@@ -63,20 +63,21 @@ class CalculatorCubit extends Cubit<CalculatorState> {
         name: 'Indian Ruppee',
         rate: double.parse(inrRate),
       );
-      final rates = [inr, usd];
+      final rates = [usd, inr];
 
       await Future.delayed(const Duration(seconds: 1));
       emit(
         CalculatorState(
           rates: rates,
           selectedRate: rates[0],
-          editingBtc: false,
+          editingBtc: true,
+          btcSelected: true,
           currencyAmt: '',
           satsAmt: '',
           loadingRates: false,
         ),
       );
-      await Future.delayed(const Duration(milliseconds: 100));
+      // await Future.delayed(const Duration(milliseconds: 1000));
       calcKeyPressed('1');
     } catch (e, s) {
       _logger.logException(e, 'CalculatorBloc._mapGetRates', s);

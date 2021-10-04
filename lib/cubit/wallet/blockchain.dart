@@ -40,8 +40,9 @@ class BlockchainCubit extends Cubit<BlockchainState> {
   void changeBlockchain(Blockchain blockchain) async {
     try {
       emit(BlockchainState(blockchain: blockchain));
-      _storage.saveItem<Blockchain>(
+      await _storage.saveItemAt<Blockchain>(
         StoreKeys.Blockchain.name,
+        0,
         blockchain,
       );
       await Future.delayed(const Duration(milliseconds: 50));

@@ -39,18 +39,21 @@ Future<void> initializeHive() async {
   );
   await Hive.openBox<Wallet>(StoreKeys.Wallet.name);
   await Hive.openBox<Blockchain>(StoreKeys.Blockchain.name);
+
   await Hive.openBox<AddressBookUser>(StoreKeys.AddressBookUser.name);
+  // var abu = Hive.box<AddressBookUser>(StoreKeys.AddressBookUser.name);
+  // await abu.compact();
   await Hive.openBox<AddressBookKey>(StoreKeys.AddressBookKey.name);
 }
 
 abstract class IStorage {
-  void saveItem<T>(String cls, T obj);
-  void saveItemAt<T>(String cls, int idx, T obj);
+  Future<int> saveItem<T>(String cls, T obj);
+  Future<void> saveItemAt<T>(String cls, int idx, T obj);
 
-  void deleteItem<T>(String cls, String key);
+  void deleteItem<T>(String cls, dynamic key);
   void deleteItemAt<T>(String cls, int idx);
-  void clearAll<T>(String cls);
-  
+  Future<void> clearAll<T>(String cls);
+
   T getItem<T>(String cls, String key);
   T getFirstItem<T>(String cls);
   List<T> getAll<T>(String cls);
@@ -58,28 +61,33 @@ abstract class IStorage {
 
 class HiveStore implements IStorage {
   @override
-  void saveItem<T>(String cls, T obj) {
-    Hive.box<T>(cls).add(obj);
+  Future<int> saveItem<T>(String cls, T obj) async {
+    final id = await Hive.box<T>(cls).add(obj);
+    return id;
   }
 
   @override
-  void saveItemAt<T>(String cls, int idx, T obj) {
-    Hive.box<T>(cls).putAt(idx, obj);
+  Future<void> saveItemAt<T>(String cls, int idx, T obj) async {
+    await Hive.box<T>(cls).put(idx, obj);
   }
 
   @override
-  void deleteItem<T>(String cls, String key) {
+  void deleteItem<T>(String cls, dynamic key) {
+    Hive.box<T>(cls).delete(key);
+  }
+
+  void deleteItemX<T>(String cls, dynamic key) {
     Hive.box<T>(cls).delete(key);
   }
 
   @override
   void deleteItemAt<T>(String cls, int idx) {
-    Hive.box<T>(cls).deleteAt(idx);
+    Hive.box<T>(cls).delete(idx);
   }
 
   @override
-  void clearAll<T>(String cls) {
-    Hive.box<T>(cls).clear();
+  Future<void> clearAll<T>(String cls) async {
+    await Hive.box<T>(cls).clear();
   }
 
   @override
@@ -104,144 +112,15 @@ class HiveStore implements IStorage {
   }
 }
 
+Future<void> storeTest() async {
+  final store = HiveStore();
+  // const key = AddressBookKey(
+  //   name: 'name',
+  //   publicKey: 'publicKey',
+  //   createdAt: 0,
+  // );
 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-
-
-
-// abstract class IStorage {
-//   Future<void> saveOrUpdateItem({required String key, required String value});
-//   Future<String> getItem({required String key});
-//   Future<void> deleteItem({required String key});
-// }
-
-// class CacheKeys {
-//   static const token = 'token';
-//   static const email = 'email';
-//   static const hashedPin = 'hashedPin';
-//   static const xPriv = 'xpriv';
-// }
-
-
-//class HiveStorage implements IStorage {
-//  final String _store = 'storage';
-
-//  @override
-//  Future<void> saveOrUpdateItem(
-//      {required String key, required String value}) async {
-//    var _box = await Hive.openBox(_store);
-//    await _box.put(key, value);
-//  }
-
-//  @override
-//  Future<String> getItem({required String key}) async {
-//    var _box = await Hive.openBox(_store);
-//    var result = _box.get(key);
-
-//    if ((key == CacheKeys.token ||
-//            key == CacheKeys.hashedPin ||
-//            key == CacheKeys.email) &&
-//        (result == null || result == '')) {
-//      userBloc.add(LogOut());
-//      throw 'no storage result for auth for key: ' + key;
-//    }
-
-//    if (result == null) throw 'no storage result for key: ' + key;
-
-//    return result!;
-//  }
-
-//  @override
-//  Future<void> deleteItem({required String key}) async {
-//    var _box = await Hive.openBox(_store);
-//    await _box.delete(key);
-//  }
-//}
-
-// class SecureeStorage implements IStorage {
-//   FlutterSecureStorage? _storage; //= new FlutterSecureStorage();
-
-//   SecureeStorage() {
-//     _storage = new FlutterSecureStorage();
-//   }
-
-//   Future saveOrUpdateItem({required String key, required String value}) async {
-//     if (_storage == null) throw 'No Secure Storage';
-
-//     await _storage!.write(key: key, value: value);
-//   }
-
-//   Future<String> getItem({required String key}) async {
-//     try {
-//       if (_storage == null) throw 'No Secure Storage';
-//       final result = await _storage!.read(key: key);
-//       if (key.startsWith(CacheKeys.xPriv) && result == null) return '';
-//       if (result == null) throw '';
-//       if ((key == CacheKeys.token ||
-//               key == CacheKeys.hashedPin ||
-//               key == CacheKeys.email) &&
-//           result == '') {
-//         // userCubit.logOut();
-//         throw 'no storage result for auth for key: ' + key;
-//       }
-//       return result;
-//     } catch (e) {
-//       print(e.toString());
-//     }
-//     return '';
-//   }
-
-//   Future deleteItem({required String key}) async {
-//     if (_storage == null) throw 'No Secure Storage';
-
-//     await _storage!.delete(key: key);
-//   }
-// }
-
-// class DummyStorage implements IStorage {
-//   @override
-//   Future<void> deleteItem({required String key}) async {}
-
-//   @override
-//   Future<String> getItem({required String key}) async {
-//     if (key.startsWith(CacheKeys.xPriv)) throw '';
-//     return 'abc';
-//   }
-
-//   @override
-//   Future<void> saveOrUpdateItem(
-//       {required String key, required String value}) async {}
-// }
+  await store.clearAll<AddressBookUser>(StoreKeys.AddressBookUser.name);
+  // store.saveItem(StoreKeys.AddressBookKey.name, key);
+  // store.deleteItemX<AddressBookKey>(StoreKeys.AddressBookKey.name, key);
+}

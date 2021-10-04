@@ -13,6 +13,7 @@ import 'package:sats/model/blockchain.dart';
 import 'package:sats/pkg/bitcoin.dart';
 import 'package:sats/pkg/clipboard.dart';
 import 'package:sats/pkg/share.dart';
+import 'package:sats/pkg/vibrate.dart';
 
 part 'receive.freezed.dart';
 
@@ -41,6 +42,7 @@ class ReceiveCubit extends Bloc<ReceiveEvent, ReceiveState> {
     this._logger,
     this._clipBoard,
     this._share,
+    this._vibrate,
   ) : super(const ReceiveState()) {
     on<GetAddress>(getAddress, transformer: concurrent());
     on<CopyAddress>(copyAddress, transformer: concurrent());
@@ -54,6 +56,7 @@ class ReceiveCubit extends Bloc<ReceiveEvent, ReceiveState> {
   final BlockchainCubit _blockchain;
   final IShare _share;
   final IClipBoard _clipBoard;
+  final IVibrate _vibrate;
 
   void _init() async {
     await Future.delayed(const Duration(milliseconds: 1000));
@@ -95,6 +98,8 @@ class ReceiveCubit extends Bloc<ReceiveEvent, ReceiveState> {
         000,
       );
 
+      _vibrate.vibe();
+
       emit(
         state.copyWith(
           loadingAddress: false,
@@ -115,6 +120,7 @@ class ReceiveCubit extends Bloc<ReceiveEvent, ReceiveState> {
   void copyAddress(event, emit) {
     try {
       _clipBoard.copyToClipBoard(state.address!);
+      _vibrate.vibe();
     } catch (e, s) {
       _logger.logException(e, 'WalletCubit.copyAddress', s);
     }

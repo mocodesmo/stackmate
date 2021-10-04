@@ -18,7 +18,7 @@ class UserList extends StatelessWidget {
       children: [
         const SizedBox(height: 40),
         Text(
-          ' Address Book',
+          ' Your Network',
           style: context.fonts.headline4!.copyWith(
             color: context.colours.onBackground,
           ),
@@ -39,11 +39,20 @@ class UserList extends StatelessWidget {
           ),
         ] else
           for (final user in users) ...[
-            TextButton(
-              onPressed: () {
+            GestureDetector(
+              onTap: () {
                 context.read<AddressBookCubit>().userSelected(user);
               },
-              child: Text(user.name),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+                child: Text(
+                  user.name,
+                  style: context.fonts.button!.copyWith(
+                    color: context.colours.primary,
+                  ),
+                ),
+              ),
             )
           ]
       ],
@@ -105,11 +114,20 @@ class KeyList extends StatelessWidget {
           ),
         ] else
           for (final key in user.keys!) ...[
-            TextButton(
-              onPressed: () {
+            GestureDetector(
+              onTap: () {
                 context.read<AddressBookCubit>().keySelected(key);
               },
-              child: Text(key.name),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+                child: Text(
+                  key.name,
+                  style: context.fonts.button!.copyWith(
+                    color: context.colours.primary,
+                  ),
+                ),
+              ),
             )
           ],
         const SizedBox(height: 100),
@@ -124,13 +142,15 @@ class KeyProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final key = context.select(
-      (AddressBookCubit abc) => abc.state.selectedKey!,
+      (AddressBookCubit abc) => abc.state.selectedKey,
     );
+
+    if (key == null) return Container();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 80),
+        const SizedBox(height: 40),
         Text(
           key.name,
           style: context.fonts.headline4!.copyWith(
@@ -168,6 +188,7 @@ class KeyProfile extends StatelessWidget {
             color: context.colours.onBackground,
           ),
         ),
+        const SizedBox(height: 16),
         TextButton(
           onPressed: () {
             context.read<AddressBookCubit>().copyKey();
@@ -391,8 +412,9 @@ class AddressBookPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final canGoBack =
-        context.select((AddressBookCubit abc) => abc.state.canGoBack());
+    final canGoBack = context.select(
+      (AddressBookCubit abc) => abc.state.canGoBack(),
+    );
 
     return WillPopScope(
       onWillPop: () async {

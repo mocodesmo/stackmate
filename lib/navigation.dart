@@ -170,6 +170,7 @@ class Routes {
           blockchainCubit,
           locator<ILauncher>(),
           locator<IShare>(),
+          locator<IVibrate>(),
         );
 
         page = BlocProvider.value(
@@ -192,6 +193,7 @@ class Routes {
           loggerCubit,
           locator<IClipBoard>(),
           locator<IShare>(),
+          locator<IVibrate>(),
         );
 
         page = BlocProvider.value(

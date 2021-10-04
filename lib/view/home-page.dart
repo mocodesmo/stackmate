@@ -32,24 +32,25 @@ class HeaderRow extends StatelessWidget {
                 const Spacer(),
                 IconButton(
                   onPressed: () {
-                    Navigator.pushNamed(c, Routes.addressBook);
+                    Navigator.pushNamed(c, Routes.setting);
                   },
                   icon: Icon(
-                    Icons.list_alt_sharp,
+                    Icons.settings,
                     size: 32,
                     color: c.colours.primary,
                   ),
                 ),
-                LogButton(
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.lightbulb_outline_sharp,
-                      size: 32,
-                      color: c.colours.primary,
-                    ),
-                  ),
-                ),
+
+                // LogButton(
+                //   child: IconButton(
+                //     onPressed: () {},
+                //     icon: Icon(
+                //       Icons.lightbulb_outline_sharp,
+                //       size: 32,
+                //       color: c.colours.primary,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -210,6 +211,16 @@ class ActionsRow extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
+              Navigator.pushNamed(context, Routes.addressBook);
+            },
+            icon: Icon(
+              Icons.schema_outlined,
+              size: 32,
+              color: context.colours.primary,
+            ),
+          ),
+          IconButton(
+            onPressed: () {
               Navigator.pushNamed(context, Routes.calc);
             },
             icon: Icon(
@@ -217,13 +228,6 @@ class ActionsRow extends StatelessWidget {
               size: 32,
               color: context.colours.primary,
             ),
-          ),
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, Routes.setting);
-            },
-            icon:
-                Icon(Icons.settings, size: 32, color: context.colours.primary),
           ),
         ],
       ),
@@ -384,7 +388,7 @@ class NewHomePage extends StatelessWidget {
               ),
             ),
             bottom: PreferredSize(
-              preferredSize: Size(c.width, 24),
+              preferredSize: Size(c.width, 20),
               child: ActionsRow(),
             ),
           ),

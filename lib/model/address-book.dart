@@ -8,6 +8,7 @@ part 'address-book.g.dart';
 class AddressBookUser with _$AddressBookUser {
   @HiveType(typeId: 5, adapterName: 'AddressBookUserClassAdaper')
   const factory AddressBookUser({
+    @HiveField(2) int? id,
     @HiveField(0) required String name,
     @HiveField(1) List<AddressBookKey>? keys,
   }) = _AddressBookUser;

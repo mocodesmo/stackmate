@@ -17,6 +17,7 @@ class AddressBookUserClassAdaper extends TypeAdapter<_$_AddressBookUser> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return _$_AddressBookUser(
+      id: fields[2] as int?,
       name: fields[0] as String,
       keys: (fields[1] as List?)?.cast<AddressBookKey>(),
     );
@@ -25,7 +26,9 @@ class AddressBookUserClassAdaper extends TypeAdapter<_$_AddressBookUser> {
   @override
   void write(BinaryWriter writer, _$_AddressBookUser obj) {
     writer
+      ..writeByte(3)
       ..writeByte(2)
+      ..write(obj.id)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -89,6 +92,7 @@ class AddressBookValueClassAdaper extends TypeAdapter<_$_AddressBookKey> {
 
 _$_AddressBookUser _$$_AddressBookUserFromJson(Map<String, dynamic> json) =>
     _$_AddressBookUser(
+      id: json['id'] as int?,
       name: json['name'] as String,
       keys: (json['keys'] as List<dynamic>?)
           ?.map((e) => AddressBookKey.fromJson(e as Map<String, dynamic>))
@@ -97,6 +101,7 @@ _$_AddressBookUser _$$_AddressBookUserFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$_AddressBookUserToJson(_$_AddressBookUser instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'name': instance.name,
       'keys': instance.keys,
     };

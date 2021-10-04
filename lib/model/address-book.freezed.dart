@@ -22,9 +22,11 @@ class _$AddressBookUserTearOff {
   const _$AddressBookUserTearOff();
 
   _AddressBookUser call(
-      {@HiveField(0) required String name,
+      {@HiveField(2) int? id,
+      @HiveField(0) required String name,
       @HiveField(1) List<AddressBookKey>? keys}) {
     return _AddressBookUser(
+      id: id,
       name: name,
       keys: keys,
     );
@@ -40,6 +42,8 @@ const $AddressBookUser = _$AddressBookUserTearOff();
 
 /// @nodoc
 mixin _$AddressBookUser {
+  @HiveField(2)
+  int? get id => throw _privateConstructorUsedError;
   @HiveField(0)
   String get name => throw _privateConstructorUsedError;
   @HiveField(1)
@@ -57,7 +61,9 @@ abstract class $AddressBookUserCopyWith<$Res> {
           AddressBookUser value, $Res Function(AddressBookUser) then) =
       _$AddressBookUserCopyWithImpl<$Res>;
   $Res call(
-      {@HiveField(0) String name, @HiveField(1) List<AddressBookKey>? keys});
+      {@HiveField(2) int? id,
+      @HiveField(0) String name,
+      @HiveField(1) List<AddressBookKey>? keys});
 }
 
 /// @nodoc
@@ -71,10 +77,15 @@ class _$AddressBookUserCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? name = freezed,
     Object? keys = freezed,
   }) {
     return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -95,7 +106,9 @@ abstract class _$AddressBookUserCopyWith<$Res>
       __$AddressBookUserCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@HiveField(0) String name, @HiveField(1) List<AddressBookKey>? keys});
+      {@HiveField(2) int? id,
+      @HiveField(0) String name,
+      @HiveField(1) List<AddressBookKey>? keys});
 }
 
 /// @nodoc
@@ -111,10 +124,15 @@ class __$AddressBookUserCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? name = freezed,
     Object? keys = freezed,
   }) {
     return _then(_AddressBookUser(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -132,11 +150,16 @@ class __$AddressBookUserCopyWithImpl<$Res>
 @HiveType(typeId: 5, adapterName: 'AddressBookUserClassAdaper')
 class _$_AddressBookUser implements _AddressBookUser {
   const _$_AddressBookUser(
-      {@HiveField(0) required this.name, @HiveField(1) this.keys});
+      {@HiveField(2) this.id,
+      @HiveField(0) required this.name,
+      @HiveField(1) this.keys});
 
   factory _$_AddressBookUser.fromJson(Map<String, dynamic> json) =>
       _$$_AddressBookUserFromJson(json);
 
+  @override
+  @HiveField(2)
+  final int? id;
   @override
   @HiveField(0)
   final String name;
@@ -146,13 +169,15 @@ class _$_AddressBookUser implements _AddressBookUser {
 
   @override
   String toString() {
-    return 'AddressBookUser(name: $name, keys: $keys)';
+    return 'AddressBookUser(id: $id, name: $name, keys: $keys)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _AddressBookUser &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
             (identical(other.keys, keys) ||
@@ -162,6 +187,7 @@ class _$_AddressBookUser implements _AddressBookUser {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(keys);
 
@@ -178,12 +204,16 @@ class _$_AddressBookUser implements _AddressBookUser {
 
 abstract class _AddressBookUser implements AddressBookUser {
   const factory _AddressBookUser(
-      {@HiveField(0) required String name,
+      {@HiveField(2) int? id,
+      @HiveField(0) required String name,
       @HiveField(1) List<AddressBookKey>? keys}) = _$_AddressBookUser;
 
   factory _AddressBookUser.fromJson(Map<String, dynamic> json) =
       _$_AddressBookUser.fromJson;
 
+  @override
+  @HiveField(2)
+  int? get id => throw _privateConstructorUsedError;
   @override
   @HiveField(0)
   String get name => throw _privateConstructorUsedError;

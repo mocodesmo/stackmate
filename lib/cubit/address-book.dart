@@ -174,27 +174,55 @@ class AddressBookCubit extends Cubit<AddressBookState> {
     await _clipBoard.copyToClipBoard(state.selectedKey!.publicKey);
   }
 
-  void saveUserClicked() {
+  void saveUserClicked() async {
     try {
       if (state.selectedUser != null) {
         final newUser = AddressBookUser(
           name: state.editUserName,
           keys: state.selectedUser!.keys,
+          id: state.selectedUser!.id,
         );
 
-        final idx = state.users.indexOf(state.selectedUser!);
+        // final idx = state.users.indexOf(state.selectedUser!);
 
-        _storage.deleteItemAt(StoreKeys.AddressBookUser.name, idx);
-        _storage.saveItemAt(StoreKeys.AddressBookUser.name, idx, newUser);
+        // _storage.deleteItem<AddressBookUser>(
+        //   StoreKeys.AddressBookUser.name,
+        //   state.selectedUser,
+        // );
+        // final id = await _storage.saveItem<AddressBookUser>(
+        //   StoreKeys.AddressBookUser.name,
+        //   newUser,
+        // );
+        // newUser = newUser.copyWith(id: id);
+        await _storage.saveItemAt<AddressBookUser>(
+          StoreKeys.AddressBookUser.name,
+          state.selectedUser!.id!,
+          newUser,
+        );
+
+        emit(state.copyWith(selectedUser: newUser));
       } else {
-        final newUser = AddressBookUser(
+        var newUser = AddressBookUser(
           name: state.editUserName,
         );
-        _storage.saveItem(StoreKeys.AddressBookUser.name, newUser);
+        final id = await _storage.saveItem<AddressBookUser>(
+          StoreKeys.AddressBookUser.name,
+          newUser,
+        );
+
+        newUser = newUser.copyWith(id: id);
+
+        await _storage.saveItemAt<AddressBookUser>(
+          StoreKeys.AddressBookUser.name,
+          id,
+          newUser,
+        );
+
+        emit(state.copyWith(selectedUser: newUser));
       }
 
-      cancelUserEdit();
       loadAddressUsers();
+      cancelUserEdit();
     } catch (e, s) {
       _logger.logException(e, 'AddressBookCubit.saveUserClicked', s);
       emit(state.copyWith(errEditUserName: e.toString()));
@@ -203,11 +231,15 @@ class AddressBookCubit extends Cubit<AddressBookState> {
 
   void deleteUserClicked() {
     try {
-      final idx = state.users.indexOf(state.selectedUser!);
-      _storage.deleteItemAt(StoreKeys.AddressBookUser.name, idx);
+      // final idx = state.users.indexOf(state.selectedUser!);
+      _storage.deleteItemAt<AddressBookUser>(
+        StoreKeys.AddressBookUser.name,
+        state.selectedUser!.id!,
+      );
 
-      cancelUserEdit();
       loadAddressUsers();
+      cancelUserEdit();
+      clearSelectedUser();
     } catch (e, s) {
       _logger.logException(e, 'AddressBookCubit.deleteUserClicked', s);
       emit(state.copyWith());
@@ -224,30 +256,52 @@ class AddressBookCubit extends Cubit<AddressBookState> {
       if (state.selectedUser!.keys != null) {
         final keys = state.selectedUser!.keys!.toList();
         keys.add(newKey);
+        keys.remove(state.selectedKey);
+
+        final idx = state.selectedUser!.id!;
 
         final newUser = AddressBookUser(
           name: state.selectedUser!.name,
           keys: keys,
+          id: idx,
         );
 
-        final idx = state.users.indexOf(state.selectedUser!);
+        _storage.saveItemAt<AddressBookUser>(
+          StoreKeys.AddressBookUser.name,
+          idx,
+          newUser,
+        );
 
-        _storage.deleteItemAt(StoreKeys.AddressBookUser.name, idx);
-        _storage.saveItemAt(StoreKeys.AddressBookUser.name, idx, newUser);
+        emit(
+          state.copyWith(
+            selectedUser: newUser,
+            selectedKey: newKey,
+          ),
+        );
       } else {
+        final idx = state.selectedUser!.id!;
+
         final newUser = AddressBookUser(
           name: state.selectedUser!.name,
           keys: [newKey],
+          id: idx,
         );
 
-        final idx = state.users.indexOf(state.selectedUser!);
-
-        _storage.deleteItemAt(StoreKeys.AddressBookUser.name, idx);
-        _storage.saveItemAt(StoreKeys.AddressBookUser.name, idx, newUser);
+        _storage.saveItemAt<AddressBookUser>(
+          StoreKeys.AddressBookUser.name,
+          idx,
+          newUser,
+        );
+        emit(
+          state.copyWith(
+            selectedUser: newUser,
+            selectedKey: newKey,
+          ),
+        );
       }
 
-      cancelUserEdit();
       loadAddressUsers();
+      cancelKeyEdit();
     } catch (e, s) {
       _logger.logException(e, 'AddressBookCubit.saveKeyClicked', s);
       emit(state.copyWith());
@@ -259,18 +313,24 @@ class AddressBookCubit extends Cubit<AddressBookState> {
       final keys = state.selectedUser!.keys!.toList();
       keys.remove(state.selectedKey);
 
+      final idx = state.selectedUser!.id!;
+
       final newUser = AddressBookUser(
         name: state.selectedUser!.name,
         keys: keys,
+        id: idx,
       );
 
-      final idx = state.users.indexOf(state.selectedUser!);
+      _storage.saveItemAt<AddressBookUser>(
+        StoreKeys.AddressBookUser.name,
+        idx,
+        newUser,
+      );
 
-      _storage.deleteItemAt(StoreKeys.AddressBookUser.name, idx);
-      _storage.saveItemAt(StoreKeys.AddressBookUser.name, idx, newUser);
+      emit(state.copyWith(selectedUser: newUser));
 
-      cancelUserEdit();
       loadAddressUsers();
+      clearSelectedKey();
     } catch (e, s) {
       _logger.logException(e, 'AddressBookCubit.deleteKeyClicked', s);
       emit(state.copyWith());

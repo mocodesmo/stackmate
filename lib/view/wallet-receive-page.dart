@@ -122,12 +122,12 @@ class ReceivePage extends StatelessWidget {
               ),
               if (state.address != null) ...[
                 FadeIn(
-                  delay: const Duration(milliseconds: 400),
+                  // delay: const Duration(milliseconds: 400),
                   child: QR(address: state.address!),
                 ),
                 const SizedBox(height: 24),
                 FadeIn(
-                  delay: const Duration(milliseconds: 800),
+                  delay: const Duration(milliseconds: 300),
                   child: TextAddress(address: state.address!),
                 ),
                 const SizedBox(height: 48),

@@ -13,6 +13,7 @@ import 'package:sats/pkg/bitcoin.dart';
 import 'package:sats/pkg/launcher.dart';
 import 'package:sats/pkg/share.dart';
 import 'package:sats/pkg/storage.dart';
+import 'package:sats/pkg/vibrate.dart';
 
 part 'history.freezed.dart';
 
@@ -41,6 +42,7 @@ class HistoryCubit extends Cubit<HistoryState> {
     this._blockchain,
     this._launcher,
     this._share,
+    this._vibrate,
   ) : super(const HistoryState()) {
     // scheduleMicrotask(() async {
     //   await Future.delayed(const Duration(milliseconds: 1000));
@@ -59,6 +61,7 @@ class HistoryCubit extends Cubit<HistoryState> {
   final BlockchainCubit _blockchain;
   final IShare _share;
   final ILauncher _launcher;
+  final IVibrate _vibrate;
 
   void _init() async {
     await Future.delayed(const Duration(milliseconds: 1000));
@@ -80,6 +83,8 @@ class HistoryCubit extends Cubit<HistoryState> {
         'network': _blockchain.state.blockchain.name,
       });
 
+      _vibrate.vibe();
+
       emit(
         state.copyWith(
           loadingBalance: false,
@@ -93,6 +98,8 @@ class HistoryCubit extends Cubit<HistoryState> {
         'nodeAddress': '',
         'network': _blockchain.state.blockchain.name,
       });
+
+      _vibrate.vibe();
 
       emit(
         state.copyWith(
