@@ -1,10 +1,12 @@
 // ignore_for_file: avoid_single_cascade_in_expression_statements
 
+import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:petitparser/petitparser.dart';
+import 'package:sats/api/rates.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/model/rate.dart';
 import 'package:sats/pkg/storage.dart';
@@ -32,6 +34,7 @@ class CalculatorCubit extends Cubit<CalculatorState> {
     this._storage,
     this._logger,
     this._vibrate,
+    this._ratesAPI,
   ) : super(const CalculatorState()) {
     getRates();
   }
@@ -39,20 +42,34 @@ class CalculatorCubit extends Cubit<CalculatorState> {
   final IStorage _storage;
   final LoggerCubit _logger;
   final IVibrate _vibrate;
+  final IRatesAPI _ratesAPI;
 
   void getRates() async {
     try {
       emit(state.copyWith(loadingRates: true));
-      // final token = await _storageService.getItem(key: CacheKeys.token);
-      // final response = await _exchangeAPI.getRates(authToken: token);
-      // if (response.statusCode == null || response.statusCode != 200) throw '';
-      // List<Rate> rates = [];
-      // for (var rate in response.data['rates']) rates.add(Rate.fromJson(rate));
+
+      final usdResp = await _ratesAPI.getRate(symbol: 'usd');
+      final usdRate = usdResp.data['data'][0]['priceQuote'] as String;
+      final usd = Rate(
+        symbol: 'USD',
+        name: 'U.S. Dollar',
+        rate: double.parse(usdRate),
+      );
+
+      final inrResp = await _ratesAPI.getRate(symbol: 'inr');
+      final inrRate = inrResp.data['data'][0]['priceQuote'] as String;
+      final inr = Rate(
+        symbol: 'INR',
+        name: 'Indian Ruppee',
+        rate: double.parse(inrRate),
+      );
+      final rates = [inr, usd];
+
       await Future.delayed(const Duration(seconds: 1));
       emit(
         CalculatorState(
-          rates: mockRates,
-          selectedRate: mockRates[0],
+          rates: rates,
+          selectedRate: rates[0],
           editingBtc: false,
           currencyAmt: '',
           satsAmt: '',

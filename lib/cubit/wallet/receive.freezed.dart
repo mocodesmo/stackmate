@@ -127,7 +127,7 @@ class __$ReceiveStateCopyWithImpl<$Res> extends _$ReceiveStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ReceiveState implements _ReceiveState {
+class _$_ReceiveState with DiagnosticableTreeMixin implements _ReceiveState {
   const _$_ReceiveState(
       {this.loadingAddress = true, this.errLoadingAddress = '', this.address});
 
@@ -141,8 +141,18 @@ class _$_ReceiveState implements _ReceiveState {
   final String? address;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'ReceiveState(loadingAddress: $loadingAddress, errLoadingAddress: $errLoadingAddress, address: $address)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'ReceiveState'))
+      ..add(DiagnosticsProperty('loadingAddress', loadingAddress))
+      ..add(DiagnosticsProperty('errLoadingAddress', errLoadingAddress))
+      ..add(DiagnosticsProperty('address', address));
   }
 
   @override
