@@ -2,17 +2,26 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:sats/model/address-book.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/model/reddit-post.dart';
 import 'package:sats/model/wallet.dart';
 
-enum StoreKeys { RedditPost, Wallet, Blockchain }
+enum StoreKeys {
+  RedditPost,
+  Wallet,
+  Blockchain,
+  AddressBookUser,
+  AddressBookKey,
+}
 
 extension StoreKeysFunctions on StoreKeys {
   String get name => const {
         StoreKeys.RedditPost: 'reddit-post',
         StoreKeys.Wallet: 'wallet',
         StoreKeys.Blockchain: 'blockchain',
+        StoreKeys.AddressBookUser: 'address-book-user',
+        StoreKeys.AddressBookKey: 'address-book-key'
       }[this]!;
 }
 
@@ -21,30 +30,29 @@ Future<void> initializeHive() async {
   Hive.registerAdapter(RedditPostClassAdapter());
   Hive.registerAdapter(WalletClassAdaper());
   Hive.registerAdapter(BlockchainClassAdaper());
+  Hive.registerAdapter(AddressBookUserClassAdaper());
+  Hive.registerAdapter(AddressBookValueClassAdaper());
 
   await Hive.openBox<RedditPost>(
     StoreKeys.RedditPost.name,
     compactionStrategy: (entries, deletedEntries) => deletedEntries > 50,
   );
-
-  await Hive.openBox<Wallet>(
-    StoreKeys.Wallet.name,
-    // compactionStrategy: (entries, deletedEntries) => deletedEntries > 50,
-  );
-
-  await Hive.openBox<Blockchain>(
-    StoreKeys.Blockchain.name,
-    // compactionStrategy: (entries, deletedEntries) => deletedEntries > 50,
-  );
+  await Hive.openBox<Wallet>(StoreKeys.Wallet.name);
+  await Hive.openBox<Blockchain>(StoreKeys.Blockchain.name);
+  await Hive.openBox<AddressBookUser>(StoreKeys.AddressBookUser.name);
+  await Hive.openBox<AddressBookKey>(StoreKeys.AddressBookKey.name);
 }
 
 abstract class IStorage {
   void saveItem<T>(String cls, T obj);
+  void saveItemAt<T>(String cls, int idx, T obj);
+
   void deleteItem<T>(String cls, String key);
+  void deleteItemAt<T>(String cls, int idx);
   void clearAll<T>(String cls);
+  
   T getItem<T>(String cls, String key);
   T getFirstItem<T>(String cls);
-
   List<T> getAll<T>(String cls);
 }
 
@@ -55,8 +63,18 @@ class HiveStore implements IStorage {
   }
 
   @override
+  void saveItemAt<T>(String cls, int idx, T obj) {
+    Hive.box<T>(cls).putAt(idx, obj);
+  }
+
+  @override
   void deleteItem<T>(String cls, String key) {
     Hive.box<T>(cls).delete(key);
+  }
+
+  @override
+  void deleteItemAt<T>(String cls, int idx) {
+    Hive.box<T>(cls).deleteAt(idx);
   }
 
   @override

@@ -44,7 +44,7 @@
         //
         //
         "**/analysis_options.yaml": true,
-        // "**/packages": true, 
+        "**/packages": true, 
         "zzzz": true,
         "zzz": true,
         "**/pubspec.yaml": true,
