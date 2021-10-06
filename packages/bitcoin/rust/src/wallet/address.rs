@@ -1,5 +1,5 @@
 use crate::e::{S5Error,ErrorKind};
-use crate::wallet::config::{WalletConfig};
+use crate::config::{WalletConfig};
 
 use std::ffi::{CString};
 use std::os::raw::c_char;
@@ -8,8 +8,6 @@ use serde::{Serialize,Deserialize};
 
 use bdk::Wallet;
 use bdk::database::MemoryDatabase;
-use bdk::blockchain::{ElectrumBlockchain};
-use bdk::electrum_client::Client;
 use bdk::wallet::AddressIndex::Peek;
 
 #[derive(Serialize,Deserialize,Debug)]
@@ -31,16 +29,13 @@ pub fn generate(
   config: WalletConfig,
   index: u32,
 ) -> Result<WalletAddress, S5Error> {
-  let client = match Client::new(&config.node_address) {
-    Ok(result) => result,
-    Err(_) => return Err(S5Error::new(ErrorKind::OpError,"Node-Address-Connection"))
-  };
+   
   let wallet = match Wallet::new(
     &config.deposit_desc,
     Some(&config.change_desc),
     config.network,
     MemoryDatabase::default(),
-    ElectrumBlockchain::from(client),
+    config.client,
   ){
     Ok(result) => result,
     Err(_) => return Err(S5Error::new(ErrorKind::OpError,"Wallet-Initialization"))
@@ -69,19 +64,16 @@ mod tests {
     let network = Network::Testnet;
     let node_address = "ssl://electrum.blockstream.info:60002";
 
-    let input = WalletConfig {
-      deposit_desc: deposit_desc, 
-      change_desc: change_desc, 
-      network:network, 
-      node_address:node_address.to_string()
-    };
+    let config = WalletConfig::default(&deposit_desc, node_address).unwrap();
     
-    let address0 = generate(input.clone(), 0).unwrap();
+    let address0 = generate(config, 0).unwrap();
     assert_eq!(
       "tb1q093gl5yxww0hlvlkajdmf8wh3a6rlvsdk9e6d3".to_string(),
       address0.address
     );
-    let address1 = generate(input, 1).unwrap();
+    let config = WalletConfig::default(&deposit_desc, node_address).unwrap();
+
+    let address1 = generate(config, 1).unwrap();
     assert_eq!(
       "tb1qzdwqxt8l2s47vl4fp4ft6w67fcxel4qf5j96ld".to_string(),
       address1.address

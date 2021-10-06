@@ -1,6 +1,7 @@
 use serde_derive::{Serialize,Deserialize};
 use std::fs::File;
 use crate::e::{S5Error,ErrorKind};
+
 #[derive(Default, Debug, Clone, PartialEq, Serialize,Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ColdCardKeys {
@@ -71,7 +72,7 @@ mod tests {
   use bitcoin::network::constants::Network;
   use std::path::PathBuf;
   use crate::wallet::address;
-  use crate::wallet::config::{WalletConfig, DEFAULT_NODE_ADDRESS}; 
+  use crate::config::{WalletConfig, DEFAULT_MAINNET_NODE}; 
 
   #[test]
   fn test_coldcard_watcher() {
@@ -83,20 +84,20 @@ mod tests {
   
     let key_source_84 = cckeys.bip84.deriv.replace("m",&cckeys.xfp.to_lowercase());
     let bip84_deposit_desc = format!("wpkh([{}]{}/0/*)",key_source_84,cckeys.bip84.xpub);
-    let config = WalletConfig::default(&bip84_deposit_desc, network,DEFAULT_NODE_ADDRESS);
+    let config = WalletConfig::default(&bip84_deposit_desc,DEFAULT_MAINNET_NODE).unwrap();
     let bip84_first_address = address::generate(config,0).unwrap();
     assert_eq!(bip84_first_address.address,cckeys.bip84.first);
 
     let key_source_49 = cckeys.bip49.deriv.replace("m",&cckeys.xfp.to_lowercase());
     let bip49_deposit_desc = format!("sh(wpkh([{}]{}/0/*))",key_source_49,cckeys.bip49.xpub);
-    let config = WalletConfig::default(&bip49_deposit_desc, network,DEFAULT_NODE_ADDRESS);
+    let config = WalletConfig::default(&bip49_deposit_desc, DEFAULT_MAINNET_NODE).unwrap();
 
     let bip49_first_address = address::generate(config,0).unwrap();
     assert_eq!(bip49_first_address.address,cckeys.bip49.first);
 
     let key_source_44 = cckeys.bip49.deriv.replace("m",&cckeys.xfp.to_lowercase());
     let bip44_deposit_desc = format!("pkh([{}]{}/0/*)",key_source_44,cckeys.bip44.xpub);
-    let config = WalletConfig::default(&bip44_deposit_desc, network,DEFAULT_NODE_ADDRESS);
+    let config = WalletConfig::default(&bip44_deposit_desc,DEFAULT_MAINNET_NODE).unwrap();
 
     let bip44_first_address = address::generate(config,0).unwrap();
     assert_eq!(bip44_first_address.address,cckeys.bip44.first);

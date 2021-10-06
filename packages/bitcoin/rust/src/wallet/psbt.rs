@@ -3,14 +3,14 @@ use std::ffi::CString;
 use std::os::raw::c_char;
 
 use crate::e::{ErrorKind, S5Error};
-use crate::wallet::config::{WalletConfig};
+use crate::config::{WalletConfig, DEFAULT_MAINNET_NODE, DEFAULT_TESTNET_NODE};
 use bdk::electrum_client::Client;
 use bdk::{Wallet,SignOptions};
 use bitcoin::util::address::Address;
 use bdk::FeeRate;
 
 use bdk::database::MemoryDatabase;
-use bdk::blockchain::{ElectrumBlockchain};
+use bdk::blockchain::{ConfigurableBlockchain,ElectrumBlockchain, RpcBlockchain};
 use bdk::blockchain::noop_progress;
 use std::str::FromStr;
 use bitcoin::util::psbt::PartiallySignedTransaction;
@@ -47,17 +47,14 @@ impl WalletPSBT {
 }
 
 pub fn build(config: WalletConfig, to: &str, amount: u64, fee_rate: f32) -> Result<WalletPSBT, S5Error> {
-  let client = match Client::new(&config.node_address) {
-    Ok(result) => result,
-    Err(_) => return Err(S5Error::new(ErrorKind::OpError, "Node-Address-Connection")),
-  };
+
 
   let wallet = match Wallet::new(
     &config.deposit_desc,
     Some(&config.change_desc),
     config.network,
     MemoryDatabase::default(),
-    ElectrumBlockchain::from(client),
+    config.client,
   ) {
     Ok(result) => result,
     Err(_) => return Err(S5Error::new(ErrorKind::OpError, "Wallet-Initialization")),
@@ -154,10 +151,6 @@ pub fn decode(network: Network, psbt: &str) -> Result<Vec<DecodedTxOutput>, S5Er
 }
 
 pub fn sign(config: WalletConfig, psbt: &str) -> Result<WalletPSBT, S5Error> {
-  let client = match Client::new(&config.node_address) {
-    Ok(result) => result,
-    Err(_) => return Err(S5Error::new(ErrorKind::OpError, "Node-Address-Connection")),
-  };
 
   let wallet = match Wallet::new_offline(
     &config.deposit_desc,
@@ -205,17 +198,13 @@ impl Txid {
 }
 
 pub fn broadcast(config: WalletConfig, psbt: &str) -> Result<Txid, S5Error> {
-  let client = match Client::new(&config.node_address) {
-    Ok(result) => result,
-    Err(_) => return Err(S5Error::new(ErrorKind::OpError, "Node-Address-Connection")),
-  };
 
   let wallet = match Wallet::new(
     &config.deposit_desc,
     Some(&config.change_desc),
     config.network,
     MemoryDatabase::default(),
-    ElectrumBlockchain::from(client),
+    config.client,
   ) {
     Ok(result) => result,
     Err(_) => return Err(S5Error::new(ErrorKind::OpError, "Wallet-Initialization")),
@@ -244,41 +233,27 @@ pub fn broadcast(config: WalletConfig, psbt: &str) -> Result<Txid, S5Error> {
 #[cfg(test)]
 mod tests {
   use super::*;
-  use crate::wallet::config::WalletConfig;
+  use crate::config::WalletConfig;
   use bitcoin::network::constants::Network;
 
   #[test]
   fn test_send() {
     let xkey = "[db7d25b5/84'/1'/6']tpubDCCh4SuT3pSAQ1qAN86qKEzsLoBeiugoGGQeibmieRUKv8z6fCTTmEXsb9yeueBkUWjGVzJr91bCzeCNShorbBqjZV4WRGjz3CrJsCboXUe";
     let deposit_desc = format!("wpkh({}/0/*)", xkey);
-    let change_desc = format!("wpkh({}/1/*)", xkey);
-    let network = Network::Testnet;
     let node_address = "ssl://electrum.blockstream.info:60002";
 
-    let config = WalletConfig {
-      deposit_desc: deposit_desc, 
-      change_desc: change_desc, 
-      network:network, 
-      node_address:node_address.to_string()
-    };
-
+    let config = WalletConfig::default(&deposit_desc,node_address).unwrap();
+   
     let xkey = "[db7d25b5/84'/1'/6']tprv8fWev2sCuSkVWYoNUUSEuqLkmmfiZaVtgxosS5jRE9fw5ejL2odsajv1QyiLrPri3ppgyta6dsFaoDVCF4ZdEAR6qqY4tnaosujsPzLxB49";
     let deposit_desc = format!("wpkh({}/0/*)", xkey);
-    let change_desc = format!("wpkh({}/1/*)", xkey);
-
-
-    let sign_config = WalletConfig {
-      deposit_desc: deposit_desc, 
-      change_desc: change_desc, 
-      network:network, 
-      node_address:node_address.to_string()
-    };
+    
+    let sign_config = WalletConfig::default(&deposit_desc,node_address).unwrap();
 
     let to = "mkHS9ne12qx9pS9VojpwU5xtRd4T7X7ZUt";
     let amount = 5000;
     let fee_rate = 1.0;
 
-    let psbt_origin = build(config.clone(), to, amount, fee_rate);
+    let psbt_origin = build(config, to, amount, fee_rate);
     println!("{:#?}",psbt_origin);
     let decoded = decode(Network::Testnet, &psbt_origin.clone().unwrap().psbt);
     println!("{:#?}",decoded.clone().unwrap());

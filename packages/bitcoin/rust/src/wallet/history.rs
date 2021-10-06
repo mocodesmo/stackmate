@@ -1,5 +1,5 @@
 use crate::e::{ErrorKind, S5Error};
-use crate::wallet::config::{WalletConfig};
+use crate::config::{WalletConfig};
 
 use std::ffi::CString;
 use std::os::raw::c_char;
@@ -91,17 +91,13 @@ impl Transaction {
 }
 
 pub fn sync_history(config: WalletConfig) -> Result<WalletHistory, S5Error> {
-  let client = match Client::new(&config.node_address) {
-    Ok(result) => result,
-    Err(_) => return Err(S5Error::new(ErrorKind::OpError, "Node-Address-Connection")),
-  };
 
   let wallet = match Wallet::new(
     &config.deposit_desc,
     Some(&config.change_desc),
     config.network,
     MemoryDatabase::default(),
-    ElectrumBlockchain::from(client),
+    config.client,
   ) {
     Ok(result) => result,
     Err(_) => return Err(S5Error::new(ErrorKind::OpError, "Wallet-Initialization")),
@@ -146,17 +142,12 @@ impl WalletBalance {
 }
 
 pub fn sync_balance(config: WalletConfig) -> Result<WalletBalance, S5Error> {
-  let client = match Client::new(&config.node_address) {
-    Ok(result) => result,
-    Err(_) => return Err(S5Error::new(ErrorKind::OpError, "Node-Address-Connection")),
-  };
-
   let wallet = match Wallet::new(
     &config.deposit_desc,
     Some(&config.change_desc),
     config.network,
     MemoryDatabase::default(),
-    ElectrumBlockchain::from(client),
+    config.client,
   ) {
     Ok(result) => result,
     Err(_) => return Err(S5Error::new(ErrorKind::OpError, "Wallet-Initialization")),
@@ -177,14 +168,14 @@ pub fn sync_balance(config: WalletConfig) -> Result<WalletBalance, S5Error> {
 mod tests {
   use super::*;
   use bitcoin::network::constants::Network;
-  use crate::wallet::config::{WalletConfig,DEFAULT_NODE_ADDRESS};
+  use crate::config::{WalletConfig,DEFAULT_TESTNET_NODE};
 
   #[test]
   fn test_balance() {
     let xkey = "[db7d25b5/84'/1'/6']tpubDCCh4SuT3pSAQ1qAN86qKEzsLoBeiugoGGQeibmieRUKv8z6fCTTmEXsb9yeueBkUWjGVzJr91bCzeCNShorbBqjZV4WRGjz3CrJsCboXUe";
     let deposit_desc = format!("wsh(pk({}/0/*))", xkey);
-    let network = Network::Testnet;
-    let config = WalletConfig::default(&deposit_desc, network,DEFAULT_NODE_ADDRESS);
+    
+    let config = WalletConfig::default(&deposit_desc,DEFAULT_TESTNET_NODE).unwrap();
 
     let balance = sync_balance(config).unwrap();
     assert_eq!(balance.balance, 10_000)
@@ -193,8 +184,8 @@ mod tests {
   fn test_history() {
     let xkey = "[db7d25b5/84'/1'/6']tpubDCCh4SuT3pSAQ1qAN86qKEzsLoBeiugoGGQeibmieRUKv8z6fCTTmEXsb9yeueBkUWjGVzJr91bCzeCNShorbBqjZV4WRGjz3CrJsCboXUe";
     let deposit_desc = format!("wsh(pk({}/0/*))", xkey);
-    let network = Network::Testnet;
-    let config = WalletConfig::default(&deposit_desc, network,DEFAULT_NODE_ADDRESS);
+
+    let config = WalletConfig::default(&deposit_desc,DEFAULT_TESTNET_NODE).unwrap();
     let history = sync_history(config).unwrap();
     // println!("{:#?}",history);
     assert_eq!(10_000, history.history[0].received);
