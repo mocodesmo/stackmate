@@ -18,4 +18,3 @@ bitcoin = "0.27.1"
 secp256k1 = {version = "0.20.1", features = ["rand"]}
 base64 = "0.13.0"
 bdk = {version = "0.12.0", features = ["compiler", "rpc", "electrum"]}
-# schnorr = "0.0.20"

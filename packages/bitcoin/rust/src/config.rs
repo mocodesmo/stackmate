@@ -70,7 +70,7 @@ impl WalletConfig {
         client: client,
       })
     } else if node_address.contains("http") {
-      let parts: Vec<&str> = node_address.split("/").collect();
+      let parts: Vec<&str> = node_address.split("?auth=").collect();
       let auth = if parts[1] == "" {
         Auth::None
       } else {
@@ -114,17 +114,21 @@ impl WalletConfig {
 
 pub fn create_blockchain_client(config: AnyBlockchainConfig)->Result<AnyBlockchain,S5Error>{
   match config{
-    AnyBlockchainConfig::Electrum(econf)=>{ 
-      let client = match ElectrumBlockchain::from_config(&econf) {
+    AnyBlockchainConfig::Electrum(conf)=>{ 
+      let client = match ElectrumBlockchain::from_config(&conf) {
         Ok(result) => result,
         Err(_) => return Err(S5Error::new(ErrorKind::OpError, "Electrum-Node-Connection")),
       };
       Ok(AnyBlockchain::Electrum(client))
     }
-    AnyBlockchainConfig::Rpc(econf)=>{ 
-      let client = match RpcBlockchain::from_config(&econf) {
+    AnyBlockchainConfig::Rpc(conf)=>{ 
+      println!("{:#?}",conf);
+      let client = match RpcBlockchain::from_config(&conf) {
         Ok(result) => result,
-        Err(_) => return Err(S5Error::new(ErrorKind::OpError, "Core-Rpc-Node-Connection")),
+        Err(e) => {
+          println!("{:#?}",e);
+          return Err(S5Error::new(ErrorKind::OpError, "Core-Rpc-Node-Connection"))
+        },
       };
       Ok(AnyBlockchain::Rpc(client))
     }
@@ -160,8 +164,26 @@ mod tests {
 
   }
 
-  #[test] #[ignore]
-  fn test_local_core_config() {
-    println!("Connect a local node and then remove ignore macro.")
+  #[test]
+  fn test_local_rpc_config() {
+    let xkey = "[db7d25b5/84'/1'/6']tpubDCCh4SuT3pSAQ1qAN86qKEzsLoBeiugoGGQeibmieRUKv8z6fCTTmEXsb9yeueBkUWjGVzJr91bCzeCNShorbBqjZV4WRGjz3CrJsCboXUe";
+    let deposit_desc = format!("wpkh({}/0/*)", xkey);
+    let node_address = "http://172.18.0.2:18332?auth=satsbank:typercuz";
+    let config = WalletConfig::default(&deposit_desc,node_address).unwrap();
+
+    match config.client{
+      AnyBlockchain::Rpc(client)=>{
+        let height = client.get_height().unwrap();
+        println!("{:#?}",height);
+        assert_eq!((height>2097921),true);
+      },
+      _=>println!("Should not reach.")
+    };
+
+    let change_desc = format!("wpkh({}/1/*)", xkey);
+    let network = Network::Testnet;
+    assert_eq!(config.change_desc,change_desc);
+    assert_eq!(config.network,network);
+    // println!("Connect a local node and then remove ignore macro.")
   }
 }
