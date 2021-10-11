@@ -126,7 +126,13 @@ pub unsafe extern "C" fn derive_hardened(
     let purpose_cstr = unsafe { CStr::from_ptr(purpose) };
     let purpose: &str = match purpose_cstr.to_str() {
         Ok(string) => match string.parse::<usize>() {
-            Ok(_) => string,
+            Ok(value) => {
+                if value == 84 || value == 49 || value == 44{
+                    string
+                } else {
+                    "84"
+                }
+            },
             Err(_) => "84",
         },
         Err(_) => "84",
@@ -159,11 +165,13 @@ pub unsafe extern "C" fn compile(policy: *const c_char, script_type: *const c_ch
 
     let script_type_cstr = unsafe { CStr::from_ptr(script_type) };
     let script_type_str: &str = match script_type_cstr.to_str() {
-        Ok(string) => match string.parse::<usize>() {
-            Ok(_) => string,
-            Err(_) => "wsh",
+        Ok(string) => if string != "wsh" || string != "wpkh" || string != "sh" || string != "pk" {
+            "wpkh"
+        }
+        else{
+            string
         },
-        Err(_) => "wsh",
+        Err(_) => "wpkh",
     };
 
     match policy::compile(policy_str, script_type_str) {
@@ -305,12 +313,10 @@ pub unsafe extern "C" fn get_fees(
         Ok(string) => match string.parse::<usize>() {
             Ok(i) => i,
             Err(_) => {
-                return CString::new("Error: Target Size Input.")
-                    .unwrap()
-                    .into_raw()
+                6
             }
         },
-        Err(_) => return S5Error::new(ErrorKind::InputError, "Target-Size").c_stringify(),
+        Err(_) => 6,
     };
 
     let network_cstr = unsafe { CStr::from_ptr(network) };
