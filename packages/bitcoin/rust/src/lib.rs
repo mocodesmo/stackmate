@@ -31,9 +31,9 @@ use crate::network::fees;
 #[deny(unsafe_op_in_unsafe_fn)]
 #[no_mangle]
 pub unsafe extern "C" fn generate_master(
-    length: *const c_char,
-    passphrase: *const c_char,
     network: *const c_char,
+    length: *const c_char,
+    passphrase: *const c_char
 ) -> *mut c_char {
     let input_cstr = unsafe { CStr::from_ptr(length) };
     let length: usize = match input_cstr.to_str() {
@@ -76,9 +76,9 @@ pub unsafe extern "C" fn generate_master(
 #[deny(unsafe_op_in_unsafe_fn)]
 #[no_mangle]
 pub unsafe extern "C" fn import_master(
-    mnemonic: *const c_char,
-    passphrase: *const c_char,
     network: *const c_char,
+    mnemonic: *const c_char,
+    passphrase: *const c_char
 ) -> *mut c_char {
     let input_cstr = unsafe { CStr::from_ptr(mnemonic) };
     let mnemonic: &str = match input_cstr.to_str() {
@@ -296,9 +296,9 @@ pub unsafe extern "C" fn get_address(
 #[deny(unsafe_op_in_unsafe_fn)]
 #[no_mangle]
 pub unsafe extern "C" fn get_fees(
-    target_size: *const c_char,
-    node_address: *const c_char,
     network: *const c_char,
+    node_address: *const c_char,
+    target_size: *const c_char
 ) -> *mut c_char {
     let target_size_cstr = unsafe { CStr::from_ptr(target_size) };
     let target_size_int: usize = match target_size_cstr.to_str() {
@@ -324,7 +324,16 @@ pub unsafe extern "C" fn get_fees(
     };
     let node_address_cstr = unsafe { CStr::from_ptr(node_address) };
     let node_address: &str = match node_address_cstr.to_str() {
-        Ok(string) => string,
+        Ok(string) => {
+            if string==DEFAULT {
+                match network_enum {
+                    Network::Bitcoin => DEFAULT_MAINNET_NODE,
+                    _ => DEFAULT_TESTNET_NODE,
+                }
+            } else {
+                string
+            }
+        },
         Err(_) => match network_enum {
             Network::Bitcoin => DEFAULT_MAINNET_NODE,
             _ => DEFAULT_TESTNET_NODE,
@@ -407,7 +416,6 @@ pub unsafe extern "C" fn sign_tx(
     deposit_desc: *const c_char,
     node_address: *const c_char,
     unsigned_psbt: *const c_char,
-
 ) -> *mut c_char {
     let deposit_desc_cstr = unsafe { CStr::from_ptr(deposit_desc) };
     let deposit_desc: &str = match deposit_desc_cstr.to_str() {
@@ -508,45 +516,47 @@ pub unsafe extern "C" fn cstring_free(ptr: *mut c_char) {
 //     Network::Testnet
 //   };
   
-// #[cfg(test)]
-// mod tests {
-//     use super::*;
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-//     #[test]
-//     /// Ensure that mnemonic does not error for bad input values.
-//     /// Default to 24 words mnemonic.
-//     fn test_c_master_ops() {
-//         unsafe {
-//             let master = generate_master(
-//                 CString::new("9").unwrap().into_raw(),
-//                 CString::new("").unwrap().into_raw(),
-//                 CString::new("tpanini").unwrap().into_raw(),
-//             );
-//             let master = CStr::from_ptr(master).to_str().unwrap();
-//             let master: master::MasterKey = serde_json::from_str(master).unwrap();
-//             assert_eq!(
-//                 24,
-//                 master
-//                     .mnemonic
-//                     .split_whitespace()
-//                     .collect::<Vec<&str>>()
-//                     .len()
-//             );
+    #[test]
+    /// Ensure that mnemonic does not error for bad input values.
+    /// Default to 24 words mnemonic.
+    fn test_c_master_ops() {
+        unsafe {
+            let master = generate_master(
+                CString::new("tpanini").unwrap().into_raw(),
+                CString::new("9").unwrap().into_raw(),
+                CString::new("").unwrap().into_raw(),
+            ); 
+            // unrecognized network string must default to test
+            //length 9 should default to 24 words
+            let master = CStr::from_ptr(master).to_str().unwrap();
+            let master: master::MasterKey = serde_json::from_str(master).unwrap();
+            assert_eq!(
+                24,
+                master
+                    .mnemonic
+                    .split_whitespace()
+                    .collect::<Vec<&str>>()
+                    .len()
+            );
 
-//             let mnemonic = "panel across strong judge economy song loud valid regret fork consider bid rack young avoid soap plate injury snow crater beef alone stay clock";
-//             let fingerprint = "eb79e0ff";
-//             let xprv = "tprv8ZgxMBicQKsPduTkddZgfGyk4ZJjtEEZQjofpyJg74LizJ469DzoF8nmU1YcvBFskXVKdoYmLoRuZZR1wuTeuAf8rNYR2zb1RvFns2Vs8hY";
-//             let master = import_master(
-//                 CString::new(mnemonic).unwrap().into_raw(),
-//                 CString::new("").unwrap().into_raw(),
-//                 CString::new("tpanini").unwrap().into_raw(),
-//             );
-//             let master = CStr::from_ptr(master).to_str().unwrap();
-//             let master: master::MasterKey = serde_json::from_str(master).unwrap();
-//             assert_eq!(xprv, master.xprv);
-//             assert_eq!(fingerprint, master.fingerprint);
-//         }
-//     }
+            let mnemonic = "panel across strong judge economy song loud valid regret fork consider bid rack young avoid soap plate injury snow crater beef alone stay clock";
+            let fingerprint = "eb79e0ff";
+            let xprv = "tprv8ZgxMBicQKsPduTkddZgfGyk4ZJjtEEZQjofpyJg74LizJ469DzoF8nmU1YcvBFskXVKdoYmLoRuZZR1wuTeuAf8rNYR2zb1RvFns2Vs8hY";
+            let master = import_master(
+                CString::new("tpanini").unwrap().into_raw(),
+                CString::new(mnemonic).unwrap().into_raw(),
+                CString::new("").unwrap().into_raw(),
+            );
+            let master = CStr::from_ptr(master).to_str().unwrap();
+            let master: master::MasterKey = serde_json::from_str(master).unwrap();
+            assert_eq!(xprv, master.xprv);
+            assert_eq!(fingerprint, master.fingerprint);
+        }
+    }
 //     /**
 //      * MasterKey {
 //         mnemonic: "panel across strong judge economy song loud valid regret fork consider bid rack young avoid soap plate injury snow crater beef alone stay clock",
@@ -554,58 +564,69 @@ pub unsafe extern "C" fn cstring_free(ptr: *mut c_char) {
 //         xprv: "tprv8ZgxMBicQKsPduTkddZgfGyk4ZJjtEEZQjofpyJg74LizJ469DzoF8nmU1YcvBFskXVKdoYmLoRuZZR1wuTeuAf8rNYR2zb1RvFns2Vs8hY",
 //     }
 //      */
-//     #[test]
-//     fn test_c_child_ops() {
-//         unsafe {
-//             let fingerprint = "eb79e0ff";
-//             let master_xprv: &str = "tprv8ZgxMBicQKsPduTkddZgfGyk4ZJjtEEZQjofpyJg74LizJ469DzoF8nmU1YcvBFskXVKdoYmLoRuZZR1wuTeuAf8rNYR2zb1RvFns2Vs8hY";
-//             let master_xprv_cstr = CString::new(master_xprv).unwrap().into_raw();
+    #[test]
+    fn test_c_child_ops() {
+        unsafe {
+            let fingerprint = "eb79e0ff";
+            let master_xprv: &str = "tprv8ZgxMBicQKsPduTkddZgfGyk4ZJjtEEZQjofpyJg74LizJ469DzoF8nmU1YcvBFskXVKdoYmLoRuZZR1wuTeuAf8rNYR2zb1RvFns2Vs8hY";
+            let master_xprv_cstr = CString::new(master_xprv).unwrap().into_raw();
 
-//             let purpose_index = "84";
-//             let purpose_cstr = CString::new(purpose_index).unwrap().into_raw();
+            let purpose_index = "84";
+            let purpose_cstr = CString::new(purpose_index).unwrap().into_raw();
 
-//             let account_index = "0";
-//             let account_cstr = CString::new(account_index).unwrap().into_raw();
-//             let hardened_path = "m/84h/1h/0h";
-//             let account_xprv = "tprv8gqqcZU4CTQ9bFmmtVCfzeSU9ch3SfgpmHUPzFP5ktqYpnjAKL9wQK5vx89n7tgkz6Am42rFZLS9Qs4DmFvZmgukRE2b5CTwiCWrJsFUoxz";
-//             let account_xpub = "tpubDDXskyWJLq5pUioZn8sGQ46aieCybzsjLb5BGmRPBAdwfGyvwiyXaoho8EYJcgJa5QGHGYpDjLQ8gWzczWbxadeRkCuExW32Boh696yuQ9m";
-//             let child_keys = child::ChildKeys {
-//                 fingerprint: fingerprint.to_string(),
-//                 hardened_path: hardened_path.to_string(),
-//                 xprv: account_xprv.to_string(),
-//                 xpub: account_xpub.to_string(),
-//             };
+            let account_index = "0";
+            let account_cstr = CString::new(account_index).unwrap().into_raw();
+            let hardened_path = "m/84h/1h/0h";
+            let account_xprv = "tprv8gqqcZU4CTQ9bFmmtVCfzeSU9ch3SfgpmHUPzFP5ktqYpnjAKL9wQK5vx89n7tgkz6Am42rFZLS9Qs4DmFvZmgukRE2b5CTwiCWrJsFUoxz";
+            let account_xpub = "tpubDDXskyWJLq5pUioZn8sGQ46aieCybzsjLb5BGmRPBAdwfGyvwiyXaoho8EYJcgJa5QGHGYpDjLQ8gWzczWbxadeRkCuExW32Boh696yuQ9m";
+            let child_keys = child::ChildKeys {
+                fingerprint: fingerprint.to_string(),
+                hardened_path: hardened_path.to_string(),
+                xprv: account_xprv.to_string(),
+                xpub: account_xpub.to_string(),
+            };
 
-//             let stringified = serde_json::to_string(&child_keys).unwrap();
+            let stringified = serde_json::to_string(&child_keys).unwrap();
 
-//             let result = derive_hardened(master_xprv_cstr, purpose_cstr, account_cstr);
-//             let result_cstr = CStr::from_ptr(result);
-//             let result: &str = result_cstr.to_str().unwrap();
-//             assert_eq!(result, stringified);
-//         }
-//     }
+            let result = derive_hardened(master_xprv_cstr, purpose_cstr, account_cstr);
+            let result_cstr = CStr::from_ptr(result);
+            let result: &str = result_cstr.to_str().unwrap();
+            assert_eq!(result, stringified);
+        }
+    }
 
-//     #[test]
-//     fn test_c_wallet() {
-//         unsafe {
-//             let xkey = "[db7d25b5/84'/1'/6']tpubDCCh4SuT3pSAQ1qAN86qKEzsLoBeiugoGGQeibmieRUKv8z6fCTTmEXsb9yeueBkUWjGVzJr91bCzeCNShorbBqjZV4WRGjz3CrJsCboXUe";
-//             let network_cstr = CString::new("test").unwrap().into_raw();
-//             let node_address_cstr = CString::new("default").unwrap().into_raw();
+    #[test]
+    fn test_c_wallet() {
+        unsafe {
+            let xkey = "[db7d25b5/84'/1'/6']tpubDCCh4SuT3pSAQ1qAN86qKEzsLoBeiugoGGQeibmieRUKv8z6fCTTmEXsb9yeueBkUWjGVzJr91bCzeCNShorbBqjZV4WRGjz3CrJsCboXUe";
+            let node_address_cstr = CString::new("default").unwrap().into_raw();
 
-//             let deposit_desc = format!("wsh(pk({}/0/*))", xkey);
-//             let deposit_desc_cstr = CString::new(deposit_desc).unwrap().into_raw();
-//             let balance_ptr = sync_balance(deposit_desc_cstr, network_cstr, node_address_cstr);
-//             let balance_str = CStr::from_ptr(balance_ptr).to_str().unwrap();
-//             let balance: history::WalletBalance = serde_json::from_str(balance_str).unwrap();
-//             assert_eq!(balance.balance, 10_000);
-//             let index_cstr = CString::new("0").unwrap().into_raw();
-//             let address_ptr = get_address(deposit_desc_cstr, network_cstr, index_cstr,node_address_cstr);
-//             let address_str = CStr::from_ptr(address_ptr).to_str().unwrap();
-//             let address: address::WalletAddress = serde_json::from_str(address_str).unwrap();
-//             assert_eq!(
-//                 address.address,
-//                 "tb1q5f3jl5lzlxtmhptfe9crhmv4wh392ku5ztkpt6xxmqqx2c3jyxrs8vgat7"
-//             );
-//         }
-//     }
-// }
+            let deposit_desc = format!("wsh(pk({}/0/*))", xkey);
+            let deposit_desc_cstr = CString::new(deposit_desc).unwrap().into_raw();
+            let balance_ptr = sync_balance(deposit_desc_cstr, node_address_cstr);
+            let balance_str = CStr::from_ptr(balance_ptr).to_str().unwrap();
+            let balance: history::WalletBalance = serde_json::from_str(balance_str).unwrap();
+            assert_eq!(balance.balance, 10_000);
+            let index_cstr = CString::new("0").unwrap().into_raw();
+            let address_ptr = get_address(deposit_desc_cstr, node_address_cstr, index_cstr);
+            let address_str = CStr::from_ptr(address_ptr).to_str().unwrap();
+            let address: address::WalletAddress = serde_json::from_str(address_str).unwrap();
+            assert_eq!(
+                address.address,
+                "tb1q5f3jl5lzlxtmhptfe9crhmv4wh392ku5ztkpt6xxmqqx2c3jyxrs8vgat7"
+            );
+            let network_cstr = CString::new("test").unwrap().into_raw();
+
+            let conf_target = CString::new("1").unwrap().into_raw();
+            let fees = get_fees(network_cstr, node_address_cstr,conf_target);
+            let fees_str = CStr::from_ptr(fees).to_str().unwrap();
+
+            let fees_struct: fees::NetworkFee = serde_json::from_str(fees_str).unwrap();
+            assert!(
+                fees_struct.fee >= 1.0
+            );
+
+
+        }
+    }
+}

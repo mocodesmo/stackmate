@@ -164,7 +164,7 @@ mod tests {
 
   }
 
-  #[test]
+  #[test] #[ignore]
   fn test_local_rpc_config() {
     let xkey = "[db7d25b5/84'/1'/6']tpubDCCh4SuT3pSAQ1qAN86qKEzsLoBeiugoGGQeibmieRUKv8z6fCTTmEXsb9yeueBkUWjGVzJr91bCzeCNShorbBqjZV4WRGjz3CrJsCboXUe";
     let deposit_desc = format!("wpkh({}/0/*)", xkey);
