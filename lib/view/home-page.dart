@@ -8,7 +8,6 @@ import 'package:sats/model/reddit-post.dart';
 import 'package:sats/model/wallet.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
-import 'package:sats/view/common/log-button.dart';
 
 class HeaderRow extends StatelessWidget {
   @override

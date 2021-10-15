@@ -5,7 +5,7 @@ import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/model/wallet.dart';
 import 'package:sats/pkg/storage.dart';
-import 'package:sats/state.dart';
+import 'package:sats/cubit/_state.dart';
 
 part 'reorder-wallets.freezed.dart';
 

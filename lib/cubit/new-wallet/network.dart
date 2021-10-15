@@ -34,8 +34,8 @@ class NetworkCubit extends Cubit<NetworkState> {
 
   FlutterBlue flutterBlue = FlutterBlue.instance;
 
-  StreamSubscription? networkSub;
-  StreamSubscription? bluetoothSub;
+  late StreamSubscription networkSub;
+  late StreamSubscription bluetoothSub;
   final LoggerCubit logger;
 
   void _init() {
@@ -105,11 +105,10 @@ class NetworkCubit extends Cubit<NetworkState> {
 
   @override
   Future<void> close() {
-    if (networkSub != null) networkSub!.cancel();
-    if (bluetoothSub != null) {
-      bluetoothSub!.cancel();
-      flutterBlue.stopScan();
-    }
+    networkSub.cancel();
+    bluetoothSub.cancel();
+    flutterBlue.stopScan();
+
     return super.close();
   }
 }

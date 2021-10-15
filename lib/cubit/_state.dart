@@ -4,7 +4,7 @@ import 'package:sats/cubit/address-book.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
-import 'package:sats/deps.dart';
+import 'package:sats/pkg/_deps.dart';
 import 'package:sats/pkg/clipboard.dart';
 import 'package:sats/pkg/storage.dart';
 import 'package:sats/pkg/vibrate.dart';

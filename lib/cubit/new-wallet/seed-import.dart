@@ -102,12 +102,12 @@ class SeedImportCubit extends Cubit<SeedImportState> {
             labelFixed: walletLabel != '',
           ),
         ) {
-    _networkCubitSub = _networkCubit.stream.listen((NetworkState nState) {
+    networkCubitSub = _networkCubit.stream.listen((NetworkState nState) {
       if (nState.hasOffError() != '') _goToNetworkAndReset();
     });
   }
 
-  StreamSubscription? _networkCubitSub;
+  late StreamSubscription networkCubitSub;
   final NetworkCubit _networkCubit;
   // final WalletCubit _walletBloc;
 
@@ -358,7 +358,7 @@ class SeedImportCubit extends Cubit<SeedImportState> {
 
   @override
   Future<void> close() {
-    if (_networkCubitSub != null) _networkCubit.close();
+    networkCubitSub.cancel();
     return super.close();
   }
 }

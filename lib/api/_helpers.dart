@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:sats/state.dart';
+import 'package:sats/cubit/_state.dart';
 
 final client = Dio(BaseOptions(validateStatus: (status) => true));
 
