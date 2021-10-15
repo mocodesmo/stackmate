@@ -141,7 +141,7 @@ String getAdrr(dynamic msg) {
   final data = msg as Map<String, String>;
   final resp = BitcoinFFI().getAddress(
     depositDesc: data['depositDesc']!,
-    network: data['network']!,
+    nodeAddress: data['network']!,
     index: '0',
   );
   return resp;

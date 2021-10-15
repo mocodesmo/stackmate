@@ -7,7 +7,7 @@ import 'package:sats/model/transaction.dart';
 
 abstract class IBitcoin {
   Future<Nmeu> generateMaster({
-    required String mnemonic,
+    required String length,
     required String passphrase,
     required String network,
   });
@@ -29,31 +29,31 @@ abstract class IBitcoin {
     required String scriptType,
   });
 
-  int syncBalance({
-    required String depositDesc,
+  double getFees({
+    required String targetSize,
     required String network,
+    required String nodeAddress,
   });
 
-  String getAddress({
+  int syncBalance({
     required String depositDesc,
-    required String network,
-    required String index,
+    required String nodeAddress,
   });
 
   List<Transaction> getHistory({
     required String depositDesc,
     required String nodeAddress,
-    required String network,
   });
 
-  double getFees({
-    required String targetSize,
-    required String network,
+  String getAddress({
+    required String depositDesc,
+    required String nodeAddress,
+    required String index,
   });
 
   String buildTransaction({
     required String depositDesc,
-    required String network,
+    required String nodeAddress,
     required String toAddress,
     required String amount,
     required String feeRate,
@@ -61,13 +61,13 @@ abstract class IBitcoin {
 
   String signTransaction({
     required String depositDesc,
-    required String network,
+    required String nodeAddress,
     required String unsignedPSBT,
   });
 
   String broadcastTransaction({
     required String depositDesc,
-    required String network,
+    required String nodeAddress,
     required String signedPSBT,
   });
 }
@@ -81,12 +81,12 @@ class BitcoinFFI implements IBitcoin {
 
   @override
   Future<Nmeu> generateMaster({
-    required String mnemonic,
+    required String length,
     required String passphrase,
     required String network,
   }) async {
     final resp = await _bitcoin.generateMaster(
-      mnemonic: mnemonic,
+      length: length,
       passphrase: passphrase,
       network: network,
     );
@@ -136,11 +136,11 @@ class BitcoinFFI implements IBitcoin {
   @override
   int syncBalance({
     required String depositDesc,
-    required String network,
+    required String nodeAddress,
   }) {
     final resp = _bitcoin.syncBalance(
       depositDesc: depositDesc,
-      network: network,
+      nodeAddress: nodeAddress,
     );
     final bal = jsonDecode(resp)['balance'];
 
@@ -150,12 +150,12 @@ class BitcoinFFI implements IBitcoin {
   @override
   String getAddress({
     required String depositDesc,
-    required String network,
+    required String nodeAddress,
     required String index,
   }) {
     final resp = _bitcoin.getAddress(
       depositDesc: depositDesc,
-      network: network,
+      nodeAddress: nodeAddress,
       index: index,
     );
     return resp;
@@ -165,11 +165,10 @@ class BitcoinFFI implements IBitcoin {
   List<Transaction> getHistory({
     required String depositDesc,
     required String nodeAddress,
-    required String network,
   }) {
     final resp = _bitcoin.getHistory(
       depositDesc: depositDesc,
-      network: network,
+      nodeAddress: nodeAddress,
     );
     final json = jsonDecode(resp);
     final List<Transaction> transactions = [];
@@ -183,10 +182,12 @@ class BitcoinFFI implements IBitcoin {
   double getFees({
     required String targetSize,
     required String network,
+    required String nodeAddress,
   }) {
     final resp = _bitcoin.getFees(
       targetSize: targetSize,
       network: network,
+      nodeAddress: nodeAddress,
     );
     final data = jsonDecode(resp);
     return data['fee'] as double;
@@ -195,14 +196,14 @@ class BitcoinFFI implements IBitcoin {
   @override
   String buildTransaction({
     required String depositDesc,
-    required String network,
+    required String nodeAddress,
     required String toAddress,
     required String amount,
     required String feeRate,
   }) {
     final resp = _bitcoin.buildTransaction(
       depositDesc: depositDesc,
-      network: network,
+      nodeAddress: nodeAddress,
       toAddress: toAddress,
       amount: amount,
       feeRate: feeRate,
@@ -214,12 +215,12 @@ class BitcoinFFI implements IBitcoin {
   @override
   String signTransaction({
     required String depositDesc,
-    required String network,
+    required String nodeAddress,
     required String unsignedPSBT,
   }) {
     final resp = _bitcoin.signTransaction(
       depositDesc: depositDesc,
-      network: network,
+      nodeAddress: nodeAddress,
       unsignedPSBT: unsignedPSBT,
     );
     final data = jsonDecode(resp);
@@ -229,12 +230,12 @@ class BitcoinFFI implements IBitcoin {
   @override
   String broadcastTransaction({
     required String depositDesc,
-    required String network,
+    required String nodeAddress,
     required String signedPSBT,
   }) {
     final resp = _bitcoin.broadcastTransaction(
       depositDesc: depositDesc,
-      network: network,
+      nodeAddress: nodeAddress,
       signedPSBT: signedPSBT,
     );
     final data = jsonDecode(resp);

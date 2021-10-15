@@ -155,7 +155,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
       );
 
       final neu = await _bitcoin.generateMaster(
-        mnemonic: '12',
+        length: '12',
         passphrase: state.passPhrase,
         network: _blockchainCubit.state.blockchain.name,
       );

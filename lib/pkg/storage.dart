@@ -11,6 +11,7 @@ enum StoreKeys {
   RedditPost,
   Wallet,
   Blockchain,
+  NodeAddress,
   AddressBookUser,
   AddressBookKey,
 }
@@ -20,6 +21,7 @@ extension StoreKeysFunctions on StoreKeys {
         StoreKeys.RedditPost: 'reddit-post',
         StoreKeys.Wallet: 'wallet',
         StoreKeys.Blockchain: 'blockchain',
+        StoreKeys.NodeAddress: 'node-address',
         StoreKeys.AddressBookUser: 'address-book-user',
         StoreKeys.AddressBookKey: 'address-book-key'
       }[this]!;
@@ -44,6 +46,7 @@ Future<void> initializeHive() async {
   // var abu = Hive.box<AddressBookUser>(StoreKeys.AddressBookUser.name);
   // await abu.compact();
   await Hive.openBox<AddressBookKey>(StoreKeys.AddressBookKey.name);
+  await Hive.openBox<String>(StoreKeys.NodeAddress.name);
 }
 
 abstract class IStorage {

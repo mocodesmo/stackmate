@@ -105,19 +105,24 @@ class SendCubit extends Cubit<SendState> {
         ),
       );
 
+      const nodeAddress = '';
+
       final feeFast = await compute(getFeees, {
         'targetSize': '1',
         'network': _blockchain.state.blockchain.name,
+        'nodeAddress': nodeAddress,
       });
 
       final feeMedium = await compute(getFeees, {
         'targetSize': '3',
         'network': _blockchain.state.blockchain.name,
+        'nodeAddress': nodeAddress,
       });
 
       final feeSlow = await compute(getFeees, {
         'targetSize': '6',
         'network': _blockchain.state.blockchain.name,
+        'nodeAddress': nodeAddress,
       });
 
       emit(
@@ -353,6 +358,7 @@ double getFeees(dynamic data) {
   final resp = BitcoinFFI().getFees(
     targetSize: obj['targetSize']!,
     network: obj['network']!,
+    nodeAddress: obj['nodeAddress']!,
   );
   return resp;
 }
@@ -360,7 +366,7 @@ double getFeees(dynamic data) {
 String buildTx(dynamic data) {
   final obj = data as Map<String, String>;
   final resp = BitcoinFFI().buildTransaction(
-    network: obj['network']!,
+    nodeAddress: obj['network']!,
     amount: obj['amount']!,
     depositDesc: obj['depositDesc']!,
     feeRate: obj['feeRate']!,
@@ -373,7 +379,7 @@ String signTx(dynamic data) {
   final obj = data as Map<String, String>;
 
   final resp = BitcoinFFI().signTransaction(
-    network: obj['network']!,
+    nodeAddress: obj['network']!,
     depositDesc: obj['depositDesc']!,
     unsignedPSBT: obj['unsignedPSBT']!,
   );
@@ -384,7 +390,7 @@ String broadcastTx(dynamic data) {
   final obj = data as Map<String, String>;
 
   final resp = BitcoinFFI().broadcastTransaction(
-    network: obj['network']!,
+    nodeAddress: obj['network']!,
     depositDesc: obj['depositDesc']!,
     signedPSBT: obj['signedPSBT']!,
   );

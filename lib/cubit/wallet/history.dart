@@ -96,7 +96,7 @@ class HistoryCubit extends Cubit<HistoryState> {
       final transactions = await compute(computeHistory, {
         'depositDesc': _walletsCubit.state.selectedWallet!.descriptor,
         'nodeAddress': '',
-        'network': _blockchain.state.blockchain.name,
+        // 'network': _blockchain.state.blockchain.name,
       });
 
       _vibrate.vibe();
@@ -233,7 +233,6 @@ List<Transaction> computeHistory(dynamic obj) {
   final resp = BitcoinFFI().getHistory(
     depositDesc: data['depositDesc']!,
     nodeAddress: data['nodeAddress']!,
-    network: data['network']!,
   );
   return resp;
 }
@@ -242,7 +241,7 @@ int computeBalance(dynamic obj) {
   final data = obj as Map<String, String>;
   final resp = BitcoinFFI().syncBalance(
     depositDesc: data['depositDesc']!,
-    network: data['network']!,
+    nodeAddress: data['network']!,
   );
   return resp;
 }
