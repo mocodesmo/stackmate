@@ -8,13 +8,14 @@ import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/model/transaction.dart';
+import 'package:sats/model/wallet.dart';
 import 'package:sats/pkg/bitcoin.dart';
 import 'package:sats/pkg/launcher.dart';
 import 'package:sats/pkg/share.dart';
 import 'package:sats/pkg/storage.dart';
 import 'package:sats/pkg/vibrate.dart';
 
-part 'history.freezed.dart';
+part 'wallet.freezed.dart';
 
 @freezed
 class HistoryState with _$HistoryState {
@@ -25,6 +26,8 @@ class HistoryState with _$HistoryState {
     @Default('') String errLoadingBalance,
     int? balance,
     List<Transaction>? transactions,
+    @Default('') String errDeleting,
+    @Default(false) bool deleted,
   }) = _HistoryState;
   const HistoryState._();
 
@@ -63,7 +66,7 @@ class HistoryCubit extends Cubit<HistoryState> {
   final IVibrate _vibrate;
 
   void _init() async {
-    await Future.delayed(const Duration(milliseconds: 1000));
+    // await Future.delayed(const Duration(millis .econds: 1000));
 
     getHistory();
   }
@@ -107,55 +110,6 @@ class HistoryCubit extends Cubit<HistoryState> {
           errLoadingTransactions: '',
         ),
       );
-
-      // await _walletsCubit.addBalanceToSelectedWallet(bal);
-
-      // await Future.delayed(const Duration(milliseconds: 400));
-
-      // emit(
-      //   state.copyWith(
-      //     transactions: transactions,
-      //     loadingBalance: false,
-      //     balance: bal,
-      //   ),
-      // );
-      // });
-
-      // emit(
-      //   state.copyWith(
-      //     loadingTransactions: false,
-      //     loadingBalance: true,
-      //     transactions: transactions,
-      //     errLoadingTransactions: '',
-      //   ),
-      // );
-
-      // await Future.delayed(const Duration(milliseconds: 1000));
-
-      // // emit(
-      // //   state.copyWith(
-      // //     // loadingBalance: true,
-      // //     errLoadingTransactions: '',
-      // //   ),
-      // // );
-
-      // final bal = await _bitcoin.syncBalance(
-      //   depositDesc: _walletsCubit.state.selectedWallet!.descriptor,
-      //   network: _blockchain.state.blockchain.name,
-      // );
-
-      // // await _walletsCubit.addBalanceToSelectedWallet(bal);
-
-      // await Future.delayed(const Duration(milliseconds: 1000));
-
-      // emit(
-      //   state.copyWith(
-      //     loadingBalance: false,
-      //     balance: bal,
-      //   ),
-      // );
-
-      // getBalance();
     } catch (e, s) {
       emit(
         state.copyWith(
@@ -166,41 +120,6 @@ class HistoryCubit extends Cubit<HistoryState> {
       _logger.logException(e, 'HistoryCubit.getHistory', s);
     }
   }
-
-  // void getBalance() async {
-  //   try {
-  //     emit(
-  //       state.copyWith(
-  //         // loadingBalance: true,
-  //         errLoadingTransactions: '',
-  //       ),
-  //     );
-
-  //     final bal =  _bitcoin.syncBalance(
-  //       depositDesc: _walletsCubit.state.selectedWallet!.descriptor,
-  //       network: _blockchain.state.blockchain.name,
-  //     );
-
-  //     // await _walletsCubit.addBalanceToSelectedWallet(bal);
-
-  //     await Future.delayed(const Duration(milliseconds: 1000));
-
-  //     emit(
-  //       state.copyWith(
-  //         loadingBalance: false,
-  //         balance: bal,
-  //       ),
-  //     );
-  //   } catch (e, s) {
-  //     emit(
-  //       state.copyWith(
-  //         loadingBalance: false,
-  //         errLoadingBalance: e.toString(),
-  //       ),
-  //     );
-  //     _logger.logException(e, 'HistoryCubit.getHistory', s);
-  //   }
-  // }
 
   void openLink(Transaction transaction) {
     try {
@@ -224,6 +143,24 @@ class HistoryCubit extends Cubit<HistoryState> {
     } catch (e, s) {
       _logger.logException(e, 'HistoryCubit.shareTransaction', s);
     }
+  }
+
+  void deleteClicked() {
+    emit(state.copyWith(errDeleting: ''));
+
+    if (state.balance == null || state.balance! > 0) {
+      emit(state.copyWith(errDeleting: 'Empty wallet first'));
+      return;
+    }
+
+    _storage.deleteItemAt<Wallet>(
+      StoreKeys.Wallet.name,
+      _walletsCubit.state.selectedWallet!.id!,
+    );
+
+    _walletsCubit.refresh();
+
+    emit(state.copyWith(deleted: true));
   }
 }
 

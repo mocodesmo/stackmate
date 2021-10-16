@@ -10,7 +10,7 @@ import 'package:sats/cubit/new-wallet/seed-generate.dart';
 import 'package:sats/cubit/new-wallet/seed-import.dart';
 import 'package:sats/cubit/new-wallet/xpub-import.dart';
 import 'package:sats/cubit/reddit.dart';
-import 'package:sats/cubit/wallet/history.dart';
+import 'package:sats/cubit/wallet/wallet.dart';
 import 'package:sats/cubit/wallet/receive.dart';
 import 'package:sats/cubit/wallet/send.dart';
 import 'package:sats/pkg/_deps.dart';

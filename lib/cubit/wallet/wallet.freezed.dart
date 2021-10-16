@@ -2,7 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'history.dart';
+part of 'wallet.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -23,7 +23,9 @@ class _$HistoryStateTearOff {
       bool loadingBalance = true,
       String errLoadingBalance = '',
       int? balance,
-      List<Transaction>? transactions}) {
+      List<Transaction>? transactions,
+      String errDeleting = '',
+      bool deleted = false}) {
     return _HistoryState(
       loadingTransactions: loadingTransactions,
       errLoadingTransactions: errLoadingTransactions,
@@ -31,6 +33,8 @@ class _$HistoryStateTearOff {
       errLoadingBalance: errLoadingBalance,
       balance: balance,
       transactions: transactions,
+      errDeleting: errDeleting,
+      deleted: deleted,
     );
   }
 }
@@ -46,6 +50,8 @@ mixin _$HistoryState {
   String get errLoadingBalance => throw _privateConstructorUsedError;
   int? get balance => throw _privateConstructorUsedError;
   List<Transaction>? get transactions => throw _privateConstructorUsedError;
+  String get errDeleting => throw _privateConstructorUsedError;
+  bool get deleted => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HistoryStateCopyWith<HistoryState> get copyWith =>
@@ -63,7 +69,9 @@ abstract class $HistoryStateCopyWith<$Res> {
       bool loadingBalance,
       String errLoadingBalance,
       int? balance,
-      List<Transaction>? transactions});
+      List<Transaction>? transactions,
+      String errDeleting,
+      bool deleted});
 }
 
 /// @nodoc
@@ -82,6 +90,8 @@ class _$HistoryStateCopyWithImpl<$Res> implements $HistoryStateCopyWith<$Res> {
     Object? errLoadingBalance = freezed,
     Object? balance = freezed,
     Object? transactions = freezed,
+    Object? errDeleting = freezed,
+    Object? deleted = freezed,
   }) {
     return _then(_value.copyWith(
       loadingTransactions: loadingTransactions == freezed
@@ -108,6 +118,14 @@ class _$HistoryStateCopyWithImpl<$Res> implements $HistoryStateCopyWith<$Res> {
           ? _value.transactions
           : transactions // ignore: cast_nullable_to_non_nullable
               as List<Transaction>?,
+      errDeleting: errDeleting == freezed
+          ? _value.errDeleting
+          : errDeleting // ignore: cast_nullable_to_non_nullable
+              as String,
+      deleted: deleted == freezed
+          ? _value.deleted
+          : deleted // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -125,7 +143,9 @@ abstract class _$HistoryStateCopyWith<$Res>
       bool loadingBalance,
       String errLoadingBalance,
       int? balance,
-      List<Transaction>? transactions});
+      List<Transaction>? transactions,
+      String errDeleting,
+      bool deleted});
 }
 
 /// @nodoc
@@ -146,6 +166,8 @@ class __$HistoryStateCopyWithImpl<$Res> extends _$HistoryStateCopyWithImpl<$Res>
     Object? errLoadingBalance = freezed,
     Object? balance = freezed,
     Object? transactions = freezed,
+    Object? errDeleting = freezed,
+    Object? deleted = freezed,
   }) {
     return _then(_HistoryState(
       loadingTransactions: loadingTransactions == freezed
@@ -172,6 +194,14 @@ class __$HistoryStateCopyWithImpl<$Res> extends _$HistoryStateCopyWithImpl<$Res>
           ? _value.transactions
           : transactions // ignore: cast_nullable_to_non_nullable
               as List<Transaction>?,
+      errDeleting: errDeleting == freezed
+          ? _value.errDeleting
+          : errDeleting // ignore: cast_nullable_to_non_nullable
+              as String,
+      deleted: deleted == freezed
+          ? _value.deleted
+          : deleted // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -185,7 +215,9 @@ class _$_HistoryState extends _HistoryState with DiagnosticableTreeMixin {
       this.loadingBalance = true,
       this.errLoadingBalance = '',
       this.balance,
-      this.transactions})
+      this.transactions,
+      this.errDeleting = '',
+      this.deleted = false})
       : super._();
 
   @JsonKey(defaultValue: false)
@@ -204,10 +236,16 @@ class _$_HistoryState extends _HistoryState with DiagnosticableTreeMixin {
   final int? balance;
   @override
   final List<Transaction>? transactions;
+  @JsonKey(defaultValue: '')
+  @override
+  final String errDeleting;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool deleted;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'HistoryState(loadingTransactions: $loadingTransactions, errLoadingTransactions: $errLoadingTransactions, loadingBalance: $loadingBalance, errLoadingBalance: $errLoadingBalance, balance: $balance, transactions: $transactions)';
+    return 'HistoryState(loadingTransactions: $loadingTransactions, errLoadingTransactions: $errLoadingTransactions, loadingBalance: $loadingBalance, errLoadingBalance: $errLoadingBalance, balance: $balance, transactions: $transactions, errDeleting: $errDeleting, deleted: $deleted)';
   }
 
   @override
@@ -221,7 +259,9 @@ class _$_HistoryState extends _HistoryState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('loadingBalance', loadingBalance))
       ..add(DiagnosticsProperty('errLoadingBalance', errLoadingBalance))
       ..add(DiagnosticsProperty('balance', balance))
-      ..add(DiagnosticsProperty('transactions', transactions));
+      ..add(DiagnosticsProperty('transactions', transactions))
+      ..add(DiagnosticsProperty('errDeleting', errDeleting))
+      ..add(DiagnosticsProperty('deleted', deleted));
   }
 
   @override
@@ -245,7 +285,12 @@ class _$_HistoryState extends _HistoryState with DiagnosticableTreeMixin {
                     .equals(other.balance, balance)) &&
             (identical(other.transactions, transactions) ||
                 const DeepCollectionEquality()
-                    .equals(other.transactions, transactions)));
+                    .equals(other.transactions, transactions)) &&
+            (identical(other.errDeleting, errDeleting) ||
+                const DeepCollectionEquality()
+                    .equals(other.errDeleting, errDeleting)) &&
+            (identical(other.deleted, deleted) ||
+                const DeepCollectionEquality().equals(other.deleted, deleted)));
   }
 
   @override
@@ -256,7 +301,9 @@ class _$_HistoryState extends _HistoryState with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(loadingBalance) ^
       const DeepCollectionEquality().hash(errLoadingBalance) ^
       const DeepCollectionEquality().hash(balance) ^
-      const DeepCollectionEquality().hash(transactions);
+      const DeepCollectionEquality().hash(transactions) ^
+      const DeepCollectionEquality().hash(errDeleting) ^
+      const DeepCollectionEquality().hash(deleted);
 
   @JsonKey(ignore: true)
   @override
@@ -271,7 +318,9 @@ abstract class _HistoryState extends HistoryState {
       bool loadingBalance,
       String errLoadingBalance,
       int? balance,
-      List<Transaction>? transactions}) = _$_HistoryState;
+      List<Transaction>? transactions,
+      String errDeleting,
+      bool deleted}) = _$_HistoryState;
   const _HistoryState._() : super._();
 
   @override
@@ -286,6 +335,10 @@ abstract class _HistoryState extends HistoryState {
   int? get balance => throw _privateConstructorUsedError;
   @override
   List<Transaction>? get transactions => throw _privateConstructorUsedError;
+  @override
+  String get errDeleting => throw _privateConstructorUsedError;
+  @override
+  bool get deleted => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$HistoryStateCopyWith<_HistoryState> get copyWith =>

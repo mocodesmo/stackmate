@@ -20,11 +20,13 @@ class _$WalletsStateTearOff {
   _WalletsState call(
       {List<Wallet> wallets = const [],
       Wallet? selectedWallet,
-      bool isRearranging = false}) {
+      bool isRearranging = false,
+      String errDeleting = ''}) {
     return _WalletsState(
       wallets: wallets,
       selectedWallet: selectedWallet,
       isRearranging: isRearranging,
+      errDeleting: errDeleting,
     );
   }
 }
@@ -37,6 +39,7 @@ mixin _$WalletsState {
   List<Wallet> get wallets => throw _privateConstructorUsedError;
   Wallet? get selectedWallet => throw _privateConstructorUsedError;
   bool get isRearranging => throw _privateConstructorUsedError;
+  String get errDeleting => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $WalletsStateCopyWith<WalletsState> get copyWith =>
@@ -48,7 +51,11 @@ abstract class $WalletsStateCopyWith<$Res> {
   factory $WalletsStateCopyWith(
           WalletsState value, $Res Function(WalletsState) then) =
       _$WalletsStateCopyWithImpl<$Res>;
-  $Res call({List<Wallet> wallets, Wallet? selectedWallet, bool isRearranging});
+  $Res call(
+      {List<Wallet> wallets,
+      Wallet? selectedWallet,
+      bool isRearranging,
+      String errDeleting});
 
   $WalletCopyWith<$Res>? get selectedWallet;
 }
@@ -66,6 +73,7 @@ class _$WalletsStateCopyWithImpl<$Res> implements $WalletsStateCopyWith<$Res> {
     Object? wallets = freezed,
     Object? selectedWallet = freezed,
     Object? isRearranging = freezed,
+    Object? errDeleting = freezed,
   }) {
     return _then(_value.copyWith(
       wallets: wallets == freezed
@@ -80,6 +88,10 @@ class _$WalletsStateCopyWithImpl<$Res> implements $WalletsStateCopyWith<$Res> {
           ? _value.isRearranging
           : isRearranging // ignore: cast_nullable_to_non_nullable
               as bool,
+      errDeleting: errDeleting == freezed
+          ? _value.errDeleting
+          : errDeleting // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 
@@ -102,7 +114,11 @@ abstract class _$WalletsStateCopyWith<$Res>
           _WalletsState value, $Res Function(_WalletsState) then) =
       __$WalletsStateCopyWithImpl<$Res>;
   @override
-  $Res call({List<Wallet> wallets, Wallet? selectedWallet, bool isRearranging});
+  $Res call(
+      {List<Wallet> wallets,
+      Wallet? selectedWallet,
+      bool isRearranging,
+      String errDeleting});
 
   @override
   $WalletCopyWith<$Res>? get selectedWallet;
@@ -123,6 +139,7 @@ class __$WalletsStateCopyWithImpl<$Res> extends _$WalletsStateCopyWithImpl<$Res>
     Object? wallets = freezed,
     Object? selectedWallet = freezed,
     Object? isRearranging = freezed,
+    Object? errDeleting = freezed,
   }) {
     return _then(_WalletsState(
       wallets: wallets == freezed
@@ -137,6 +154,10 @@ class __$WalletsStateCopyWithImpl<$Res> extends _$WalletsStateCopyWithImpl<$Res>
           ? _value.isRearranging
           : isRearranging // ignore: cast_nullable_to_non_nullable
               as bool,
+      errDeleting: errDeleting == freezed
+          ? _value.errDeleting
+          : errDeleting // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -147,7 +168,8 @@ class _$_WalletsState with DiagnosticableTreeMixin implements _WalletsState {
   const _$_WalletsState(
       {this.wallets = const [],
       this.selectedWallet,
-      this.isRearranging = false});
+      this.isRearranging = false,
+      this.errDeleting = ''});
 
   @JsonKey(defaultValue: const [])
   @override
@@ -157,10 +179,13 @@ class _$_WalletsState with DiagnosticableTreeMixin implements _WalletsState {
   @JsonKey(defaultValue: false)
   @override
   final bool isRearranging;
+  @JsonKey(defaultValue: '')
+  @override
+  final String errDeleting;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'WalletsState(wallets: $wallets, selectedWallet: $selectedWallet, isRearranging: $isRearranging)';
+    return 'WalletsState(wallets: $wallets, selectedWallet: $selectedWallet, isRearranging: $isRearranging, errDeleting: $errDeleting)';
   }
 
   @override
@@ -170,7 +195,8 @@ class _$_WalletsState with DiagnosticableTreeMixin implements _WalletsState {
       ..add(DiagnosticsProperty('type', 'WalletsState'))
       ..add(DiagnosticsProperty('wallets', wallets))
       ..add(DiagnosticsProperty('selectedWallet', selectedWallet))
-      ..add(DiagnosticsProperty('isRearranging', isRearranging));
+      ..add(DiagnosticsProperty('isRearranging', isRearranging))
+      ..add(DiagnosticsProperty('errDeleting', errDeleting));
   }
 
   @override
@@ -185,7 +211,10 @@ class _$_WalletsState with DiagnosticableTreeMixin implements _WalletsState {
                     .equals(other.selectedWallet, selectedWallet)) &&
             (identical(other.isRearranging, isRearranging) ||
                 const DeepCollectionEquality()
-                    .equals(other.isRearranging, isRearranging)));
+                    .equals(other.isRearranging, isRearranging)) &&
+            (identical(other.errDeleting, errDeleting) ||
+                const DeepCollectionEquality()
+                    .equals(other.errDeleting, errDeleting)));
   }
 
   @override
@@ -193,7 +222,8 @@ class _$_WalletsState with DiagnosticableTreeMixin implements _WalletsState {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(wallets) ^
       const DeepCollectionEquality().hash(selectedWallet) ^
-      const DeepCollectionEquality().hash(isRearranging);
+      const DeepCollectionEquality().hash(isRearranging) ^
+      const DeepCollectionEquality().hash(errDeleting);
 
   @JsonKey(ignore: true)
   @override
@@ -205,7 +235,8 @@ abstract class _WalletsState implements WalletsState {
   const factory _WalletsState(
       {List<Wallet> wallets,
       Wallet? selectedWallet,
-      bool isRearranging}) = _$_WalletsState;
+      bool isRearranging,
+      String errDeleting}) = _$_WalletsState;
 
   @override
   List<Wallet> get wallets => throw _privateConstructorUsedError;
@@ -213,6 +244,8 @@ abstract class _WalletsState implements WalletsState {
   Wallet? get selectedWallet => throw _privateConstructorUsedError;
   @override
   bool get isRearranging => throw _privateConstructorUsedError;
+  @override
+  String get errDeleting => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$WalletsStateCopyWith<_WalletsState> get copyWith =>

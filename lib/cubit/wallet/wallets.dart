@@ -16,6 +16,7 @@ class WalletsState with _$WalletsState {
     @Default([]) List<Wallet> wallets,
     Wallet? selectedWallet,
     @Default(false) bool isRearranging,
+    @Default('') String errDeleting,
   }) = _WalletsState;
 }
 
