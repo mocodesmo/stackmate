@@ -26,6 +26,36 @@ class WalletLoader extends StatelessWidget {
   }
 }
 
+class DeleteWallet extends StatelessWidget {
+  const DeleteWallet({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext c) {
+    final history = c.select((HistoryCubit hc) => hc.state);
+
+    return Column(
+      children: [
+        TextButton(
+          onPressed: () {
+            c.read<HistoryCubit>().deleteClicked();
+          },
+          child: Text(
+            'DELETE',
+            style: c.fonts.button!.copyWith(
+              color: c.colours.error,
+            ),
+          ),
+        ),
+        if (history.errDeleting.isNotEmpty)
+          Text(
+            history.errDeleting,
+            style: c.fonts.caption!.copyWith(color: c.colours.error),
+          )
+      ],
+    );
+  }
+}
+
 class WalletName extends StatelessWidget {
   const WalletName({
     Key? key,
@@ -460,55 +490,56 @@ class HistoryPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const WalletLoader(),
-                Header(
-                  cornerTitle: 'STACKMATE',
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const SizedBox(height: 8),
                     Back(
                       onPressed: () {
                         c.read<WalletsCubit>().clearSelectedWallet();
                         Navigator.of(c).pop();
                       },
                     ),
-                    const SizedBox(height: 60),
-                    const WalletName(),
-                    const SizedBox(height: 24),
-                    const Balance(),
-                    const SizedBox(height: 32),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              c,
-                              Routes.receive,
-                              // arguments: state.wallet!,
-                            );
-                          },
-                          child: const Text('RECEIVE'),
-                        ),
-                        const SizedBox(height: 32),
-                        AnimatedOpacity(
-                          duration: const Duration(milliseconds: 300),
-                          opacity: zeroBal ? 0.4 : 1,
-                          child: TextButton(
-                            onPressed: () {
-                              if (!zeroBal)
-                                Navigator.pushNamed(
-                                  c,
-                                  Routes.send,
-                                  // arguments: state.wallet!,
-                                );
-                            },
-                            child: const Text('SEND'),
-                          ),
-                        ),
-                      ],
-                    ),
-                    // const SizedBox(height: 48),
+                    const DeleteWallet(),
                   ],
                 ),
+                const SizedBox(height: 60),
+                const WalletName(),
+                const SizedBox(height: 24),
+                const Balance(),
+                const SizedBox(height: 32),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          c,
+                          Routes.receive,
+                          // arguments: state.wallet!,
+                        );
+                      },
+                      child: const Text('RECEIVE'),
+                    ),
+                    const SizedBox(height: 32),
+                    AnimatedOpacity(
+                      duration: const Duration(milliseconds: 300),
+                      opacity: zeroBal ? 0.4 : 1,
+                      child: TextButton(
+                        onPressed: () {
+                          if (!zeroBal)
+                            Navigator.pushNamed(
+                              c,
+                              Routes.send,
+                              // arguments: state.wallet!,
+                            );
+                        },
+                        child: const Text('SEND'),
+                      ),
+                    ),
+                  ],
+                ),
+                // const SizedBox(height: 48),
                 TransactionsView()
               ],
             ),

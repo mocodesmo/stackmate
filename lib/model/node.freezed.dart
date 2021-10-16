@@ -13,67 +13,74 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-/// @nodoc
-class _$NodeAddressStateTearOff {
-  const _$NodeAddressStateTearOff();
+Node _$NodeFromJson(Map<String, dynamic> json) {
+  return _Node.fromJson(json);
+}
 
-  _NodeAddressState call(
-      {NodeType nodeType = NodeType.electrum,
-      String address = '',
-      String port = '',
-      String username = '',
-      String password = '',
-      String errNodeState = ''}) {
-    return _NodeAddressState(
+/// @nodoc
+class _$NodeTearOff {
+  const _$NodeTearOff();
+
+  _Node call(
+      {@HiveField(0) required NodeType nodeType,
+      @HiveField(1) required String address,
+      @HiveField(2) required String port,
+      @HiveField(3) required String username,
+      @HiveField(4) required String password}) {
+    return _Node(
       nodeType: nodeType,
       address: address,
       port: port,
       username: username,
       password: password,
-      errNodeState: errNodeState,
     );
+  }
+
+  Node fromJson(Map<String, Object> json) {
+    return Node.fromJson(json);
   }
 }
 
 /// @nodoc
-const $NodeAddressState = _$NodeAddressStateTearOff();
+const $Node = _$NodeTearOff();
 
 /// @nodoc
-mixin _$NodeAddressState {
+mixin _$Node {
+  @HiveField(0)
   NodeType get nodeType => throw _privateConstructorUsedError;
+  @HiveField(1)
   String get address => throw _privateConstructorUsedError;
+  @HiveField(2)
   String get port => throw _privateConstructorUsedError;
+  @HiveField(3)
   String get username => throw _privateConstructorUsedError;
+  @HiveField(4)
   String get password => throw _privateConstructorUsedError;
-  String get errNodeState => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $NodeAddressStateCopyWith<NodeAddressState> get copyWith =>
-      throw _privateConstructorUsedError;
+  $NodeCopyWith<Node> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $NodeAddressStateCopyWith<$Res> {
-  factory $NodeAddressStateCopyWith(
-          NodeAddressState value, $Res Function(NodeAddressState) then) =
-      _$NodeAddressStateCopyWithImpl<$Res>;
+abstract class $NodeCopyWith<$Res> {
+  factory $NodeCopyWith(Node value, $Res Function(Node) then) =
+      _$NodeCopyWithImpl<$Res>;
   $Res call(
-      {NodeType nodeType,
-      String address,
-      String port,
-      String username,
-      String password,
-      String errNodeState});
+      {@HiveField(0) NodeType nodeType,
+      @HiveField(1) String address,
+      @HiveField(2) String port,
+      @HiveField(3) String username,
+      @HiveField(4) String password});
 }
 
 /// @nodoc
-class _$NodeAddressStateCopyWithImpl<$Res>
-    implements $NodeAddressStateCopyWith<$Res> {
-  _$NodeAddressStateCopyWithImpl(this._value, this._then);
+class _$NodeCopyWithImpl<$Res> implements $NodeCopyWith<$Res> {
+  _$NodeCopyWithImpl(this._value, this._then);
 
-  final NodeAddressState _value;
+  final Node _value;
   // ignore: unused_field
-  final $Res Function(NodeAddressState) _then;
+  final $Res Function(Node) _then;
 
   @override
   $Res call({
@@ -82,7 +89,6 @@ class _$NodeAddressStateCopyWithImpl<$Res>
     Object? port = freezed,
     Object? username = freezed,
     Object? password = freezed,
-    Object? errNodeState = freezed,
   }) {
     return _then(_value.copyWith(
       nodeType: nodeType == freezed
@@ -105,40 +111,31 @@ class _$NodeAddressStateCopyWithImpl<$Res>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
-      errNodeState: errNodeState == freezed
-          ? _value.errNodeState
-          : errNodeState // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
 
 /// @nodoc
-abstract class _$NodeAddressStateCopyWith<$Res>
-    implements $NodeAddressStateCopyWith<$Res> {
-  factory _$NodeAddressStateCopyWith(
-          _NodeAddressState value, $Res Function(_NodeAddressState) then) =
-      __$NodeAddressStateCopyWithImpl<$Res>;
+abstract class _$NodeCopyWith<$Res> implements $NodeCopyWith<$Res> {
+  factory _$NodeCopyWith(_Node value, $Res Function(_Node) then) =
+      __$NodeCopyWithImpl<$Res>;
   @override
   $Res call(
-      {NodeType nodeType,
-      String address,
-      String port,
-      String username,
-      String password,
-      String errNodeState});
+      {@HiveField(0) NodeType nodeType,
+      @HiveField(1) String address,
+      @HiveField(2) String port,
+      @HiveField(3) String username,
+      @HiveField(4) String password});
 }
 
 /// @nodoc
-class __$NodeAddressStateCopyWithImpl<$Res>
-    extends _$NodeAddressStateCopyWithImpl<$Res>
-    implements _$NodeAddressStateCopyWith<$Res> {
-  __$NodeAddressStateCopyWithImpl(
-      _NodeAddressState _value, $Res Function(_NodeAddressState) _then)
-      : super(_value, (v) => _then(v as _NodeAddressState));
+class __$NodeCopyWithImpl<$Res> extends _$NodeCopyWithImpl<$Res>
+    implements _$NodeCopyWith<$Res> {
+  __$NodeCopyWithImpl(_Node _value, $Res Function(_Node) _then)
+      : super(_value, (v) => _then(v as _Node));
 
   @override
-  _NodeAddressState get _value => super._value as _NodeAddressState;
+  _Node get _value => super._value as _Node;
 
   @override
   $Res call({
@@ -147,9 +144,8 @@ class __$NodeAddressStateCopyWithImpl<$Res>
     Object? port = freezed,
     Object? username = freezed,
     Object? password = freezed,
-    Object? errNodeState = freezed,
   }) {
-    return _then(_NodeAddressState(
+    return _then(_Node(
       nodeType: nodeType == freezed
           ? _value.nodeType
           : nodeType // ignore: cast_nullable_to_non_nullable
@@ -170,53 +166,48 @@ class __$NodeAddressStateCopyWithImpl<$Res>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
-      errNodeState: errNodeState == freezed
-          ? _value.errNodeState
-          : errNodeState // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
 
 /// @nodoc
+@JsonSerializable()
+@HiveType(typeId: 5, adapterName: 'NodeClassAdaper')
+class _$_Node implements _Node {
+  const _$_Node(
+      {@HiveField(0) required this.nodeType,
+      @HiveField(1) required this.address,
+      @HiveField(2) required this.port,
+      @HiveField(3) required this.username,
+      @HiveField(4) required this.password});
 
-class _$_NodeAddressState implements _NodeAddressState {
-  const _$_NodeAddressState(
-      {this.nodeType = NodeType.electrum,
-      this.address = '',
-      this.port = '',
-      this.username = '',
-      this.password = '',
-      this.errNodeState = ''});
+  factory _$_Node.fromJson(Map<String, dynamic> json) => _$$_NodeFromJson(json);
 
-  @JsonKey(defaultValue: NodeType.electrum)
   @override
+  @HiveField(0)
   final NodeType nodeType;
-  @JsonKey(defaultValue: '')
   @override
+  @HiveField(1)
   final String address;
-  @JsonKey(defaultValue: '')
   @override
+  @HiveField(2)
   final String port;
-  @JsonKey(defaultValue: '')
   @override
+  @HiveField(3)
   final String username;
-  @JsonKey(defaultValue: '')
   @override
+  @HiveField(4)
   final String password;
-  @JsonKey(defaultValue: '')
-  @override
-  final String errNodeState;
 
   @override
   String toString() {
-    return 'NodeAddressState(nodeType: $nodeType, address: $address, port: $port, username: $username, password: $password, errNodeState: $errNodeState)';
+    return 'Node(nodeType: $nodeType, address: $address, port: $port, username: $username, password: $password)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _NodeAddressState &&
+        (other is _Node &&
             (identical(other.nodeType, nodeType) ||
                 const DeepCollectionEquality()
                     .equals(other.nodeType, nodeType)) &&
@@ -230,10 +221,7 @@ class _$_NodeAddressState implements _NodeAddressState {
                     .equals(other.username, username)) &&
             (identical(other.password, password) ||
                 const DeepCollectionEquality()
-                    .equals(other.password, password)) &&
-            (identical(other.errNodeState, errNodeState) ||
-                const DeepCollectionEquality()
-                    .equals(other.errNodeState, errNodeState)));
+                    .equals(other.password, password)));
   }
 
   @override
@@ -243,38 +231,45 @@ class _$_NodeAddressState implements _NodeAddressState {
       const DeepCollectionEquality().hash(address) ^
       const DeepCollectionEquality().hash(port) ^
       const DeepCollectionEquality().hash(username) ^
-      const DeepCollectionEquality().hash(password) ^
-      const DeepCollectionEquality().hash(errNodeState);
+      const DeepCollectionEquality().hash(password);
 
   @JsonKey(ignore: true)
   @override
-  _$NodeAddressStateCopyWith<_NodeAddressState> get copyWith =>
-      __$NodeAddressStateCopyWithImpl<_NodeAddressState>(this, _$identity);
+  _$NodeCopyWith<_Node> get copyWith =>
+      __$NodeCopyWithImpl<_Node>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_NodeToJson(this);
+  }
 }
 
-abstract class _NodeAddressState implements NodeAddressState {
-  const factory _NodeAddressState(
-      {NodeType nodeType,
-      String address,
-      String port,
-      String username,
-      String password,
-      String errNodeState}) = _$_NodeAddressState;
+abstract class _Node implements Node {
+  const factory _Node(
+      {@HiveField(0) required NodeType nodeType,
+      @HiveField(1) required String address,
+      @HiveField(2) required String port,
+      @HiveField(3) required String username,
+      @HiveField(4) required String password}) = _$_Node;
+
+  factory _Node.fromJson(Map<String, dynamic> json) = _$_Node.fromJson;
 
   @override
+  @HiveField(0)
   NodeType get nodeType => throw _privateConstructorUsedError;
   @override
+  @HiveField(1)
   String get address => throw _privateConstructorUsedError;
   @override
+  @HiveField(2)
   String get port => throw _privateConstructorUsedError;
   @override
+  @HiveField(3)
   String get username => throw _privateConstructorUsedError;
   @override
+  @HiveField(4)
   String get password => throw _privateConstructorUsedError;
   @override
-  String get errNodeState => throw _privateConstructorUsedError;
-  @override
   @JsonKey(ignore: true)
-  _$NodeAddressStateCopyWith<_NodeAddressState> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$NodeCopyWith<_Node> get copyWith => throw _privateConstructorUsedError;
 }

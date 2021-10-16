@@ -1,25 +1,26 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
+import 'package:sats/model/node.dart';
 import 'package:sats/pkg/storage.dart';
 
 part 'node.freezed.dart';
-
-enum NodeType { electrum, bitcoincore }
-
 
 @freezed
 class NodeAddressState with _$NodeAddressState {
   const factory NodeAddressState({
     @Default(NodeType.electrum) NodeType nodeType,
-    String? address,
+    @Default('') String address,
+    @Default('') String port,
+    @Default('') String username,
+    @Default('') String password,
     @Default('') String errNodeState,
   }) = _NodeAddressState;
 
   String getAddress() {
     if (nodeType == NodeType.bitcoincore) {
-      if (address == null || address!.isEmpty) return '';
-      return address!;
+      if (address.isEmpty) return 'default';
+      return 'https://$address:$port?auth=$username:$password';
     }
     return 'default';
   }
@@ -38,14 +39,27 @@ class NodeAddressCubit extends Cubit<NodeAddressState> {
 
   void init() async {
     try {
-      final address = _storage.getFirstItem<String>(StoreKeys.NodeAddress.name);
+      final node = _storage.getFirstItem<Node>(StoreKeys.Node.name);
 
-      if (address == '') {
+      if (node.nodeType == NodeType.electrum) {
         emit(state.copyWith(nodeType: NodeType.electrum));
         return;
       }
-      emit(state.copyWith(nodeType: NodeType.bitcoincore, address: address));
+
+      emit(
+        state.copyWith(
+          nodeType: NodeType.bitcoincore,
+          address: node.address,
+          port: node.port,
+          username: node.username,
+          password: node.password,
+        ),
+      );
     } catch (e, s) {
+      if (e.toString() == 'empty') {
+        emit(state.copyWith(nodeType: NodeType.electrum));
+        return;
+      }
       emit(
         state.copyWith(
           errNodeState: e.toString(),
@@ -57,7 +71,15 @@ class NodeAddressCubit extends Cubit<NodeAddressState> {
   }
 
   void electrumSelected() {
-    emit(state.copyWith(nodeType: NodeType.electrum));
+    emit(
+      state.copyWith(
+        nodeType: NodeType.electrum,
+        address: '',
+        port: '',
+        username: '',
+        password: '',
+      ),
+    );
   }
 
   void nodeSelected() {
@@ -68,25 +90,32 @@ class NodeAddressCubit extends Cubit<NodeAddressState> {
     emit(state.copyWith(address: text));
   }
 
+  void usernameChanged(String text) {
+    emit(state.copyWith(username: text));
+  }
+
+  void portChanged(String text) {
+    emit(state.copyWith(port: text));
+  }
+
+  void passwordChanged(String text) {
+    emit(state.copyWith(password: text));
+  }
+
   void saveClicked() {
     try {
-      if (state.nodeType == NodeType.electrum) {
-        _storage.clearAll(StoreKeys.NodeAddress.name);
-        return;
-      }
-      if (state.address == null || state.address!.isEmpty) {
-        emit(state.copyWith(errNodeState: 'Please enter a valid address'));
-        return;
-      }
-      _storage.clearAll(StoreKeys.NodeAddress.name);
-      _storage.saveItem(StoreKeys.NodeAddress.name, state.address);
-    } catch (e, s) {
-      emit(
-        state.copyWith(
-          errNodeState: e.toString(),
-          // nodeType: NodeType.electrum,
-        ),
+      final node = Node(
+        nodeType: state.nodeType,
+        address: state.address,
+        port: state.port,
+        username: state.username,
+        password: state.password,
       );
+
+      _storage.clearAll<Node>(StoreKeys.Node.name);
+      _storage.saveItem<Node>(StoreKeys.Node.name, node);
+    } catch (e, s) {
+      emit(state.copyWith(errNodeState: e.toString()));
       _logger.logException(e, 'NodeAddressCubit.saveClicked', s);
     }
   }

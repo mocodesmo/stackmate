@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:animate_do/animate_do.dart';
+import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
 import 'package:sats/cubit/reddit.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
@@ -184,6 +185,36 @@ class AccountsRow extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ReorderCards extends StatelessWidget {
+  const ReorderCards({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext c) {
+    final wallets = c.select((WalletsCubit wc) => wc.state);
+
+    return DragAndDropLists(
+      onListReorder: (s, ss) {},
+      onItemReorder: (
+        int oldItemIndex,
+        int oldListIndex,
+        int newItemIndex,
+        int newListIndex,
+      ) {
+        c.read<WalletsCubit>().rearrange(oldItemIndex, newItemIndex);
+      },
+      children: [
+        DragAndDropList(
+          children: [
+            for (final wallet in wallets.wallets) ...[
+              DragAndDropItem(child: Text(wallet.label))
+            ],
+          ],
+        )
+      ],
     );
   }
 }

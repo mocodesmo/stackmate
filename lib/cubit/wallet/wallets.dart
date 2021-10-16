@@ -76,15 +76,18 @@ class WalletsCubit extends Cubit<WalletsState> {
     emit(state.copyWith(isRearranging: !state.isRearranging));
   }
 
-  void rearrange(int oldId, int newId) async {
-    var oldwallet = state.wallets.firstWhere((w) => w.id == oldId);
-    var newwallet = state.wallets.firstWhere((w) => w.id == newId);
+  void rearrange(int oldIdx, int newIdx) async {
+    var oldwallet = state.wallets.elementAt(oldIdx);
+    var newwallet = state.wallets.elementAt(newIdx);
+
+    final oldId = oldwallet.id;
+    final newId = newwallet.id;
 
     oldwallet = oldwallet.copyWith(id: newId);
     newwallet = newwallet.copyWith(id: oldId);
 
-    await _storage.saveItemAt<Wallet>(StoreKeys.Wallet.name, newId, oldwallet);
-    await _storage.saveItemAt<Wallet>(StoreKeys.Wallet.name, oldId, newwallet);
+    await _storage.saveItemAt<Wallet>(StoreKeys.Wallet.name, newId!, oldwallet);
+    await _storage.saveItemAt<Wallet>(StoreKeys.Wallet.name, oldId!, newwallet);
 
     refresh();
   }

@@ -14,6 +14,7 @@ dependencies:
   bloc_concurrency: ^0.1.0
   connectivity: ^3.0.3
   dio: ^4.0.0
+  drag_and_drop_lists: ^0.3.2
   flutter:
     sdk: flutter
   flutter_barcode_scanner: ^2.0.0

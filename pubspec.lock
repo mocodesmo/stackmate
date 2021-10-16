@@ -225,6 +225,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
+  drag_and_drop_lists:
+    dependency: "direct main"
+    description:
+      name: drag_and_drop_lists
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.2"
   ffi:
     dependency: transitive
     description:

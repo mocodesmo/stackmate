@@ -4,6 +4,7 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:sats/model/address-book.dart';
 import 'package:sats/model/blockchain.dart';
+import 'package:sats/model/node.dart';
 import 'package:sats/model/reddit-post.dart';
 import 'package:sats/model/wallet.dart';
 
@@ -11,7 +12,7 @@ enum StoreKeys {
   RedditPost,
   Wallet,
   Blockchain,
-  NodeAddress,
+  Node,
   AddressBookUser,
   AddressBookKey,
 }
@@ -21,7 +22,7 @@ extension StoreKeysFunctions on StoreKeys {
         StoreKeys.RedditPost: 'reddit-post',
         StoreKeys.Wallet: 'wallet',
         StoreKeys.Blockchain: 'blockchain',
-        StoreKeys.NodeAddress: 'node-address',
+        StoreKeys.Node: 'node',
         StoreKeys.AddressBookUser: 'address-book-user',
         StoreKeys.AddressBookKey: 'address-book-key'
       }[this]!;
@@ -46,7 +47,7 @@ Future<void> initializeHive() async {
   // var abu = Hive.box<AddressBookUser>(StoreKeys.AddressBookUser.name);
   // await abu.compact();
   await Hive.openBox<AddressBookKey>(StoreKeys.AddressBookKey.name);
-  await Hive.openBox<String>(StoreKeys.NodeAddress.name);
+  await Hive.openBox<Node>(StoreKeys.Node.name);
 }
 
 abstract class IStorage {

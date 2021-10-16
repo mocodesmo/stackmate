@@ -47,7 +47,7 @@
         "**/packages": true, 
         "zzzz": true,
         "zzz": true,
-        "**/pubspec.yaml": true,
+        // "**/pubspec.yaml": true,
         //
         //
         //
