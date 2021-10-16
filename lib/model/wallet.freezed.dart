@@ -26,14 +26,14 @@ class _$WalletTearOff {
       @HiveField(2) required String descriptor,
       @HiveField(3) required String blockchain,
       @HiveField(4) List<Transaction>? transactions,
-      @HiveField(5) required int index,
+      @HiveField(5) int? id,
       @HiveField(6) int? balance}) {
     return _Wallet(
       label: label,
       descriptor: descriptor,
       blockchain: blockchain,
       transactions: transactions,
-      index: index,
+      id: id,
       balance: balance,
     );
   }
@@ -57,7 +57,7 @@ mixin _$Wallet {
   @HiveField(4)
   List<Transaction>? get transactions => throw _privateConstructorUsedError;
   @HiveField(5)
-  int get index => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
   @HiveField(6)
   int? get balance => throw _privateConstructorUsedError;
 
@@ -75,7 +75,7 @@ abstract class $WalletCopyWith<$Res> {
       @HiveField(2) String descriptor,
       @HiveField(3) String blockchain,
       @HiveField(4) List<Transaction>? transactions,
-      @HiveField(5) int index,
+      @HiveField(5) int? id,
       @HiveField(6) int? balance});
 }
 
@@ -93,7 +93,7 @@ class _$WalletCopyWithImpl<$Res> implements $WalletCopyWith<$Res> {
     Object? descriptor = freezed,
     Object? blockchain = freezed,
     Object? transactions = freezed,
-    Object? index = freezed,
+    Object? id = freezed,
     Object? balance = freezed,
   }) {
     return _then(_value.copyWith(
@@ -113,10 +113,10 @@ class _$WalletCopyWithImpl<$Res> implements $WalletCopyWith<$Res> {
           ? _value.transactions
           : transactions // ignore: cast_nullable_to_non_nullable
               as List<Transaction>?,
-      index: index == freezed
-          ? _value.index
-          : index // ignore: cast_nullable_to_non_nullable
-              as int,
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
       balance: balance == freezed
           ? _value.balance
           : balance // ignore: cast_nullable_to_non_nullable
@@ -135,7 +135,7 @@ abstract class _$WalletCopyWith<$Res> implements $WalletCopyWith<$Res> {
       @HiveField(2) String descriptor,
       @HiveField(3) String blockchain,
       @HiveField(4) List<Transaction>? transactions,
-      @HiveField(5) int index,
+      @HiveField(5) int? id,
       @HiveField(6) int? balance});
 }
 
@@ -154,7 +154,7 @@ class __$WalletCopyWithImpl<$Res> extends _$WalletCopyWithImpl<$Res>
     Object? descriptor = freezed,
     Object? blockchain = freezed,
     Object? transactions = freezed,
-    Object? index = freezed,
+    Object? id = freezed,
     Object? balance = freezed,
   }) {
     return _then(_Wallet(
@@ -174,10 +174,10 @@ class __$WalletCopyWithImpl<$Res> extends _$WalletCopyWithImpl<$Res>
           ? _value.transactions
           : transactions // ignore: cast_nullable_to_non_nullable
               as List<Transaction>?,
-      index: index == freezed
-          ? _value.index
-          : index // ignore: cast_nullable_to_non_nullable
-              as int,
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
       balance: balance == freezed
           ? _value.balance
           : balance // ignore: cast_nullable_to_non_nullable
@@ -195,7 +195,7 @@ class _$_Wallet extends _Wallet {
       @HiveField(2) required this.descriptor,
       @HiveField(3) required this.blockchain,
       @HiveField(4) this.transactions,
-      @HiveField(5) required this.index,
+      @HiveField(5) this.id,
       @HiveField(6) this.balance})
       : super._();
 
@@ -216,14 +216,14 @@ class _$_Wallet extends _Wallet {
   final List<Transaction>? transactions;
   @override
   @HiveField(5)
-  final int index;
+  final int? id;
   @override
   @HiveField(6)
   final int? balance;
 
   @override
   String toString() {
-    return 'Wallet(label: $label, descriptor: $descriptor, blockchain: $blockchain, transactions: $transactions, index: $index, balance: $balance)';
+    return 'Wallet(label: $label, descriptor: $descriptor, blockchain: $blockchain, transactions: $transactions, id: $id, balance: $balance)';
   }
 
   @override
@@ -241,8 +241,8 @@ class _$_Wallet extends _Wallet {
             (identical(other.transactions, transactions) ||
                 const DeepCollectionEquality()
                     .equals(other.transactions, transactions)) &&
-            (identical(other.index, index) ||
-                const DeepCollectionEquality().equals(other.index, index)) &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.balance, balance) ||
                 const DeepCollectionEquality().equals(other.balance, balance)));
   }
@@ -254,7 +254,7 @@ class _$_Wallet extends _Wallet {
       const DeepCollectionEquality().hash(descriptor) ^
       const DeepCollectionEquality().hash(blockchain) ^
       const DeepCollectionEquality().hash(transactions) ^
-      const DeepCollectionEquality().hash(index) ^
+      const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(balance);
 
   @JsonKey(ignore: true)
@@ -274,7 +274,7 @@ abstract class _Wallet extends Wallet {
       @HiveField(2) required String descriptor,
       @HiveField(3) required String blockchain,
       @HiveField(4) List<Transaction>? transactions,
-      @HiveField(5) required int index,
+      @HiveField(5) int? id,
       @HiveField(6) int? balance}) = _$_Wallet;
   const _Wallet._() : super._();
 
@@ -294,7 +294,7 @@ abstract class _Wallet extends Wallet {
   List<Transaction>? get transactions => throw _privateConstructorUsedError;
   @override
   @HiveField(5)
-  int get index => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
   @override
   @HiveField(6)
   int? get balance => throw _privateConstructorUsedError;

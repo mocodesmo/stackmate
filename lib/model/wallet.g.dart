@@ -21,7 +21,7 @@ class WalletClassAdaper extends TypeAdapter<_$_Wallet> {
       descriptor: fields[2] as String,
       blockchain: fields[3] as String,
       transactions: (fields[4] as List?)?.cast<Transaction>(),
-      index: fields[5] as int,
+      id: fields[5] as int?,
       balance: fields[6] as int?,
     );
   }
@@ -39,7 +39,7 @@ class WalletClassAdaper extends TypeAdapter<_$_Wallet> {
       ..writeByte(4)
       ..write(obj.transactions)
       ..writeByte(5)
-      ..write(obj.index)
+      ..write(obj.id)
       ..writeByte(6)
       ..write(obj.balance);
   }
@@ -66,7 +66,7 @@ _$_Wallet _$$_WalletFromJson(Map<String, dynamic> json) => _$_Wallet(
       transactions: (json['transactions'] as List<dynamic>?)
           ?.map((e) => Transaction.fromJson(e as Map<String, dynamic>))
           .toList(),
-      index: json['index'] as int,
+      id: json['id'] as int?,
       balance: json['balance'] as int?,
     );
 
@@ -75,6 +75,6 @@ Map<String, dynamic> _$$_WalletToJson(_$_Wallet instance) => <String, dynamic>{
       'descriptor': instance.descriptor,
       'blockchain': instance.blockchain,
       'transactions': instance.transactions,
-      'index': instance.index,
+      'id': instance.id,
       'balance': instance.balance,
     };

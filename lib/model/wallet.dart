@@ -13,7 +13,7 @@ class Wallet with _$Wallet {
     @HiveField(2) required String descriptor,
     @HiveField(3) required String blockchain,
     @HiveField(4) List<Transaction>? transactions,
-    @HiveField(5) required int index,
+    @HiveField(5) int? id,
     @HiveField(6) int? balance,
     // @Default(false) @HiveField(7) bool watchOnly,
   }) = _Wallet;

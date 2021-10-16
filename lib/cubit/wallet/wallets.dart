@@ -15,6 +15,7 @@ class WalletsState with _$WalletsState {
   const factory WalletsState({
     @Default([]) List<Wallet> wallets,
     Wallet? selectedWallet,
+    @Default(false) bool isRearranging,
   }) = _WalletsState;
 }
 
@@ -38,7 +39,8 @@ class WalletsCubit extends Cubit<WalletsState> {
       wallets.removeWhere(
         (w) => w.blockchain != _blockchain.state.blockchain.name,
       );
-      wallets.sort((a, b) => a.index.compareTo(b.index));
+
+      wallets.sort((a, b) => a.id!.compareTo(b.id!));
 
       emit(state.copyWith(wallets: wallets));
     } catch (e, s) {
@@ -68,37 +70,21 @@ class WalletsCubit extends Cubit<WalletsState> {
     await Future.delayed(const Duration(milliseconds: 500));
     emit(state.copyWith(selectedWallet: null));
   }
-}
 
-// List<Wallet> _wallets = const [
-//   Wallet(
-//     label: 'wallet2',
-//     descriptor: 'oooooo',
-//     blockchain: 'main',
-//     index: 0,
-//   ),
-//   Wallet(
-//     label: 'wallet3',
-//     descriptor: 'oooooo',
-//     blockchain: 'main',
-//     index: 0,
-//   ),
-//   Wallet(
-//     label: 'wallet4',
-//     descriptor: 'oooooo',
-//     blockchain: 'main',
-//     index: 0,
-//   ),
-//   Wallet(
-//     label: 'wallet6',
-//     descriptor: 'oooooo',
-//     blockchain: 'main',
-//     index: 0,
-//   ),
-//   Wallet(
-//     label: 'wallet5',
-//     descriptor: 'oooooo',
-//     blockchain: 'main',
-//     index: 0,
-//   ),
-// ];
+  void toggleRearranging() {
+    emit(state.copyWith(isRearranging: !state.isRearranging));
+  }
+
+  void rearrange(int oldId, int newId) async {
+    var oldwallet = state.wallets.firstWhere((w) => w.id == oldId);
+    var newwallet = state.wallets.firstWhere((w) => w.id == newId);
+
+    oldwallet = oldwallet.copyWith(id: newId);
+    newwallet = newwallet.copyWith(id: oldId);
+
+    await _storage.saveItemAt<Wallet>(StoreKeys.Wallet.name, newId, oldwallet);
+    await _storage.saveItemAt<Wallet>(StoreKeys.Wallet.name, oldId, newwallet);
+
+    refresh();
+  }
+}

@@ -110,7 +110,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
     });
   }
 
-  StreamSubscription? _networkCubitSub;
+  late StreamSubscription _networkCubitSub;
   final NetworkCubit _networkCubit;
   // final WalletCubit _walletBloc;
 
@@ -257,16 +257,28 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
         scriptType: 'wsh',
       );
 
-      final len = _storage.getAll<Wallet>(StoreKeys.Wallet.name).length;
+      // final len = _storage.getAll<Wallet>(StoreKeys.Wallet.name).length;
 
-      final newWallet = Wallet(
+      var newWallet = Wallet(
         label: state.walletLabel,
         descriptor: com.descriptor.split('#')[0],
         blockchain: _blockchainCubit.state.blockchain.name,
-        index: len,
+        // index: len,
       );
 
-      _storage.saveItem(StoreKeys.Wallet.name, newWallet);
+      final id = await _storage.saveItem<Wallet>(
+        StoreKeys.Wallet.name,
+        newWallet,
+      );
+
+      newWallet = newWallet.copyWith(id: id);
+
+      await _storage.saveItemAt<Wallet>(
+        StoreKeys.Wallet.name,
+        id,
+        newWallet,
+      );
+
       emit(
         state.copyWith(
           currentStep: SeedGenerateSteps.networkOn,
@@ -431,7 +443,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
 
   @override
   Future<void> close() {
-    if (_networkCubitSub != null) _networkCubit.close();
+    _networkCubitSub.cancel();
     return super.close();
   }
 }
