@@ -1,12 +1,9 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
-import 'package:sats/cubit/wallet/blockchain.dart';
+import 'package:sats/cubit/wallet/node.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
-import 'package:sats/model/blockchain.dart';
 import 'package:sats/model/transaction.dart';
 import 'package:sats/model/wallet.dart';
 import 'package:sats/pkg/bitcoin.dart';
@@ -38,13 +35,14 @@ class HistoryState with _$HistoryState {
 class HistoryCubit extends Cubit<HistoryState> {
   HistoryCubit(
     this._walletsCubit,
-    this._bitcoin,
+    // this._bitcoin,
     this._storage,
     this._logger,
-    this._blockchain,
+    // this._blockchain,
     this._launcher,
     this._share,
     this._vibrate,
+    this._nodeAddressCubit,
   ) : super(const HistoryState()) {
     // scheduleMicrotask(() async {
     //   await Future.delayed(const Duration(milliseconds: 1000));
@@ -57,13 +55,14 @@ class HistoryCubit extends Cubit<HistoryState> {
   }
 
   final WalletsCubit _walletsCubit;
-  final IBitcoin _bitcoin;
+  // final IBitcoin _bitcoin;
   final IStorage _storage;
   final LoggerCubit _logger;
-  final BlockchainCubit _blockchain;
+  // final BlockchainCubit _blockchain;
   final IShare _share;
   final ILauncher _launcher;
   final IVibrate _vibrate;
+  final NodeAddressCubit _nodeAddressCubit;
 
   void _init() async {
     // await Future.delayed(const Duration(millis .econds: 1000));
@@ -80,9 +79,11 @@ class HistoryCubit extends Cubit<HistoryState> {
         ),
       );
 
+      final node = _nodeAddressCubit.state.getAddress();
+
       final bal = await compute(computeBalance, {
         'depositDesc': _walletsCubit.state.selectedWallet!.descriptor,
-        'network': _blockchain.state.blockchain.name,
+        'nodeAddress': node,
       });
 
       _vibrate.vibe();
@@ -97,7 +98,7 @@ class HistoryCubit extends Cubit<HistoryState> {
 
       final transactions = await compute(computeHistory, {
         'depositDesc': _walletsCubit.state.selectedWallet!.descriptor,
-        'nodeAddress': '',
+        'nodeAddress': node,
         // 'network': _blockchain.state.blockchain.name,
       });
 
@@ -177,7 +178,7 @@ int computeBalance(dynamic obj) {
   final data = obj as Map<String, String>;
   final resp = BitcoinFFI().syncBalance(
     depositDesc: data['depositDesc']!,
-    nodeAddress: data['network']!,
+    nodeAddress: data['nodeAddress']!,
   );
   return resp;
 }

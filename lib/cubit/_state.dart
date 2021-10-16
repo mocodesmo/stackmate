@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sats/cubit/address-book.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/wallet/blockchain.dart';
+import 'package:sats/cubit/wallet/node.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/pkg/_deps.dart';
 import 'package:sats/pkg/clipboard.dart';
@@ -32,6 +33,11 @@ final addressBookCubit = AddressBookCubit(
   locator<IClipBoard>(),
 );
 
+final nodeAddressCubit = NodeAddressCubit(
+  locator<IStorage>(),
+  loggerCubit,
+);
+
 class Cubits extends StatelessWidget {
   const Cubits({Key? key, required this.child}) : super(key: key);
 
@@ -45,6 +51,7 @@ class Cubits extends StatelessWidget {
         BlocProvider.value(value: loggerCubit),
         BlocProvider.value(value: walletsCubit),
         BlocProvider.value(value: addressBookCubit),
+        BlocProvider.value(value: nodeAddressCubit),
       ],
       child: BlocListener<BlockchainCubit, BlockchainState>(
         listener: (context, state) {

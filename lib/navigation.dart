@@ -4,15 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sats/api/rates.dart';
 import 'package:sats/api/reddit.dart';
+import 'package:sats/cubit/_state.dart';
 import 'package:sats/cubit/calculator.dart';
 import 'package:sats/cubit/new-wallet/network.dart';
 import 'package:sats/cubit/new-wallet/seed-generate.dart';
 import 'package:sats/cubit/new-wallet/seed-import.dart';
 import 'package:sats/cubit/new-wallet/xpub-import.dart';
 import 'package:sats/cubit/reddit.dart';
-import 'package:sats/cubit/wallet/wallet.dart';
 import 'package:sats/cubit/wallet/receive.dart';
 import 'package:sats/cubit/wallet/send.dart';
+import 'package:sats/cubit/wallet/wallet.dart';
 import 'package:sats/pkg/_deps.dart';
 import 'package:sats/pkg/bitcoin.dart';
 import 'package:sats/pkg/clipboard.dart';
@@ -21,7 +22,6 @@ import 'package:sats/pkg/launcher.dart';
 import 'package:sats/pkg/share.dart';
 import 'package:sats/pkg/storage.dart';
 import 'package:sats/pkg/vibrate.dart';
-import 'package:sats/cubit/_state.dart';
 import 'package:sats/view/add-wallet-page.dart';
 import 'package:sats/view/address-book-page.dart';
 import 'package:sats/view/calculator-page.dart';
@@ -164,13 +164,14 @@ class Routes {
       case wallet:
         final history = HistoryCubit(
           walletsCubit,
-          locator<IBitcoin>(),
+          // locator<IBitcoin>(),
           locator<IStorage>(),
           loggerCubit,
-          blockchainCubit,
+          // blockchainCubit,
           locator<ILauncher>(),
           locator<IShare>(),
           locator<IVibrate>(),
+          nodeAddressCubit,
         );
 
         page = BlocProvider.value(
@@ -188,12 +189,13 @@ class Routes {
       case receive:
         final r = ReceiveCubit(
           walletsCubit,
-          locator<IBitcoin>(),
+          // locator<IBitcoin>(),
           blockchainCubit,
           loggerCubit,
           locator<IClipBoard>(),
           locator<IShare>(),
           locator<IVibrate>(),
+          nodeAddressCubit,
         );
 
         page = BlocProvider.value(
@@ -206,11 +208,12 @@ class Routes {
         final s = SendCubit(
           false,
           walletsCubit,
-          locator<IBitcoin>(),
+          // locator<IBitcoin>(),
           blockchainCubit,
           loggerCubit,
           locator<IClipBoard>(),
           locator<IShare>(),
+          nodeAddressCubit,
         );
 
         page = BlocProvider.value(
@@ -224,11 +227,12 @@ class Routes {
         final s = SendCubit(
           true,
           walletsCubit,
-          locator<IBitcoin>(),
+          // locator<IBitcoin>(),
           blockchainCubit,
           loggerCubit,
           locator<IClipBoard>(),
           locator<IShare>(),
+          nodeAddressCubit,
         );
 
         page = BlocProvider.value(

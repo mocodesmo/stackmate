@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/wallet/blockchain.dart';
+import 'package:sats/cubit/wallet/node.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/pkg/bitcoin.dart';
@@ -36,12 +37,13 @@ class ReceiveState with _$ReceiveState {
 class ReceiveCubit extends Bloc<ReceiveEvent, ReceiveState> {
   ReceiveCubit(
     this._walletCubit,
-    this._bitcoin,
+    // this._bitcoin, 
     this._blockchain,
     this._logger,
     this._clipBoard,
     this._share,
     this._vibrate,
+    this._nodeAddressCubit,
   ) : super(const ReceiveState()) {
     on<GetAddress>(getAddress, transformer: concurrent());
     on<CopyAddress>(copyAddress, transformer: concurrent());
@@ -50,12 +52,13 @@ class ReceiveCubit extends Bloc<ReceiveEvent, ReceiveState> {
   }
 
   final WalletsCubit _walletCubit;
-  final IBitcoin _bitcoin;
+  // final IBitcoin _bitcoin;
   final LoggerCubit _logger;
   final BlockchainCubit _blockchain;
   final IShare _share;
   final IClipBoard _clipBoard;
   final IVibrate _vibrate;
+  final NodeAddressCubit _nodeAddressCubit;
 
   void _init() async {
     await Future.delayed(const Duration(milliseconds: 1000));
@@ -77,10 +80,11 @@ class ReceiveCubit extends Bloc<ReceiveEvent, ReceiveState> {
 
       // final w = _walletCubit.state.selectedWallet!.descriptor.split('#')[0];
       final w = _walletCubit.state.selectedWallet!.descriptor;
+      final node = _nodeAddressCubit.state.getAddress();
 
       final address = await compute(getAdrr, {
         'depositDesc': w,
-        'network': _blockchain.state.blockchain.name,
+        'nodeAddress': node,
       });
       //await _bitcoin.getAddress(
       //   depositDesc: w,
@@ -140,7 +144,7 @@ String getAdrr(dynamic msg) {
   final data = msg as Map<String, String>;
   final resp = BitcoinFFI().getAddress(
     depositDesc: data['depositDesc']!,
-    nodeAddress: data['network']!,
+    nodeAddress: data['nodeAddress']!,
     index: '0',
   );
   return resp;
