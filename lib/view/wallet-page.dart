@@ -6,7 +6,6 @@ import 'package:sats/model/transaction.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button.dart';
-import 'package:sats/view/common/header.dart';
 import 'package:sats/view/common/loading.dart';
 
 class WalletLoader extends StatelessWidget {

@@ -56,7 +56,7 @@ class SendState with _$SendState {
   int total() {
     try {
       final amountInt = int.parse(amount);
-      final feeInt = feeRate();
+      // final feeInt = feeRate();
       return amountInt; //+ feeInt;
     } catch (e) {
       print(e);

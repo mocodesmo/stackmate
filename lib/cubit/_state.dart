@@ -8,7 +8,7 @@ import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/pkg/_deps.dart';
 import 'package:sats/pkg/clipboard.dart';
 import 'package:sats/pkg/storage.dart';
-import 'package:sats/pkg/vibrate.dart';
+// import 'package:sats/pkg/vibrate.dart';
 
 final loggerCubit = LoggerCubit(
   locator<IClipBoard>(),
@@ -29,7 +29,7 @@ final walletsCubit = WalletsCubit(
 final addressBookCubit = AddressBookCubit(
   locator<IStorage>(),
   loggerCubit,
-  locator<IVibrate>(),
+  // locator<IVibrate>(),
   locator<IClipBoard>(),
 );
 

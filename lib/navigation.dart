@@ -61,7 +61,7 @@ class Routes {
           locator<IRedditAPI>(),
           loggerCubit,
           locator<ILauncher>(),
-          locator<IStorage>(),
+          // locator<IStorage>(),
         );
 
         page = BlocProvider.value(
@@ -137,7 +137,7 @@ class Routes {
 
       case calc:
         final calcCubit = CalculatorCubit(
-          locator<IStorage>(),
+          // locator<IStorage>(),
           loggerCubit,
           locator<IVibrate>(),
           locator<IRatesAPI>(),

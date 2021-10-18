@@ -1,8 +1,8 @@
-import 'package:hive/hive.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hive/hive.dart';
 
-part 'node.g.dart';
 part 'node.freezed.dart';
+part 'node.g.dart';
 
 @HiveType(typeId: 22, adapterName: 'NodeTypeClassAdaper')
 enum NodeType {

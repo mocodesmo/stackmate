@@ -8,7 +8,6 @@ import 'package:petitparser/petitparser.dart';
 import 'package:sats/api/rates.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/model/rate.dart';
-import 'package:sats/pkg/storage.dart';
 import 'package:sats/pkg/validation.dart';
 import 'package:sats/pkg/vibrate.dart';
 
@@ -30,7 +29,7 @@ class CalculatorState with _$CalculatorState {
 
 class CalculatorCubit extends Cubit<CalculatorState> {
   CalculatorCubit(
-    this._storage,
+    // this._storage,
     this._logger,
     this._vibrate,
     this._ratesAPI,
@@ -38,7 +37,7 @@ class CalculatorCubit extends Cubit<CalculatorState> {
     getRates();
   }
 
-  final IStorage _storage;
+  // final IStorage _storage;
   final LoggerCubit _logger;
   final IVibrate _vibrate;
   final IRatesAPI _ratesAPI;

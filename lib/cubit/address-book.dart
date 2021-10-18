@@ -4,7 +4,7 @@ import 'package:sats/cubit/logger.dart';
 import 'package:sats/model/address-book.dart';
 import 'package:sats/pkg/clipboard.dart';
 import 'package:sats/pkg/storage.dart';
-import 'package:sats/pkg/vibrate.dart';
+// import 'package:sats/pkg/vibrate.dart';
 
 part 'address-book.freezed.dart';
 
@@ -38,7 +38,7 @@ class AddressBookCubit extends Cubit<AddressBookState> {
   AddressBookCubit(
     this._storage,
     this._logger,
-    this._vibrate,
+    // this._vibrate,
     this._clipBoard,
   ) : super(const AddressBookState()) {
     loadAddressUsers();
@@ -46,7 +46,7 @@ class AddressBookCubit extends Cubit<AddressBookState> {
 
   final IStorage _storage;
   final LoggerCubit _logger;
-  final IVibrate _vibrate;
+  // final IVibrate _vibrate;
   final IClipBoard _clipBoard;
 
   void loadAddressUsers() {

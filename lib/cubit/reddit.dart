@@ -5,7 +5,7 @@ import 'package:sats/api/reddit.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/model/reddit-post.dart';
 import 'package:sats/pkg/launcher.dart';
-import 'package:sats/pkg/storage.dart';
+// import 'package:sats/pkg/storage.dart';
 
 part 'reddit.freezed.dart';
 
@@ -23,7 +23,7 @@ class RedditCubit extends Cubit<RedditState> {
     this._reddit,
     this._logger,
     this._launcher,
-    this._storage,
+    // this._storage,
   ) : super(const RedditState()) {
     getPosts();
   }
@@ -31,7 +31,7 @@ class RedditCubit extends Cubit<RedditState> {
   final IRedditAPI _reddit;
   final LoggerCubit _logger;
   final ILauncher _launcher;
-  final IStorage _storage;
+  // final IStorage _storage;
 
   void getPosts() async {
     try {
