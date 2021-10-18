@@ -16,6 +16,7 @@ class NodeAddressState with _$NodeAddressState {
     @Default('') String password,
     @Default('') String errNodeState,
   }) = _NodeAddressState;
+  const NodeAddressState._();
 
   String getAddress() {
     if (nodeType == NodeType.bitcoincore) {

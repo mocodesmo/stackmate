@@ -83,7 +83,7 @@ class SimpleBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase bloc, Change change) {
     try {
-      print('\n' + change.currentState.runtimeType.toString() + ' changed\n');
+      // print('\n' + change.currentState.runtimeType.toString() + ' changed\n');
       // prettyPrint(change.nextState.toString());
     } catch (e) {
       print('STATE ERROR: ' + e.toString());

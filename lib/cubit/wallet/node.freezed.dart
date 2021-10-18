@@ -180,14 +180,15 @@ class __$NodeAddressStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_NodeAddressState implements _NodeAddressState {
+class _$_NodeAddressState extends _NodeAddressState {
   const _$_NodeAddressState(
       {this.nodeType = NodeType.electrum,
       this.address = '',
       this.port = '',
       this.username = '',
       this.password = '',
-      this.errNodeState = ''});
+      this.errNodeState = ''})
+      : super._();
 
   @JsonKey(defaultValue: NodeType.electrum)
   @override
@@ -252,7 +253,7 @@ class _$_NodeAddressState implements _NodeAddressState {
       __$NodeAddressStateCopyWithImpl<_NodeAddressState>(this, _$identity);
 }
 
-abstract class _NodeAddressState implements NodeAddressState {
+abstract class _NodeAddressState extends NodeAddressState {
   const factory _NodeAddressState(
       {NodeType nodeType,
       String address,
@@ -260,6 +261,7 @@ abstract class _NodeAddressState implements NodeAddressState {
       String username,
       String password,
       String errNodeState}) = _$_NodeAddressState;
+  const _NodeAddressState._() : super._();
 
   @override
   NodeType get nodeType => throw _privateConstructorUsedError;
