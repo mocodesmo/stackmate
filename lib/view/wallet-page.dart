@@ -67,10 +67,13 @@ class WalletName extends StatelessWidget {
     final wallet = context.select((WalletsCubit wc) => wc.state.selectedWallet);
     if (wallet == null) return Container();
 
-    return Text(
-      '' + wallet.label.toUpperCase(),
-      style: context.fonts.headline4!.copyWith(
-        color: context.colours.onBackground,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        '' + wallet.label.toUpperCase(),
+        style: context.fonts.headline4!.copyWith(
+          color: context.colours.onBackground,
+        ),
       ),
     );
   }

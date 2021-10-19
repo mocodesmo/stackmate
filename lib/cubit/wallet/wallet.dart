@@ -112,6 +112,8 @@ class WalletCubit extends Cubit<WalletState> {
           errLoadingTransactions: '',
         ),
       );
+
+      _walletsCubit.addBalanceToSelectedWallet(bal);
     } catch (e, s) {
       emit(
         state.copyWith(

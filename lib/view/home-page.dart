@@ -121,16 +121,29 @@ class WalletCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    wallet.descriptor,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 10,
-                    style: context.fonts.caption!.copyWith(
-                      color: context.colours.onBackground.withOpacity(0.8),
-                      fontSize: 8,
+                  if (wallet.balance != null) ...[
+                    const Spacer(),
+
+                    // const SizedBox(height: 8),
+                    Text(
+                      'BALANCE',
+                      style: context.fonts.overline!.copyWith(
+                        color: context.colours.onBackground,
+                        fontSize: 8,
+                      ),
                     ),
-                  ),
-                  const Spacer(),
+                    Text(
+                      wallet.balance.toString() + ' sats',
+                      // overflow: TextOverflow.ellipsis,
+                      maxLines: 10,
+
+                      style: context.fonts.caption!.copyWith(
+                        color: context.colours.onBackground.withOpacity(0.8),
+                        // fontSize: 8,
+                      ),
+                    ),
+                  ],
+                  const Spacer(flex: 4),
                   Text(
                     'SINGLE SIGNATURE',
                     overflow: TextOverflow.ellipsis,

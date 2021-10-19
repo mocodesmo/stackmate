@@ -68,7 +68,11 @@ class WalletsCubit extends Cubit<WalletsState> {
     final wallet = state.selectedWallet!.copyWith(
       balance: balance,
     );
+
     emit(state.copyWith(selectedWallet: wallet));
+
+    _storage.saveItemAt<Wallet>(StoreKeys.Wallet.name, wallet.id!, wallet);
+    refresh();
   }
 
   void clearSelectedWallet() async {
