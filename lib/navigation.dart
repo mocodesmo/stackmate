@@ -162,7 +162,7 @@ class Routes {
         break;
 
       case wallet:
-        final history = HistoryCubit(
+        final history = WalletCubit(
           walletsCubit,
           // locator<IBitcoin>(),
           locator<IStorage>(),
@@ -176,7 +176,7 @@ class Routes {
 
         page = BlocProvider.value(
           value: history,
-          child: const HistoryPage(),
+          child: const WalletPage(),
         );
 
         // scheduleMicrotask(() async {

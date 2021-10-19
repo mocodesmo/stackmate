@@ -1,11 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/model/transaction.dart';
 import 'package:sats/model/wallet.dart';
+import 'package:sats/pkg/clipboard.dart';
 import 'package:sats/pkg/storage.dart';
 
 part 'wallets.freezed.dart';
@@ -25,6 +27,7 @@ class WalletsCubit extends Cubit<WalletsState> {
     this._storage,
     this._logger,
     this._blockchain,
+    this._clipBoard,
   ) : super(const WalletsState()) {
     refresh();
   }
@@ -32,6 +35,7 @@ class WalletsCubit extends Cubit<WalletsState> {
   final IStorage _storage;
   final LoggerCubit _logger;
   final BlockchainCubit _blockchain;
+  final IClipBoard _clipBoard;
 
   void refresh() {
     try {
@@ -90,5 +94,10 @@ class WalletsCubit extends Cubit<WalletsState> {
     await _storage.saveItemAt<Wallet>(StoreKeys.Wallet.name, oldId!, newwallet);
 
     refresh();
+  }
+
+  void copyDescriptor() async {
+    final _ =
+        await _clipBoard.copyToClipBoard(state.selectedWallet!.descriptor);
   }
 }

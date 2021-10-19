@@ -24,6 +24,7 @@ final walletsCubit = WalletsCubit(
   locator<IStorage>(),
   loggerCubit,
   blockchainCubit,
+  locator<IClipBoard>(),
 );
 
 final addressBookCubit = AddressBookCubit(

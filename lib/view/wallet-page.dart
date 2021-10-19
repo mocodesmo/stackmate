@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:sats/cubit/wallet/wallet.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/model/transaction.dart';
@@ -15,7 +16,7 @@ class WalletLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final history = context.select((HistoryCubit hc) => hc.state);
+    final history = context.select((WalletCubit hc) => hc.state);
     if (!history.loadingTransactions && !history.loadingBalance)
       return Container();
 
@@ -30,19 +31,20 @@ class DeleteWallet extends StatelessWidget {
 
   @override
   Widget build(BuildContext c) {
-    final history = c.select((HistoryCubit hc) => hc.state);
+    final history = c.select((WalletCubit hc) => hc.state);
 
     return Column(
       children: [
-        TextButton(
-          onPressed: () {
-            c.read<HistoryCubit>().deleteClicked();
-          },
-          child: Text(
-            'DELETE',
-            style: c.fonts.button!.copyWith(
-              color: c.colours.error,
-            ),
+        Opacity(
+          opacity: 0.4,
+          child: IconButton(
+            iconSize: 28,
+            // alignment: Alignment.centerRight,
+            color: c.colours.error,
+            onPressed: () {
+              c.read<WalletCubit>().deleteClicked();
+            },
+            icon: const Icon(Icons.delete_sweep_outlined),
           ),
         ),
         if (history.errDeleting.isNotEmpty)
@@ -65,15 +67,10 @@ class WalletName extends StatelessWidget {
     final wallet = context.select((WalletsCubit wc) => wc.state.selectedWallet);
     if (wallet == null) return Container();
 
-    return GestureDetector(
-      onTap: () {
-        context.read<HistoryCubit>().getHistory();
-      },
-      child: Text(
-        ' ' + wallet.label.toUpperCase(),
-        style: context.fonts.headline4!.copyWith(
-          color: context.colours.onBackground,
-        ),
+    return Text(
+      '' + wallet.label.toUpperCase(),
+      style: context.fonts.headline4!.copyWith(
+        color: context.colours.onBackground,
       ),
     );
   }
@@ -86,12 +83,12 @@ class Balance extends StatelessWidget {
 
   @override
   Widget build(BuildContext c) {
-    final balance = c.select((HistoryCubit hc) => hc.state.balance);
+    final balance = c.select((WalletCubit hc) => hc.state.balance);
     if (balance == null) return Container();
 
     return FadeIn(
       child: Padding(
-        padding: const EdgeInsets.only(left: 8),
+        padding: const EdgeInsets.only(left: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -101,12 +98,14 @@ class Balance extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
+            const SizedBox(height: 4),
             Text(
               balance.toString() + ' sats',
               style: c.fonts.headline6!.copyWith(
                 color: Colors.white,
               ),
             ),
+            const SizedBox(height: 2),
             Text(
               balance.toBtc() + ' BTC',
               style: c.fonts.caption!.copyWith(
@@ -198,7 +197,7 @@ class _TransactionCellState extends State<TransactionCell> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    c.read<HistoryCubit>().openLink(widget.transaction);
+                    c.read<WalletCubit>().openLink(widget.transaction);
                   },
                   child: Container(
                     width: c.width / 2,
@@ -246,7 +245,7 @@ class _TransactionCellState extends State<TransactionCell> {
                         child: TextButton(
                           onPressed: () {
                             c
-                                .read<HistoryCubit>()
+                                .read<WalletCubit>()
                                 .shareTransaction(widget.transaction);
                           },
                           child: Text(
@@ -323,7 +322,7 @@ class _TransactionCellState extends State<TransactionCell> {
               ),
               GestureDetector(
                 onTap: () {
-                  c.read<HistoryCubit>().openLink(widget.transaction);
+                  c.read<WalletCubit>().openLink(widget.transaction);
                 },
                 child: Container(
                   width: c.width / 2,
@@ -413,7 +412,7 @@ class _TransactionCellState extends State<TransactionCell> {
                     TextButton(
                       onPressed: () {
                         c
-                            .read<HistoryCubit>()
+                            .read<WalletCubit>()
                             .shareTransaction(widget.transaction);
                       },
                       child: Text('SHARE'.notLocalised()),
@@ -433,7 +432,7 @@ class _TransactionCellState extends State<TransactionCell> {
 class TransactionsView extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
-    final transactions = c.select((HistoryCubit w) => w.state.transactions);
+    final transactions = c.select((WalletCubit w) => w.state.transactions);
 
     if (transactions == null || transactions.isEmpty) return Container();
 
@@ -470,12 +469,13 @@ class TransactionsView extends StatelessWidget {
   }
 }
 
-class HistoryPage extends StatelessWidget {
-  const HistoryPage({Key? key}) : super(key: key);
+class WalletPage extends StatelessWidget {
+  const WalletPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext c) {
-    final zeroBal = c.select((HistoryCubit hc) => hc.state.zeroBalance());
+    final zeroBal = c.select((WalletCubit hc) => hc.state.zeroBalance());
+    final showInfo = c.select((WalletCubit hc) => hc.state.showInfo);
 
     return WillPopScope(
       onWillPop: () async {
@@ -489,61 +489,163 @@ class HistoryPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const WalletLoader(),
-                const SizedBox(height: 8),
+                const SizedBox(height: 16),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    const SizedBox(width: 8),
                     Back(
                       onPressed: () {
                         c.read<WalletsCubit>().clearSelectedWallet();
                         Navigator.of(c).pop();
                       },
                     ),
-                    const DeleteWallet(),
+                    const Spacer(),
+                    const SizedBox(width: 8),
                   ],
                 ),
-                const SizedBox(height: 60),
-                const WalletName(),
-                const SizedBox(height: 24),
-                const Balance(),
-                const SizedBox(height: 32),
+                // const SizedBox(height: 40),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          c,
-                          Routes.receive,
-                          // arguments: state.wallet!,
-                        );
-                      },
-                      child: const Text('RECEIVE'),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: const [
+                          WalletName(),
+                          SizedBox(height: 24),
+                          Balance(),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 32),
-                    AnimatedOpacity(
-                      duration: const Duration(milliseconds: 300),
-                      opacity: zeroBal ? 0.4 : 1,
-                      child: TextButton(
-                        onPressed: () {
-                          if (!zeroBal)
-                            Navigator.pushNamed(
-                              c,
-                              Routes.send,
-                              // arguments: state.wallet!,
-                            );
-                        },
-                        child: const Text('SEND'),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            const DeleteWallet(),
+                            // const SizedBox(height: 24),
+                            IconButton(
+                              // alignment: Alignment.centerRight,
+                              color: c.colours.primary,
+                              onPressed: () {
+                                c.read<WalletCubit>().toggleShowInfo();
+                              },
+                              icon: const Icon(Icons.info_outline),
+                            ),
+                            AnimatedOpacity(
+                              duration: const Duration(milliseconds: 300),
+                              opacity: zeroBal ? 0.4 : 1,
+                              child: IconButton(
+                                // alignment: Alignment.centerRight,
+                                color: c.colours.primary,
+                                onPressed: () {
+                                  if (!zeroBal)
+                                    Navigator.pushNamed(
+                                      c,
+                                      Routes.send,
+                                      // arguments: state.wallet!,
+                                    );
+                                },
+                                icon: const Icon(
+                                  Icons.call_missed_outgoing_outlined,
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              // alignment: Alignment.centerRight,
+                              color: c.colours.primary,
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                  c,
+                                  Routes.receive,
+                                  // arguments: state.wallet!,
+                                );
+                              },
+                              icon: const Icon(Icons.call_received),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
                 ),
-                // const SizedBox(height: 48),
-                TransactionsView()
+                const SizedBox(height: 40),
+                if (!showInfo)
+                  // const SizedBox(height: 48),
+                  TransactionsView()
+                else
+                  const WalletInfo()
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class WalletInfo extends StatelessWidget {
+  const WalletInfo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext c) {
+    final wallet = c.select((WalletsCubit wc) => wc.state.selectedWallet!);
+
+    return FadeIn(
+      delay: const Duration(milliseconds: 300),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 32),
+
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Text(
+              'WALLET INFORMATION',
+              style: c.fonts.overline!.copyWith(
+                color: c.colours.onBackground,
+              ),
+            ),
+          ),
+          const SizedBox(height: 24),
+
+          Container(
+            padding: const EdgeInsets.only(left: 16),
+            width: c.width * 0.8,
+            child: Text(
+              wallet.descriptor,
+              maxLines: 10,
+              textAlign: TextAlign.left,
+              style: c.fonts.caption!.copyWith(
+                color: c.colours.onBackground.withOpacity(0.9),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextButton(
+              onPressed: () {},
+              child: const Text('COPY'),
+            ),
+          )
+
+          // for (var transaction in transactions)
+          //   TransactionCell(transaction: transaction),
+
+          // if (!state.loadingTransactions) ...[
+          //   SizedBox(height: 24),
+          //   Center(
+          //       child: TextButton(
+          //           onPressed: () {
+          //             c.read<HistoryCubit>().getHistory();
+          //           },
+          //           child: Text('Load More'))),
+          //   SizedBox(height: 24),
+          // ]
+        ],
       ),
     );
   }

@@ -14,10 +14,10 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$HistoryStateTearOff {
-  const _$HistoryStateTearOff();
+class _$WalletStateTearOff {
+  const _$WalletStateTearOff();
 
-  _HistoryState call(
+  _WalletState call(
       {bool loadingTransactions = false,
       String errLoadingTransactions = '',
       bool loadingBalance = true,
@@ -25,8 +25,9 @@ class _$HistoryStateTearOff {
       int? balance,
       List<Transaction>? transactions,
       String errDeleting = '',
-      bool deleted = false}) {
-    return _HistoryState(
+      bool deleted = false,
+      bool showInfo = false}) {
+    return _WalletState(
       loadingTransactions: loadingTransactions,
       errLoadingTransactions: errLoadingTransactions,
       loadingBalance: loadingBalance,
@@ -35,15 +36,16 @@ class _$HistoryStateTearOff {
       transactions: transactions,
       errDeleting: errDeleting,
       deleted: deleted,
+      showInfo: showInfo,
     );
   }
 }
 
 /// @nodoc
-const $HistoryState = _$HistoryStateTearOff();
+const $WalletState = _$WalletStateTearOff();
 
 /// @nodoc
-mixin _$HistoryState {
+mixin _$WalletState {
   bool get loadingTransactions => throw _privateConstructorUsedError;
   String get errLoadingTransactions => throw _privateConstructorUsedError;
   bool get loadingBalance => throw _privateConstructorUsedError;
@@ -52,17 +54,18 @@ mixin _$HistoryState {
   List<Transaction>? get transactions => throw _privateConstructorUsedError;
   String get errDeleting => throw _privateConstructorUsedError;
   bool get deleted => throw _privateConstructorUsedError;
+  bool get showInfo => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $HistoryStateCopyWith<HistoryState> get copyWith =>
+  $WalletStateCopyWith<WalletState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $HistoryStateCopyWith<$Res> {
-  factory $HistoryStateCopyWith(
-          HistoryState value, $Res Function(HistoryState) then) =
-      _$HistoryStateCopyWithImpl<$Res>;
+abstract class $WalletStateCopyWith<$Res> {
+  factory $WalletStateCopyWith(
+          WalletState value, $Res Function(WalletState) then) =
+      _$WalletStateCopyWithImpl<$Res>;
   $Res call(
       {bool loadingTransactions,
       String errLoadingTransactions,
@@ -71,16 +74,17 @@ abstract class $HistoryStateCopyWith<$Res> {
       int? balance,
       List<Transaction>? transactions,
       String errDeleting,
-      bool deleted});
+      bool deleted,
+      bool showInfo});
 }
 
 /// @nodoc
-class _$HistoryStateCopyWithImpl<$Res> implements $HistoryStateCopyWith<$Res> {
-  _$HistoryStateCopyWithImpl(this._value, this._then);
+class _$WalletStateCopyWithImpl<$Res> implements $WalletStateCopyWith<$Res> {
+  _$WalletStateCopyWithImpl(this._value, this._then);
 
-  final HistoryState _value;
+  final WalletState _value;
   // ignore: unused_field
-  final $Res Function(HistoryState) _then;
+  final $Res Function(WalletState) _then;
 
   @override
   $Res call({
@@ -92,6 +96,7 @@ class _$HistoryStateCopyWithImpl<$Res> implements $HistoryStateCopyWith<$Res> {
     Object? transactions = freezed,
     Object? errDeleting = freezed,
     Object? deleted = freezed,
+    Object? showInfo = freezed,
   }) {
     return _then(_value.copyWith(
       loadingTransactions: loadingTransactions == freezed
@@ -126,16 +131,20 @@ class _$HistoryStateCopyWithImpl<$Res> implements $HistoryStateCopyWith<$Res> {
           ? _value.deleted
           : deleted // ignore: cast_nullable_to_non_nullable
               as bool,
+      showInfo: showInfo == freezed
+          ? _value.showInfo
+          : showInfo // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
 
 /// @nodoc
-abstract class _$HistoryStateCopyWith<$Res>
-    implements $HistoryStateCopyWith<$Res> {
-  factory _$HistoryStateCopyWith(
-          _HistoryState value, $Res Function(_HistoryState) then) =
-      __$HistoryStateCopyWithImpl<$Res>;
+abstract class _$WalletStateCopyWith<$Res>
+    implements $WalletStateCopyWith<$Res> {
+  factory _$WalletStateCopyWith(
+          _WalletState value, $Res Function(_WalletState) then) =
+      __$WalletStateCopyWithImpl<$Res>;
   @override
   $Res call(
       {bool loadingTransactions,
@@ -145,18 +154,19 @@ abstract class _$HistoryStateCopyWith<$Res>
       int? balance,
       List<Transaction>? transactions,
       String errDeleting,
-      bool deleted});
+      bool deleted,
+      bool showInfo});
 }
 
 /// @nodoc
-class __$HistoryStateCopyWithImpl<$Res> extends _$HistoryStateCopyWithImpl<$Res>
-    implements _$HistoryStateCopyWith<$Res> {
-  __$HistoryStateCopyWithImpl(
-      _HistoryState _value, $Res Function(_HistoryState) _then)
-      : super(_value, (v) => _then(v as _HistoryState));
+class __$WalletStateCopyWithImpl<$Res> extends _$WalletStateCopyWithImpl<$Res>
+    implements _$WalletStateCopyWith<$Res> {
+  __$WalletStateCopyWithImpl(
+      _WalletState _value, $Res Function(_WalletState) _then)
+      : super(_value, (v) => _then(v as _WalletState));
 
   @override
-  _HistoryState get _value => super._value as _HistoryState;
+  _WalletState get _value => super._value as _WalletState;
 
   @override
   $Res call({
@@ -168,8 +178,9 @@ class __$HistoryStateCopyWithImpl<$Res> extends _$HistoryStateCopyWithImpl<$Res>
     Object? transactions = freezed,
     Object? errDeleting = freezed,
     Object? deleted = freezed,
+    Object? showInfo = freezed,
   }) {
-    return _then(_HistoryState(
+    return _then(_WalletState(
       loadingTransactions: loadingTransactions == freezed
           ? _value.loadingTransactions
           : loadingTransactions // ignore: cast_nullable_to_non_nullable
@@ -202,14 +213,18 @@ class __$HistoryStateCopyWithImpl<$Res> extends _$HistoryStateCopyWithImpl<$Res>
           ? _value.deleted
           : deleted // ignore: cast_nullable_to_non_nullable
               as bool,
+      showInfo: showInfo == freezed
+          ? _value.showInfo
+          : showInfo // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
 
 /// @nodoc
 
-class _$_HistoryState extends _HistoryState with DiagnosticableTreeMixin {
-  const _$_HistoryState(
+class _$_WalletState extends _WalletState with DiagnosticableTreeMixin {
+  const _$_WalletState(
       {this.loadingTransactions = false,
       this.errLoadingTransactions = '',
       this.loadingBalance = true,
@@ -217,7 +232,8 @@ class _$_HistoryState extends _HistoryState with DiagnosticableTreeMixin {
       this.balance,
       this.transactions,
       this.errDeleting = '',
-      this.deleted = false})
+      this.deleted = false,
+      this.showInfo = false})
       : super._();
 
   @JsonKey(defaultValue: false)
@@ -242,17 +258,20 @@ class _$_HistoryState extends _HistoryState with DiagnosticableTreeMixin {
   @JsonKey(defaultValue: false)
   @override
   final bool deleted;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool showInfo;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'HistoryState(loadingTransactions: $loadingTransactions, errLoadingTransactions: $errLoadingTransactions, loadingBalance: $loadingBalance, errLoadingBalance: $errLoadingBalance, balance: $balance, transactions: $transactions, errDeleting: $errDeleting, deleted: $deleted)';
+    return 'WalletState(loadingTransactions: $loadingTransactions, errLoadingTransactions: $errLoadingTransactions, loadingBalance: $loadingBalance, errLoadingBalance: $errLoadingBalance, balance: $balance, transactions: $transactions, errDeleting: $errDeleting, deleted: $deleted, showInfo: $showInfo)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'HistoryState'))
+      ..add(DiagnosticsProperty('type', 'WalletState'))
       ..add(DiagnosticsProperty('loadingTransactions', loadingTransactions))
       ..add(
           DiagnosticsProperty('errLoadingTransactions', errLoadingTransactions))
@@ -261,13 +280,14 @@ class _$_HistoryState extends _HistoryState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('balance', balance))
       ..add(DiagnosticsProperty('transactions', transactions))
       ..add(DiagnosticsProperty('errDeleting', errDeleting))
-      ..add(DiagnosticsProperty('deleted', deleted));
+      ..add(DiagnosticsProperty('deleted', deleted))
+      ..add(DiagnosticsProperty('showInfo', showInfo));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _HistoryState &&
+        (other is _WalletState &&
             (identical(other.loadingTransactions, loadingTransactions) ||
                 const DeepCollectionEquality()
                     .equals(other.loadingTransactions, loadingTransactions)) &&
@@ -290,7 +310,11 @@ class _$_HistoryState extends _HistoryState with DiagnosticableTreeMixin {
                 const DeepCollectionEquality()
                     .equals(other.errDeleting, errDeleting)) &&
             (identical(other.deleted, deleted) ||
-                const DeepCollectionEquality().equals(other.deleted, deleted)));
+                const DeepCollectionEquality()
+                    .equals(other.deleted, deleted)) &&
+            (identical(other.showInfo, showInfo) ||
+                const DeepCollectionEquality()
+                    .equals(other.showInfo, showInfo)));
   }
 
   @override
@@ -303,16 +327,17 @@ class _$_HistoryState extends _HistoryState with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(balance) ^
       const DeepCollectionEquality().hash(transactions) ^
       const DeepCollectionEquality().hash(errDeleting) ^
-      const DeepCollectionEquality().hash(deleted);
+      const DeepCollectionEquality().hash(deleted) ^
+      const DeepCollectionEquality().hash(showInfo);
 
   @JsonKey(ignore: true)
   @override
-  _$HistoryStateCopyWith<_HistoryState> get copyWith =>
-      __$HistoryStateCopyWithImpl<_HistoryState>(this, _$identity);
+  _$WalletStateCopyWith<_WalletState> get copyWith =>
+      __$WalletStateCopyWithImpl<_WalletState>(this, _$identity);
 }
 
-abstract class _HistoryState extends HistoryState {
-  const factory _HistoryState(
+abstract class _WalletState extends WalletState {
+  const factory _WalletState(
       {bool loadingTransactions,
       String errLoadingTransactions,
       bool loadingBalance,
@@ -320,8 +345,9 @@ abstract class _HistoryState extends HistoryState {
       int? balance,
       List<Transaction>? transactions,
       String errDeleting,
-      bool deleted}) = _$_HistoryState;
-  const _HistoryState._() : super._();
+      bool deleted,
+      bool showInfo}) = _$_WalletState;
+  const _WalletState._() : super._();
 
   @override
   bool get loadingTransactions => throw _privateConstructorUsedError;
@@ -340,7 +366,9 @@ abstract class _HistoryState extends HistoryState {
   @override
   bool get deleted => throw _privateConstructorUsedError;
   @override
+  bool get showInfo => throw _privateConstructorUsedError;
+  @override
   @JsonKey(ignore: true)
-  _$HistoryStateCopyWith<_HistoryState> get copyWith =>
+  _$WalletStateCopyWith<_WalletState> get copyWith =>
       throw _privateConstructorUsedError;
 }

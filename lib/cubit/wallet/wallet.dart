@@ -15,8 +15,8 @@ import 'package:sats/pkg/vibrate.dart';
 part 'wallet.freezed.dart';
 
 @freezed
-class HistoryState with _$HistoryState {
-  const factory HistoryState({
+class WalletState with _$WalletState {
+  const factory WalletState({
     @Default(false) bool loadingTransactions,
     @Default('') String errLoadingTransactions,
     @Default(true) bool loadingBalance,
@@ -25,15 +25,16 @@ class HistoryState with _$HistoryState {
     List<Transaction>? transactions,
     @Default('') String errDeleting,
     @Default(false) bool deleted,
-  }) = _HistoryState;
-  const HistoryState._();
+    @Default(false) bool showInfo,
+  }) = _WalletState;
+  const WalletState._();
 
   bool zeroBalance() => balance == null || balance == 0;
   bool zeroBalanceAmt() => balance != null && balance == 0;
 }
 
-class HistoryCubit extends Cubit<HistoryState> {
-  HistoryCubit(
+class WalletCubit extends Cubit<WalletState> {
+  WalletCubit(
     this._walletsCubit,
     // this._bitcoin,
     this._storage,
@@ -43,7 +44,7 @@ class HistoryCubit extends Cubit<HistoryState> {
     this._share,
     this._vibrate,
     this._nodeAddressCubit,
-  ) : super(const HistoryState()) {
+  ) : super(const WalletState()) {
     // scheduleMicrotask(() async {
     //   await Future.delayed(const Duration(milliseconds: 1000));
     //   getHistory();
@@ -162,6 +163,10 @@ class HistoryCubit extends Cubit<HistoryState> {
     _walletsCubit.refresh();
 
     emit(state.copyWith(deleted: true));
+  }
+
+  void toggleShowInfo() {
+    emit(state.copyWith(showInfo: !state.showInfo));
   }
 }
 
