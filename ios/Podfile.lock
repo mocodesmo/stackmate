@@ -61,18 +61,18 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher/ios"
 
 SPEC CHECKSUMS:
-  bitcoin: edad264f62e1babdd1ad827c9c919d0921ddf1af
+  bitcoin: a53da0801fd7ebdce60c9194d0b3858411e03851
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   flutter_barcode_scanner: 7a1144744c28dc0c57a8de7218ffe5ec59a9e4bf
   flutter_blue: eeb381dc4727a0954dede73515f683865494b370
   open_mail_app: 794172f6a22cd16319d3ddaf45e945b2f74952b0
-  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  path_provider: d1e9807085df1f9cc9318206cd649dc0b76be3de
   Protobuf: 176220c526ad8bd09ab1fb40a978eac3fef665f7
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
-  url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
+  url_launcher: b6e016d912f04be9f5bf6e8e82dc599b7ba59649
 
-PODFILE CHECKSUM: a2d11418b6c930ab12f2ee51093d8b3b378b03a9
+PODFILE CHECKSUM: 90b5c81536b2c44361e88a7b14b7636b34b08108
 
 COCOAPODS: 1.11.0
