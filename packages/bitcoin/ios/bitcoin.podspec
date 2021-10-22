@@ -29,5 +29,5 @@ A new flutter plugin project.
   # s.user_target_xcconfig = { 'ONLY_ACTIVE_ARCH' => 'YES' }
 
   s.swift_version = '5.0'
-  # s.pod_target_xcconfig = { 'STRIP_STYLE' => 'non-global' }
+  s.pod_target_xcconfig = { 'STRIP_STYLE' => 'non-global' }
 end

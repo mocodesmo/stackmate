@@ -16,11 +16,18 @@ public class SwiftBitcoinPlugin: NSObject, FlutterPlugin {
     // This will never be executed
     // print("\n\n---- xyz ------");
 
-    // print(generate_master("12","",""));
-    // import_master("","","");
-    // derive_hardened("","","");
-    // compile("","");
-    // sync_balance("","");
-    // get_address("","","");
+    generate_master("12","","")
+    import_master("","","");
+    derive_hardened("","","");
+    compile("","");
+    sync_balance("","");
+    get_address("","","");
+    sync_history("","");
+    get_fees("","","");
+    build_tx("","","","","");
+    sign_tx("","","");
+    broadcast_tx("","","");
+    cstring_free("");
+
   }
 }
