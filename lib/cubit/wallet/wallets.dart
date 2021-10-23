@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:oktoast/oktoast.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/model/blockchain.dart';

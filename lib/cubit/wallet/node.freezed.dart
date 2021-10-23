@@ -23,7 +23,8 @@ class _$NodeAddressStateTearOff {
       String port = '',
       String username = '',
       String password = '',
-      String errNodeState = ''}) {
+      String errNodeState = '',
+      bool isEditing = false}) {
     return _NodeAddressState(
       nodeType: nodeType,
       address: address,
@@ -31,6 +32,7 @@ class _$NodeAddressStateTearOff {
       username: username,
       password: password,
       errNodeState: errNodeState,
+      isEditing: isEditing,
     );
   }
 }
@@ -46,6 +48,7 @@ mixin _$NodeAddressState {
   String get username => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
   String get errNodeState => throw _privateConstructorUsedError;
+  bool get isEditing => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $NodeAddressStateCopyWith<NodeAddressState> get copyWith =>
@@ -63,7 +66,8 @@ abstract class $NodeAddressStateCopyWith<$Res> {
       String port,
       String username,
       String password,
-      String errNodeState});
+      String errNodeState,
+      bool isEditing});
 }
 
 /// @nodoc
@@ -83,6 +87,7 @@ class _$NodeAddressStateCopyWithImpl<$Res>
     Object? username = freezed,
     Object? password = freezed,
     Object? errNodeState = freezed,
+    Object? isEditing = freezed,
   }) {
     return _then(_value.copyWith(
       nodeType: nodeType == freezed
@@ -109,6 +114,10 @@ class _$NodeAddressStateCopyWithImpl<$Res>
           ? _value.errNodeState
           : errNodeState // ignore: cast_nullable_to_non_nullable
               as String,
+      isEditing: isEditing == freezed
+          ? _value.isEditing
+          : isEditing // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -126,7 +135,8 @@ abstract class _$NodeAddressStateCopyWith<$Res>
       String port,
       String username,
       String password,
-      String errNodeState});
+      String errNodeState,
+      bool isEditing});
 }
 
 /// @nodoc
@@ -148,6 +158,7 @@ class __$NodeAddressStateCopyWithImpl<$Res>
     Object? username = freezed,
     Object? password = freezed,
     Object? errNodeState = freezed,
+    Object? isEditing = freezed,
   }) {
     return _then(_NodeAddressState(
       nodeType: nodeType == freezed
@@ -174,6 +185,10 @@ class __$NodeAddressStateCopyWithImpl<$Res>
           ? _value.errNodeState
           : errNodeState // ignore: cast_nullable_to_non_nullable
               as String,
+      isEditing: isEditing == freezed
+          ? _value.isEditing
+          : isEditing // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -187,7 +202,8 @@ class _$_NodeAddressState extends _NodeAddressState {
       this.port = '',
       this.username = '',
       this.password = '',
-      this.errNodeState = ''})
+      this.errNodeState = '',
+      this.isEditing = false})
       : super._();
 
   @JsonKey(defaultValue: NodeType.electrum)
@@ -208,10 +224,13 @@ class _$_NodeAddressState extends _NodeAddressState {
   @JsonKey(defaultValue: '')
   @override
   final String errNodeState;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool isEditing;
 
   @override
   String toString() {
-    return 'NodeAddressState(nodeType: $nodeType, address: $address, port: $port, username: $username, password: $password, errNodeState: $errNodeState)';
+    return 'NodeAddressState(nodeType: $nodeType, address: $address, port: $port, username: $username, password: $password, errNodeState: $errNodeState, isEditing: $isEditing)';
   }
 
   @override
@@ -234,7 +253,10 @@ class _$_NodeAddressState extends _NodeAddressState {
                     .equals(other.password, password)) &&
             (identical(other.errNodeState, errNodeState) ||
                 const DeepCollectionEquality()
-                    .equals(other.errNodeState, errNodeState)));
+                    .equals(other.errNodeState, errNodeState)) &&
+            (identical(other.isEditing, isEditing) ||
+                const DeepCollectionEquality()
+                    .equals(other.isEditing, isEditing)));
   }
 
   @override
@@ -245,7 +267,8 @@ class _$_NodeAddressState extends _NodeAddressState {
       const DeepCollectionEquality().hash(port) ^
       const DeepCollectionEquality().hash(username) ^
       const DeepCollectionEquality().hash(password) ^
-      const DeepCollectionEquality().hash(errNodeState);
+      const DeepCollectionEquality().hash(errNodeState) ^
+      const DeepCollectionEquality().hash(isEditing);
 
   @JsonKey(ignore: true)
   @override
@@ -260,7 +283,8 @@ abstract class _NodeAddressState extends NodeAddressState {
       String port,
       String username,
       String password,
-      String errNodeState}) = _$_NodeAddressState;
+      String errNodeState,
+      bool isEditing}) = _$_NodeAddressState;
   const _NodeAddressState._() : super._();
 
   @override
@@ -275,6 +299,8 @@ abstract class _NodeAddressState extends NodeAddressState {
   String get password => throw _privateConstructorUsedError;
   @override
   String get errNodeState => throw _privateConstructorUsedError;
+  @override
+  bool get isEditing => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$NodeAddressStateCopyWith<_NodeAddressState> get copyWith =>

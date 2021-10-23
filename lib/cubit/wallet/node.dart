@@ -15,6 +15,7 @@ class NodeAddressState with _$NodeAddressState {
     @Default('') String username,
     @Default('') String password,
     @Default('') String errNodeState,
+    @Default(false) bool isEditing,
   }) = _NodeAddressState;
   const NodeAddressState._();
 
@@ -24,6 +25,12 @@ class NodeAddressState with _$NodeAddressState {
       return 'https://$address:$port?auth=$username:$password';
     }
     return 'default';
+  }
+
+  String mainString() {
+    if (nodeType == NodeType.electrum) return 'Electrum (Default)';
+
+    return '$address:$port (Custom)';
   }
 }
 
@@ -38,7 +45,7 @@ class NodeAddressCubit extends Cubit<NodeAddressState> {
   final IStorage _storage;
   final LoggerCubit _logger;
 
-  void init() async {
+  Future init() async {
     try {
       final node = _storage.getFirstItem<Node>(StoreKeys.Node.name);
 
@@ -87,6 +94,11 @@ class NodeAddressCubit extends Cubit<NodeAddressState> {
     emit(state.copyWith(nodeType: NodeType.bitcoincore));
   }
 
+  void toggleIsEditting() async {
+    await init();
+    emit(state.copyWith(isEditing: !state.isEditing));
+  }
+
   void addressChanged(String text) {
     emit(state.copyWith(address: text));
   }
@@ -103,7 +115,7 @@ class NodeAddressCubit extends Cubit<NodeAddressState> {
     emit(state.copyWith(password: text));
   }
 
-  void saveClicked() {
+  void saveClicked() async {
     try {
       final node = Node(
         nodeType: state.nodeType,
@@ -113,8 +125,10 @@ class NodeAddressCubit extends Cubit<NodeAddressState> {
         password: state.password,
       );
 
-      _storage.clearAll<Node>(StoreKeys.Node.name);
-      _storage.saveItem<Node>(StoreKeys.Node.name, node);
+      await _storage.clearAll<Node>(StoreKeys.Node.name);
+      await _storage.saveItem<Node>(StoreKeys.Node.name, node);
+      await Future.delayed(const Duration(milliseconds: 200));
+      toggleIsEditting();
     } catch (e, s) {
       emit(state.copyWith(errNodeState: e.toString()));
       _logger.logException(e, 'NodeAddressCubit.saveClicked', s);

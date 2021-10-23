@@ -172,14 +172,15 @@ class __$NodeCopyWithImpl<$Res> extends _$NodeCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 5, adapterName: 'NodeClassAdaper')
-class _$_Node implements _Node {
+@HiveType(typeId: 14, adapterName: 'NodeClassAdaper')
+class _$_Node extends _Node {
   const _$_Node(
       {@HiveField(0) required this.nodeType,
       @HiveField(1) required this.address,
       @HiveField(2) required this.port,
       @HiveField(3) required this.username,
-      @HiveField(4) required this.password});
+      @HiveField(4) required this.password})
+      : super._();
 
   factory _$_Node.fromJson(Map<String, dynamic> json) => _$$_NodeFromJson(json);
 
@@ -244,13 +245,14 @@ class _$_Node implements _Node {
   }
 }
 
-abstract class _Node implements Node {
+abstract class _Node extends Node {
   const factory _Node(
       {@HiveField(0) required NodeType nodeType,
       @HiveField(1) required String address,
       @HiveField(2) required String port,
       @HiveField(3) required String username,
       @HiveField(4) required String password}) = _$_Node;
+  const _Node._() : super._();
 
   factory _Node.fromJson(Map<String, dynamic> json) = _$_Node.fromJson;
 

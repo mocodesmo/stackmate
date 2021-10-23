@@ -47,7 +47,7 @@ class NodeTypeClassAdaper extends TypeAdapter<NodeType> {
 
 class NodeClassAdaper extends TypeAdapter<_$_Node> {
   @override
-  final int typeId = 5;
+  final int typeId = 14;
 
   @override
   _$_Node read(BinaryReader reader) {

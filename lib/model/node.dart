@@ -15,7 +15,7 @@ enum NodeType {
 
 @freezed
 class Node with _$Node {
-  @HiveType(typeId: 5, adapterName: 'NodeClassAdaper')
+  @HiveType(typeId: 14, adapterName: 'NodeClassAdaper')
   const factory Node({
     @HiveField(0) required NodeType nodeType,
     @HiveField(1) required String address,
@@ -23,6 +23,11 @@ class Node with _$Node {
     @HiveField(3) required String username,
     @HiveField(4) required String password,
   }) = _Node;
+  const Node._();
 
   factory Node.fromJson(Map<String, dynamic> json) => _$NodeFromJson(json);
+
+  String nodeAddress() => nodeType == NodeType.electrum
+      ? 'default'
+      : '$address:$port?auth=$username:$password';
 }
