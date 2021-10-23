@@ -29,7 +29,7 @@ void setupDependencies({required bool useDummies}) {
   locator.registerLazySingleton<IRedditAPI>(() => RedditAPI());
   locator.registerLazySingleton<IClipBoard>(() => ClipBoardd());
   locator.registerLazySingleton<IStorage>(() => HiveStore());
-  // locator.registerLazySingleton<IBitcoin>(() => BitcoinFFI());
+  locator.registerLazySingleton<IBitcoin>(() => BitcoinFFI());
   locator.registerLazySingleton<IVibrate>(() => Vibrator());
   locator.registerLazySingleton<ILocalAuth>(() => LocalAuth());
   locator.registerLazySingleton<IRatesAPI>(() => RatesAPI());

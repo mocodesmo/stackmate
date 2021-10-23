@@ -74,12 +74,12 @@ class SimpleBlocObserver extends BlocObserver {
     print(str);
   }
 
-  @override
-  void onEvent(Bloc bloc, Object? event) {
-    print('Event { ' + event.toString() + ' }');
+  // @override
+  // void onEvent(Bloc bloc, Object? event) {
+  //   // print('Event { ' + event.toString() + ' }');
 
-    super.onEvent(bloc, event);
-  }
+  //   super.onEvent(bloc, event);
+  // }
 
   @override
   void onChange(BlocBase bloc, Change change) {

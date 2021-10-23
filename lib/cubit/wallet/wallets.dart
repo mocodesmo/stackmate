@@ -64,6 +64,8 @@ class WalletsCubit extends Cubit<WalletsState> {
   }
 
   Future<void> addBalanceToSelectedWallet(int balance) async {
+    if (state.selectedWallet == null) return;
+    
     final wallet = state.selectedWallet!.copyWith(
       balance: balance,
     );

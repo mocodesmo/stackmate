@@ -117,6 +117,7 @@ class WalletCubit extends Cubit<WalletState> {
     } catch (e, s) {
       emit(
         state.copyWith(
+          loadingBalance: false,
           loadingTransactions: false,
           errLoadingTransactions: e.toString(),
         ),

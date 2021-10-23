@@ -151,6 +151,7 @@ class _AmountRowState extends State<AmountRow> {
             opacity: isSweep ? 0.5 : 1,
             child: TextField(
               controller: _controller,
+              keyboardType: TextInputType.number,
               style: TextStyle(color: context.colours.onBackground),
               decoration: InputDecoration(
                 hintText: isSweep
@@ -319,7 +320,7 @@ class ConfirmTransaction extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SizedBox(height: 60),
+        // const SizedBox(height: 24),
         Text(
           'Confirm\nTransaction',
           style: context.fonts.headline5!.copyWith(
@@ -470,11 +471,11 @@ class WalletSendPage extends StatelessWidget {
         // if (confirmedStep) context.read<HistoryCubit>().getHistory();
         return true;
       },
-      child: Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
               child: BlocConsumer<SendCubit, SendState>(
                 listener: (context, state) async {
                   if (state.zeroBalanceAmt()) {
@@ -500,39 +501,45 @@ class WalletSendPage extends StatelessWidget {
                         const Loading(
                           text: 'Sending Amount',
                         ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Back(
-                            onPressed: () {
-                              if (confirmstep) {
-                                context.read<SendCubit>().clearPsbt();
-                                return;
-                              }
-                              // if (confirmedStep)
-                              //   context.read<HistoryCubit>().getHistory();
-                              Navigator.pop(context);
-                            },
-                          ),
-                          LogButton(
-                            child: IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.lightbulb_outline_sharp,
-                                size: 32,
-                                color: context.colours.primary,
+                      const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Back(
+                              onPressed: () {
+                                if (confirmstep) {
+                                  context.read<SendCubit>().clearPsbt();
+                                  return;
+                                }
+                                // if (confirmedStep)
+                                //   context.read<HistoryCubit>().getHistory();
+                                Navigator.pop(context);
+                              },
+                            ),
+                            LogButton(
+                              child: IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.lightbulb_outline_sharp,
+                                  size: 32,
+                                  color: context.colours.primary,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 40),
                       if (state.zeroBalanceAmt()) ...[
-                        Text(
-                          'SORRY !\nYou have\nZero\nBalance.',
-                          style: context.fonts.headline5!.copyWith(
-                            color: context.colours.onBackground,
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(
+                            'SORRY !\nYou have\nZero\nBalance.',
+                            style: context.fonts.headline5!.copyWith(
+                              color: context.colours.onBackground,
+                            ),
                           ),
                         ),
                       ],
@@ -541,34 +548,55 @@ class WalletSendPage extends StatelessWidget {
                           !confirmedStep &&
                           !state.loadingStart &&
                           !state.buildingTx) ...[
-                        const WalletDetails(),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: WalletDetails(),
+                        ),
                         const SizedBox(height: 80),
-                        Text(
-                          'To Address'.toUpperCase(),
-                          style: context.fonts.overline!.copyWith(
-                            color: context.colours.onBackground,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            'To Address'.toUpperCase(),
+                            style: context.fonts.overline!.copyWith(
+                              color: context.colours.onBackground,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 16),
-                        const AddressRow(),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: AddressRow(),
+                        ),
                         const SizedBox(height: 60),
-                        Text(
-                          'Amount'.toUpperCase(),
-                          style: context.fonts.overline!.copyWith(
-                            color: context.colours.onBackground,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            'Amount'.toUpperCase(),
+                            style: context.fonts.overline!.copyWith(
+                              color: context.colours.onBackground,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 16),
-                        const AmountRow(),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: AmountRow(),
+                        ),
                         const SizedBox(height: 60),
-                        Text(
-                          'Network Fee'.toUpperCase(),
-                          style: context.fonts.overline!.copyWith(
-                            color: context.colours.onBackground,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            'Network Fee'.toUpperCase(),
+                            style: context.fonts.overline!.copyWith(
+                              color: context.colours.onBackground,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 16),
-                        const NetworkRow(),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: NetworkRow(),
+                        ),
                         const SizedBox(height: 100),
                         TextButton(
                           onPressed: () {
@@ -578,9 +606,19 @@ class WalletSendPage extends StatelessWidget {
                         ),
                       ],
                       if (confirmstep && !state.sendingTx)
-                        FadeIn(child: const ConfirmTransaction()),
+                        FadeIn(
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            child: ConfirmTransaction(),
+                          ),
+                        ),
                       if (confirmedStep)
-                        FadeIn(child: const TransactionComplete()),
+                        FadeIn(
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            child: TransactionComplete(),
+                          ),
+                        ),
                       const SizedBox(height: 80),
                     ],
                   );

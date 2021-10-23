@@ -148,6 +148,7 @@ class BitcoinFFI implements IBitcoin {
       depositDesc: depositDesc,
       nodeAddress: nodeAddress,
     );
+    if (resp.contains('Error')) throw resp;
     final bal = jsonDecode(resp)['balance'];
 
     return bal as int;
@@ -223,8 +224,7 @@ class BitcoinFFI implements IBitcoin {
   @override
   String decodePsbt({required String network, required String psbt}) {
     final resp = _bitcoin.decodePsbt(network: network, psbt: psbt);
-    final data = jsonDecode(resp);
-    return data['psbt'] as String;
+    return resp;
   }
 
   @override
