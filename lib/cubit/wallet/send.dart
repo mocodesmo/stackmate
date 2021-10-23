@@ -228,7 +228,7 @@ class SendCubit extends Cubit<SendState> {
   }
 
   void toggleSweep() {
-    emit(state.copyWith(sweepWallet: !state.sweepWallet, amount: '0'));
+    emit(state.copyWith(sweepWallet: !state.sweepWallet, amount: ''));
   }
 
   void feeSelected(int idx) {
@@ -279,7 +279,7 @@ class SendCubit extends Cubit<SendState> {
         'depositDesc': _walletCubit.state.selectedWallet!.descriptor,
         'nodeAddress': nodeAddress,
         'toAddress': state.address,
-        'amount': state.amount,
+        'amount': state.sweepWallet ? '0' : state.amount,
         'feeRate': state.feeRate().toString(),
         'sweep': state.sweepWallet.toString(),
       });
