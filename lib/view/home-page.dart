@@ -172,7 +172,7 @@ class WalletCard extends StatelessWidget {
                   ],
                   const Spacer(flex: 4),
                   Text(
-                    'SINGLE SIGNATURE',
+                    wallet.walletType,
                     overflow: TextOverflow.ellipsis,
                     // textAlign: TextAlign.end,
                     maxLines: 10,
@@ -276,7 +276,6 @@ class ReorderCards extends StatelessWidget {
                         .read<WalletsCubit>()
                         .rearrange(oldItemIndex, newItemIndex);
                   },
-
                   itemDecorationWhileDragging: BoxDecoration(
                     color: c.colours.background,
                     boxShadow: [

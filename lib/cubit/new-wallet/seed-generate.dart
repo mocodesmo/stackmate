@@ -254,15 +254,17 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
 
       final com = await _bitcoin.compile(
         policy: der.policy,
-        scriptType: 'wsh',
+        scriptType: 'wpkh',
       );
 
       // final len = _storage.getAll<Wallet>(StoreKeys.Wallet.name).length;
 
       var newWallet = Wallet(
         label: state.walletLabel,
+        walletType: 'SINGLE SIGNATURE',
         descriptor: com.descriptor.split('#')[0],
         blockchain: _blockchainCubit.state.blockchain.name,
+
         // index: len,
       );
 

@@ -34,7 +34,10 @@ class _$SendStateTearOff {
       int? balance,
       int feesOption = 1,
       String psbt = '',
-      String txId = ''}) {
+      String txId = '',
+      int? finalFee,
+      int? finalAmount,
+      bool sweepWallet = false}) {
     return _SendState(
       loadingStart: loadingStart,
       buildingTx: buildingTx,
@@ -53,6 +56,9 @@ class _$SendStateTearOff {
       feesOption: feesOption,
       psbt: psbt,
       txId: txId,
+      finalFee: finalFee,
+      finalAmount: finalAmount,
+      sweepWallet: sweepWallet,
     );
   }
 }
@@ -79,6 +85,9 @@ mixin _$SendState {
   int get feesOption => throw _privateConstructorUsedError;
   String get psbt => throw _privateConstructorUsedError;
   String get txId => throw _privateConstructorUsedError;
+  int? get finalFee => throw _privateConstructorUsedError;
+  int? get finalAmount => throw _privateConstructorUsedError;
+  bool get sweepWallet => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SendStateCopyWith<SendState> get copyWith =>
@@ -106,7 +115,10 @@ abstract class $SendStateCopyWith<$Res> {
       int? balance,
       int feesOption,
       String psbt,
-      String txId});
+      String txId,
+      int? finalFee,
+      int? finalAmount,
+      bool sweepWallet});
 }
 
 /// @nodoc
@@ -136,6 +148,9 @@ class _$SendStateCopyWithImpl<$Res> implements $SendStateCopyWith<$Res> {
     Object? feesOption = freezed,
     Object? psbt = freezed,
     Object? txId = freezed,
+    Object? finalFee = freezed,
+    Object? finalAmount = freezed,
+    Object? sweepWallet = freezed,
   }) {
     return _then(_value.copyWith(
       loadingStart: loadingStart == freezed
@@ -206,6 +221,18 @@ class _$SendStateCopyWithImpl<$Res> implements $SendStateCopyWith<$Res> {
           ? _value.txId
           : txId // ignore: cast_nullable_to_non_nullable
               as String,
+      finalFee: finalFee == freezed
+          ? _value.finalFee
+          : finalFee // ignore: cast_nullable_to_non_nullable
+              as int?,
+      finalAmount: finalAmount == freezed
+          ? _value.finalAmount
+          : finalAmount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      sweepWallet: sweepWallet == freezed
+          ? _value.sweepWallet
+          : sweepWallet // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -233,7 +260,10 @@ abstract class _$SendStateCopyWith<$Res> implements $SendStateCopyWith<$Res> {
       int? balance,
       int feesOption,
       String psbt,
-      String txId});
+      String txId,
+      int? finalFee,
+      int? finalAmount,
+      bool sweepWallet});
 }
 
 /// @nodoc
@@ -264,6 +294,9 @@ class __$SendStateCopyWithImpl<$Res> extends _$SendStateCopyWithImpl<$Res>
     Object? feesOption = freezed,
     Object? psbt = freezed,
     Object? txId = freezed,
+    Object? finalFee = freezed,
+    Object? finalAmount = freezed,
+    Object? sweepWallet = freezed,
   }) {
     return _then(_SendState(
       loadingStart: loadingStart == freezed
@@ -334,6 +367,18 @@ class __$SendStateCopyWithImpl<$Res> extends _$SendStateCopyWithImpl<$Res>
           ? _value.txId
           : txId // ignore: cast_nullable_to_non_nullable
               as String,
+      finalFee: finalFee == freezed
+          ? _value.finalFee
+          : finalFee // ignore: cast_nullable_to_non_nullable
+              as int?,
+      finalAmount: finalAmount == freezed
+          ? _value.finalAmount
+          : finalAmount // ignore: cast_nullable_to_non_nullable
+              as int?,
+      sweepWallet: sweepWallet == freezed
+          ? _value.sweepWallet
+          : sweepWallet // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -358,7 +403,10 @@ class _$_SendState extends _SendState with DiagnosticableTreeMixin {
       this.balance,
       this.feesOption = 1,
       this.psbt = '',
-      this.txId = ''})
+      this.txId = '',
+      this.finalFee,
+      this.finalAmount,
+      this.sweepWallet = false})
       : super._();
 
   @JsonKey(defaultValue: true)
@@ -408,10 +456,17 @@ class _$_SendState extends _SendState with DiagnosticableTreeMixin {
   @JsonKey(defaultValue: '')
   @override
   final String txId;
+  @override
+  final int? finalFee;
+  @override
+  final int? finalAmount;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool sweepWallet;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SendState(loadingStart: $loadingStart, buildingTx: $buildingTx, sendingTx: $sendingTx, errLoading: $errLoading, errAddress: $errAddress, errAmount: $errAmount, errFees: $errFees, address: $address, amount: $amount, fees: $fees, feeSlow: $feeSlow, feeMedium: $feeMedium, feefast: $feefast, balance: $balance, feesOption: $feesOption, psbt: $psbt, txId: $txId)';
+    return 'SendState(loadingStart: $loadingStart, buildingTx: $buildingTx, sendingTx: $sendingTx, errLoading: $errLoading, errAddress: $errAddress, errAmount: $errAmount, errFees: $errFees, address: $address, amount: $amount, fees: $fees, feeSlow: $feeSlow, feeMedium: $feeMedium, feefast: $feefast, balance: $balance, feesOption: $feesOption, psbt: $psbt, txId: $txId, finalFee: $finalFee, finalAmount: $finalAmount, sweepWallet: $sweepWallet)';
   }
 
   @override
@@ -435,7 +490,10 @@ class _$_SendState extends _SendState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('balance', balance))
       ..add(DiagnosticsProperty('feesOption', feesOption))
       ..add(DiagnosticsProperty('psbt', psbt))
-      ..add(DiagnosticsProperty('txId', txId));
+      ..add(DiagnosticsProperty('txId', txId))
+      ..add(DiagnosticsProperty('finalFee', finalFee))
+      ..add(DiagnosticsProperty('finalAmount', finalAmount))
+      ..add(DiagnosticsProperty('sweepWallet', sweepWallet));
   }
 
   @override
@@ -488,7 +546,16 @@ class _$_SendState extends _SendState with DiagnosticableTreeMixin {
             (identical(other.psbt, psbt) ||
                 const DeepCollectionEquality().equals(other.psbt, psbt)) &&
             (identical(other.txId, txId) ||
-                const DeepCollectionEquality().equals(other.txId, txId)));
+                const DeepCollectionEquality().equals(other.txId, txId)) &&
+            (identical(other.finalFee, finalFee) ||
+                const DeepCollectionEquality()
+                    .equals(other.finalFee, finalFee)) &&
+            (identical(other.finalAmount, finalAmount) ||
+                const DeepCollectionEquality()
+                    .equals(other.finalAmount, finalAmount)) &&
+            (identical(other.sweepWallet, sweepWallet) ||
+                const DeepCollectionEquality()
+                    .equals(other.sweepWallet, sweepWallet)));
   }
 
   @override
@@ -510,7 +577,10 @@ class _$_SendState extends _SendState with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(balance) ^
       const DeepCollectionEquality().hash(feesOption) ^
       const DeepCollectionEquality().hash(psbt) ^
-      const DeepCollectionEquality().hash(txId);
+      const DeepCollectionEquality().hash(txId) ^
+      const DeepCollectionEquality().hash(finalFee) ^
+      const DeepCollectionEquality().hash(finalAmount) ^
+      const DeepCollectionEquality().hash(sweepWallet);
 
   @JsonKey(ignore: true)
   @override
@@ -536,7 +606,10 @@ abstract class _SendState extends SendState {
       int? balance,
       int feesOption,
       String psbt,
-      String txId}) = _$_SendState;
+      String txId,
+      int? finalFee,
+      int? finalAmount,
+      bool sweepWallet}) = _$_SendState;
   const _SendState._() : super._();
 
   @override
@@ -573,6 +646,12 @@ abstract class _SendState extends SendState {
   String get psbt => throw _privateConstructorUsedError;
   @override
   String get txId => throw _privateConstructorUsedError;
+  @override
+  int? get finalFee => throw _privateConstructorUsedError;
+  @override
+  int? get finalAmount => throw _privateConstructorUsedError;
+  @override
+  bool get sweepWallet => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$SendStateCopyWith<_SendState> get copyWith =>

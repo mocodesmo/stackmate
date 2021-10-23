@@ -4,7 +4,7 @@ import 'dart:ffi';
 
 import 'package:ffi/ffi.dart';
 
-export 'package:bitcoin/types.dart';
+// export 'package:bitcoin/types.dart';
 
 typedef GenerateT = Pointer<Utf8> Function(
   Pointer<Utf8> network,
@@ -52,6 +52,12 @@ typedef BuildT = Pointer<Utf8> Function(
   Pointer<Utf8> to_address,
   Pointer<Utf8> amount,
   Pointer<Utf8> fee_rate,
+  Pointer<Utf8> sweep,
+);
+
+typedef DecodeT = Pointer<Utf8> Function(
+  Pointer<Utf8> network,
+  Pointer<Utf8> upsbt,
 );
 
 typedef SignT = Pointer<Utf8> Function(

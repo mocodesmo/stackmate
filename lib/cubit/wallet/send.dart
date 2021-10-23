@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:bitcoin/types.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,6 +38,9 @@ class SendState with _$SendState {
     @Default(1) int feesOption,
     @Default('') String psbt,
     @Default('') String txId,
+    int? finalFee,
+    int? finalAmount,
+    @Default(false) bool sweepWallet,
   }) = _SendState;
   const SendState._();
 
@@ -53,17 +59,7 @@ class SendState with _$SendState {
     return 0;
   }
 
-  int total() {
-    try {
-      final amountInt = int.parse(amount);
-      // final feeInt = feeRate();
-      return amountInt; //+ feeInt;
-    } catch (e) {
-      print(e);
-    }
-
-    return 0;
-  }
+  int total() => finalFee! + finalAmount!;
 
   bool zeroBalanceAmt() => balance != null && balance == 0;
 }
@@ -110,6 +106,12 @@ class SendCubit extends Cubit<SendState> {
 
       final nodeAddress = _nodeAddressCubit.state.getAddress();
 
+      // final onehour = await compute(getFeees, {
+      //   'targetSize': '6',
+      //   'network': _blockchain.state.blockchain.name,
+      //   'nodeAddress': nodeAddress,
+      // });
+
       final feeFast = await compute(getFeees, {
         'targetSize': '1',
         'network': _blockchain.state.blockchain.name,
@@ -150,7 +152,6 @@ class SendCubit extends Cubit<SendState> {
 
   @override
   void onError(Object error, StackTrace stackTrace) {
-    // TODO: implement onError
     super.onError(error, stackTrace);
   }
 
@@ -226,13 +227,8 @@ class SendCubit extends Cubit<SendState> {
     emit(state.copyWith(amount: checked));
   }
 
-  void emptyWallet() {
-    //calc fees
-    emit(
-      state.copyWith(
-        amount: state.balance!.toString(),
-      ),
-    );
+  void toggleSweep() {
+    emit(state.copyWith(sweepWallet: !state.sweepWallet, amount: '0'));
   }
 
   void feeSelected(int idx) {
@@ -285,12 +281,23 @@ class SendCubit extends Cubit<SendState> {
         'toAddress': state.address,
         'amount': state.amount,
         'feeRate': state.feeRate().toString(),
+        'sweep': state.sweepWallet.toString(),
       });
+
+      final decode = await compute(decodePSBT, {
+        'network': _blockchain.state.blockchain.name,
+        'psbt': psbt,
+      });
+
+      final amtoutput = decode.firstWhere((o) => o.to == state.address);
+      final feeoutput = decode.firstWhere((o) => o.to == 'miner');
 
       emit(
         state.copyWith(
           buildingTx: false,
           psbt: psbt,
+          finalFee: feeoutput.value,
+          finalAmount: amtoutput.value,
         ),
       );
     } catch (e, s) {
@@ -314,7 +321,7 @@ class SendCubit extends Cubit<SendState> {
   }
 
   void clearPsbt() {
-    emit(state.copyWith(psbt: ''));
+    emit(state.copyWith(psbt: '', finalAmount: null, finalFee: null));
   }
 
   void sendClicked() async {
@@ -378,8 +385,24 @@ String buildTx(dynamic data) {
     depositDesc: obj['depositDesc']!,
     feeRate: obj['feeRate']!,
     toAddress: obj['toAddress']!,
+    sweep: obj['sweep']!,
   );
   return resp;
+}
+
+List<DecodedTxOutput> decodePSBT(dynamic data) {
+  final obj = data as Map<String, String>;
+  final resp = BitcoinFFI().decodePsbt(
+    network: obj['network']!,
+    psbt: obj['psbt']!,
+  );
+  final json = jsonDecode(resp)['outputs']['outputs'];
+
+  final List<DecodedTxOutput> decoded = [];
+  for (final out in json)
+    decoded.add(DecodedTxOutput.fromJson(out as Map<String, dynamic>));
+
+  return decoded;
 }
 
 String signTx(dynamic data) {

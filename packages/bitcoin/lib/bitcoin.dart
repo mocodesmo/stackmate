@@ -134,6 +134,7 @@ class BitcoinFFFI {
     required String toAddress,
     required String amount,
     required String feeRate,
+    required String sweep,
   }) {
     final func = binary.lookupFunction<BuildT, BuildT>('build_tx');
     final resp = func(
@@ -142,6 +143,20 @@ class BitcoinFFFI {
       toAddress.toNativeUtf8(),
       amount.toNativeUtf8(),
       feeRate.toNativeUtf8(),
+      sweep.toNativeUtf8(),
+    ).toDartString();
+    if (resp.startsWith('Error')) throw resp;
+    return resp;
+  }
+
+  String decodePsbt({
+    required String network,
+    required String psbt,
+  }) {
+    final func = binary.lookupFunction<DecodeT, DecodeT>('decode_psbt');
+    final resp = func(
+      network.toNativeUtf8(),
+      psbt.toNativeUtf8(),
     ).toDartString();
     if (resp.startsWith('Error')) throw resp;
     return resp;

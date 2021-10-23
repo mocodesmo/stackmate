@@ -87,12 +87,12 @@ class XpubImportCubit extends Cubit<XpubImportState> {
       final xpub = state.xpub;
       String policy = '';
       if (!state.showOtherDetails())
-        policy = xpub;
+        policy = 'pk($xpub/0/*)';
       else
-        policy = 'pk([$fingerprint/$path]$xpub)';
+        policy = 'pk([$fingerprint/$path]$xpub/0/*)'.replaceFirst('/m', '');
       final com = await _bitcoin.compile(
         policy: policy,
-        scriptType: 'wsh',
+        scriptType: 'wpkh',
       );
 
       // final len = _storage.getAll<Wallet>(StoreKeys.Wallet.name).length;
@@ -101,7 +101,7 @@ class XpubImportCubit extends Cubit<XpubImportState> {
         label: state.label,
         descriptor: com.descriptor.split('#')[0],
         blockchain: _blockchainCubit.state.blockchain.name,
-        // index: len,
+        walletType: 'WATCH ONLY',
       );
 
       final id = await _storage.saveItem<Wallet>(

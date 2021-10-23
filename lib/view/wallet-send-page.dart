@@ -138,21 +138,31 @@ class _AmountRowState extends State<AmountRow> {
   Widget build(BuildContext context) {
     final amount = context.select((SendCubit sc) => sc.state.amount);
     final errAmount = context.select((SendCubit sc) => sc.state.errAmount);
+    final isSweep = context.select((SendCubit sc) => sc.state.sweepWallet);
 
     if (amount != _controller.text) _controller.text = amount;
 
     return Column(
       children: [
-        TextField(
-          controller: _controller,
-          style: TextStyle(color: context.colours.onBackground),
-          decoration: InputDecoration(
-            hintText: 'Enter SATS Amount'.toUpperCase(),
-            errorText: errAmount.nullIfEmpty(),
+        IgnorePointer(
+          ignoring: isSweep,
+          child: AnimatedOpacity(
+            duration: const Duration(milliseconds: 300),
+            opacity: isSweep ? 0.5 : 1,
+            child: TextField(
+              controller: _controller,
+              style: TextStyle(color: context.colours.onBackground),
+              decoration: InputDecoration(
+                hintText: isSweep
+                    ? 'WALLET WILL BE EMPTIED'
+                    : 'Enter SATS Amount'.toUpperCase(),
+                errorText: errAmount.nullIfEmpty(),
+              ),
+              onChanged: (t) {
+                if (!isSweep) context.read<SendCubit>().amountChanged(t);
+              },
+            ),
           ),
-          onChanged: (t) {
-            context.read<SendCubit>().amountChanged(t);
-          },
         ),
         const SizedBox(height: 16),
         Row(
@@ -166,7 +176,7 @@ class _AmountRowState extends State<AmountRow> {
             ),
             TextButton(
               onPressed: () {
-                context.read<SendCubit>().emptyWallet();
+                context.read<SendCubit>().toggleSweep();
               },
               child: Text('Empty Wallet'.toUpperCase()),
             ),
@@ -304,6 +314,7 @@ class ConfirmTransaction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.select((SendCubit sc) => sc.state);
+    if (state.finalAmount == null) return Container();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -338,14 +349,14 @@ class ConfirmTransaction extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Text(
-          '' + state.amount + ' sats',
+          '' + state.finalAmount.toString() + ' sats',
           style: context.fonts.caption!.copyWith(
             color: context.colours.onBackground,
           ),
         ),
         const SizedBox(height: 8),
         Text(
-          '' + int.parse(state.amount).toBtc() + ' BTC',
+          '' + state.finalAmount.toBtc() + ' BTC',
           style: context.fonts.caption!.copyWith(
             color: context.colours.onBackground.withOpacity(0.7),
           ),
@@ -359,7 +370,7 @@ class ConfirmTransaction extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Text(
-          '' + state.feeRate().toString() + ' sats',
+          '' + state.finalFee.toString() + ' sats',
           style: context.fonts.caption!.copyWith(
             color: context.colours.onBackground,
           ),

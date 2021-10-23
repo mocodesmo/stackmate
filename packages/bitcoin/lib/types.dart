@@ -37,6 +37,26 @@ class Derive {
       'pk([$fingerPrint/$hardenedPath]$xprv/0/*)'.replaceFirst('/m', '');
 }
 
+// class Decode {
+//   const Decode(this.miner, this.amount);
+//   factory Decode.fromJson(String data) {
+//     final json = jsonDecode(data)['outputs']['outputs'];
+
+//     final List<DecodedTxOutput> decoded = [];
+//     for (final out in json) {
+//       decoded.add(DecodedTxOutput.fromJson(out as Map<String, dynamic>));
+//     }
+
+//     return Decode(
+//         // json['policy'] as String,
+//         // json['descriptor'] as String,
+//         );
+//   }
+
+//   final int miner;
+//   final int amount;
+// }
+
 class Compile {
   const Compile(this.policy, this.descriptor);
   factory Compile.fromJson(String data) {
@@ -49,4 +69,17 @@ class Compile {
 
   final String policy;
   final String descriptor;
+}
+
+class DecodedTxOutput {
+  const DecodedTxOutput(this.value, this.to);
+  factory DecodedTxOutput.fromJson(Map<String, dynamic> json) {
+    return DecodedTxOutput(
+      json['value'] as int,
+      json['to'] as String,
+    );
+  }
+
+  final int value;
+  final String to;
 }

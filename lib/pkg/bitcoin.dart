@@ -57,6 +57,12 @@ abstract class IBitcoin {
     required String toAddress,
     required String amount,
     required String feeRate,
+    required String sweep,
+  });
+
+  String decodePsbt({
+    required String network,
+    required String psbt,
   });
 
   String signTransaction({
@@ -200,6 +206,7 @@ class BitcoinFFI implements IBitcoin {
     required String toAddress,
     required String amount,
     required String feeRate,
+    required String sweep,
   }) {
     final resp = _bitcoin.buildTransaction(
       depositDesc: depositDesc,
@@ -207,7 +214,15 @@ class BitcoinFFI implements IBitcoin {
       toAddress: toAddress,
       amount: amount,
       feeRate: feeRate,
+      sweep: sweep,
     );
+    final data = jsonDecode(resp);
+    return data['psbt'] as String;
+  }
+
+  @override
+  String decodePsbt({required String network, required String psbt}) {
+    final resp = _bitcoin.decodePsbt(network: network, psbt: psbt);
     final data = jsonDecode(resp);
     return data['psbt'] as String;
   }
