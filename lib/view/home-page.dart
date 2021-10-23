@@ -13,6 +13,8 @@ import 'package:sats/pkg/extensions.dart';
 class HeaderRow extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
+    final isRearranging = c.select((WalletsCubit wc) => wc.state.isRearranging);
+
     return Padding(
       padding: const EdgeInsets.only(top: 24, bottom: 16),
       child: Column(
@@ -20,7 +22,11 @@ class HeaderRow extends StatelessWidget {
         children: [
           const RedditLoader(),
           Padding(
-            padding: const EdgeInsets.only(top: 8, left: 24, right: 16),
+            padding: EdgeInsets.only(
+              top: 8,
+              left: 24,
+              right: !isRearranging ? 16 : 0,
+            ),
             child: Row(
               children: [
                 Text(
@@ -30,16 +36,37 @@ class HeaderRow extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(c, Routes.setting);
-                  },
-                  icon: Icon(
-                    Icons.settings,
-                    size: 32,
-                    color: c.colours.primary,
+                // const SizedBox(width: 16),
+                if (!isRearranging) ...[
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(c, Routes.setting);
+                    },
+                    icon: Icon(
+                      Icons.settings,
+                      size: 32,
+                      color: c.colours.primary,
+                    ),
                   ),
-                ),
+                  IconButton(
+                    onPressed: () {
+                      c.read<WalletsCubit>().toggleRearranging();
+                      // Navigator.pushNamed(c, Routes.setting);
+                    },
+                    icon: Icon(
+                      Icons.sort,
+                      size: 32,
+                      color: c.colours.primary,
+                    ),
+                  )
+                ] else ...[
+                  TextButton(
+                    onPressed: () {
+                      c.read<WalletsCubit>().toggleRearranging();
+                    },
+                    child: const Text('DONE'),
+                  )
+                ]
 
                 // LogButton(
                 //   child: IconButton(
@@ -203,31 +230,85 @@ class AccountsRow extends StatelessWidget {
 }
 
 class ReorderCards extends StatelessWidget {
-  const ReorderCards({Key? key}) : super(key: key);
+  const ReorderCards({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext c) {
-    final wallets = c.select((WalletsCubit wc) => wc.state);
+    final wallets = c.select((WalletsCubit wc) => wc.state.wallets);
 
-    return DragAndDropLists(
-      onListReorder: (s, ss) {},
-      onItemReorder: (
-        int oldItemIndex,
-        int oldListIndex,
-        int newItemIndex,
-        int newListIndex,
-      ) {
-        c.read<WalletsCubit>().rearrange(oldItemIndex, newItemIndex);
+    return WillPopScope(
+      onWillPop: () async {
+        c.read<WalletsCubit>().toggleRearranging();
+        return false;
       },
-      children: [
-        DragAndDropList(
-          children: [
-            for (final wallet in wallets.wallets) ...[
-              DragAndDropItem(child: Text(wallet.label))
+      child: Scaffold(
+        body: FadeIn(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              HeaderRow(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Text(
+                  'Drag wallet to rearrange'.toUpperCase(),
+                  textAlign: TextAlign.left,
+                  style: c.fonts.overline!.copyWith(
+                    color: c.colours.onBackground,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: DragAndDropLists(
+                  listWidth: 400,
+                  horizontalAlignment: MainAxisAlignment.center,
+                  lastItemTargetHeight: 300,
+                  listPadding: const EdgeInsets.symmetric(horizontal: 16),
+                  onListReorder: (s, ss) {},
+                  onItemReorder: (
+                    int oldItemIndex,
+                    int oldListIndex,
+                    int newItemIndex,
+                    int newListIndex,
+                  ) {
+                    c
+                        .read<WalletsCubit>()
+                        .rearrange(oldItemIndex, newItemIndex);
+                  },
+
+                  itemDecorationWhileDragging: BoxDecoration(
+                    color: c.colours.background,
+                    boxShadow: [
+                      BoxShadow(
+                        color: c.colours.onBackground.withOpacity(0.2),
+                        spreadRadius: 2,
+                        blurRadius: 3,
+                        // offset: const Offset(0, 0),
+                      ),
+                    ],
+                  ),
+                  children: [
+                    DragAndDropList(
+                      // horizontalAlignment: MainAxisAlignment.center,
+                      children: [
+                        for (final wallet in wallets) ...[
+                          DragAndDropItem(
+                            child: WalletCard(
+                              wallet: wallet,
+                              isSelection: true,
+                            ),
+                          )
+                        ],
+                      ],
+                    )
+                  ],
+                ),
+              ),
             ],
-          ],
-        )
-      ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -408,42 +489,45 @@ class FeedItem extends StatelessWidget {
 class NewHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            stretch: true,
-            pinned: true,
-            expandedHeight: 350,
-            automaticallyImplyLeading: false,
-            backgroundColor: c.colours.secondary,
-            flexibleSpace: FlexibleSpaceBar(
-              stretchModes: const [
-                StretchMode.blurBackground,
-                StretchMode.fadeTitle
-              ],
-              collapseMode: CollapseMode.pin,
-              background: Column(
-                children: [
-                  HeaderRow(),
-                  AccountsRow(),
+    final isRearranging = c.select((WalletsCubit wc) => wc.state.isRearranging);
+
+    if (!isRearranging)
+      return Scaffold(
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              stretch: true,
+              pinned: true,
+              expandedHeight: !isRearranging ? 350 : 80,
+              automaticallyImplyLeading: false,
+              backgroundColor: c.colours.secondary,
+              flexibleSpace: FlexibleSpaceBar(
+                stretchModes: const [
+                  StretchMode.blurBackground,
+                  StretchMode.fadeTitle
                 ],
+                collapseMode: CollapseMode.pin,
+                background: Column(
+                  children: [
+                    HeaderRow(),
+                    AccountsRow(),
+                  ],
+                ),
+              ),
+              bottom: PreferredSize(
+                preferredSize: Size(c.width, 20),
+                child: ActionsRow(),
               ),
             ),
-            bottom: PreferredSize(
-              preferredSize: Size(c.width, 20),
-              child: ActionsRow(),
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                RedditFeed(),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [RedditFeed()],
+              ),
+            )
+          ],
+        ),
+      );
+
+    return const ReorderCards();
   }
 }

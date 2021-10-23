@@ -98,6 +98,7 @@ class WalletsCubit extends Cubit<WalletsState> {
     await _storage.saveItemAt<Wallet>(StoreKeys.Wallet.name, oldId!, newwallet);
 
     refresh();
+    clearSelectedWallet();
   }
 
   void copyDescriptor() async {
