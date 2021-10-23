@@ -1,9 +1,12 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
+import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/cubit/wallet/node.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
+import 'package:sats/model/blockchain.dart';
 import 'package:sats/model/transaction.dart';
 import 'package:sats/model/wallet.dart';
 import 'package:sats/pkg/bitcoin.dart';
@@ -44,6 +47,7 @@ class WalletCubit extends Cubit<WalletState> {
     this._share,
     this._vibrate,
     this._nodeAddressCubit,
+    this._blockchainCubit,
   ) : super(const WalletState()) {
     // scheduleMicrotask(() async {
     //   await Future.delayed(const Duration(milliseconds: 1000));
@@ -63,6 +67,7 @@ class WalletCubit extends Cubit<WalletState> {
   final IShare _share;
   final ILauncher _launcher;
   final IVibrate _vibrate;
+  final BlockchainCubit _blockchainCubit;
   final NodeAddressCubit _nodeAddressCubit;
 
   void _init() async {
@@ -128,8 +133,15 @@ class WalletCubit extends Cubit<WalletState> {
 
   void openLink(Transaction transaction) {
     try {
-      //final link = 'https://blockstream.info/tx/' + widget.order.txId;
-      _launcher.launchApp(transaction.link());
+      String url = '';
+      if (_blockchainCubit.state.blockchain == Blockchain.testNet)
+        url = 'https://blockstream.info/testnet/tx/';
+      else
+        url = 'https://blockstream.info/tx/';
+
+      url += transaction.txid;
+
+      _launcher.launchApp(url);
     } catch (e, s) {
       _logger.logException(e, 'HistoryCubit.openLink', s);
     }

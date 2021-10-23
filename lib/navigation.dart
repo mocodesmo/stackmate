@@ -172,6 +172,7 @@ class Routes {
           locator<IShare>(),
           locator<IVibrate>(),
           nodeAddressCubit,
+          blockchainCubit,
         );
 
         page = BlocProvider.value(

@@ -189,19 +189,21 @@ class _TransactionCellState extends State<TransactionCell> {
                 ),
                 //SizedBox(height: 16),
                 if (_isExpanded) ...[
-                  const SizedBox(height: 16),
-                  Text(
-                    'TIME'.notLocalised(),
-                    style: c.fonts.overline!.copyWith(
-                      color: c.colours.onBackground,
+                  if (widget.transaction.timeStr() != '') ...[
+                    const SizedBox(height: 16),
+                    Text(
+                      'TIME'.notLocalised(),
+                      style: c.fonts.overline!.copyWith(
+                        color: c.colours.onBackground,
+                      ),
                     ),
-                  ),
-                  Text(
-                    widget.transaction.timeStr(),
-                    style: c.fonts.caption!.copyWith(
-                      color: c.colours.onBackground,
+                    Text(
+                      widget.transaction.timeStr(),
+                      style: c.fonts.caption!.copyWith(
+                        color: c.colours.onBackground,
+                      ),
                     ),
-                  ),
+                  ],
                   const SizedBox(height: 16),
                   //SizedBox(height: 8),
                   Row(
@@ -326,19 +328,21 @@ class _TransactionCellState extends State<TransactionCell> {
                 //      alignment: Alignment.centerLeft,
                 //      child: Icon(Icons.check_rounded)),
                 //],
-                const SizedBox(height: 16),
-                Text(
-                  'CREATED AT'.notLocalised(),
-                  style: c.fonts.overline!.copyWith(
-                    color: c.colours.onBackground,
+                if (widget.transaction.timeStr() != '') ...[
+                  const SizedBox(height: 16),
+                  Text(
+                    'TIME'.notLocalised(),
+                    style: c.fonts.overline!.copyWith(
+                      color: c.colours.onBackground,
+                    ),
                   ),
-                ),
-                Text(
-                  widget.transaction.timeStr(),
-                  style: c.fonts.caption!.copyWith(
-                    color: c.colours.onBackground,
+                  Text(
+                    widget.transaction.timeStr(),
+                    style: c.fonts.caption!.copyWith(
+                      color: c.colours.onBackground,
+                    ),
                   ),
-                ),
+                ],
                 const SizedBox(height: 16),
                 // Text('TO ADDRESS'.notLocalised(), style: c.fonts.overline),
                 // Text(widget.transaction.txid, style: c.fonts.caption),
@@ -350,7 +354,9 @@ class _TransactionCellState extends State<TransactionCell> {
                   ),
                 ),
                 Text(
-                  widget.transaction.sent.toString(),
+                  (widget.transaction.sent - widget.transaction.fee)
+                          .toString() +
+                      ' sats',
                   style: c.fonts.caption!.copyWith(
                     color: c.colours.onBackground,
                   ),
@@ -363,7 +369,7 @@ class _TransactionCellState extends State<TransactionCell> {
                   ),
                 ),
                 Text(
-                  widget.transaction.fee.toString(),
+                  widget.transaction.fee.toString() + ' sats',
                   style: c.fonts.caption!.copyWith(
                     color: c.colours.onBackground,
                   ),
@@ -430,7 +436,7 @@ class TransactionsView extends StatelessWidget {
             TransactionCell(transaction: transaction),
 
           // if (!state.loadingTransactions) ...[
-          //   SizedBox(height: 24),
+          const SizedBox(height: 24),
           //   Center(
           //       child: TextButton(
           //           onPressed: () {
@@ -486,7 +492,9 @@ class WalletInfo extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                c.read<WalletsCubit>().copyDescriptor();
+              },
               child: const Text('COPY'),
             ),
           )

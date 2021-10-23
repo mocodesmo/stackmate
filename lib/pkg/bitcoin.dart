@@ -180,8 +180,16 @@ class BitcoinFFI implements IBitcoin {
     final json = jsonDecode(resp);
     final List<Transaction> transactions = [];
     for (final t in json['history'] as List) {
-      transactions.add(Transaction.fromJson(t as Map<String, dynamic>));
+      var tx = Transaction.fromJson(t as Map<String, dynamic>);
+      if (!tx.isReceive())
+        tx = tx.copyWith(sent: tx.sent - tx.received - tx.fee);
+      
+
+      transactions.add(tx);
     }
+
+    transactions.sort((a, b) => b.timestamp.compareTo(a.timestamp));
+
     return transactions;
   }
 

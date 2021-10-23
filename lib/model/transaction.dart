@@ -24,6 +24,7 @@ class Transaction with _$Transaction {
   bool isReceive() => sent == 0;
 
   String timeStr() {
+    if (timestamp == 0) return '';
     // String date = '';
     final t = timestamp;
     final dt = DateTime.fromMillisecondsSinceEpoch(

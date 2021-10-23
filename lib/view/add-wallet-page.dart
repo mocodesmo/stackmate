@@ -14,7 +14,7 @@ class HeaderRow extends StatelessWidget {
         left: 16,
         // right: 0,
         top: 8,
-        bottom: 32,
+        // bottom: 32,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,11 +25,12 @@ class HeaderRow extends StatelessWidget {
             children: [
               const SizedBox(height: 16),
               const Back(),
-              const SizedBox(height: 60),
+              const SizedBox(height: 40),
               Text(
-                ' Select Wallet'.toUpperCase(),
-                style: c.fonts.headline4!.copyWith(
-                  color: Colors.white,
+                'Select\nWallet'.toUpperCase(),
+                textAlign: TextAlign.left,
+                style: c.fonts.headline5!.copyWith(
+                  color: c.colours.onBackground,
                   // color: Colors.blue[400],
                 ),
               ),
@@ -85,11 +86,11 @@ class WalletSelection extends StatelessWidget {
         primary: colour,
       ),
       child: Container(
-        height: 100,
+        // height: 100,
         padding: const EdgeInsets.only(
           // left: 0,
-          top: 16,
-          bottom: 16,
+          top: 24,
+          bottom: 24,
           // right: 0,
         ),
         child: Row(
@@ -98,7 +99,7 @@ class WalletSelection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  text,
+                  text.toUpperCase(),
                   style: context.fonts.button!.copyWith(
                     color: context.colours.primary,
                     fontSize: 16,
@@ -134,9 +135,6 @@ class WalletSelection extends StatelessWidget {
   }
 }
 
-const lorem =
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
-
 class AddWalletPage extends StatelessWidget {
   const AddWalletPage({Key? key}) : super(key: key);
 
@@ -167,8 +165,9 @@ class AddWalletPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               WalletSelection(
-                text: 'Generate Seed',
-                description: lorem,
+                text: 'Seed',
+                description:
+                    'Easy to use, Easy to Backup.\n12 word phase as private key.',
                 colour: c.colours.surface,
                 onPressed: () {
                   Navigator.pushNamed(c, Routes.generateSeed);
@@ -176,8 +175,8 @@ class AddWalletPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               WalletSelection(
-                text: 'Import Seed',
-                description: lorem,
+                text: 'Relocate',
+                description: 'Move your funds.\nImport an existing seed.',
                 colour: c.colours.surface,
                 onPressed: () {
                   Navigator.pushNamed(c, Routes.importSeed);
@@ -185,8 +184,9 @@ class AddWalletPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               WalletSelection(
-                text: 'Import Watch-only Wallet',
-                description: lorem,
+                text: 'Observe',
+                description:
+                    'Public View, Maximum Privacy.\nImport your public key.',
                 colour: c.colours.surface,
                 onPressed: () {
                   Navigator.pushNamed(c, Routes.watchOnly);
@@ -217,22 +217,29 @@ class AddWalletPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     WalletSelection(
-                      text: 'Raft Policy',
-                      description: lorem,
+                      text: 'Future',
+                      description: ' ',
                       colour: c.colours.surface,
                       onPressed: () {},
                     ),
                     const SizedBox(height: 16),
                     WalletSelection(
-                      text: 'Corporate Settings',
-                      description: lorem,
+                      text: 'Inheritance',
+                      description: ' ',
+                      colour: c.colours.surface,
+                      onPressed: () {},
+                    ),
+                    const SizedBox(height: 16),
+                    WalletSelection(
+                      text: 'Fund',
+                      description: ' ',
                       colour: c.colours.surface,
                       onPressed: () {},
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 100)
+              const SizedBox(height: 32)
             ],
           ),
         ),

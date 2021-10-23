@@ -135,10 +135,11 @@ class _AmountRowState extends State<AmountRow> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final amount = context.select((SendCubit sc) => sc.state.amount);
-    final errAmount = context.select((SendCubit sc) => sc.state.errAmount);
-    final isSweep = context.select((SendCubit sc) => sc.state.sweepWallet);
+  Widget build(BuildContext c) {
+    final amount = c.select((SendCubit sc) => sc.state.amount);
+    final errAmount = c.select((SendCubit sc) => sc.state.errAmount);
+    final isSweep = c.select((SendCubit sc) => sc.state.sweepWallet);
+    final balance = c.select((SendCubit sc) => sc.state.balance!);
 
     if (amount != _controller.text) _controller.text = amount;
 
@@ -152,15 +153,20 @@ class _AmountRowState extends State<AmountRow> {
             child: TextField(
               controller: _controller,
               keyboardType: TextInputType.number,
-              style: TextStyle(color: context.colours.onBackground),
+              style: TextStyle(color: c.colours.onBackground),
               decoration: InputDecoration(
                 hintText: isSweep
                     ? 'WALLET WILL BE EMPTIED'
                     : 'Enter SATS Amount'.toUpperCase(),
+                hintStyle: isSweep
+                    ? TextStyle(
+                        color: c.colours.onBackground,
+                      )
+                    : null,
                 errorText: errAmount.nullIfEmpty(),
               ),
               onChanged: (t) {
-                if (!isSweep) context.read<SendCubit>().amountChanged(t);
+                if (!isSweep) c.read<SendCubit>().amountChanged(t);
               },
             ),
           ),
@@ -170,16 +176,22 @@ class _AmountRowState extends State<AmountRow> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '    BTC: ' + amount.toBtc(),
-              style: context.fonts.caption!.copyWith(
-                color: context.colours.onBackground.withOpacity(0.7),
+              isSweep
+                  ? '    BTC: ' + balance.toBtc()
+                  : '    BTC: ' + amount.toBtc(),
+              style: c.fonts.caption!.copyWith(
+                color: c.colours.onBackground.withOpacity(0.7),
               ),
             ),
             TextButton(
               onPressed: () {
-                context.read<SendCubit>().toggleSweep();
+                c.read<SendCubit>().toggleSweep();
               },
-              child: Text('Empty Wallet'.toUpperCase()),
+              child: Text(
+                isSweep
+                    ? 'Change amount'.toUpperCase()
+                    : 'Empty Wallet'.toUpperCase(),
+              ),
             ),
           ],
         ),
