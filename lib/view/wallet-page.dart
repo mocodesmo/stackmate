@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sats/cubit/wallet/wallet.dart';
@@ -26,37 +27,6 @@ class WalletLoader extends StatelessWidget {
   }
 }
 
-class DeleteWallet extends StatelessWidget {
-  const DeleteWallet({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext c) {
-    final history = c.select((WalletCubit hc) => hc.state);
-
-    return Column(
-      children: [
-        Opacity(
-          opacity: 0.4,
-          child: IconButton(
-            iconSize: 28,
-            // alignment: Alignment.centerRight,
-            color: c.colours.error,
-            onPressed: () {
-              c.read<WalletCubit>().deleteClicked();
-            },
-            icon: const Icon(Icons.delete_sweep_outlined),
-          ),
-        ),
-        if (history.errDeleting.isNotEmpty)
-          Text(
-            history.errDeleting,
-            style: c.fonts.caption!.copyWith(color: c.colours.error),
-          )
-      ],
-    );
-  }
-}
-
 class WalletName extends StatelessWidget {
   const WalletName({
     Key? key,
@@ -67,12 +37,15 @@ class WalletName extends StatelessWidget {
     final wallet = context.select((WalletsCubit wc) => wc.state.selectedWallet);
     if (wallet == null) return Container();
 
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(
-        '' + wallet.label.toUpperCase(),
-        style: context.fonts.headline4!.copyWith(
-          color: context.colours.onBackground,
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text(
+          '' + wallet.label.toUpperCase(),
+          style: context.fonts.headline6!.copyWith(
+            color: context.colours.onBackground,
+          ),
         ),
       ),
     );
@@ -472,123 +445,6 @@ class TransactionsView extends StatelessWidget {
   }
 }
 
-class WalletPage extends StatelessWidget {
-  const WalletPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext c) {
-    final zeroBal = c.select((WalletCubit hc) => hc.state.zeroBalance());
-    final showInfo = c.select((WalletCubit hc) => hc.state.showInfo);
-
-    return WillPopScope(
-      onWillPop: () async {
-        c.read<WalletsCubit>().clearSelectedWallet();
-        return true;
-      },
-      child: Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const WalletLoader(),
-                const SizedBox(height: 16),
-                Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const SizedBox(width: 8),
-                    Back(
-                      onPressed: () {
-                        c.read<WalletsCubit>().clearSelectedWallet();
-                        Navigator.of(c).pop();
-                      },
-                    ),
-                    const Spacer(),
-                    const SizedBox(width: 8),
-                  ],
-                ),
-                // const SizedBox(height: 40),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: const [
-                          WalletName(),
-                          SizedBox(height: 24),
-                          Balance(),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            const DeleteWallet(),
-                            // const SizedBox(height: 24),
-                            IconButton(
-                              // alignment: Alignment.centerRight,
-                              color: c.colours.primary,
-                              onPressed: () {
-                                c.read<WalletCubit>().toggleShowInfo();
-                              },
-                              icon: const Icon(Icons.info_outline),
-                            ),
-                            AnimatedOpacity(
-                              duration: const Duration(milliseconds: 300),
-                              opacity: zeroBal ? 0.4 : 1,
-                              child: IconButton(
-                                // alignment: Alignment.centerRight,
-                                color: c.colours.primary,
-                                onPressed: () {
-                                  if (!zeroBal)
-                                    Navigator.pushNamed(
-                                      c,
-                                      Routes.send,
-                                      // arguments: state.wallet!,
-                                    );
-                                },
-                                icon: const Icon(
-                                  Icons.call_missed_outgoing_outlined,
-                                ),
-                              ),
-                            ),
-                            IconButton(
-                              // alignment: Alignment.centerRight,
-                              color: c.colours.primary,
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                  c,
-                                  Routes.receive,
-                                  // arguments: state.wallet!,
-                                );
-                              },
-                              icon: const Icon(Icons.call_received),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 40),
-                if (!showInfo)
-                  // const SizedBox(height: 48),
-                  TransactionsView()
-                else
-                  const WalletInfo()
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class WalletInfo extends StatelessWidget {
   const WalletInfo({Key? key}) : super(key: key);
 
@@ -651,5 +507,238 @@ class WalletInfo extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class WalletPage extends StatelessWidget {
+  const WalletPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext c) {
+    final zeroBal = c.select((WalletCubit hc) => hc.state.zeroBalance());
+    final showInfo = c.select((WalletCubit hc) => hc.state.showInfo);
+
+    return BlocListener<WalletCubit, WalletState>(
+      listener: (c, s) {
+        if (s.deleted) Navigator.pop(c);
+      },
+      child: WillPopScope(
+        onWillPop: () async {
+          c.read<WalletsCubit>().clearSelectedWallet();
+          return true;
+        },
+        child: Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const WalletLoader(),
+                  const SizedBox(height: 16),
+                  Row(
+                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      const SizedBox(width: 8),
+                      Back(
+                        onPressed: () {
+                          c.read<WalletsCubit>().clearSelectedWallet();
+                          Navigator.of(c).pop();
+                        },
+                      ),
+                      const Spacer(),
+                      const SizedBox(width: 8),
+                    ],
+                  ),
+                  // const SizedBox(height: 40),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: const [
+                            WalletName(),
+                            SizedBox(height: 24),
+                            Balance(),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Opacity(
+                                opacity: 0.4,
+                                child: IconButton(
+                                  iconSize: 28,
+                                  // alignment: Alignment.centerRight,
+                                  color: c.colours.error,
+                                  onPressed: () {
+                                    _deleteWalletClicked(c, zeroBal);
+                                  },
+                                  icon: const Icon(Icons.delete_sweep_outlined),
+                                ),
+                              ),
+                              // const SizedBox(height: 24),
+                              IconButton(
+                                // alignment: Alignment.centerRight,
+                                color: c.colours.primary,
+                                onPressed: () {
+                                  c.read<WalletCubit>().toggleShowInfo();
+                                },
+                                icon: const Icon(Icons.info_outline),
+                              ),
+                              AnimatedOpacity(
+                                duration: const Duration(milliseconds: 300),
+                                opacity: zeroBal ? 0.4 : 1,
+                                child: IconButton(
+                                  // alignment: Alignment.centerRight,
+                                  color: c.colours.primary,
+                                  onPressed: () {
+                                    if (!zeroBal)
+                                      Navigator.pushNamed(
+                                        c,
+                                        Routes.send,
+                                        // arguments: state.wallet!,
+                                      );
+                                  },
+                                  icon: const Icon(
+                                    Icons.call_missed_outgoing_outlined,
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                // alignment: Alignment.centerRight,
+                                color: c.colours.primary,
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                    c,
+                                    Routes.receive,
+                                    // arguments: state.wallet!,
+                                  );
+                                },
+                                icon: const Icon(Icons.call_received),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 40),
+                  if (!showInfo)
+                    // const SizedBox(height: 48),
+                    TransactionsView()
+                  else
+                    const WalletInfo()
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _deleteWalletClicked(BuildContext c, bool zeroBalance) async {
+    if (!zeroBalance) {
+      await showCupertinoModalPopup<bool>(
+        context: c,
+        // barrierColor: c.colours.background,
+
+        builder: (BuildContext context) => CupertinoActionSheet(
+          title: Text(
+            'Wallet is not empty'.toUpperCase(),
+            style: c.fonts.headline6!.copyWith(color: c.colours.onPrimary),
+          ),
+          message: Text(
+            'Please send transfer all funds before deleting wallet.',
+            style: c.fonts.subtitle2!.copyWith(color: c.colours.onBackground),
+          ),
+          actions: [
+            Container(
+              color: c.colours.background,
+              child: CupertinoActionSheetAction(
+                child: Text(
+                  'SEND',
+                  style:
+                      c.fonts.button!.copyWith(color: c.colours.onBackground),
+                ),
+                onPressed: () async {
+                  Navigator.pop(context, true);
+                  await Future.delayed(const Duration(milliseconds: 200));
+                  Navigator.pushNamed(c, Routes.send);
+                },
+              ),
+            ),
+            Container(
+              color: c.colours.background,
+              child: CupertinoActionSheetAction(
+                // isDestructiveAction: true,
+                onPressed: () {
+                  Navigator.pop(context, true);
+                },
+                child: Text(
+                  'BACK',
+                  style:
+                      c.fonts.button!.copyWith(color: c.colours.onBackground),
+                ),
+              ),
+            ),
+
+            // const SizedBox(height: 24),
+          ],
+        ),
+      );
+      return;
+    }
+
+    final delete = await showCupertinoModalPopup<bool>(
+      context: c,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        title: Padding(
+          padding: const EdgeInsets.only(top: 16),
+          child: Text(
+            'Delete Wallet ?'.toUpperCase(),
+            style: c.fonts.headline6!.copyWith(color: c.colours.onPrimary),
+          ),
+        ),
+        message: Text(
+          'All wallet information will be deleted.',
+          style: c.fonts.subtitle2!.copyWith(color: c.colours.onBackground),
+        ),
+        actions: [
+          Container(
+            color: c.colours.background,
+            child: CupertinoActionSheetAction(
+              isDestructiveAction: true,
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: const Text('Yes, Delete'),
+            ),
+          ),
+          // const SizedBox(height: 24),
+          Container(
+            color: c.colours.background,
+            child: CupertinoActionSheetAction(
+              child: Text(
+                'CANCEL',
+                style: c.fonts.button!.copyWith(color: c.colours.onBackground),
+              ),
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+            ),
+          )
+        ],
+      ),
+    );
+
+    if (delete != null && delete) {
+      c.read<WalletCubit>().deleteClicked();
+    }
   }
 }
