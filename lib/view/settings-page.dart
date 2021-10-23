@@ -158,143 +158,134 @@ class _EditNodeState extends State<EditNode> {
     _checkFields(nodeState);
     final nodeType = nodeState.nodeType;
 
-    return ElevatedButton(
-      onPressed: () {
-        // c.read<NodeAddressCubit>().toggleIsEditting();
-      },
-      style: ElevatedButton.styleFrom(
-        elevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-        primary: c.colours.surface,
+    return Container(
+      color: c.colours.surface,
+      padding: const EdgeInsets.only(
+        // left: 0,
+        top: 16,
+        bottom: 16,
+        left: 16,
+        // right: 0,
       ),
-      child: Container(
-        // height: 100,
-        padding: const EdgeInsets.only(
-          // left: 0,
-          top: 16,
-          bottom: 16,
-          // right: 0,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              'Change Bitcoin Node'.toUpperCase(),
-              style: c.fonts.button!.copyWith(
-                color: c.colours.onBackground,
-                fontSize: 16,
-              ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            'Change Bitcoin Node'.toUpperCase(),
+            style: c.fonts.button!.copyWith(
+              color: c.colours.onBackground,
+              fontSize: 16,
             ),
-            const SizedBox(height: 4),
-            Text(
-              'All communication will be sent via selected node',
-              // nodeState.displayName.toUpperCase(),
-              maxLines: 3,
-              style: c.fonts.caption!.copyWith(
-                color: c.colours.onSurface.withOpacity(0.7),
-              ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'All communication will be sent via selected node',
+            // nodeState.displayName.toUpperCase(),
+            maxLines: 3,
+            style: c.fonts.caption!.copyWith(
+              color: c.colours.onSurface.withOpacity(0.7),
             ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 300),
-                  opacity: nodeType == NodeType.electrum ? 1 : 0.5,
-                  child: TextButton(
-                    onPressed: () {
-                      c.read<NodeAddressCubit>().electrumSelected();
-                    },
-                    child: const Text('ELECTRUM'),
-                  ),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: nodeType == NodeType.electrum ? 1 : 0.5,
+                child: TextButton(
+                  onPressed: () {
+                    c.read<NodeAddressCubit>().electrumSelected();
+                  },
+                  child: const Text('ELECTRUM'),
                 ),
-                const SizedBox(width: 24),
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 300),
-                  opacity: nodeType == NodeType.bitcoincore ? 1 : 0.5,
-                  child: TextButton(
-                    onPressed: () {
-                      c.read<NodeAddressCubit>().nodeSelected();
-                    },
-                    child: const Text('CUSTOM NODE'),
-                  ),
-                ),
-              ],
-            ),
-            if (nodeType == NodeType.bitcoincore) ...[
-              const SizedBox(height: 16),
-              TextField(
-                controller: _address,
-                autocorrect: false,
-                style: TextStyle(color: context.colours.onBackground),
-                decoration: InputDecoration(
-                  hintText: 'Enter Full Address'.toUpperCase(),
-                  // errorText: errAmount.nullIfEmpty(),
-                ),
-                onChanged: (t) {
-                  context.read<NodeAddressCubit>().addressChanged(t);
-                },
               ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: _port,
-                autocorrect: false,
-                style: TextStyle(color: context.colours.onBackground),
-                decoration: InputDecoration(
-                  hintText: 'Enter Port'.toUpperCase(),
-                  // errorText: errAmount.nullIfEmpty(),
+              const SizedBox(width: 24),
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: nodeType == NodeType.bitcoincore ? 1 : 0.5,
+                child: TextButton(
+                  onPressed: () {
+                    c.read<NodeAddressCubit>().nodeSelected();
+                  },
+                  child: const Text('CUSTOM NODE'),
                 ),
-                onChanged: (t) {
-                  context.read<NodeAddressCubit>().portChanged(t);
-                },
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: _username,
-                autocorrect: false,
-                style: TextStyle(color: context.colours.onBackground),
-                decoration: InputDecoration(
-                  hintText: 'Enter Username'.toUpperCase(),
-                  // errorText: errAmount.nullIfEmpty(),
-                ),
-                onChanged: (t) {
-                  context.read<NodeAddressCubit>().usernameChanged(t);
-                },
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: _password,
-                obscureText: true,
-                autocorrect: false,
-                style: TextStyle(color: context.colours.onBackground),
-                decoration: InputDecoration(
-                  hintText: 'Enter Password'.toUpperCase(),
-                  // errorText: errAmount.nullIfEmpty(),
-                ),
-                onChanged: (t) {
-                  context.read<NodeAddressCubit>().passwordChanged(t);
-                },
               ),
             ],
-            const SizedBox(height: 32),
-            TextButton(
-              onPressed: () {
-                c.read<NodeAddressCubit>().saveClicked();
-              },
-              child: const Text('SAVE'),
-            ),
-            const SizedBox(height: 24),
-            TextButton(
-              onPressed: () {
-                c.read<NodeAddressCubit>().toggleIsEditting();
-              },
-              child: Text(
-                'CANCEL',
-                style: c.fonts.button!.copyWith(color: c.colours.error),
+          ),
+          if (nodeType == NodeType.bitcoincore) ...[
+            const SizedBox(height: 16),
+            TextField(
+              controller: _address,
+              autocorrect: false,
+              style: TextStyle(color: context.colours.onBackground),
+              decoration: InputDecoration(
+                hintText: 'Enter Full Address'.toUpperCase(),
+                // errorText: errAmount.nullIfEmpty(),
               ),
+              onChanged: (t) {
+                context.read<NodeAddressCubit>().addressChanged(t);
+              },
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _port,
+              autocorrect: false,
+              style: TextStyle(color: context.colours.onBackground),
+              decoration: InputDecoration(
+                hintText: 'Enter Port'.toUpperCase(),
+                // errorText: errAmount.nullIfEmpty(),
+              ),
+              onChanged: (t) {
+                context.read<NodeAddressCubit>().portChanged(t);
+              },
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _username,
+              autocorrect: false,
+              style: TextStyle(color: context.colours.onBackground),
+              decoration: InputDecoration(
+                hintText: 'Enter Username'.toUpperCase(),
+                // errorText: errAmount.nullIfEmpty(),
+              ),
+              onChanged: (t) {
+                context.read<NodeAddressCubit>().usernameChanged(t);
+              },
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _password,
+              obscureText: true,
+              autocorrect: false,
+              style: TextStyle(color: context.colours.onBackground),
+              decoration: InputDecoration(
+                hintText: 'Enter Password'.toUpperCase(),
+                // errorText: errAmount.nullIfEmpty(),
+              ),
+              onChanged: (t) {
+                context.read<NodeAddressCubit>().passwordChanged(t);
+              },
+            ),
           ],
-        ),
+          const SizedBox(height: 32),
+          TextButton(
+            onPressed: () {
+              c.read<NodeAddressCubit>().saveClicked();
+            },
+            child: const Text('SAVE'),
+          ),
+          const SizedBox(height: 24),
+          TextButton(
+            onPressed: () {
+              c.read<NodeAddressCubit>().toggleIsEditting();
+            },
+            child: Text(
+              'CANCEL',
+              style: c.fonts.button!.copyWith(color: c.colours.error),
+            ),
+          ),
+          const SizedBox(height: 24),
+        ],
       ),
     );
   }

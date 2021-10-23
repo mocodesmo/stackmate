@@ -40,16 +40,6 @@ class HeaderRow extends StatelessWidget {
                 if (!isRearranging) ...[
                   IconButton(
                     onPressed: () {
-                      Navigator.pushNamed(c, Routes.setting);
-                    },
-                    icon: Icon(
-                      Icons.settings,
-                      size: 32,
-                      color: c.colours.primary,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
                       c.read<WalletsCubit>().toggleRearranging();
                       // Navigator.pushNamed(c, Routes.setting);
                     },
@@ -58,7 +48,18 @@ class HeaderRow extends StatelessWidget {
                       size: 32,
                       color: c.colours.primary,
                     ),
-                  )
+                  ),
+                  const SizedBox(width: 16),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(c, Routes.setting);
+                    },
+                    icon: Icon(
+                      Icons.settings,
+                      size: 32,
+                      color: c.colours.primary,
+                    ),
+                  ),
                 ] else ...[
                   TextButton(
                     onPressed: () {
@@ -287,12 +288,15 @@ class ReorderCards extends StatelessWidget {
                       ),
                     ],
                   ),
+                  contentsWhenEmpty: Container(),
                   children: [
                     DragAndDropList(
+                      contentsWhenEmpty: Container(),
                       // horizontalAlignment: MainAxisAlignment.center,
                       children: [
                         for (final wallet in wallets) ...[
                           DragAndDropItem(
+                            
                             child: WalletCard(
                               wallet: wallet,
                               isSelection: true,
