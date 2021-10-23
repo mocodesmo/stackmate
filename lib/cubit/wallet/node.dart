@@ -28,7 +28,7 @@ class NodeAddressState with _$NodeAddressState {
   }
 
   String mainString() {
-    if (nodeType == NodeType.electrum) return 'Electrum (Default)';
+    if (nodeType == NodeType.electrum) return 'ELECTRUM (Default)';
 
     return '$address:$port (Custom)';
   }

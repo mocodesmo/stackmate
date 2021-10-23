@@ -13,49 +13,61 @@ class UserList extends StatelessWidget {
       (AddressBookCubit abc) => abc.state.users,
     );
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 40),
-        Text(
-          ' Your Network',
-          style: context.fonts.headline4!.copyWith(
-            color: context.colours.onBackground,
-          ),
-        ),
-        TextButton(
-          onPressed: () {
-            context.read<AddressBookCubit>().editUserSelected();
-          },
-          child: const Text('Create New User'),
-        ),
-        const SizedBox(height: 40),
-        if (users.isEmpty) ...[
+    return FadeIn(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: 40),
           Text(
-            ' No Contacts',
-            style: context.fonts.headline6!.copyWith(
+            ' Your Network',
+            style: context.fonts.headline4!.copyWith(
               color: context.colours.onBackground,
             ),
           ),
-        ] else
-          for (final user in users) ...[
-            GestureDetector(
-              onTap: () {
-                context.read<AddressBookCubit>().userSelected(user);
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton(
+              onPressed: () {
+                context.read<AddressBookCubit>().editUserSelected();
               },
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-                child: Text(
-                  user.name,
-                  style: context.fonts.button!.copyWith(
-                    color: context.colours.primary,
+              child: Text('Create New User'.toUpperCase()),
+            ),
+          ),
+          const SizedBox(height: 40),
+          if (users.isEmpty) ...[
+            Text(
+              ' No Contacts',
+              style: context.fonts.headline6!.copyWith(
+                color: context.colours.onBackground,
+              ),
+            ),
+          ] else
+            for (final user in users) ...[
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(context.colours.surface),
+                  alignment: Alignment.centerLeft,
+                ),
+                onPressed: () {
+                  context.read<AddressBookCubit>().userSelected(user);
+                },
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 24),
+                  child: Text(
+                    user.name,
+                    textAlign: TextAlign.left,
+                    style: context.fonts.button!.copyWith(
+                      color: context.colours.primary,
+                    ),
                   ),
                 ),
               ),
-            )
-          ]
-      ],
+              const SizedBox(height: 24),
+            ]
+        ],
+      ),
     );
   }
 }
@@ -71,67 +83,82 @@ class KeyList extends StatelessWidget {
 
     if (user == null) return Container();
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 40),
-        Text(
-          ' ' + user.name,
-          style: context.fonts.headline4!.copyWith(
-            color: context.colours.onBackground,
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            TextButton(
-              onPressed: () {
-                context.read<AddressBookCubit>().editKeySelected();
-              },
-              child: const Text('NEW PUBLIC KEY'),
-            ),
-            TextButton(
-              onPressed: () {
-                context.read<AddressBookCubit>().editUserSelected();
-              },
-              child: const Text('EDIT'),
-            ),
-            TextButton(
-              onPressed: () {
-                context.read<AddressBookCubit>().deleteUserClicked();
-              },
-              child: const Text('DELETE'),
-            ),
-          ],
-        ),
-        const SizedBox(height: 40),
-        if (user.keys == null || user.keys!.isEmpty) ...[
+    return FadeIn(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: 40),
           Text(
-            ' No Public Keys',
+            '  ' + user.name,
             style: context.fonts.headline6!.copyWith(
               color: context.colours.onBackground,
             ),
           ),
-        ] else
-          for (final key in user.keys!) ...[
-            GestureDetector(
-              onTap: () {
-                context.read<AddressBookCubit>().keySelected(key);
-              },
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+          Row(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextButton(
+                onPressed: () {
+                  context.read<AddressBookCubit>().editKeySelected();
+                },
+                child: const Text('NEW PUBLIC KEY'),
+              ),
+              const Spacer(),
+              TextButton(
+                onPressed: () {
+                  context.read<AddressBookCubit>().editUserSelected();
+                },
+                child: const Text('EDIT'),
+              ),
+              const SizedBox(width: 16),
+              TextButton(
+                onPressed: () {
+                  context.read<AddressBookCubit>().deleteUserClicked();
+                },
                 child: Text(
-                  key.name,
+                  'DELETE',
                   style: context.fonts.button!.copyWith(
-                    color: context.colours.primary,
+                    color: context.colours.error.withOpacity(0.5),
                   ),
                 ),
               ),
-            )
-          ],
-        const SizedBox(height: 100),
-      ],
+            ],
+          ),
+          const SizedBox(height: 40),
+          if (user.keys == null || user.keys!.isEmpty) ...[
+            Text(
+              '   No Public Keys',
+              style: context.fonts.subtitle1!.copyWith(
+                color: context.colours.onBackground,
+              ),
+            ),
+          ] else
+            for (final key in user.keys!) ...[
+              ElevatedButton(
+                onPressed: () {
+                  context.read<AddressBookCubit>().keySelected(key);
+                },
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(context.colours.surface),
+                  alignment: Alignment.centerLeft,
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 24, horizontal: 8),
+                  child: Text(
+                    key.name,
+                    style: context.fonts.button!.copyWith(
+                      color: context.colours.primary,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+          const SizedBox(height: 100),
+        ],
+      ),
     );
   }
 }
@@ -147,55 +174,58 @@ class KeyProfile extends StatelessWidget {
 
     if (key == null) return Container();
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 40),
-        Text(
-          key.name,
-          style: context.fonts.headline4!.copyWith(
-            color: context.colours.onBackground,
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            TextButton(
-              onPressed: () {
-                context.read<AddressBookCubit>().editKeySelected();
-              },
-              child: const Text('EDIT'),
+    return FadeIn(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 40),
+          Text(
+            '    ' + key.name,
+            style: context.fonts.headline6!.copyWith(
+              color: context.colours.onBackground,
             ),
-            TextButton(
-              onPressed: () {
-                context.read<AddressBookCubit>().deleteKeyClicked();
-              },
-              child: const Text('DELETE'),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            // mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              TextButton(
+                onPressed: () {
+                  context.read<AddressBookCubit>().editKeySelected();
+                },
+                child: const Text('EDIT'),
+              ),
+              TextButton(
+                onPressed: () {
+                  context.read<AddressBookCubit>().deleteKeyClicked();
+                },
+                child: const Text('DELETE'),
+              ),
+            ],
+          ),
+          const SizedBox(height: 80),
+          Text(
+            'PUBLIC KEY',
+            style: context.fonts.overline!.copyWith(
+              color: context.colours.onBackground,
             ),
-          ],
-        ),
-        const SizedBox(height: 40),
-        Text(
-          'PUBLIC KEY',
-          style: context.fonts.overline!.copyWith(
-            color: context.colours.onBackground,
           ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          key.publicKey,
-          style: context.fonts.bodyText1!.copyWith(
-            color: context.colours.onBackground,
+          const SizedBox(height: 4),
+          Text(
+            key.publicKey,
+            style: context.fonts.bodyText1!.copyWith(
+              color: context.colours.onBackground,
+            ),
           ),
-        ),
-        const SizedBox(height: 16),
-        TextButton(
-          onPressed: () {
-            context.read<AddressBookCubit>().copyKey();
-          },
-          child: const Text('COPY'),
-        ),
-      ],
+          const SizedBox(height: 16),
+          TextButton(
+            onPressed: () {
+              context.read<AddressBookCubit>().copyKey();
+            },
+            child: const Text('COPY'),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -205,26 +235,28 @@ class EditUser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const SizedBox(height: 80),
-        const UserNameField(),
-        const SizedBox(height: 40),
-        TextButton(
-          onPressed: () {
-            context.read<AddressBookCubit>().saveUserClicked();
-          },
-          child: const Text('SAVE'),
-        ),
-        const SizedBox(height: 40),
-        TextButton(
-          onPressed: () {
-            context.read<AddressBookCubit>().cancelUserEdit();
-          },
-          child: const Text('CANCEL'),
-        ),
-      ],
+    return FadeIn(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: 80),
+          const UserNameField(),
+          const SizedBox(height: 40),
+          TextButton(
+            onPressed: () {
+              context.read<AddressBookCubit>().saveUserClicked();
+            },
+            child: const Text('SAVE'),
+          ),
+          const SizedBox(height: 40),
+          TextButton(
+            onPressed: () {
+              context.read<AddressBookCubit>().cancelUserEdit();
+            },
+            child: const Text('CANCEL'),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -234,28 +266,30 @@ class EditKey extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const SizedBox(height: 80),
-        const KeyNameField(),
-        const SizedBox(height: 40),
-        const KeyValueField(),
-        const SizedBox(height: 100),
-        TextButton(
-          onPressed: () {
-            context.read<AddressBookCubit>().saveKeyClicked();
-          },
-          child: const Text('SAVE'),
-        ),
-        const SizedBox(height: 40),
-        TextButton(
-          onPressed: () {
-            context.read<AddressBookCubit>().cancelKeyEdit();
-          },
-          child: const Text('CANCEL'),
-        ),
-      ],
+    return FadeIn(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: 80),
+          const KeyNameField(),
+          const SizedBox(height: 40),
+          const KeyValueField(),
+          const SizedBox(height: 100),
+          TextButton(
+            onPressed: () {
+              context.read<AddressBookCubit>().saveKeyClicked();
+            },
+            child: const Text('SAVE'),
+          ),
+          const SizedBox(height: 40),
+          TextButton(
+            onPressed: () {
+              context.read<AddressBookCubit>().cancelKeyEdit();
+            },
+            child: const Text('CANCEL'),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -443,15 +477,15 @@ class AddressBookPage extends StatelessWidget {
                         },
                       ),
                       if (state.editKeyDetails) ...[
-                        FadeIn(child: const EditKey()),
+                        const EditKey(),
                       ] else if (state.selectedKey != null) ...[
-                        FadeIn(child: const KeyProfile()),
+                        const KeyProfile(),
                       ] else if (state.editUserDetails) ...[
-                        FadeIn(child: const EditUser()),
+                        const EditUser(),
                       ] else if (state.selectedUser != null) ...[
-                        FadeIn(child: const KeyList()),
+                        const KeyList(),
                       ] else if (state.selectedUser == null) ...[
-                        FadeIn(child: const UserList())
+                        const UserList()
                       ],
                     ],
                   ),

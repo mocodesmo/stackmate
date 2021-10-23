@@ -41,6 +41,7 @@ class AddressBookCubit extends Cubit<AddressBookState> {
     // this._vibrate,
     this._clipBoard,
   ) : super(const AddressBookState()) {
+    // deleteAll();
     loadAddressUsers();
   }
 
@@ -335,5 +336,11 @@ class AddressBookCubit extends Cubit<AddressBookState> {
       _logger.logException(e, 'AddressBookCubit.deleteKeyClicked', s);
       emit(state.copyWith());
     }
+  }
+
+  void deleteAll() async {
+    await _storage.clearAll<AddressBookUser>(
+      StoreKeys.AddressBookUser.name,
+    );
   }
 }
