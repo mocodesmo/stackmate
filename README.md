@@ -1,3 +1,3 @@
-# Advanced Bitcoin Wallet
+# Bitcoin Wallet
 
 

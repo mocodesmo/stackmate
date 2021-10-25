@@ -1,7 +1,4 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
@@ -9,9 +6,7 @@
             "request": "launch",
             "type": "dart",
             "args": [
-                //"--no-sound-null-safety",
-                // "--dart-define=APP=user",
-                "-v"
+                // "-v"
             ],
             "program": "${workspaceFolder}/lib/main.dart",
         },
@@ -19,40 +14,8 @@
             "name": "Current Device - Release",
             "request": "launch",
             "type": "dart",
-            "args": [
-                // "--no-sound-null-safety"
-                "--dart-define=APP=user"
-            ],
             "program": "${workspaceFolder}/lib/main.dart",
             "flutterMode": "release",
-        },
-        {
-            "name": "Android",
-            "request": "launch",
-            "type": "dart",
-            "deviceId": "emulator-5554", //"3D7ED7AB-ABC1-4E5A-9196-9BC66364273C",
-            "program": "${workspaceFolder}/dart/lib/main.dart"
-        },
-        {
-            "name": "iPhone",
-            "request": "launch",
-            "type": "dart",
-            "deviceId": "728C7481-1349-47A0-BD97-26F5A7EA7D69",
-            //"9DB4F228-C175-47F2-B039-3AFEBB168326",
-            //"18501326-A132-43FE-886A-2C4746413358", //"emulator-5554",
-            "program": "${workspaceFolder}/dart/lib/main.dart"
-        },
-        {
-            "name": "Web",
-            "request": "launch",
-            "type": "dart",
-            "deviceId": "chrome",
-            "program": "${workspaceFolder}/dart/lib/main.dart",
-            // "debugServer": 55195,           
-            // "debugServer": 5000,
-            // "args": ["--web-port 5000"],
-            // "args": ["--web-port", "8080"],
-            "flutterMode": "debug",
         },
         {
             "name": "Profiler",
@@ -62,18 +25,13 @@
             ],
             "request": "launch",
             "type": "dart",
-            // "deviceId": "android",
-            "program": "${workspaceFolder}/dart/lib/main.dart"
+            "program": "${workspaceFolder}/lib/main.dart"
         },
     ],
     "compounds": [
         {
             "name": "All Devices",
-            "configurations": [
-                "Android",
-                "iPhone"
-                // "Web"
-            ],
+            "configurations": [],
         }
     ]
 }

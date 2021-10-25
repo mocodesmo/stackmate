@@ -165,7 +165,7 @@ class _EditNodeState extends State<EditNode> {
         top: 16,
         bottom: 16,
         left: 16,
-        // right: 0,
+        right: 16, 
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
