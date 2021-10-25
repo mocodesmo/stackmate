@@ -81,7 +81,7 @@ abstract class IBitcoin {
 class BitcoinFFI implements IBitcoin {
   final _bitcoin = BitcoinFFFI(
     binary: Platform.isAndroid
-        ? DynamicLibrary.open('libditto.so')
+        ? DynamicLibrary.open('libstackmate.so')
         : DynamicLibrary.process(),
   );
 

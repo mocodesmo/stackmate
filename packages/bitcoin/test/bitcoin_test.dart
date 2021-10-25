@@ -7,7 +7,7 @@
 
 //   setUp(() {
 //     ffi = BitcoinFFFI(
-//       binary: DynamicLibrary.open('libditto.dylib'),
+//       binary: DynamicLibrary.open('libstackmate.dylib'),
 //     );
 //   });
 
