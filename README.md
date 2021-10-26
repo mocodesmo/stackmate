@@ -8,6 +8,7 @@
 - [Features](#features)
 - [Getting Started](#getting-started)
     - [Flutter Development](#flutter-development)
+    - [VSCode Explorer](#vscode-explorer)
     - [Updating stackmate-core](#updating-stackmate-core)
 - [Welcome Contributions](#welcome-contributions)
 - [Maintainers](#maintainers)
@@ -21,7 +22,7 @@ This app uses [stackmate-core](https://github.com/i5hi/stackmate-core) for it's 
 This app communicates with [stackmate-core's](https://github.com/i5hi/stackmate-core) Rust binary via FFI.
 
 ## Features
-- __modern descriptor wallets:__ uses all the latest technologies for the Bitcoin ecosystem
+- __modern descriptor wallets:__ uses all the latest technologies from the Bitcoin ecosystem
 - __calculator:__ calculate current exchange rates with our built-in calculator
 - __cross platform:__ built using Flutter 💙 and Rust
 
@@ -34,10 +35,19 @@ Make sure Flutter and Dart are installed.
 flutter pub get
 flutter run
 ```
-Run freezed code-gen while updating cubit state classes or model classes  
+Run freezed code-gen while updating cubit state classes or model classes.
 ```bash
 flutter pub run build_runner watch --delete-conflicting-outputs
 ```
+<br/>
+
+### VSCode Explorer
+Visibility of files and folders can be toggled from
+
+    .
+    └── .vscode/
+        └── settings.json 
+
 <br/>
 
 ### Updating stackmate-core
@@ -46,6 +56,7 @@ Make sure Rust and Android NDK are installed.
 cd packages/bitcoin
 sh update-core.sh
 ```
+
 <br/>
 <br/>
 
