@@ -54,4 +54,4 @@ PRs / help is welcome in the following areas.
 [Vishal](https://github.com/i5hi)
 
 ## License
-[MIT](https://github.com/mocodesmo/stackmate/LICENSE)
+[MIT](https://github.com/mocodesmo/stackmate/blob/main/LICENSE)
