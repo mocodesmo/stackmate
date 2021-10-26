@@ -26,6 +26,8 @@ This app communicates with [stackmate-core's](https://github.com/i5hi/stackmate-
 - __cross platform:__ built using Flutter 💙 and Rust
 
 ## Getting Started
+<br/>
+
 ### Flutter Development
 Make sure Flutter and Dart are installed.
 ```bash
@@ -36,12 +38,17 @@ Run freezed code-gen while updating cubit state classes or model classes
 ```bash
 flutter pub run build_runner watch --delete-conflicting-outputs
 ```
+<br/>
+
 ### Updating stackmate-core
 Make sure Rust and Android NDK are installed.
 ```bash
 cd packages/bitcoin
 sh update-core.sh
 ```
+<br/>
+<br/>
+
 
 ## Welcome Contributions
 PRs / help is welcome in the following areas.
