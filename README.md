@@ -36,7 +36,7 @@ Make sure Flutter and Dart are installed.
 flutter pub get
 flutter run
 ```
-Run freezed code-gen while updating cubit state classes or model classes.
+Run [freezed](https://pub.dev/packages/freezed) code-gen while updating cubit state classes or model classes.
 ```bash
 flutter pub run build_runner watch --delete-conflicting-outputs
 ```
