@@ -16,4 +16,5 @@ echo 'cleaning up ..'
 cd ..
 rm -f -r stackmate-core
 
-echo 'stackmate-core updated !'
+echo 'stackmate-core for android updated !'
+echo '.. updating stackmate-core for ios coming soon.'
