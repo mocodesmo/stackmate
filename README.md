@@ -23,6 +23,7 @@ This app communicates with [stackmate-core's](https://github.com/i5hi/stackmate-
 
 ## Features
 - __modern descriptor wallets:__ uses all the latest technologies from the Bitcoin ecosystem
+- __address book:__ store and organise public descriptors
 - __calculator:__ calculate current exchange rates with our built-in calculator
 - __cross platform:__ built using Flutter 💙 and Rust
 
