@@ -15,8 +15,6 @@ import 'package:sats/pkg/style.dart';
 
 void main() async {
   await initializeHive();
-  // await storeTest();
-  // testBitcoin();
   setupDependencies(useDummies: false);
 
   WidgetsFlutterBinding.ensureInitialized();

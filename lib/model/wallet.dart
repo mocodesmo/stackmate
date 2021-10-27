@@ -24,4 +24,6 @@ class Wallet with _$Wallet {
 
   String balanceToBtc() =>
       balance == null ? '0' : (balance! / 100000000).toStringAsFixed(8);
+
+  bool isNotWatchOnly() => label != 'WATCH ONLY';
 }

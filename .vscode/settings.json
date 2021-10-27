@@ -3,52 +3,51 @@
         "comments": "#229977"
     },
     "files.exclude": {
-        // "**/.metadata": true,
-        // // ".gitignore": true,
-        // // ".gitignore2": true,
-        // "**/.packages": true,
-        // "**/pubspec.lock": true,
-        // // "README.md": true,
-        // "**/.flutter-plugins": true,
-        // "**/.dart_tool": true,
-        // "**/.flutter-plugins-dependencies": true,
-        // "**/generated_plugin_registrant.dart": true,
-        // "**/CHANGELOG.md": true,
-        // "l10n.yaml": true,
+        "**/.metadata": true,
+        ".gitignore": true,
+        ".gitignore2": true,
+        "**/.packages": true,
+        "**/pubspec.lock": true,
+        "README.md": true,
+        "**/.flutter-plugins": true,
+        "**/.dart_tool": true,
+        "**/.flutter-plugins-dependencies": true,
+        "**/generated_plugin_registrant.dart": true,
+        "**/CHANGELOG.md": true,
+        "l10n.yaml": true,
+        "LICENSE": true,
         //
-        // //
-        // //
-        // // 
-        // "**/build": true,
-        // //
-        // //
-        // "assets": true,
-        // "integration_test": true,
-        // "**/test": true,
-        // ".gitlab-ci.yml": true,
-        // //
-        // "sats.xd": true,
-        // "**/assets": true,
-        // "**/zandroid": true,
-        // "**/zios": true,
-        // "ioszz": true,
-        // "**/web": true,
-        // "**/macos": true,
-        // "**/macos2": true,
-        // //
-        // //
-        // "**/**.g.dart": true,
-        // "**/**.freezed.dart": true,
-        // "android": true,
-        // "ios": true,
-        // //
-        // //
-        // "**/analysis_options.yaml": true,
-        // // "**/packages": true,
-        // "zzzz": true,
-        // "zzz": true,
-        // "**/pubspec.yaml": true,
         //
+        // 
+        "**/build": true,
+        //
+        //
+        "assets": true,
+        "integration_test": true,
+        "**/test": true,
+        ".gitlab-ci.yml": true,
+        //
+        "sats.xd": true,
+        "**/assets": true,
+        "**/zandroid": true,
+        "**/zios": true,
+        "ioszz": true,
+        "**/web": true,
+        "**/macos": true,
+        "**/macos2": true,
+        //
+        //
+        "**/**.g.dart": true,
+        "**/**.freezed.dart": true,
+        "android": true,
+        "ios": true,
+        //
+        //
+        "**/analysis_options.yaml": true,
+        "**/packages": true,
+        "zzzz": true,
+        "zzz": true,
+        "**/pubspec.yaml": true,
         //
         //
         //

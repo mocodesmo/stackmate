@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:sats/cubit/wallet/wallet.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/model/transaction.dart';
+import 'package:sats/model/wallet.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button.dart';
@@ -523,8 +524,11 @@ class WalletPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext c) {
-    final zeroBal = c.select((WalletCubit hc) => hc.state.zeroBalance());
-    final showInfo = c.select((WalletCubit hc) => hc.state.showInfo);
+    final zeroBal = c.select((WalletCubit wc) => wc.state.zeroBalance());
+    final showInfo = c.select((WalletCubit wc) => wc.state.showInfo);
+    final wallet = c.select((WalletsCubit wc) => wc.state.selectedWallet);
+
+    if (wallet == null) return Container();
 
     return BlocListener<WalletCubit, WalletState>(
       listener: (c, s) {
@@ -584,7 +588,7 @@ class WalletPage extends StatelessWidget {
                                   // alignment: Alignment.centerRight,
                                   color: c.colours.error,
                                   onPressed: () {
-                                    _deleteWalletClicked(c, zeroBal);
+                                    _deleteWalletClicked(c, zeroBal, wallet);
                                   },
                                   icon: const Icon(Icons.delete_sweep_outlined),
                                 ),
@@ -600,12 +604,13 @@ class WalletPage extends StatelessWidget {
                               ),
                               AnimatedOpacity(
                                 duration: const Duration(milliseconds: 300),
-                                opacity: zeroBal ? 0.4 : 1,
+                                opacity:
+                                    (zeroBal || !wallet.isNotWatchOnly()) ? 0.4 : 1,
                                 child: IconButton(
                                   // alignment: Alignment.centerRight,
                                   color: c.colours.primary,
                                   onPressed: () {
-                                    if (!zeroBal)
+                                    if (!zeroBal && wallet.isNotWatchOnly())
                                       Navigator.pushNamed(
                                         c,
                                         Routes.send,
@@ -650,8 +655,12 @@ class WalletPage extends StatelessWidget {
     );
   }
 
-  void _deleteWalletClicked(BuildContext c, bool zeroBalance) async {
-    if (!zeroBalance) {
+  void _deleteWalletClicked(
+    BuildContext c,
+    bool zeroBalance,
+    Wallet wallet,
+  ) async {
+    if (!zeroBalance && wallet.isNotWatchOnly()) {
       await showCupertinoModalPopup<bool>(
         context: c,
         // barrierColor: c.colours.background,

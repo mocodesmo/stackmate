@@ -53,7 +53,7 @@ class Routes {
   static const addressBook = 'address-book';
 
   static Route<dynamic>? setupRoutes(RouteSettings settings, BuildContext c) {
-    Widget page = Container();
+    late Widget page;
 
     switch (settings.name) {
       case home:
