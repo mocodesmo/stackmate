@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/cubit/wallet/node.dart';
 import 'package:sats/model/blockchain.dart';
-import 'package:sats/model/node.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button.dart';
 import 'package:sats/view/common/header.dart';
@@ -28,10 +27,8 @@ class BlockchainRow extends StatelessWidget {
       child: Container(
         height: 100,
         padding: const EdgeInsets.only(
-          // left: 0,
           top: 16,
           bottom: 16,
-          // right: 0,
         ),
         child: Row(
           children: [
@@ -86,10 +83,8 @@ class NodeRow extends StatelessWidget {
       child: Container(
         height: 100,
         padding: const EdgeInsets.only(
-          // left: 0,
           top: 16,
           bottom: 16,
-          // right: 0,
         ),
         child: Row(
           children: [
@@ -107,7 +102,6 @@ class NodeRow extends StatelessWidget {
                 Text(
                   'All communication will be sent via selected node\n\nCurrent node:   ' +
                       nodeString,
-                  // nodeState.displayName.toUpperCase(),
                   maxLines: 3,
                   style: c.fonts.caption!.copyWith(
                     color: c.colours.onSurface.withOpacity(0.7),
@@ -133,39 +127,31 @@ class EditNode extends StatefulWidget {
 class _EditNodeState extends State<EditNode> {
   late TextEditingController _address;
   late TextEditingController _port;
-  late TextEditingController _username;
-  late TextEditingController _password;
 
   @override
   void initState() {
     _address = TextEditingController();
     _port = TextEditingController();
-    _username = TextEditingController();
-    _password = TextEditingController();
     super.initState();
   }
 
   void _checkFields(NodeAddressState state) {
     if (_address.text != state.address) _address.text = state.address;
     if (_port.text != state.port) _port.text = state.port;
-    if (_username.text != state.username) _username.text = state.username;
-    if (_password.text != state.password) _password.text = state.password;
   }
 
   @override
   Widget build(BuildContext c) {
     final nodeState = c.select((NodeAddressCubit nac) => nac.state);
     _checkFields(nodeState);
-    final nodeType = nodeState.nodeType;
 
     return Container(
       color: c.colours.surface,
       padding: const EdgeInsets.only(
-        // left: 0,
         top: 16,
         bottom: 16,
         left: 16,
-        right: 16, 
+        right: 16,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -180,93 +166,36 @@ class _EditNodeState extends State<EditNode> {
           const SizedBox(height: 4),
           Text(
             'All communication will be sent via selected node',
-            // nodeState.displayName.toUpperCase(),
             maxLines: 3,
             style: c.fonts.caption!.copyWith(
               color: c.colours.onSurface.withOpacity(0.7),
             ),
           ),
           const SizedBox(height: 16),
-          Row(
-            children: [
-              AnimatedOpacity(
-                duration: const Duration(milliseconds: 300),
-                opacity: nodeType == NodeType.electrum ? 1 : 0.5,
-                child: TextButton(
-                  onPressed: () {
-                    c.read<NodeAddressCubit>().electrumSelected();
-                  },
-                  child: const Text('ELECTRUM'),
-                ),
-              ),
-              const SizedBox(width: 24),
-              AnimatedOpacity(
-                duration: const Duration(milliseconds: 300),
-                opacity: nodeType == NodeType.bitcoincore ? 1 : 0.5,
-                child: TextButton(
-                  onPressed: () {
-                    c.read<NodeAddressCubit>().nodeSelected();
-                  },
-                  child: const Text('CUSTOM NODE'),
-                ),
-              ),
-            ],
+          const SizedBox(height: 16),
+          TextField(
+            controller: _address,
+            autocorrect: false,
+            style: TextStyle(color: context.colours.onBackground),
+            decoration: InputDecoration(
+              hintText: 'Enter Full Address'.toUpperCase(),
+            ),
+            onChanged: (t) {
+              context.read<NodeAddressCubit>().addressChanged(t);
+            },
           ),
-          if (nodeType == NodeType.bitcoincore) ...[
-            const SizedBox(height: 16),
-            TextField(
-              controller: _address,
-              autocorrect: false,
-              style: TextStyle(color: context.colours.onBackground),
-              decoration: InputDecoration(
-                hintText: 'Enter Full Address'.toUpperCase(),
-                // errorText: errAmount.nullIfEmpty(),
-              ),
-              onChanged: (t) {
-                context.read<NodeAddressCubit>().addressChanged(t);
-              },
+          const SizedBox(height: 16),
+          TextField(
+            controller: _port,
+            autocorrect: false,
+            style: TextStyle(color: context.colours.onBackground),
+            decoration: InputDecoration(
+              hintText: 'Enter Port'.toUpperCase(),
             ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _port,
-              autocorrect: false,
-              style: TextStyle(color: context.colours.onBackground),
-              decoration: InputDecoration(
-                hintText: 'Enter Port'.toUpperCase(),
-                // errorText: errAmount.nullIfEmpty(),
-              ),
-              onChanged: (t) {
-                context.read<NodeAddressCubit>().portChanged(t);
-              },
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _username,
-              autocorrect: false,
-              style: TextStyle(color: context.colours.onBackground),
-              decoration: InputDecoration(
-                hintText: 'Enter Username'.toUpperCase(),
-                // errorText: errAmount.nullIfEmpty(),
-              ),
-              onChanged: (t) {
-                context.read<NodeAddressCubit>().usernameChanged(t);
-              },
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _password,
-              obscureText: true,
-              autocorrect: false,
-              style: TextStyle(color: context.colours.onBackground),
-              decoration: InputDecoration(
-                hintText: 'Enter Password'.toUpperCase(),
-                // errorText: errAmount.nullIfEmpty(),
-              ),
-              onChanged: (t) {
-                context.read<NodeAddressCubit>().passwordChanged(t);
-              },
-            ),
-          ],
+            onChanged: (t) {
+              context.read<NodeAddressCubit>().portChanged(t);
+            },
+          ),
           const SizedBox(height: 32),
           TextButton(
             onPressed: () {

@@ -22,17 +22,11 @@ class _$NodeTearOff {
   const _$NodeTearOff();
 
   _Node call(
-      {@HiveField(0) required NodeType nodeType,
-      @HiveField(1) required String address,
-      @HiveField(2) required String port,
-      @HiveField(3) required String username,
-      @HiveField(4) required String password}) {
+      {@HiveField(1) required String address,
+      @HiveField(2) required String port}) {
     return _Node(
-      nodeType: nodeType,
       address: address,
       port: port,
-      username: username,
-      password: password,
     );
   }
 
@@ -46,16 +40,10 @@ const $Node = _$NodeTearOff();
 
 /// @nodoc
 mixin _$Node {
-  @HiveField(0)
-  NodeType get nodeType => throw _privateConstructorUsedError;
   @HiveField(1)
   String get address => throw _privateConstructorUsedError;
   @HiveField(2)
   String get port => throw _privateConstructorUsedError;
-  @HiveField(3)
-  String get username => throw _privateConstructorUsedError;
-  @HiveField(4)
-  String get password => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -66,12 +54,7 @@ mixin _$Node {
 abstract class $NodeCopyWith<$Res> {
   factory $NodeCopyWith(Node value, $Res Function(Node) then) =
       _$NodeCopyWithImpl<$Res>;
-  $Res call(
-      {@HiveField(0) NodeType nodeType,
-      @HiveField(1) String address,
-      @HiveField(2) String port,
-      @HiveField(3) String username,
-      @HiveField(4) String password});
+  $Res call({@HiveField(1) String address, @HiveField(2) String port});
 }
 
 /// @nodoc
@@ -84,17 +67,10 @@ class _$NodeCopyWithImpl<$Res> implements $NodeCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? nodeType = freezed,
     Object? address = freezed,
     Object? port = freezed,
-    Object? username = freezed,
-    Object? password = freezed,
   }) {
     return _then(_value.copyWith(
-      nodeType: nodeType == freezed
-          ? _value.nodeType
-          : nodeType // ignore: cast_nullable_to_non_nullable
-              as NodeType,
       address: address == freezed
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
@@ -102,14 +78,6 @@ class _$NodeCopyWithImpl<$Res> implements $NodeCopyWith<$Res> {
       port: port == freezed
           ? _value.port
           : port // ignore: cast_nullable_to_non_nullable
-              as String,
-      username: username == freezed
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as String,
-      password: password == freezed
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -120,12 +88,7 @@ abstract class _$NodeCopyWith<$Res> implements $NodeCopyWith<$Res> {
   factory _$NodeCopyWith(_Node value, $Res Function(_Node) then) =
       __$NodeCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {@HiveField(0) NodeType nodeType,
-      @HiveField(1) String address,
-      @HiveField(2) String port,
-      @HiveField(3) String username,
-      @HiveField(4) String password});
+  $Res call({@HiveField(1) String address, @HiveField(2) String port});
 }
 
 /// @nodoc
@@ -139,17 +102,10 @@ class __$NodeCopyWithImpl<$Res> extends _$NodeCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? nodeType = freezed,
     Object? address = freezed,
     Object? port = freezed,
-    Object? username = freezed,
-    Object? password = freezed,
   }) {
     return _then(_Node(
-      nodeType: nodeType == freezed
-          ? _value.nodeType
-          : nodeType // ignore: cast_nullable_to_non_nullable
-              as NodeType,
       address: address == freezed
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
@@ -157,14 +113,6 @@ class __$NodeCopyWithImpl<$Res> extends _$NodeCopyWithImpl<$Res>
       port: port == freezed
           ? _value.port
           : port // ignore: cast_nullable_to_non_nullable
-              as String,
-      username: username == freezed
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as String,
-      password: password == freezed
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -175,64 +123,39 @@ class __$NodeCopyWithImpl<$Res> extends _$NodeCopyWithImpl<$Res>
 @HiveType(typeId: 14, adapterName: 'NodeClassAdaper')
 class _$_Node extends _Node {
   const _$_Node(
-      {@HiveField(0) required this.nodeType,
-      @HiveField(1) required this.address,
-      @HiveField(2) required this.port,
-      @HiveField(3) required this.username,
-      @HiveField(4) required this.password})
+      {@HiveField(1) required this.address, @HiveField(2) required this.port})
       : super._();
 
   factory _$_Node.fromJson(Map<String, dynamic> json) => _$$_NodeFromJson(json);
 
-  @override
-  @HiveField(0)
-  final NodeType nodeType;
   @override
   @HiveField(1)
   final String address;
   @override
   @HiveField(2)
   final String port;
-  @override
-  @HiveField(3)
-  final String username;
-  @override
-  @HiveField(4)
-  final String password;
 
   @override
   String toString() {
-    return 'Node(nodeType: $nodeType, address: $address, port: $port, username: $username, password: $password)';
+    return 'Node(address: $address, port: $port)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _Node &&
-            (identical(other.nodeType, nodeType) ||
-                const DeepCollectionEquality()
-                    .equals(other.nodeType, nodeType)) &&
             (identical(other.address, address) ||
                 const DeepCollectionEquality()
                     .equals(other.address, address)) &&
             (identical(other.port, port) ||
-                const DeepCollectionEquality().equals(other.port, port)) &&
-            (identical(other.username, username) ||
-                const DeepCollectionEquality()
-                    .equals(other.username, username)) &&
-            (identical(other.password, password) ||
-                const DeepCollectionEquality()
-                    .equals(other.password, password)));
+                const DeepCollectionEquality().equals(other.port, port)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(nodeType) ^
       const DeepCollectionEquality().hash(address) ^
-      const DeepCollectionEquality().hash(port) ^
-      const DeepCollectionEquality().hash(username) ^
-      const DeepCollectionEquality().hash(password);
+      const DeepCollectionEquality().hash(port);
 
   @JsonKey(ignore: true)
   @override
@@ -247,30 +170,18 @@ class _$_Node extends _Node {
 
 abstract class _Node extends Node {
   const factory _Node(
-      {@HiveField(0) required NodeType nodeType,
-      @HiveField(1) required String address,
-      @HiveField(2) required String port,
-      @HiveField(3) required String username,
-      @HiveField(4) required String password}) = _$_Node;
+      {@HiveField(1) required String address,
+      @HiveField(2) required String port}) = _$_Node;
   const _Node._() : super._();
 
   factory _Node.fromJson(Map<String, dynamic> json) = _$_Node.fromJson;
 
-  @override
-  @HiveField(0)
-  NodeType get nodeType => throw _privateConstructorUsedError;
   @override
   @HiveField(1)
   String get address => throw _privateConstructorUsedError;
   @override
   @HiveField(2)
   String get port => throw _privateConstructorUsedError;
-  @override
-  @HiveField(3)
-  String get username => throw _privateConstructorUsedError;
-  @override
-  @HiveField(4)
-  String get password => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$NodeCopyWith<_Node> get copyWith => throw _privateConstructorUsedError;

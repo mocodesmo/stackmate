@@ -18,19 +18,13 @@ class _$NodeAddressStateTearOff {
   const _$NodeAddressStateTearOff();
 
   _NodeAddressState call(
-      {NodeType nodeType = NodeType.electrum,
-      String address = '',
+      {String address = '',
       String port = '',
-      String username = '',
-      String password = '',
       String errNodeState = '',
       bool isEditing = false}) {
     return _NodeAddressState(
-      nodeType: nodeType,
       address: address,
       port: port,
-      username: username,
-      password: password,
       errNodeState: errNodeState,
       isEditing: isEditing,
     );
@@ -42,11 +36,8 @@ const $NodeAddressState = _$NodeAddressStateTearOff();
 
 /// @nodoc
 mixin _$NodeAddressState {
-  NodeType get nodeType => throw _privateConstructorUsedError;
   String get address => throw _privateConstructorUsedError;
   String get port => throw _privateConstructorUsedError;
-  String get username => throw _privateConstructorUsedError;
-  String get password => throw _privateConstructorUsedError;
   String get errNodeState => throw _privateConstructorUsedError;
   bool get isEditing => throw _privateConstructorUsedError;
 
@@ -60,14 +51,7 @@ abstract class $NodeAddressStateCopyWith<$Res> {
   factory $NodeAddressStateCopyWith(
           NodeAddressState value, $Res Function(NodeAddressState) then) =
       _$NodeAddressStateCopyWithImpl<$Res>;
-  $Res call(
-      {NodeType nodeType,
-      String address,
-      String port,
-      String username,
-      String password,
-      String errNodeState,
-      bool isEditing});
+  $Res call({String address, String port, String errNodeState, bool isEditing});
 }
 
 /// @nodoc
@@ -81,19 +65,12 @@ class _$NodeAddressStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? nodeType = freezed,
     Object? address = freezed,
     Object? port = freezed,
-    Object? username = freezed,
-    Object? password = freezed,
     Object? errNodeState = freezed,
     Object? isEditing = freezed,
   }) {
     return _then(_value.copyWith(
-      nodeType: nodeType == freezed
-          ? _value.nodeType
-          : nodeType // ignore: cast_nullable_to_non_nullable
-              as NodeType,
       address: address == freezed
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
@@ -101,14 +78,6 @@ class _$NodeAddressStateCopyWithImpl<$Res>
       port: port == freezed
           ? _value.port
           : port // ignore: cast_nullable_to_non_nullable
-              as String,
-      username: username == freezed
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as String,
-      password: password == freezed
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
               as String,
       errNodeState: errNodeState == freezed
           ? _value.errNodeState
@@ -129,14 +98,7 @@ abstract class _$NodeAddressStateCopyWith<$Res>
           _NodeAddressState value, $Res Function(_NodeAddressState) then) =
       __$NodeAddressStateCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {NodeType nodeType,
-      String address,
-      String port,
-      String username,
-      String password,
-      String errNodeState,
-      bool isEditing});
+  $Res call({String address, String port, String errNodeState, bool isEditing});
 }
 
 /// @nodoc
@@ -152,19 +114,12 @@ class __$NodeAddressStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? nodeType = freezed,
     Object? address = freezed,
     Object? port = freezed,
-    Object? username = freezed,
-    Object? password = freezed,
     Object? errNodeState = freezed,
     Object? isEditing = freezed,
   }) {
     return _then(_NodeAddressState(
-      nodeType: nodeType == freezed
-          ? _value.nodeType
-          : nodeType // ignore: cast_nullable_to_non_nullable
-              as NodeType,
       address: address == freezed
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
@@ -172,14 +127,6 @@ class __$NodeAddressStateCopyWithImpl<$Res>
       port: port == freezed
           ? _value.port
           : port // ignore: cast_nullable_to_non_nullable
-              as String,
-      username: username == freezed
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as String,
-      password: password == freezed
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
               as String,
       errNodeState: errNodeState == freezed
           ? _value.errNodeState
@@ -197,30 +144,18 @@ class __$NodeAddressStateCopyWithImpl<$Res>
 
 class _$_NodeAddressState extends _NodeAddressState {
   const _$_NodeAddressState(
-      {this.nodeType = NodeType.electrum,
-      this.address = '',
+      {this.address = '',
       this.port = '',
-      this.username = '',
-      this.password = '',
       this.errNodeState = '',
       this.isEditing = false})
       : super._();
 
-  @JsonKey(defaultValue: NodeType.electrum)
-  @override
-  final NodeType nodeType;
   @JsonKey(defaultValue: '')
   @override
   final String address;
   @JsonKey(defaultValue: '')
   @override
   final String port;
-  @JsonKey(defaultValue: '')
-  @override
-  final String username;
-  @JsonKey(defaultValue: '')
-  @override
-  final String password;
   @JsonKey(defaultValue: '')
   @override
   final String errNodeState;
@@ -230,27 +165,18 @@ class _$_NodeAddressState extends _NodeAddressState {
 
   @override
   String toString() {
-    return 'NodeAddressState(nodeType: $nodeType, address: $address, port: $port, username: $username, password: $password, errNodeState: $errNodeState, isEditing: $isEditing)';
+    return 'NodeAddressState(address: $address, port: $port, errNodeState: $errNodeState, isEditing: $isEditing)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _NodeAddressState &&
-            (identical(other.nodeType, nodeType) ||
-                const DeepCollectionEquality()
-                    .equals(other.nodeType, nodeType)) &&
             (identical(other.address, address) ||
                 const DeepCollectionEquality()
                     .equals(other.address, address)) &&
             (identical(other.port, port) ||
                 const DeepCollectionEquality().equals(other.port, port)) &&
-            (identical(other.username, username) ||
-                const DeepCollectionEquality()
-                    .equals(other.username, username)) &&
-            (identical(other.password, password) ||
-                const DeepCollectionEquality()
-                    .equals(other.password, password)) &&
             (identical(other.errNodeState, errNodeState) ||
                 const DeepCollectionEquality()
                     .equals(other.errNodeState, errNodeState)) &&
@@ -262,11 +188,8 @@ class _$_NodeAddressState extends _NodeAddressState {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(nodeType) ^
       const DeepCollectionEquality().hash(address) ^
       const DeepCollectionEquality().hash(port) ^
-      const DeepCollectionEquality().hash(username) ^
-      const DeepCollectionEquality().hash(password) ^
       const DeepCollectionEquality().hash(errNodeState) ^
       const DeepCollectionEquality().hash(isEditing);
 
@@ -278,25 +201,16 @@ class _$_NodeAddressState extends _NodeAddressState {
 
 abstract class _NodeAddressState extends NodeAddressState {
   const factory _NodeAddressState(
-      {NodeType nodeType,
-      String address,
+      {String address,
       String port,
-      String username,
-      String password,
       String errNodeState,
       bool isEditing}) = _$_NodeAddressState;
   const _NodeAddressState._() : super._();
 
   @override
-  NodeType get nodeType => throw _privateConstructorUsedError;
-  @override
   String get address => throw _privateConstructorUsedError;
   @override
   String get port => throw _privateConstructorUsedError;
-  @override
-  String get username => throw _privateConstructorUsedError;
-  @override
-  String get password => throw _privateConstructorUsedError;
   @override
   String get errNodeState => throw _privateConstructorUsedError;
   @override

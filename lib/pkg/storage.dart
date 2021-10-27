@@ -35,7 +35,7 @@ Future<void> initializeHive() async {
   Hive.registerAdapter(BlockchainClassAdaper());
   Hive.registerAdapter(AddressBookUserClassAdaper());
   Hive.registerAdapter(AddressBookValueClassAdaper());
-  Hive.registerAdapter(NodeTypeClassAdaper());
+  // Hive.registerAdapter(NodeTypeClassAdaper());
   Hive.registerAdapter(NodeClassAdaper());
 
   await Hive.openBox<RedditPost>(
