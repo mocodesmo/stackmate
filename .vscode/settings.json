@@ -8,7 +8,7 @@
         ".gitignore2": true,
         "**/.packages": true,
         "**/pubspec.lock": true,
-        "README.md": true,
+        // "README.md": true,
         "**/.flutter-plugins": true,
         "**/.dart_tool": true,
         "**/.flutter-plugins-dependencies": true,

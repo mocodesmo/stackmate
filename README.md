@@ -9,6 +9,7 @@
 - [Getting Started](#getting-started)
     - [Flutter Development](#flutter-development)
     - [VSCode Explorer](#vscode-explorer)
+    - [Exchange Rates API](#exchange-rates-api)
     - [Updating stackmate-core](#updating-stackmate-core)
 - [Welcome Contributions](#welcome-contributions)
 - [Maintainers](#maintainers)
@@ -45,13 +46,25 @@ flutter pub run build_runner watch --delete-conflicting-outputs
 ### VSCode Explorer
 Visibility of files and folders can be toggled from
 
-    .
-    └── .vscode/
+    .vscode/
         └── settings.json 
 
 <br/>
 
+### Exchange Rates API
+The [coincap](https://docs.coincap.io/) API is currently implemented for calculating exchange rates.
+<br/>
+Request an API Key from [coincap](https://docs.coincap.io/) and update the ```_apiKey``` in 
+
+    lib/
+    └── api/
+        └── rates.dart
+
+<br/>
+
 ### Updating stackmate-core
+*Optional Advanced Usage*
+<br/>
 Make sure Rust and Android NDK are installed.
 ```bash
 cd packages/bitcoin

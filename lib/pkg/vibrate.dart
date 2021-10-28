@@ -5,7 +5,7 @@ abstract class IVibrate {
   void vibe();
 }
 
-class Vibrator implements IVibrate {
+class Vibrate implements IVibrate {
   @override
   void vibe() async {
     HapticFeedback.selectionClick();
@@ -17,7 +17,7 @@ class Vibrator implements IVibrate {
   }
 }
 
-class DummyVibrator implements IVibrate {
+class DummyVibrate implements IVibrate {
   @override
   void vibe() async {}
 }

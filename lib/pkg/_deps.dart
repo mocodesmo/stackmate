@@ -18,7 +18,7 @@ void setupDependencies({required bool useDummies}) {
     locator.registerLazySingleton<IShare>(() => Sharer());
     locator.registerSingleton<ILauncher>(Launcher());
     locator.registerLazySingleton<IRedditAPI>(() => RedditAPI());
-    locator.registerLazySingleton<IVibrate>(() => Vibrator());
+    locator.registerLazySingleton<IVibrate>(() => Vibrate());
     locator.registerLazySingleton<IBitcoin>(() => BitcoinFFI());
     locator.registerLazySingleton<ILocalAuth>(() => LocalAuth());
     return;
@@ -30,7 +30,7 @@ void setupDependencies({required bool useDummies}) {
   locator.registerLazySingleton<IClipBoard>(() => ClipBoardd());
   locator.registerLazySingleton<IStorage>(() => HiveStore());
   locator.registerLazySingleton<IBitcoin>(() => BitcoinFFI());
-  locator.registerLazySingleton<IVibrate>(() => Vibrator());
+  locator.registerLazySingleton<IVibrate>(() => Vibrate());
   locator.registerLazySingleton<ILocalAuth>(() => LocalAuth());
   locator.registerLazySingleton<IRatesAPI>(() => RatesAPI());
 }

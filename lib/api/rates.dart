@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:retry/retry.dart';
 import 'package:sats/api/_helpers.dart';
 
+const _apiKey = '0145a1f5-96ca-4ead-abd7-f82d52cba040';
+
 abstract class IRatesAPI {
   Future<Response> getRate({required String symbol});
 }
@@ -16,12 +18,11 @@ class RatesAPI implements IRatesAPI {
 
     final response = await retry(
       () => client
-          // .get(path)
           .get(
             path,
             options: Options(
               headers: {
-                'Authorization': 'Bearer 0145a1f5-96ca-4ead-abd7-f82d52cba040',
+                'Authorization': 'Bearer $_apiKey',
                 'Accept-Encoding': 'gzip, deflate, br',
               },
               validateStatus: (status) => true,

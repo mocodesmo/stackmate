@@ -35,7 +35,6 @@ Future<void> initializeHive() async {
   Hive.registerAdapter(BlockchainClassAdaper());
   Hive.registerAdapter(AddressBookUserClassAdaper());
   Hive.registerAdapter(AddressBookValueClassAdaper());
-  // Hive.registerAdapter(NodeTypeClassAdaper());
   Hive.registerAdapter(NodeClassAdaper());
 
   await Hive.openBox<RedditPost>(
@@ -44,10 +43,7 @@ Future<void> initializeHive() async {
   );
   await Hive.openBox<Wallet>(StoreKeys.Wallet.name);
   await Hive.openBox<Blockchain>(StoreKeys.Blockchain.name);
-
   await Hive.openBox<AddressBookUser>(StoreKeys.AddressBookUser.name);
-  // var abu = Hive.box<AddressBookUser>(StoreKeys.AddressBookUser.name);
-  // await abu.compact();
   await Hive.openBox<AddressBookKey>(StoreKeys.AddressBookKey.name);
   await Hive.openBox<Node>(StoreKeys.Node.name);
 }
@@ -82,10 +78,6 @@ class HiveStore implements IStorage {
     Hive.box<T>(cls).delete(key);
   }
 
-  void deleteItemX<T>(String cls, dynamic key) {
-    Hive.box<T>(cls).delete(key);
-  }
-
   @override
   void deleteItemAt<T>(String cls, int idx) {
     Hive.box<T>(cls).delete(idx);
@@ -116,17 +108,4 @@ class HiveStore implements IStorage {
     if (obj == null) throw 'empty';
     return obj;
   }
-}
-
-Future<void> storeTest() async {
-  final store = HiveStore();
-  // const key = AddressBookKey(
-  //   name: 'name',
-  //   publicKey: 'publicKey',
-  //   createdAt: 0,
-  // );
-
-  await store.clearAll<AddressBookUser>(StoreKeys.AddressBookUser.name);
-  // store.saveItem(StoreKeys.AddressBookKey.name, key);
-  // store.deleteItemX<AddressBookKey>(StoreKeys.AddressBookKey.name, key);
 }
