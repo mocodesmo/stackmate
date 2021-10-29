@@ -79,11 +79,17 @@ abstract class IBitcoin {
 }
 
 class BitcoinFFI implements IBitcoin {
-  final _bitcoin = BitcoinFFFI(
-    binary: Platform.isAndroid
-        ? DynamicLibrary.open('libstackmate.so')
-        : DynamicLibrary.process(),
-  );
+  
+  BitcoinFFI() {
+    print('\n\n----- FFI STARTING -------\n\n');
+    _bitcoin = BitcoinFFFI(
+      binary: Platform.isAndroid
+          ? DynamicLibrary.open('libstackmate.so')
+          : DynamicLibrary.executable(),
+    );
+  }
+
+  late BitcoinFFFI _bitcoin;
 
   @override
   Future<Nmeu> generateMaster({
@@ -183,7 +189,6 @@ class BitcoinFFI implements IBitcoin {
       var tx = Transaction.fromJson(t as Map<String, dynamic>);
       if (!tx.isReceive())
         tx = tx.copyWith(sent: tx.sent - tx.received - tx.fee);
-      
 
       transactions.add(tx);
     }

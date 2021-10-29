@@ -6,7 +6,7 @@
             "request": "launch",
             "type": "dart",
             "args": [
-                // "-v"
+                "-v"
             ],
             "program": "${workspaceFolder}/lib/main.dart",
         },

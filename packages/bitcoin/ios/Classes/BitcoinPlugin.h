@@ -3,6 +3,7 @@
 @interface BitcoinPlugin : NSObject<FlutterPlugin>
 @end
 
+
 char *generate_master(const char *network, const char *length, const char *passphrase);
 
 char *import_master(const char *network, const char *mnemonic, const char *passphrase);
@@ -28,6 +29,3 @@ char *build_tx(const char *deposit_desc,
 char *sign_tx(const char *deposit_desc, const char *node_address, const char *unsigned_psbt);
 
 char *broadcast_tx(const char *deposit_desc, const char *node_address, const char *signed_psbt);
-
-void cstring_free(char *ptr);
-

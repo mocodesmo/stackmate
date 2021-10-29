@@ -41,19 +41,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	
-	<key>NSCameraUsageDescription</key>
-	<string>Camera permission is required for barcode scanning.</string>
-
-	<key>NSBluetoothAlwaysUsageDescription</key>  
-	<string>Need BLE permission</string>  
-	<key>NSBluetoothPeripheralUsageDescription</key>  
-	<string>Need BLE permission</string>  
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>  
-	<string>Need Location permission</string>  
-	<key>NSLocationAlwaysUsageDescription</key>  
-	<string>Need Location permission</string>  
-	<key>NSLocationWhenInUseUsageDescription</key>  
-	<string>Need Location permission</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>bluuue</string>
 </dict>
 </plist>

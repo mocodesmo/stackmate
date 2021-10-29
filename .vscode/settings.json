@@ -5,10 +5,8 @@
     "files.exclude": {
         "**/.metadata": true,
         ".gitignore": true,
-        ".gitignore2": true,
         "**/.packages": true,
         "**/pubspec.lock": true,
-        // "README.md": true,
         "**/.flutter-plugins": true,
         "**/.dart_tool": true,
         "**/.flutter-plugins-dependencies": true,
@@ -27,27 +25,19 @@
         "**/test": true,
         ".gitlab-ci.yml": true,
         //
-        "sats.xd": true,
         "**/assets": true,
-        "**/zandroid": true,
-        "**/zios": true,
-        "ioszz": true,
-        "**/web": true,
-        "**/macos": true,
-        "**/macos2": true,
         //
         //
         "**/**.g.dart": true,
         "**/**.freezed.dart": true,
         "android": true,
-        "ios": true,
+        // "ios": true,
         //
         //
         "**/analysis_options.yaml": true,
-        "**/packages": true,
-        "zzzz": true,
-        "zzz": true,
-        "**/pubspec.yaml": true,
+        // "**/packages": true,
+        // "**/pubspec.yaml": true,
+        // "README.md": true,
         //
         //
         //

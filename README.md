@@ -11,7 +11,7 @@
     - [VSCode Explorer](#vscode-explorer)
     - [Exchange Rates API](#exchange-rates-api)
     - [Updating stackmate-core](#updating-stackmate-core)
-- [Welcome Contributions](#welcome-contributions)
+- [Known Issues](#known-issues)
 - [Maintainers](#maintainers)
 - [License](#license)
 
@@ -75,9 +75,9 @@ sh update-core.sh
 <br/>
 
 
-## Welcome Contributions
-PRs / help is welcome in the following areas.
-- running rust binaries on an ios emulator
+## Known Issues
+
+- __iOS emulator__<br>The iOS emulator does not allow changing network and bluetooth settings. <br/>This app expects all connectivity to be switched off while generating a wallet for maximum security.<br/>Hence, generating a wallet from seed will not work on an iOS emulator.<br/>Please run on a physical device to use this feature.<br/>All other features are available on an iOS emulator.
 -
 
 ## Maintainers

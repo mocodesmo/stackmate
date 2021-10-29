@@ -14,6 +14,8 @@ import 'package:sats/pkg/storage.dart';
 import 'package:sats/pkg/style.dart';
 
 void main() async {
+  print('\n\n----- APPP STARTING -------\n\n');
+
   await initializeHive();
   setupDependencies(useDummies: false);
 
