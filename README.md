@@ -77,7 +77,7 @@ sh update-core.sh
 
 ## Known Issues
 
-- __iOS emulator__<br>The iOS emulator does not allow changing network and bluetooth settings. <br/>This app expects all connectivity to be switched off while generating a wallet for maximum security.<br/>Hence, generating a wallet from seed will not work on an iOS emulator.<br/>Please run on a physical device to use this feature.<br/>All other features are available on an iOS emulator.
+- __iOS emulator__<br>The iOS emulator does not allow changing network and bluetooth settings. <br/>This app expects all connectivity to be switched off while generating a wallet, for maximum security.<br/>Please run on a physical device to use this feature.<br/>All other features are available on an iOS emulator.
 -
 
 ## Maintainers
