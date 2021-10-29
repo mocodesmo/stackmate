@@ -62,3 +62,4 @@ app.*.map.json
 
 
 **/target
+/packages/bitcoin/ios/libstackmate.a
