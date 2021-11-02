@@ -1,7 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sats/cubit/wallet/wallet.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/model/transaction.dart';

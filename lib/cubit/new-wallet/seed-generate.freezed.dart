@@ -82,8 +82,7 @@ mixin _$SeedGenerateState {
   String get passPhrase => throw _privateConstructorUsedError;
   String get errPassphrase => throw _privateConstructorUsedError;
   String get walletLabel => throw _privateConstructorUsedError;
-  String get walletLabelError =>
-      throw _privateConstructorUsedError; // @Default('') String walletDetails,
+  String get walletLabelError => throw _privateConstructorUsedError;
   bool get savinngWallet => throw _privateConstructorUsedError;
   String get savingWalletError => throw _privateConstructorUsedError;
   bool get newWalletSaved => throw _privateConstructorUsedError;
@@ -446,7 +445,7 @@ class _$_SeedGenerateState extends _SeedGenerateState {
   @override
   final String walletLabelError;
   @JsonKey(defaultValue: false)
-  @override // @Default('') String walletDetails,
+  @override
   final bool savinngWallet;
   @JsonKey(defaultValue: '')
   @override
@@ -608,7 +607,7 @@ abstract class _SeedGenerateState extends SeedGenerateState {
   String get walletLabel => throw _privateConstructorUsedError;
   @override
   String get walletLabelError => throw _privateConstructorUsedError;
-  @override // @Default('') String walletDetails,
+  @override
   bool get savinngWallet => throw _privateConstructorUsedError;
   @override
   String get savingWalletError => throw _privateConstructorUsedError;

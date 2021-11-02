@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button.dart';

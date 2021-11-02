@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:oktoast/oktoast.dart';
@@ -14,8 +13,6 @@ import 'package:sats/pkg/storage.dart';
 import 'package:sats/pkg/style.dart';
 
 void main() async {
-  print('\n\n----- APPP STARTING -------\n\n');
-
   await initializeHive();
   setupDependencies(useDummies: false);
 

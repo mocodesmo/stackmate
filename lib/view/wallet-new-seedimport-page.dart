@@ -6,8 +6,6 @@ import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button2.dart';
 import 'package:sats/view/common/header-text.dart';
 import 'package:sats/view/common/header.dart';
-import 'package:sats/view/new-wallet/network-off.dart';
-import 'package:sats/view/new-wallet/network-on.dart';
 
 class NewImportStepper extends StatelessWidget {
   const NewImportStepper();
@@ -336,8 +334,8 @@ class SeedImportPage extends StatelessWidget {
                             case SeedImportSteps.warning:
                               return const SeedImportWarning();
 
-                            case SeedImportSteps.security:
-                              return const SeedNetworkOff(isImport: true);
+                            // case SeedImportSteps.security:
+                            //   return const SeedNetworkOff(isImport: true);
 
                             case SeedImportSteps.import:
                               return const SeedImportPhrase();
@@ -348,8 +346,8 @@ class SeedImportPage extends StatelessWidget {
                             case SeedImportSteps.label:
                               return const SeedImportLabel();
 
-                            case SeedImportSteps.networkOn:
-                              return const SeedNetworkOn(isImport: true);
+                            // case SeedImportSteps.networkOn:
+                            //   return const SeedNetworkOn(isImport: true);
                           }
                         }(),
                       ),

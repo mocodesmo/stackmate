@@ -1,9 +1,7 @@
-import 'dart:async';
 import 'dart:math';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
-import 'package:sats/cubit/new-wallet/network.dart';
 import 'package:sats/cubit/wallet/blockchain.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/model/blockchain.dart';
@@ -16,12 +14,10 @@ part 'seed-generate.freezed.dart';
 
 enum SeedGenerateSteps {
   warning,
-  security,
   passphrase,
   generate,
   confirm,
   label,
-  networkOn,
 }
 
 @freezed
@@ -43,7 +39,6 @@ class SeedGenerateState with _$SeedGenerateState {
     @Default('') String errPassphrase,
     @Default('') String walletLabel,
     @Default('') String walletLabelError,
-    // @Default('') String walletDetails,
     @Default(false) bool savinngWallet,
     @Default('') String savingWalletError,
     @Default(false) bool newWalletSaved,
@@ -72,9 +67,6 @@ class SeedGenerateState with _$SeedGenerateState {
       case SeedGenerateSteps.warning:
         return 'Instructions';
 
-      case SeedGenerateSteps.security:
-        return 'Go Offline';
-
       case SeedGenerateSteps.generate:
         return 'Write Seed';
 
@@ -86,48 +78,26 @@ class SeedGenerateState with _$SeedGenerateState {
 
       case SeedGenerateSteps.label:
         return 'Label Wallet';
-
-      case SeedGenerateSteps.networkOn:
-        return 'Go Online';
     }
   }
 }
 
 class SeedGenerateCubit extends Cubit<SeedGenerateState> {
   SeedGenerateCubit(
-    this._networkCubit,
     this._bitcoin,
-    // this._soloWalletAPI,
     this._storage,
-    // this._walletBloc,
-    // this._testNetCubit,
     this._logger,
     this._wallets,
     this._blockchainCubit,
-  ) : super(const SeedGenerateState()) {
-    _networkCubitSub = _networkCubit.stream.listen((NetworkState nState) {
-      if (nState.hasOffError() != '') _goToNetworkAndReset();
-    });
-  }
-
-  late StreamSubscription _networkCubitSub;
-  final NetworkCubit _networkCubit;
-  // final WalletCubit _walletBloc;
+  ) : super(const SeedGenerateState());
 
   final IBitcoin _bitcoin;
-  // final ISoloWalletAPI _soloWalletAPI;
+
   final IStorage _storage;
   final LoggerCubit _logger;
-  // final net.NetworkCubit _testNetCubit;
+
   final WalletsCubit _wallets;
   final BlockchainCubit _blockchainCubit;
-
-  void _goToNetworkAndReset() {
-    if (state.currentStep == SeedGenerateSteps.networkOn ||
-        state.currentStep == SeedGenerateSteps.warning ||
-        state.currentStep == SeedGenerateSteps.security) return;
-    emit(const SeedGenerateState(currentStep: SeedGenerateSteps.security));
-  }
 
   void _checkPassphrase() {
     if (state.passPhrase.length > 8 || state.passPhrase.contains(' ')) {
@@ -228,7 +198,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
     );
   }
 
-  void _checkLabel() async {
+  void _saveClicked() async {
     if (state.walletLabel.length < 4 ||
         state.walletLabel.length > 10 ||
         state.walletLabel.contains(' ')) {
@@ -236,15 +206,6 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
       return;
     }
 
-    // if (_walletBloc.state.labelExists(state.walletLabel)) {
-    //   emit(state.copyWith(walletLabelError: 'Label already exists'));
-    //   return;
-    // }
-
-    _createNewLocalWallet();
-  }
-
-  void _createNewLocalWallet() async {
     try {
       final der = await _bitcoin.deriveHardened(
         masterXPriv: state.xpriv!,
@@ -257,15 +218,11 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
         scriptType: 'wpkh',
       );
 
-      // final len = _storage.getAll<Wallet>(StoreKeys.Wallet.name).length;
-
       var newWallet = Wallet(
         label: state.walletLabel,
         walletType: 'SINGLE SIGNATURE',
         descriptor: com.descriptor.split('#')[0],
         blockchain: _blockchainCubit.state.blockchain.name,
-
-        // index: len,
       );
 
       final id = await _storage.saveItem<Wallet>(
@@ -281,9 +238,12 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
         newWallet,
       );
 
+      _wallets.refresh();
       emit(
         state.copyWith(
-          currentStep: SeedGenerateSteps.networkOn,
+          savingWalletError: '',
+          savinngWallet: false,
+          newWalletSaved: true,
         ),
       );
     } catch (e, s) {
@@ -291,61 +251,12 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
     }
   }
 
-  void _saveWallet() async {
-    _wallets.refresh();
-    emit(
-      state.copyWith(
-        savingWalletError: '',
-        savinngWallet: false,
-        newWalletSaved: true,
-      ),
-    );
-    // emit(state.copyWith(
-    //   savinngWallet: true,
-    //   savingWalletError: '',
-    // ));
-
-    try {
-      // final authToken = await _storage.getItem(key: CacheKeys.token);
-
-      // final results = state.walletDetails.split(':');
-
-      // final response = await _soloWalletAPI.postGenesis(
-      //   authToken: authToken,
-      //   nickname: state.walletLabel,
-      //   fingerprint: results[0],
-      //   pathh: results[1],
-      //   xpub: results[2],
-      //   rescan: true,
-      //   start: 1974272,
-      //   end: 1974279,
-      // );
-
-      // if (response.statusCode != 200) throw '';
-
-      // emit(state.copyWith(
-      //   savinngWallet: false,
-      //   newWalletSaved: true,
-      // ));
-    } catch (e, s) {
-      _logger.logException(e, 'SeedGenerateCubit._saveWallet', s);
-      emit(
-        state.copyWith(
-          savingWalletError: 'Error Occured.',
-          newWalletSaved: true,
-        ),
-      );
-    }
-  }
-
   void nextClicked() {
     switch (state.currentStep) {
       case SeedGenerateSteps.warning:
-        emit(state.copyWith(currentStep: SeedGenerateSteps.security));
-        break;
-      case SeedGenerateSteps.security:
         emit(state.copyWith(currentStep: SeedGenerateSteps.passphrase));
         break;
+
       case SeedGenerateSteps.passphrase:
         _checkPassphrase();
         break;
@@ -355,10 +266,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
       case SeedGenerateSteps.confirm:
         break;
       case SeedGenerateSteps.label:
-        _checkLabel();
-        break;
-      case SeedGenerateSteps.networkOn:
-        _saveWallet();
+        _saveClicked();
         break;
     }
   }
@@ -367,13 +275,11 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
     switch (state.currentStep) {
       case SeedGenerateSteps.warning:
         break;
-      case SeedGenerateSteps.security:
-        emit(state.copyWith(currentStep: SeedGenerateSteps.warning));
-        break;
+
       case SeedGenerateSteps.passphrase:
         emit(
           state.copyWith(
-            currentStep: SeedGenerateSteps.security,
+            currentStep: SeedGenerateSteps.warning,
             passPhrase: '',
             xpriv: null,
             fingerPrint: null,
@@ -403,8 +309,6 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
         );
         break;
       case SeedGenerateSteps.label:
-        break;
-      case SeedGenerateSteps.networkOn:
         break;
     }
   }
@@ -441,11 +345,5 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
 
   void labelChanged(String text) {
     emit(state.copyWith(walletLabel: text, walletLabelError: ''));
-  }
-
-  @override
-  Future<void> close() {
-    _networkCubitSub.cancel();
-    return super.close();
   }
 }

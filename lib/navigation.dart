@@ -1,12 +1,10 @@
 import 'package:animations/animations.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sats/api/rates.dart';
 import 'package:sats/api/reddit.dart';
 import 'package:sats/cubit/_state.dart';
 import 'package:sats/cubit/calculator.dart';
-import 'package:sats/cubit/new-wallet/network.dart';
 import 'package:sats/cubit/new-wallet/seed-generate.dart';
 import 'package:sats/cubit/new-wallet/seed-import.dart';
 import 'package:sats/cubit/new-wallet/xpub-import.dart';
@@ -76,9 +74,9 @@ class Routes {
         break;
 
       case generateSeed:
-        final networkCubit = NetworkCubit(loggerCubit);
+        // final networkCubit = NetworkCubit(loggerCubit);
         final seedGenerateCubit = SeedGenerateCubit(
-          networkCubit,
+          // networkCubit,
           locator<IBitcoin>(),
           locator<IStorage>(),
           // walletCubit,
@@ -90,7 +88,7 @@ class Routes {
 
         page = MultiBlocProvider(
           providers: [
-            BlocProvider.value(value: networkCubit),
+            // BlocProvider.value(value: networkCubit),
             BlocProvider.value(value: seedGenerateCubit)
           ],
           child: SeedGeneratePage(),
@@ -98,9 +96,9 @@ class Routes {
         break;
 
       case importSeed:
-        final networkCubit = NetworkCubit(loggerCubit);
+        // final networkCubit = NetworkCubit(loggerCubit);
         final seedImportCubit = SeedImportCubit(
-          networkCubit,
+          // networkCubit,
           locator<IBitcoin>(),
           locator<IStorage>(),
           // walletCubit,
@@ -112,7 +110,7 @@ class Routes {
 
         page = MultiBlocProvider(
           providers: [
-            BlocProvider.value(value: networkCubit),
+            // BlocProvider.value(value: networkCubit),
             BlocProvider.value(value: seedImportCubit)
           ],
           child: SeedImportPage(),

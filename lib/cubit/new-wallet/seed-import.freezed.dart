@@ -59,8 +59,7 @@ mixin _$SeedImportState {
   String get passPhrase => throw _privateConstructorUsedError;
   int get accountNumber => throw _privateConstructorUsedError;
   String get errPassPhrase => throw _privateConstructorUsedError;
-  String get walletLabelError =>
-      throw _privateConstructorUsedError; // @Default('') String walletDetails,
+  String get walletLabelError => throw _privateConstructorUsedError;
   bool get savingWallet => throw _privateConstructorUsedError;
   String get savingWalletError => throw _privateConstructorUsedError;
   bool get newWalletSaved => throw _privateConstructorUsedError;
@@ -312,7 +311,7 @@ class _$_SeedImportState extends _SeedImportState {
   @override
   final String walletLabelError;
   @JsonKey(defaultValue: false)
-  @override // @Default('') String walletDetails,
+  @override
   final bool savingWallet;
   @JsonKey(defaultValue: '')
   @override
@@ -424,7 +423,7 @@ abstract class _SeedImportState extends SeedImportState {
   String get errPassPhrase => throw _privateConstructorUsedError;
   @override
   String get walletLabelError => throw _privateConstructorUsedError;
-  @override // @Default('') String walletDetails,
+  @override
   bool get savingWallet => throw _privateConstructorUsedError;
   @override
   String get savingWalletError => throw _privateConstructorUsedError;

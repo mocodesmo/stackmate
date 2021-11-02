@@ -4,7 +4,7 @@
     },
     "files.exclude": {
         "**/.metadata": true,
-        // ".gitignore": true,
+        ".gitignore": true,
         "**/.packages": true,
         "**/pubspec.lock": true,
         "**/.flutter-plugins": true,
@@ -31,13 +31,13 @@
         "**/**.g.dart": true,
         "**/**.freezed.dart": true,
         "android": true,
-        // "ios": true,
+        "ios": true,
         //
         //
         "**/analysis_options.yaml": true,
-        // "**/packages": true,
-        // "**/pubspec.yaml": true,
-        // "README.md": true,
+        "**/packages": true,
+        "**/pubspec.yaml": true,
+        "README.md": true,
         //
         //
         //

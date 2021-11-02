@@ -12,14 +12,14 @@ dependencies:
   bitcoin:
     path: packages/bitcoin
   bloc_concurrency: ^0.1.0
-  connectivity: ^3.0.3
+  # connectivity: ^3.0.3
   dio: ^4.0.0
   drag_and_drop_lists: ^0.3.2
   flutter:
     sdk: flutter
   flutter_barcode_scanner: ^2.0.0
   flutter_bloc: ^7.3.0
-  flutter_blue: ^0.8.0
+  # flutter_blue: ^0.8.0
   flutter_localizations:
     sdk: flutter
   freezed_annotation: ^0.14.3

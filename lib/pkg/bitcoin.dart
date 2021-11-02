@@ -81,7 +81,6 @@ abstract class IBitcoin {
 class BitcoinFFI implements IBitcoin {
   
   BitcoinFFI() {
-    print('\n\n----- FFI STARTING -------\n\n');
     _bitcoin = BitcoinFFFI(
       binary: Platform.isAndroid
           ? DynamicLibrary.open('libstackmate.so')

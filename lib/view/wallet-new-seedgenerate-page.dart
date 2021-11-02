@@ -1,15 +1,12 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sats/cubit/new-wallet/seed-generate.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button2.dart';
 import 'package:sats/view/common/header-text.dart';
 import 'package:sats/view/common/header.dart';
-import 'package:sats/view/new-wallet/network-off.dart';
-import 'package:sats/view/new-wallet/network-on.dart';
-import 'package:sats/view/new-wallet/step.dart';
+import 'package:sats/view/common/new-wallet-stepper.dart';
 
 class NewGenerateStepper extends StatelessWidget {
   @override
@@ -467,8 +464,8 @@ class _SeedGeneratePageState extends State<SeedGeneratePage> {
                             case SeedGenerateSteps.warning:
                               return SeedGenerateWarning();
 
-                            case SeedGenerateSteps.security:
-                              return const SeedNetworkOff(isImport: false);
+                            // case SeedGenerateSteps.security:
+                            // return const SeedNetworkOff(isImport: false);
 
                             case SeedGenerateSteps.generate:
                               return SeedGenerate();
@@ -482,8 +479,8 @@ class _SeedGeneratePageState extends State<SeedGeneratePage> {
                             case SeedGenerateSteps.label:
                               return const SeedGenerateLabel();
 
-                            case SeedGenerateSteps.networkOn:
-                              return const SeedNetworkOn(isImport: false);
+                            // case SeedGenerateSteps.networkOn:
+                            // return const SeedNetworkOn(isImport: false);
                           }
                         }(),
                       ),
