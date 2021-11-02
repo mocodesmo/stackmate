@@ -16,7 +16,7 @@ class HeaderRow extends StatelessWidget {
     final isRearranging = c.select((WalletsCubit wc) => wc.state.isRearranging);
 
     return Padding(
-      padding: const EdgeInsets.only(top: 24, bottom: 16),
+      padding: const EdgeInsets.only(top: 32, bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

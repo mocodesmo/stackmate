@@ -36,7 +36,7 @@ class BlockchainRow extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Change Blockchain Network'.toUpperCase(),
+                  'Change Network'.toUpperCase(),
                   style: c.fonts.button!.copyWith(
                     color: c.colours.primary,
                     fontSize: 16,
@@ -92,7 +92,7 @@ class NodeRow extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Change Bitcoin Node'.toUpperCase(),
+                  'Change Electrum Node'.toUpperCase(),
                   style: c.fonts.button!.copyWith(
                     color: c.colours.primary,
                     fontSize: 16,
@@ -157,7 +157,7 @@ class _EditNodeState extends State<EditNode> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'Change Bitcoin Node'.toUpperCase(),
+            'Change Electrum Node'.toUpperCase(),
             style: c.fonts.button!.copyWith(
               color: c.colours.onBackground,
               fontSize: 16,
