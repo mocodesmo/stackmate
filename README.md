@@ -1,6 +1,9 @@
 <h1 align="center">STACKMATE</h1>
 <div align="center">A multi-purpose Bitcoin Wallet</div>
 <br />
+<p align="center">
+<img style="height:500px" src="demo.png"/>
+<p/>
 <br />
 
 ## Table of Contents
