@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sats/api/logger.dart';
 import 'package:sats/cubit/address-book.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/wallet/blockchain.dart';
@@ -12,6 +13,7 @@ import 'package:sats/pkg/storage.dart';
 
 final loggerCubit = LoggerCubit(
   locator<IClipBoard>(),
+  locator<ILogAPI>(),
 );
 
 final blockchainCubit = BlockchainCubit(

@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:sats/api/logger.dart';
 import 'package:sats/api/rates.dart';
 import 'package:sats/api/reddit.dart';
 import 'package:sats/pkg/bitcoin.dart';
@@ -21,6 +22,8 @@ void setupDependencies({required bool useDummies}) {
     locator.registerLazySingleton<IVibrate>(() => Vibrate());
     locator.registerLazySingleton<IBitcoin>(() => BitcoinFFI());
     locator.registerLazySingleton<ILocalAuth>(() => LocalAuth());
+    locator.registerLazySingleton<ILogAPI>(() => DummyLogAPI());
+
     return;
   }
 
@@ -33,4 +36,5 @@ void setupDependencies({required bool useDummies}) {
   locator.registerLazySingleton<IVibrate>(() => Vibrate());
   locator.registerLazySingleton<ILocalAuth>(() => LocalAuth());
   locator.registerLazySingleton<IRatesAPI>(() => RatesAPI());
+  locator.registerLazySingleton<ILogAPI>(() => LogAPI());
 }

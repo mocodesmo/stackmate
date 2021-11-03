@@ -4,38 +4,11 @@ import 'package:flutter/foundation.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:sats/api/logger.dart';
+import 'package:sats/model/log.dart';
 import 'package:sats/pkg/clipboard.dart';
 
 part 'logger.freezed.dart';
-
-enum LogType { api, event, exception }
-
-class Log {
-  Log({
-    required this.type,
-    this.path,
-    this.response,
-    this.statusCode,
-    this.bloc,
-    this.event,
-    this.exceptionType,
-    this.exceptionSource,
-    this.stackTrace,
-  });
-
-  final LogType type;
-
-  final String? path;
-  final String? response;
-  final String? statusCode;
-
-  final String? bloc;
-  final String? event;
-
-  final String? exceptionType;
-  final String? exceptionSource;
-  final String? stackTrace;
-}
 
 @freezed
 class LoggerState with _$LoggerState {
@@ -45,9 +18,13 @@ class LoggerState with _$LoggerState {
 }
 
 class LoggerCubit extends Cubit<LoggerState> {
-  LoggerCubit(this._clipBoard) : super(const LoggerState());
+  LoggerCubit(
+    this._clipBoard,
+    this._logAPI,
+  ) : super(const LoggerState());
 
   final IClipBoard _clipBoard;
+  final ILogAPI _logAPI;
 
   void logAPI(
     String path,
@@ -129,5 +106,6 @@ class LoggerCubit extends Cubit<LoggerState> {
     final List<Log> logs = state.logs.toList();
     logs.add(log);
     emit(state.copyWith(logs: logs));
+    _logAPI.log(log.toString());
   }
 }
