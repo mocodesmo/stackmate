@@ -18,7 +18,9 @@ class _$SendStateTearOff {
   const _$SendStateTearOff();
 
   _SendState call(
-      {bool loadingStart = true,
+      {SendSteps currentStep = SendSteps.address,
+      bool loadingStart = true,
+      bool calculatingFees = false,
       bool buildingTx = false,
       bool sendingTx = false,
       String errLoading = '',
@@ -39,7 +41,9 @@ class _$SendStateTearOff {
       int? finalAmount,
       bool sweepWallet = false}) {
     return _SendState(
+      currentStep: currentStep,
       loadingStart: loadingStart,
+      calculatingFees: calculatingFees,
       buildingTx: buildingTx,
       sendingTx: sendingTx,
       errLoading: errLoading,
@@ -68,7 +72,9 @@ const $SendState = _$SendStateTearOff();
 
 /// @nodoc
 mixin _$SendState {
+  SendSteps get currentStep => throw _privateConstructorUsedError;
   bool get loadingStart => throw _privateConstructorUsedError;
+  bool get calculatingFees => throw _privateConstructorUsedError;
   bool get buildingTx => throw _privateConstructorUsedError;
   bool get sendingTx => throw _privateConstructorUsedError;
   String get errLoading => throw _privateConstructorUsedError;
@@ -99,7 +105,9 @@ abstract class $SendStateCopyWith<$Res> {
   factory $SendStateCopyWith(SendState value, $Res Function(SendState) then) =
       _$SendStateCopyWithImpl<$Res>;
   $Res call(
-      {bool loadingStart,
+      {SendSteps currentStep,
+      bool loadingStart,
+      bool calculatingFees,
       bool buildingTx,
       bool sendingTx,
       String errLoading,
@@ -131,7 +139,9 @@ class _$SendStateCopyWithImpl<$Res> implements $SendStateCopyWith<$Res> {
 
   @override
   $Res call({
+    Object? currentStep = freezed,
     Object? loadingStart = freezed,
+    Object? calculatingFees = freezed,
     Object? buildingTx = freezed,
     Object? sendingTx = freezed,
     Object? errLoading = freezed,
@@ -153,9 +163,17 @@ class _$SendStateCopyWithImpl<$Res> implements $SendStateCopyWith<$Res> {
     Object? sweepWallet = freezed,
   }) {
     return _then(_value.copyWith(
+      currentStep: currentStep == freezed
+          ? _value.currentStep
+          : currentStep // ignore: cast_nullable_to_non_nullable
+              as SendSteps,
       loadingStart: loadingStart == freezed
           ? _value.loadingStart
           : loadingStart // ignore: cast_nullable_to_non_nullable
+              as bool,
+      calculatingFees: calculatingFees == freezed
+          ? _value.calculatingFees
+          : calculatingFees // ignore: cast_nullable_to_non_nullable
               as bool,
       buildingTx: buildingTx == freezed
           ? _value.buildingTx
@@ -244,7 +262,9 @@ abstract class _$SendStateCopyWith<$Res> implements $SendStateCopyWith<$Res> {
       __$SendStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {bool loadingStart,
+      {SendSteps currentStep,
+      bool loadingStart,
+      bool calculatingFees,
       bool buildingTx,
       bool sendingTx,
       String errLoading,
@@ -277,7 +297,9 @@ class __$SendStateCopyWithImpl<$Res> extends _$SendStateCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? currentStep = freezed,
     Object? loadingStart = freezed,
+    Object? calculatingFees = freezed,
     Object? buildingTx = freezed,
     Object? sendingTx = freezed,
     Object? errLoading = freezed,
@@ -299,9 +321,17 @@ class __$SendStateCopyWithImpl<$Res> extends _$SendStateCopyWithImpl<$Res>
     Object? sweepWallet = freezed,
   }) {
     return _then(_SendState(
+      currentStep: currentStep == freezed
+          ? _value.currentStep
+          : currentStep // ignore: cast_nullable_to_non_nullable
+              as SendSteps,
       loadingStart: loadingStart == freezed
           ? _value.loadingStart
           : loadingStart // ignore: cast_nullable_to_non_nullable
+              as bool,
+      calculatingFees: calculatingFees == freezed
+          ? _value.calculatingFees
+          : calculatingFees // ignore: cast_nullable_to_non_nullable
               as bool,
       buildingTx: buildingTx == freezed
           ? _value.buildingTx
@@ -387,7 +417,9 @@ class __$SendStateCopyWithImpl<$Res> extends _$SendStateCopyWithImpl<$Res>
 
 class _$_SendState extends _SendState with DiagnosticableTreeMixin {
   const _$_SendState(
-      {this.loadingStart = true,
+      {this.currentStep = SendSteps.address,
+      this.loadingStart = true,
+      this.calculatingFees = false,
       this.buildingTx = false,
       this.sendingTx = false,
       this.errLoading = '',
@@ -409,9 +441,15 @@ class _$_SendState extends _SendState with DiagnosticableTreeMixin {
       this.sweepWallet = false})
       : super._();
 
+  @JsonKey(defaultValue: SendSteps.address)
+  @override
+  final SendSteps currentStep;
   @JsonKey(defaultValue: true)
   @override
   final bool loadingStart;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool calculatingFees;
   @JsonKey(defaultValue: false)
   @override
   final bool buildingTx;
@@ -466,7 +504,7 @@ class _$_SendState extends _SendState with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SendState(loadingStart: $loadingStart, buildingTx: $buildingTx, sendingTx: $sendingTx, errLoading: $errLoading, errAddress: $errAddress, errAmount: $errAmount, errFees: $errFees, address: $address, amount: $amount, fees: $fees, feeSlow: $feeSlow, feeMedium: $feeMedium, feefast: $feefast, balance: $balance, feesOption: $feesOption, psbt: $psbt, txId: $txId, finalFee: $finalFee, finalAmount: $finalAmount, sweepWallet: $sweepWallet)';
+    return 'SendState(currentStep: $currentStep, loadingStart: $loadingStart, calculatingFees: $calculatingFees, buildingTx: $buildingTx, sendingTx: $sendingTx, errLoading: $errLoading, errAddress: $errAddress, errAmount: $errAmount, errFees: $errFees, address: $address, amount: $amount, fees: $fees, feeSlow: $feeSlow, feeMedium: $feeMedium, feefast: $feefast, balance: $balance, feesOption: $feesOption, psbt: $psbt, txId: $txId, finalFee: $finalFee, finalAmount: $finalAmount, sweepWallet: $sweepWallet)';
   }
 
   @override
@@ -474,7 +512,9 @@ class _$_SendState extends _SendState with DiagnosticableTreeMixin {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'SendState'))
+      ..add(DiagnosticsProperty('currentStep', currentStep))
       ..add(DiagnosticsProperty('loadingStart', loadingStart))
+      ..add(DiagnosticsProperty('calculatingFees', calculatingFees))
       ..add(DiagnosticsProperty('buildingTx', buildingTx))
       ..add(DiagnosticsProperty('sendingTx', sendingTx))
       ..add(DiagnosticsProperty('errLoading', errLoading))
@@ -500,9 +540,15 @@ class _$_SendState extends _SendState with DiagnosticableTreeMixin {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _SendState &&
+            (identical(other.currentStep, currentStep) ||
+                const DeepCollectionEquality()
+                    .equals(other.currentStep, currentStep)) &&
             (identical(other.loadingStart, loadingStart) ||
                 const DeepCollectionEquality()
                     .equals(other.loadingStart, loadingStart)) &&
+            (identical(other.calculatingFees, calculatingFees) ||
+                const DeepCollectionEquality()
+                    .equals(other.calculatingFees, calculatingFees)) &&
             (identical(other.buildingTx, buildingTx) ||
                 const DeepCollectionEquality()
                     .equals(other.buildingTx, buildingTx)) &&
@@ -561,7 +607,9 @@ class _$_SendState extends _SendState with DiagnosticableTreeMixin {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(currentStep) ^
       const DeepCollectionEquality().hash(loadingStart) ^
+      const DeepCollectionEquality().hash(calculatingFees) ^
       const DeepCollectionEquality().hash(buildingTx) ^
       const DeepCollectionEquality().hash(sendingTx) ^
       const DeepCollectionEquality().hash(errLoading) ^
@@ -590,7 +638,9 @@ class _$_SendState extends _SendState with DiagnosticableTreeMixin {
 
 abstract class _SendState extends SendState {
   const factory _SendState(
-      {bool loadingStart,
+      {SendSteps currentStep,
+      bool loadingStart,
+      bool calculatingFees,
       bool buildingTx,
       bool sendingTx,
       String errLoading,
@@ -613,7 +663,11 @@ abstract class _SendState extends SendState {
   const _SendState._() : super._();
 
   @override
+  SendSteps get currentStep => throw _privateConstructorUsedError;
+  @override
   bool get loadingStart => throw _privateConstructorUsedError;
+  @override
+  bool get calculatingFees => throw _privateConstructorUsedError;
   @override
   bool get buildingTx => throw _privateConstructorUsedError;
   @override

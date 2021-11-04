@@ -7,6 +7,50 @@ import 'package:sats/view/common/back-button.dart';
 import 'package:sats/view/common/loading.dart';
 import 'package:sats/view/common/log-button.dart';
 
+class Loader extends StatelessWidget {
+  const Loader({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final loadingStart =
+        context.select((SendCubit sc) => sc.state.loadingStart);
+    final buildingTx = context.select((SendCubit sc) => sc.state.buildingTx);
+    final calculating =
+        context.select((SendCubit sc) => sc.state.calculatingFees);
+
+    final sendingTx = context.select((SendCubit sc) => sc.state.sendingTx);
+
+    if (loadingStart) return const Loading(text: 'Loading Balance');
+    if (calculating) return const Loading(text: 'Calculating Fees');
+    if (buildingTx) return const Loading(text: 'Building Transaction');
+    if (sendingTx) return const Loading(text: 'Sending Amount');
+
+    return Container();
+  }
+}
+
+class ZeroBalance extends StatelessWidget {
+  const ZeroBalance({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final zerobal = context.select((SendCubit sc) => sc.state.zeroBalanceAmt());
+
+    if (zerobal)
+      return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text(
+          'SORRY !\nYou have\nZero\nBalance.',
+          style: context.fonts.headline5!.copyWith(
+            color: context.colours.onBackground,
+          ),
+        ),
+      );
+
+    return Container();
+  }
+}
+
 class WalletDetails extends StatelessWidget {
   const WalletDetails({
     Key? key,
@@ -327,6 +371,7 @@ class ConfirmTransaction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.select((SendCubit sc) => sc.state);
+
     if (state.finalAmount == null) return Container();
 
     return Column(
@@ -469,18 +514,14 @@ class WalletSendPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final confirmstep =
-        context.select((SendCubit sc) => sc.state.confirmStep());
-    final confirmedStep =
-        context.select((SendCubit sc) => sc.state.confirmedStep());
+    final step = context.select((SendCubit sc) => sc.state.currentStep);
 
     return WillPopScope(
       onWillPop: () async {
-        if (confirmstep) {
-          context.read<SendCubit>().clearPsbt();
+        if (step != SendSteps.fees) {
+          context.read<SendCubit>().backClicked();
           return false;
         }
-        // if (confirmedStep) context.read<HistoryCubit>().getHistory();
         return true;
       },
       child: GestureDetector(
@@ -488,7 +529,7 @@ class WalletSendPage extends StatelessWidget {
         child: Scaffold(
           body: SafeArea(
             child: SingleChildScrollView(
-              child: BlocConsumer<SendCubit, SendState>(
+              child: BlocListener<SendCubit, SendState>(
                 listener: (context, state) async {
                   if (state.zeroBalanceAmt()) {
                     await Future.delayed(const Duration(milliseconds: 2000));
@@ -497,144 +538,121 @@ class WalletSendPage extends StatelessWidget {
                 },
                 listenWhen: (p, c) =>
                     p.zeroBalanceAmt().not(c.zeroBalanceAmt()),
-                builder: (context, state) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      if (state.loadingStart)
-                        const Loading(
-                          text: 'Loading Details',
-                        ),
-                      if (state.buildingTx)
-                        const Loading(
-                          text: 'Building Transaction',
-                        ),
-                      if (state.sendingTx)
-                        const Loading(
-                          text: 'Sending Amount',
-                        ),
-                      const SizedBox(height: 8),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Back(
-                              onPressed: () {
-                                if (confirmstep) {
-                                  context.read<SendCubit>().clearPsbt();
-                                  return;
-                                }
-                                // if (confirmedStep)
-                                //   context.read<HistoryCubit>().getHistory();
-                                Navigator.pop(context);
-                              },
-                            ),
-                            LogButton(
-                              child: IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.lightbulb_outline_sharp,
-                                  size: 32,
-                                  color: context.colours.primary,
-                                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Loader(),
+                    const SizedBox(height: 8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Back(
+                            onPressed: () {
+                              if (step != SendSteps.fees) {
+                                context.read<SendCubit>().backClicked();
+                                return;
+                              }
+                              // if (confirmedStep)
+                              //   context.read<HistoryCubit>().getHistory();
+                              Navigator.pop(context);
+                            },
+                          ),
+                          LogButton(
+                            child: IconButton(
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.lightbulb_outline_sharp,
+                                size: 32,
+                                color: context.colours.primary,
                               ),
                             ),
-                          ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    const ZeroBalance(),
+                    if (step == SendSteps.address) ...[
+                      const SizedBox(height: 80),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Text(
+                          'To Address'.toUpperCase(),
+                          style: context.fonts.overline!.copyWith(
+                            color: context.colours.onBackground,
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 40),
-                      if (state.zeroBalanceAmt()) ...[
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Text(
-                            'SORRY !\nYou have\nZero\nBalance.',
-                            style: context.fonts.headline5!.copyWith(
-                              color: context.colours.onBackground,
-                            ),
-                          ),
-                        ),
-                      ],
-                      if (!confirmstep &&
-                          !state.zeroBalanceAmt() &&
-                          !confirmedStep &&
-                          !state.loadingStart &&
-                          !state.buildingTx) ...[
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: WalletDetails(),
-                        ),
-                        const SizedBox(height: 80),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Text(
-                            'To Address'.toUpperCase(),
-                            style: context.fonts.overline!.copyWith(
-                              color: context.colours.onBackground,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: AddressRow(),
-                        ),
-                        const SizedBox(height: 60),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Text(
-                            'Amount'.toUpperCase(),
-                            style: context.fonts.overline!.copyWith(
-                              color: context.colours.onBackground,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: AmountRow(),
-                        ),
-                        const SizedBox(height: 60),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Text(
-                            'Network Fee'.toUpperCase(),
-                            style: context.fonts.overline!.copyWith(
-                              color: context.colours.onBackground,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: NetworkRow(),
-                        ),
-                        const SizedBox(height: 100),
-                        TextButton(
-                          onPressed: () {
-                            context.read<SendCubit>().confirmClicked();
-                          },
-                          child: const Text('CONFIRM'),
-                        ),
-                      ],
-                      if (confirmstep && !state.sendingTx)
-                        FadeIn(
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16),
-                            child: ConfirmTransaction(),
-                          ),
-                        ),
-                      if (confirmedStep)
-                        FadeIn(
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16),
-                            child: TransactionComplete(),
-                          ),
-                        ),
-                      const SizedBox(height: 80),
+                      const SizedBox(height: 16),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: AddressRow(),
+                      ),
                     ],
-                  );
-                },
+                    if (step == SendSteps.amounts) ...[
+                      const SizedBox(height: 80),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: WalletDetails(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Text(
+                          'Amount'.toUpperCase(),
+                          style: context.fonts.overline!.copyWith(
+                            color: context.colours.onBackground,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: AmountRow(),
+                      ),
+                    ],
+                    if (step == SendSteps.fees) ...[
+                      const SizedBox(height: 60),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Text(
+                          'Network Fee'.toUpperCase(),
+                          style: context.fonts.overline!.copyWith(
+                            color: context.colours.onBackground,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: NetworkRow(),
+                      ),
+                      const SizedBox(height: 100),
+                      TextButton(
+                        onPressed: () {
+                          context.read<SendCubit>().confirmClicked();
+                        },
+                        child: const Text('CONFIRM'),
+                      ),
+                    ],
+                    if (step == SendSteps.confirm)
+                      FadeIn(
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: ConfirmTransaction(),
+                        ),
+                      ),
+                    if (step == SendSteps.sent)
+                      FadeIn(
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: TransactionComplete(),
+                        ),
+                      ),
+                    const SizedBox(height: 80),
+                  ],
+                ),
               ),
             ),
           ),

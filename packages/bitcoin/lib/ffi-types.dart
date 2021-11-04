@@ -1,7 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:ffi';
-import 'package:bitcoin/bitcoin.dart';
 import 'package:ffi/ffi.dart';
 
 typedef GenerateT = Pointer<Utf8> Function(

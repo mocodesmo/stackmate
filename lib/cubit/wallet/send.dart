@@ -18,10 +18,20 @@ import 'package:sats/pkg/validation.dart';
 
 part 'send.freezed.dart';
 
+enum SendSteps {
+  address,
+  amounts,
+  fees,
+  confirm,
+  sent,
+}
+
 @freezed
 class SendState with _$SendState {
   const factory SendState({
+    @Default(SendSteps.address) SendSteps currentStep,
     @Default(true) bool loadingStart,
+    @Default(false) bool calculatingFees,
     @Default(false) bool buildingTx,
     @Default(false) bool sendingTx,
     @Default('') String errLoading,
@@ -44,8 +54,8 @@ class SendState with _$SendState {
   }) = _SendState;
   const SendState._();
 
-  bool confirmStep() => psbt != '' && txId == '';
-  bool confirmedStep() => txId != '';
+  // bool confirmStep() => psbt != '' && txId == '';
+  // bool confirmedStep() => txId != '';
 
   double feeRate() {
     try {
@@ -323,6 +333,8 @@ class SendCubit extends Cubit<SendState> {
   void clearPsbt() {
     emit(state.copyWith(psbt: '', finalAmount: null, finalFee: null));
   }
+
+  void backClicked() {}
 
   void sendClicked() async {
     try {
