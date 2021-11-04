@@ -37,6 +37,24 @@ class Derive {
       'pk([$fingerPrint/$hardenedPath]$xprv/0/*)'.replaceFirst('/m', '');
 }
 
+class AbsoluteFees {
+  const AbsoluteFees(
+    this.rate,
+    this.absolute,
+  );
+
+  factory AbsoluteFees.fromJson(String data) {
+    final json = jsonDecode(data);
+    return AbsoluteFees(
+      json['rate'] as double,
+      json['absolute'] as int,
+    );
+  }
+
+  final double rate;
+  final int absolute;
+}
+
 // class Decode {
 //   const Decode(this.miner, this.amount);
 //   factory Decode.fromJson(String data) {

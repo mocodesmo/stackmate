@@ -91,7 +91,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
     this._blockchainCubit,
   ) : super(const SeedGenerateState());
 
-  final IBitcoin _bitcoin;
+  final IFFFI _bitcoin;
 
   final IStorage _storage;
   final LoggerCubit _logger;

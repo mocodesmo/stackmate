@@ -112,19 +112,19 @@ class SendCubit extends Cubit<SendState> {
       //   'nodeAddress': nodeAddress,
       // });
 
-      final feeFast = await compute(getFeees, {
+      final feeFast = await compute(estimateFeees, {
         'targetSize': '1',
         'network': _blockchain.state.blockchain.name,
         'nodeAddress': nodeAddress,
       });
 
-      final feeMedium = await compute(getFeees, {
+      final feeMedium = await compute(estimateFeees, {
         'targetSize': '3',
         'network': _blockchain.state.blockchain.name,
         'nodeAddress': nodeAddress,
       });
 
-      final feeSlow = await compute(getFeees, {
+      final feeSlow = await compute(estimateFeees, {
         'targetSize': '6',
         'network': _blockchain.state.blockchain.name,
         'nodeAddress': nodeAddress,
@@ -367,12 +367,30 @@ class SendCubit extends Cubit<SendState> {
   }
 }
 
-double getFeees(dynamic data) {
+double estimateFeees(dynamic data) {
   final obj = data as Map<String, String>;
-  final resp = BitcoinFFI().getFees(
+  final resp = BitcoinFFI().estimateFees(
     targetSize: obj['targetSize']!,
     network: obj['network']!,
     nodeAddress: obj['nodeAddress']!,
+  );
+  return resp;
+}
+
+int getWeight(dynamic data) {
+  final obj = data as Map<String, String>;
+  final resp = BitcoinFFI().getWeight(
+    depositDesc: obj['depositDesc']!,
+    psbt: obj['psbt']!,
+  );
+  return resp;
+}
+
+AbsoluteFees getAbsoluteFees(dynamic data) {
+  final obj = data as Map<String, String>;
+  final resp = BitcoinFFI().getAbsoluteFees(
+    feeRate: obj['feeRate']!,
+    weight: obj['weight']!,
   );
   return resp;
 }

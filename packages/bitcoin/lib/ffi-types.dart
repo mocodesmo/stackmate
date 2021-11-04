@@ -1,10 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:ffi';
-
+import 'package:bitcoin/bitcoin.dart';
 import 'package:ffi/ffi.dart';
-
-// export 'package:bitcoin/types.dart';
 
 typedef GenerateT = Pointer<Utf8> Function(
   Pointer<Utf8> network,
@@ -27,12 +25,6 @@ typedef DeriveT = Pointer<Utf8> Function(
 typedef CompileT = Pointer<Utf8> Function(
   Pointer<Utf8> policy,
   Pointer<Utf8> script_type,
-);
-
-typedef FeesT = Pointer<Utf8> Function(
-  Pointer<Utf8> network,
-  Pointer<Utf8> node_address,
-  Pointer<Utf8> target_size,
 );
 
 typedef SyncT = Pointer<Utf8> Function(
@@ -70,4 +62,20 @@ typedef BroadcastT = Pointer<Utf8> Function(
   Pointer<Utf8> deposit_desc,
   Pointer<Utf8> node_address,
   Pointer<Utf8> signed_psbt,
+);
+
+typedef EstimateFeeT = Pointer<Utf8> Function(
+  Pointer<Utf8> network,
+  Pointer<Utf8> node_address,
+  Pointer<Utf8> target_size,
+);
+
+typedef WeightT = Pointer<Utf8> Function(
+  Pointer<Utf8> deposit_desc,
+  Pointer<Utf8> psbt,
+);
+
+typedef AbsoluteFeeT = Pointer<Utf8> Function(
+  Pointer<Utf8> fee_rate,
+  Pointer<Utf8> weight,
 );

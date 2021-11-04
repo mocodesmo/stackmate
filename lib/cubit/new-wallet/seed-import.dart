@@ -87,7 +87,7 @@ class SeedImportCubit extends Cubit<SeedImportState> {
           ),
         );
 
-  final IBitcoin _bitcoin;
+  final IFFFI _bitcoin;
 
   final IStorage _storage;
   final LoggerCubit logger;

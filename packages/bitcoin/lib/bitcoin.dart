@@ -8,81 +8,62 @@ import 'package:ffi/ffi.dart';
 
 export 'package:bitcoin/types.dart';
 
-class BitcoinFFFI {
-  BitcoinFFFI({required this.binary});
+class FFFI {
+  FFFI({required this.binary});
 
   final DynamicLibrary binary;
 
-  Future<Nmeu> generateMaster({
+  String generateMaster({
     required String network,
     required String length,
     required String passphrase,
-  }) async {
+  }) {
     final func = binary.lookupFunction<GenerateT, GenerateT>('generate_master');
     final resp = func(
       network.toNativeUtf8(),
       length.toNativeUtf8(),
       passphrase.toNativeUtf8(),
     ).toDartString();
-    if (resp.startsWith('Error')) throw resp;
-    return Nmeu.fromJson(resp);
+    return resp;
   }
 
-  Future<Nmeu> importMaster({
+  String importMaster({
     required String network,
     required String mnemonic,
     required String passphrase,
-  }) async {
+  }) {
     final func = binary.lookupFunction<ImportT, ImportT>('import_master');
     final resp = func(
       network.toNativeUtf8(),
       mnemonic.toNativeUtf8(),
       passphrase.toNativeUtf8(),
     ).toDartString();
-    if (resp.startsWith('Error')) throw resp;
-    return Nmeu.fromJson(resp);
+    return resp;
   }
 
-  Future<Derive> deriveHardened({
+  String deriveHardened({
     required String masterXPriv,
     required String account,
     required String purpose,
-  }) async {
+  }) {
     final func = binary.lookupFunction<DeriveT, DeriveT>('derive_hardened');
     final resp = func(
       masterXPriv.toNativeUtf8(),
       purpose.toNativeUtf8(),
       account.toNativeUtf8(),
     ).toDartString();
-    if (resp.startsWith('Error')) throw resp;
-    return Derive.fromJson(resp);
+    return resp;
   }
 
-  Future<Compile> compile({
+  String compile({
     required String policy,
     required String scriptType,
-  }) async {
+  }) {
     final func = binary.lookupFunction<CompileT, CompileT>('compile');
     final resp = func(
       policy.toNativeUtf8(),
       scriptType.toNativeUtf8(),
     ).toDartString();
-    if (resp.startsWith('Error')) throw resp;
-    return Compile.fromJson(resp);
-  }
-
-  String getFees({
-    required String network,
-    required String nodeAddress,
-    required String targetSize,
-  }) {
-    final func = binary.lookupFunction<FeesT, FeesT>('get_fees');
-    final resp = func(
-      network.toNativeUtf8(),
-      nodeAddress.toNativeUtf8(),
-      targetSize.toNativeUtf8(),
-    ).toDartString();
-    if (resp.startsWith('Error')) throw resp;
     return resp;
   }
 
@@ -191,6 +172,46 @@ class BitcoinFFFI {
       signedPSBT.toNativeUtf8(),
     ).toDartString();
     if (resp.startsWith('Error')) throw resp;
+    return resp;
+  }
+
+  String estimateFees({
+    required String network,
+    required String nodeAddress,
+    required String targetSize,
+  }) {
+    final func =
+        binary.lookupFunction<EstimateFeeT, EstimateFeeT>('estimate_fee');
+    final resp = func(
+      network.toNativeUtf8(),
+      nodeAddress.toNativeUtf8(),
+      targetSize.toNativeUtf8(),
+    ).toDartString();
+    return resp;
+  }
+
+  String getWeight({
+    required String depositDesc,
+    required String psbt,
+  }) {
+    final func = binary.lookupFunction<WeightT, WeightT>('get_weight');
+    final resp = func(
+      depositDesc.toNativeUtf8(),
+      psbt.toNativeUtf8(),
+    ).toDartString();
+    return resp;
+  }
+
+  String getAbsoluteFees({
+    required String feeRate,
+    required String weight,
+  }) {
+    final func =
+        binary.lookupFunction<AbsoluteFeeT, AbsoluteFeeT>('get_absolute_fee');
+    final resp = func(
+      feeRate.toNativeUtf8(),
+      weight.toNativeUtf8(),
+    ).toDartString();
     return resp;
   }
 }

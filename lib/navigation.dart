@@ -77,7 +77,7 @@ class Routes {
         // final networkCubit = NetworkCubit(loggerCubit);
         final seedGenerateCubit = SeedGenerateCubit(
           // networkCubit,
-          locator<IBitcoin>(),
+          locator<IFFFI>(),
           locator<IStorage>(),
           // walletCubit,
           // testNetCubit,
@@ -99,7 +99,7 @@ class Routes {
         // final networkCubit = NetworkCubit(loggerCubit);
         final seedImportCubit = SeedImportCubit(
           // networkCubit,
-          locator<IBitcoin>(),
+          locator<IFFFI>(),
           locator<IStorage>(),
           // walletCubit,
           // testNetCubit,
@@ -119,7 +119,7 @@ class Routes {
 
       case watchOnly:
         final xpubCubit = XpubImportCubit(
-          locator<IBitcoin>(),
+          locator<IFFFI>(),
           loggerCubit,
           locator<IClipBoard>(),
           locator<IStorage>(),

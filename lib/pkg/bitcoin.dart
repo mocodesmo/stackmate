@@ -5,34 +5,44 @@ import 'dart:io';
 import 'package:bitcoin/bitcoin.dart';
 import 'package:sats/model/transaction.dart';
 
-abstract class IBitcoin {
-  Future<Nmeu> generateMaster({
+abstract class IFFFI {
+  Nmeu generateMaster({
     required String length,
     required String passphrase,
     required String network,
   });
 
-  Future<Nmeu> importMaster({
+  Nmeu importMaster({
     required String mnemonic,
     required String passphrase,
     required String network,
   });
 
-  Future<Derive> deriveHardened({
+  Derive deriveHardened({
     required String masterXPriv,
     required String account,
     required String purpose,
   });
 
-  Future<Compile> compile({
+  Compile compile({
     required String policy,
     required String scriptType,
   });
 
-  double getFees({
+  double estimateFees({
     required String targetSize,
     required String network,
     required String nodeAddress,
+  });
+
+  int getWeight({
+    required String depositDesc,
+    required String psbt,
+  });
+
+  AbsoluteFees getAbsoluteFees({
+    required String feeRate,
+    required String weight,
   });
 
   int syncBalance({
@@ -78,70 +88,74 @@ abstract class IBitcoin {
   });
 }
 
-class BitcoinFFI implements IBitcoin {
-  
+class BitcoinFFI implements IFFFI {
   BitcoinFFI() {
-    _bitcoin = BitcoinFFFI(
+    _bitcoin = FFFI(
       binary: Platform.isAndroid
           ? DynamicLibrary.open('libstackmate.so')
           : DynamicLibrary.executable(),
     );
   }
 
-  late BitcoinFFFI _bitcoin;
+  late FFFI _bitcoin;
 
   @override
-  Future<Nmeu> generateMaster({
+  Nmeu generateMaster({
     required String length,
     required String passphrase,
     required String network,
-  }) async {
-    final resp = await _bitcoin.generateMaster(
+  }) {
+    final resp = _bitcoin.generateMaster(
       length: length,
       passphrase: passphrase,
       network: network,
     );
-    return resp;
+
+    if (resp.startsWith('Error')) throw resp;
+    return Nmeu.fromJson(resp);
   }
 
   @override
-  Future<Nmeu> importMaster({
+  Nmeu importMaster({
     required String mnemonic,
     required String passphrase,
     required String network,
-  }) async {
-    final resp = await _bitcoin.importMaster(
+  }) {
+    final resp = _bitcoin.importMaster(
       mnemonic: mnemonic,
       passphrase: passphrase,
       network: network,
     );
-    return resp;
+    if (resp.startsWith('Error')) throw resp;
+    return Nmeu.fromJson(resp);
   }
 
   @override
-  Future<Derive> deriveHardened({
+  Derive deriveHardened({
     required String masterXPriv,
     required String account,
     required String purpose,
-  }) async {
-    final resp = await _bitcoin.deriveHardened(
+  }) {
+    final resp = _bitcoin.deriveHardened(
       masterXPriv: masterXPriv,
       account: account,
       purpose: purpose,
     );
-    return resp;
+    if (resp.startsWith('Error')) throw resp;
+    return Derive.fromJson(resp);
   }
 
   @override
-  Future<Compile> compile({
+  Compile compile({
     required String policy,
     required String scriptType,
-  }) async {
-    final resp = await _bitcoin.compile(
+  }) {
+    final resp = _bitcoin.compile(
       policy: policy,
       scriptType: scriptType,
     );
-    return resp;
+    if (resp.startsWith('Error')) throw resp;
+    return Compile.fromJson(resp);
   }
 
   @override
@@ -195,21 +209,6 @@ class BitcoinFFI implements IBitcoin {
     transactions.sort((a, b) => b.timestamp.compareTo(a.timestamp));
 
     return transactions;
-  }
-
-  @override
-  double getFees({
-    required String targetSize,
-    required String network,
-    required String nodeAddress,
-  }) {
-    final resp = _bitcoin.getFees(
-      targetSize: targetSize,
-      network: network,
-      nodeAddress: nodeAddress,
-    );
-    final data = jsonDecode(resp);
-    return data['fee'] as double;
   }
 
   @override
@@ -267,5 +266,48 @@ class BitcoinFFI implements IBitcoin {
     );
     final data = jsonDecode(resp);
     return data['txid'] as String;
+  }
+
+  @override
+  double estimateFees({
+    required String targetSize,
+    required String network,
+    required String nodeAddress,
+  }) {
+    final resp = _bitcoin.estimateFees(
+      targetSize: targetSize,
+      network: network,
+      nodeAddress: nodeAddress,
+    );
+    if (resp.startsWith('Error')) throw resp;
+    final data = jsonDecode(resp);
+    return data['fee'] as double;
+  }
+
+  @override
+  int getWeight({
+    required String depositDesc,
+    required String psbt,
+  }) {
+    final resp = _bitcoin.getWeight(
+      depositDesc: depositDesc,
+      psbt: psbt,
+    );
+    if (resp.startsWith('Error')) throw resp;
+    final data = jsonDecode(resp);
+    return data['weight'] as int;
+  }
+
+  @override
+  AbsoluteFees getAbsoluteFees({
+    required String feeRate,
+    required String weight,
+  }) {
+    final resp = _bitcoin.getAbsoluteFees(
+      feeRate: feeRate,
+      weight: weight,
+    );
+    if (resp.startsWith('Error')) throw resp;
+    return AbsoluteFees.fromJson(resp);
   }
 }

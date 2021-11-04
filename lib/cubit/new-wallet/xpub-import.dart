@@ -69,7 +69,7 @@ class XpubImportCubit extends Cubit<XpubImportState> {
   // final ISoloWalletAPI _soloWalletAPI;
   final LoggerCubit _logger;
   final IStorage _storage;
-  final IBitcoin _bitcoin;
+  final IFFFI _bitcoin;
   final WalletsCubit _wallets;
   final BlockchainCubit _blockchainCubit;
 
