@@ -114,7 +114,7 @@ class FFFI {
     required String nodeAddress,
     required String toAddress,
     required String amount,
-    required String feeRate,
+    required String feeAbsolute,
     required String sweep,
   }) {
     final func = binary.lookupFunction<BuildT, BuildT>('build_tx');
@@ -123,7 +123,7 @@ class FFFI {
       nodeAddress.toNativeUtf8(),
       toAddress.toNativeUtf8(),
       amount.toNativeUtf8(),
-      feeRate.toNativeUtf8(),
+      feeAbsolute.toNativeUtf8(),
       sweep.toNativeUtf8(),
     ).toDartString();
     if (resp.startsWith('Error')) throw resp;
@@ -175,13 +175,13 @@ class FFFI {
     return resp;
   }
 
-  String estimateFees({
+  String estimateNetworkFee({
     required String network,
     required String nodeAddress,
     required String targetSize,
   }) {
     final func =
-        binary.lookupFunction<EstimateFeeT, EstimateFeeT>('estimate_fee');
+        binary.lookupFunction<EstimateFeeT, EstimateFeeT>('estimate_network_fee');
     final resp = func(
       network.toNativeUtf8(),
       nodeAddress.toNativeUtf8(),
@@ -202,12 +202,25 @@ class FFFI {
     return resp;
   }
 
-  String getAbsoluteFees({
+  String feeAbsoluteToRate({
+    required String feeAbs,
+    required String weight,
+  }) {
+    final func = binary
+        .lookupFunction<AbsoluteFeeT, AbsoluteFeeT>('fee_absolute_to_rate');
+    final resp = func(
+      feeAbs.toNativeUtf8(),
+      weight.toNativeUtf8(),
+    ).toDartString();
+    return resp;
+  }
+
+  String feeRateToAbsolute({
     required String feeRate,
     required String weight,
   }) {
-    final func =
-        binary.lookupFunction<AbsoluteFeeT, AbsoluteFeeT>('get_absolute_fee');
+    final func = binary
+        .lookupFunction<FeeAbsoluteT, FeeAbsoluteT>('fee_rate_to_absolute');
     final resp = func(
       feeRate.toNativeUtf8(),
       weight.toNativeUtf8(),

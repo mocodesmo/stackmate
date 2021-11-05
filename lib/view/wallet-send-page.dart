@@ -155,6 +155,13 @@ class _AddressRowState extends State<AddressRow> {
             ),
           ],
         ),
+        const SizedBox(height: 100),
+        TextButton(
+          onPressed: () {
+            context.read<SendCubit>().addressConfirmedClicked();
+          },
+          child: const Text('CONFIRM'),
+        ),
       ],
     );
   }
@@ -239,6 +246,13 @@ class _AmountRowState extends State<AmountRow> {
             ),
           ],
         ),
+        const SizedBox(height: 100),
+        TextButton(
+          onPressed: () {
+            context.read<SendCubit>().amountConfirmedClicked();
+          },
+          child: const Text('CONFIRM'),
+        ),
       ],
     );
   }
@@ -268,11 +282,11 @@ class _NetworkRowState extends State<NetworkRow> {
       builder: (context, state) {
         if (state.feeSlow == null ||
             state.feeMedium == null ||
-            state.feefast == null) return Container();
+            state.feeFast == null) return Container();
 
         final slow = state.feeSlow!.toString();
         final medium = state.feeMedium!.toString();
-        final fast = state.feefast!.toString();
+        final fast = state.feeFast!.toString();
 
         if (state.fees != _controller.text) _controller.text = state.fees;
 
@@ -357,6 +371,13 @@ class _NetworkRowState extends State<NetworkRow> {
               onChanged: (t) {
                 context.read<SendCubit>().feeChanged(t);
               },
+            ),
+            const SizedBox(height: 100),
+            TextButton(
+              onPressed: () {
+                context.read<SendCubit>().feeConfirmedClicked();
+              },
+              child: const Text('CONFIRM'),
             ),
           ],
         );
@@ -518,7 +539,7 @@ class WalletSendPage extends StatelessWidget {
 
     return WillPopScope(
       onWillPop: () async {
-        if (step != SendSteps.fees) {
+        if (step != SendSteps.address && step != SendSteps.sent) {
           context.read<SendCubit>().backClicked();
           return false;
         }
@@ -591,7 +612,7 @@ class WalletSendPage extends StatelessWidget {
                         child: AddressRow(),
                       ),
                     ],
-                    if (step == SendSteps.amounts) ...[
+                    if (step == SendSteps.amount) ...[
                       const SizedBox(height: 80),
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16),
@@ -627,13 +648,6 @@ class WalletSendPage extends StatelessWidget {
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         child: NetworkRow(),
-                      ),
-                      const SizedBox(height: 100),
-                      TextButton(
-                        onPressed: () {
-                          context.read<SendCubit>().confirmClicked();
-                        },
-                        child: const Text('CONFIRM'),
                       ),
                     ],
                     if (step == SendSteps.confirm)

@@ -29,7 +29,7 @@ abstract class IFFFI {
     required String scriptType,
   });
 
-  double estimateFees({
+  double estimateNetworkFee({
     required String targetSize,
     required String network,
     required String nodeAddress,
@@ -40,7 +40,12 @@ abstract class IFFFI {
     required String psbt,
   });
 
-  AbsoluteFees getAbsoluteFees({
+  AbsoluteFees feeAbsoluteToRate({
+    required String feeAbsolute,
+    required String weight,
+  });
+
+  AbsoluteFees feeRateToAbsolute({
     required String feeRate,
     required String weight,
   });
@@ -66,7 +71,7 @@ abstract class IFFFI {
     required String nodeAddress,
     required String toAddress,
     required String amount,
-    required String feeRate,
+    required String feeAbsolute,
     required String sweep,
   });
 
@@ -217,7 +222,7 @@ class BitcoinFFI implements IFFFI {
     required String nodeAddress,
     required String toAddress,
     required String amount,
-    required String feeRate,
+    required String feeAbsolute,
     required String sweep,
   }) {
     final resp = _bitcoin.buildTransaction(
@@ -225,7 +230,7 @@ class BitcoinFFI implements IFFFI {
       nodeAddress: nodeAddress,
       toAddress: toAddress,
       amount: amount,
-      feeRate: feeRate,
+      feeAbsolute: feeAbsolute,
       sweep: sweep,
     );
     final data = jsonDecode(resp);
@@ -269,12 +274,12 @@ class BitcoinFFI implements IFFFI {
   }
 
   @override
-  double estimateFees({
+  double estimateNetworkFee({
     required String targetSize,
     required String network,
     required String nodeAddress,
   }) {
-    final resp = _bitcoin.estimateFees(
+    final resp = _bitcoin.estimateNetworkFee(
       targetSize: targetSize,
       network: network,
       nodeAddress: nodeAddress,
@@ -299,11 +304,24 @@ class BitcoinFFI implements IFFFI {
   }
 
   @override
-  AbsoluteFees getAbsoluteFees({
+  AbsoluteFees feeAbsoluteToRate({
+    required String feeAbsolute,
+    required String weight,
+  }) {
+    final resp = _bitcoin.feeAbsoluteToRate(
+      feeAbs: feeAbsolute,
+      weight: weight,
+    );
+    if (resp.startsWith('Error')) throw resp;
+    return AbsoluteFees.fromJson(resp);
+  }
+
+  @override
+  AbsoluteFees feeRateToAbsolute({
     required String feeRate,
     required String weight,
   }) {
-    final resp = _bitcoin.getAbsoluteFees(
+    final resp = _bitcoin.feeRateToAbsolute(
       feeRate: feeRate,
       weight: weight,
     );

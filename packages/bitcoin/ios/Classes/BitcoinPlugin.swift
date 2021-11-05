@@ -21,7 +21,9 @@ public class SwiftBitcoinPlugin: NSObject, FlutterPlugin {
     sync_balance("","");
     get_address("","","");
     sync_history("","");
-    get_fees("","","");
+    estimate_network_fee("","","");
+    fee_absolute_to_rate("","");
+    fee_rate_to_absolute("","");
     build_tx("","","","","");
     sign_tx("","","");
     broadcast_tx("","","");

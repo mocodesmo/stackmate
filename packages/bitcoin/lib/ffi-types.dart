@@ -42,7 +42,7 @@ typedef BuildT = Pointer<Utf8> Function(
   Pointer<Utf8> node_address,
   Pointer<Utf8> to_address,
   Pointer<Utf8> amount,
-  Pointer<Utf8> fee_rate,
+  Pointer<Utf8> fee_absolute,
   Pointer<Utf8> sweep,
 );
 
@@ -66,7 +66,7 @@ typedef BroadcastT = Pointer<Utf8> Function(
 typedef EstimateFeeT = Pointer<Utf8> Function(
   Pointer<Utf8> network,
   Pointer<Utf8> node_address,
-  Pointer<Utf8> target_size,
+  Pointer<Utf8> conf_target,
 );
 
 typedef WeightT = Pointer<Utf8> Function(
@@ -75,6 +75,11 @@ typedef WeightT = Pointer<Utf8> Function(
 );
 
 typedef AbsoluteFeeT = Pointer<Utf8> Function(
+  Pointer<Utf8> fee_absolute,
+  Pointer<Utf8> weight,
+);
+
+typedef FeeAbsoluteT = Pointer<Utf8> Function(
   Pointer<Utf8> fee_rate,
   Pointer<Utf8> weight,
 );
