@@ -90,7 +90,7 @@ class XpubImportCubit extends Cubit<XpubImportState> {
         policy = 'pk($xpub/0/*)';
       else
         policy = 'pk([$fingerprint/$path]$xpub/0/*)'.replaceFirst('/m', '');
-      final com = await _bitcoin.compile(
+      final com = _bitcoin.compile(
         policy: policy,
         scriptType: 'wpkh',
       );

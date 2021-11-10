@@ -124,7 +124,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
         ),
       );
 
-      final neu = await _bitcoin.generateMaster(
+      final neu = _bitcoin.generateMaster(
         length: '12',
         passphrase: state.passPhrase,
         network: _blockchainCubit.state.blockchain.name,
@@ -207,13 +207,13 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
     }
 
     try {
-      final der = await _bitcoin.deriveHardened(
+      final der = _bitcoin.deriveHardened(
         masterXPriv: state.xpriv!,
         account: '',
         purpose: '',
       );
 
-      final com = await _bitcoin.compile(
+      final com = _bitcoin.compile(
         policy: der.policy,
         scriptType: 'wpkh',
       );

@@ -133,18 +133,18 @@ class SeedImportCubit extends Cubit<SeedImportState> {
 
     emit(state.copyWith(walletLabelError: ''));
     try {
-      final neu = await _bitcoin.importMaster(
+      final neu = _bitcoin.importMaster(
         mnemonic: state.seed,
         passphrase: state.passPhrase,
         network: _blockchainCubit.state.blockchain.name,
       );
 
-      final der = await _bitcoin.deriveHardened(
+      final der = _bitcoin.deriveHardened(
         masterXPriv: neu.xprv,
         account: '',
         purpose: '',
       );
-      final com = await _bitcoin.compile(
+      final com = _bitcoin.compile(
         policy: der.policy,
         scriptType: 'wpkh',
       );

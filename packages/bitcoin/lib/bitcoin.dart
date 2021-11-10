@@ -1,8 +1,6 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
 import 'package:bitcoin/ffi-types.dart';
-import 'package:bitcoin/types.dart';
 import 'package:ffi/ffi.dart';
 // import 'package:isolate/ports.dart';
 
