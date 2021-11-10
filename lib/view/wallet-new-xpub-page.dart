@@ -89,7 +89,13 @@ class _XpubImportState extends State<XpubImport> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 24),
-            const HeaderTextDark(text: 'Enter your XPub'),
+            Text(
+              'Enter your XPub',
+              style: c.fonts.headline4!.copyWith(
+                color: Colors.white,
+                // fontWeight: FontWeight.bold,
+              ),
+            ),
             const SizedBox(height: 24),
             Row(
               children: [
@@ -244,7 +250,13 @@ class XpubLabel extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 24),
-              const HeaderTextDark(text: 'Label your wallet'),
+              Text(
+                'Label your wallet',
+                style: c.fonts.headline4!.copyWith(
+                  color: Colors.white,
+                  // fontWeight: FontWeight.bold,
+                ),
+              ),
               const SizedBox(height: 24),
               Padding(
                 padding: EdgeInsets.zero,

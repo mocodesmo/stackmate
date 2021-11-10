@@ -24,20 +24,20 @@ class HeaderText extends StatelessWidget {
   }
 }
 
-class HeaderTextDark extends StatelessWidget {
-  const HeaderTextDark({
-    required this.text,
-    Key? key,
-  }) : super(key: key);
+// class HeaderTextDark extends StatelessWidget {
+//   const HeaderTextDark({
+//     required this.text,
+//     Key? key,
+//   }) : super(key: key);
 
-  final String text;
+//   final String text;
 
-  @override
-  Widget build(BuildContext c) {
-    return Text(
-      text,
-      style: c.fonts.headline4!
-          .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext c) {
+//     return Text(
+//       text,
+//       style: c.fonts.headline4!
+//           .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+//     );
+//   }
+// }

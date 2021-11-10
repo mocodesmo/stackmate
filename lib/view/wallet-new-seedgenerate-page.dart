@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sats/cubit/new-wallet/seed-generate.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
-import 'package:sats/view/common/back-button2.dart';
-import 'package:sats/view/common/header-text.dart';
-import 'package:sats/view/common/header.dart';
-import 'package:sats/view/common/new-wallet-stepper.dart';
+import 'package:sats/view/common/back-button.dart';
 
 class NewGenerateStepper extends StatelessWidget {
   @override
@@ -22,18 +19,14 @@ class NewGenerateStepper extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              stepLabel,
-              style: c.fonts.headline6!.copyWith(color: Colors.white),
-            ),
-            const SizedBox(height: 24),
+            // const SizedBox(height: 24),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 for (var i = 0; i < steps; i++)
                   Container(
                     height: 8,
-                    width: 40,
+                    width: 50,
                     decoration: BoxDecoration(
                       color: i <= idx
                           ? Colors.blue.withOpacity(0.4)
@@ -44,9 +37,54 @@ class NewGenerateStepper extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 24),
+            // Text(
+            //   stepLabel.toUpperCase(),
+            //   style: c.fonts.headline6!.copyWith(color: Colors.white),
+            // ),
+            // const SizedBox(height: 24),
           ],
         );
       },
+    );
+  }
+}
+
+class StepCell extends StatelessWidget {
+  const StepCell({
+    Key? key,
+    required this.isOn,
+    required this.isSelected,
+    required this.text,
+  }) : super(key: key);
+
+  final bool isOn;
+  final bool isSelected;
+  final String text;
+
+  @override
+  Widget build(BuildContext c) {
+    return Column(
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 4),
+          height: 8,
+          width: c.width * 0.2,
+          decoration: BoxDecoration(
+            color: isOn ? c.colours.secondary : Colors.white,
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Center(
+          child: Text(
+            text,
+            style: c.fonts.caption!.copyWith(
+              color:
+                  isSelected ? c.colours.secondary : c.colours.secondaryVariant,
+            ),
+          ),
+        )
+      ],
     );
   }
 }
@@ -57,8 +95,15 @@ class SeedGenerateWarning extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const HeaderTextDark(text: 'Security Information'),
-        const SizedBox(height: 24),
+        const SizedBox(height: 16),
+        Text(
+          'Security\nInformation'.toUpperCase(),
+          style: c.fonts.headline5!.copyWith(
+            color: Colors.white,
+            // fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 32),
         Text(
           '''
 Write down your seed phrase on a piece of paper
@@ -81,7 +126,7 @@ all networking for your device during this process.
             c.read<SeedGenerateCubit>().nextClicked();
           },
           child: Text(
-            'I Understand'.notLocalised(),
+            'I Understand'.toUpperCase().notLocalised(),
           ),
         ),
       ],
@@ -89,26 +134,57 @@ all networking for your device during this process.
   }
 }
 
-class SeedGeneratePassphrase extends StatelessWidget {
+class SeedGeneratePassphrase extends StatefulWidget {
+  @override
+  State<SeedGeneratePassphrase> createState() => _SeedGeneratePassphraseState();
+}
+
+class _SeedGeneratePassphraseState extends State<SeedGeneratePassphrase> {
+  late TextEditingController _textController;
+
+  @override
+  void initState() {
+    _textController = TextEditingController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext c) {
     return BlocBuilder<SeedGenerateCubit, SeedGenerateState>(
-      buildWhen: (previous, current) =>
-          previous.errPassphrase != current.errPassphrase,
       builder: (context, state) {
+        if (_textController.text != state.passPhrase)
+          _textController.text = state.passPhrase;
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 24),
-            const HeaderTextDark(text: 'Enter an\noptional\npassphrase'),
+            Text(
+              'optional\npassphrase'.toUpperCase(),
+              style: c.fonts.headline5!.copyWith(
+                color: Colors.white,
+                // fontWeight: FontWeight.bold,
+              ),
+            ),
+            // const HeaderTextDark(text: 'Enter an\noptional\npassphrase'),
             const SizedBox(height: 24),
+            Text(
+              'Add an extra security layer to your seed.\nDo not write down your passphrase.\nThis passphrase should be added as the last word of your seed.',
+              style: c.fonts.caption!.copyWith(color: Colors.white),
+            ),
+            const SizedBox(height: 32),
+
             Padding(
               padding: EdgeInsets.zero,
               child: TextField(
+                controller: _textController,
                 onChanged: (text) {
                   c.read<SeedGenerateCubit>().passPhrasedChanged(text);
                 },
-                decoration: const InputDecoration(labelText: 'Passphrase'),
+                style: TextStyle(color: c.colours.onBackground),
+                decoration: const InputDecoration(
+                  labelText: 'Passphrase',
+                ),
               ),
             ),
             const SizedBox(height: 40),
@@ -126,7 +202,7 @@ class SeedGeneratePassphrase extends StatelessWidget {
                 onPressed: () {
                   c.read<SeedGenerateCubit>().nextClicked();
                 },
-                child: const Text('Confirm'),
+                child: Text('Confirm'.toUpperCase()),
               ),
             )
           ],
@@ -183,7 +259,16 @@ class SeedGenerate extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          HeaderTextDark(text: 'Write down your\nseed phrase'.notLocalised()),
+          const SizedBox(height: 16),
+
+          // HeaderTextDark(text: 'Write down your\nseed phrase'.notLocalised()),
+          Text(
+            'Write down your\nseed phrase'.toUpperCase(),
+            style: c.fonts.headline5!.copyWith(
+              color: Colors.white,
+              // fontWeight: FontWeight.bold,
+            ),
+          ),
           const SizedBox(height: 16),
           Text(
             'Make sure that no one can view,\nwhat you are writing'
@@ -226,7 +311,7 @@ class SeedGenerate extends StatelessWidget {
               onPressed: () {
                 c.read<SeedGenerateCubit>().nextClicked();
               },
-              child: const Text('Next'),
+              child: Text('Next'.toUpperCase()),
             ),
           ),
           const SizedBox(height: 24)
@@ -252,9 +337,17 @@ class SeedConfirm extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Padding(
-          padding: EdgeInsets.all(16.0),
-          child: HeaderTextDark(text: 'Confirm seed\nphrase'),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            'Confirm seed\nphrase',
+            style: c.fonts.headline4!.copyWith(
+              color: Colors.white,
+              // fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          //  HeaderTextDark(text: 'Confirm seed\nphrase'),
         ),
         const SizedBox(height: 8),
         Container(
@@ -339,7 +432,14 @@ class SeedGenerateLabel extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 24),
-            const HeaderTextDark(text: 'Name your wallet'),
+            Text(
+              'Name your wallet',
+              style: c.fonts.headline4!.copyWith(
+                color: Colors.white,
+                // fontWeight: FontWeight.bold,
+              ),
+            ),
+            // const HeaderTextDark(text: 'Name your wallet'),
             const SizedBox(height: 24),
             Padding(
               padding: EdgeInsets.zero,
@@ -367,7 +467,7 @@ class SeedGenerateLabel extends StatelessWidget {
                 onPressed: () {
                   c.read<SeedGenerateCubit>().nextClicked();
                 },
-                child: const Text('Confirm'),
+                child: Text('Confirm'.toUpperCase()),
               ),
             )
           ],
@@ -426,23 +526,22 @@ class _SeedGeneratePageState extends State<SeedGeneratePage> {
                 controller: _scrollController,
                 child: Column(
                   children: [
-                    Header(
-                      cornerTitle: 'Generate Seed',
-                      children: [
-                        BckButton(
-                          text: 'EXIT',
-                          onTapped: () {
-                            if (!state.canGoBack()) {
-                              c.read<SeedGenerateCubit>().backClicked();
-                              return;
-                            }
+                    const SizedBox(height: 24),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16.0),
+                      child: Back(
+                        // text: 'EXIT',
+                        onPressed: () {
+                          if (!state.canGoBack()) {
+                            c.read<SeedGenerateCubit>().backClicked();
+                            return;
+                          }
 
-                            Navigator.pop(c);
-                          },
-                        ),
-                        const SizedBox(height: 24),
-                      ],
+                          Navigator.pop(c);
+                        },
+                      ),
                     ),
+                    const SizedBox(height: 24),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24.0),
                       child: NewGenerateStepper(),
@@ -451,7 +550,7 @@ class _SeedGeneratePageState extends State<SeedGeneratePage> {
                       key: Key(state.currentStepLabel()),
                       child: Container(
                         margin: const EdgeInsets.symmetric(
-                          horizontal: 32,
+                          horizontal: 16,
                           vertical: 24,
                         ),
                         padding: const EdgeInsets.all(16),

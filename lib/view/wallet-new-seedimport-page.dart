@@ -4,7 +4,6 @@ import 'package:sats/cubit/new-wallet/seed-import.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button2.dart';
-import 'package:sats/view/common/header-text.dart';
 import 'package:sats/view/common/header.dart';
 
 class NewImportStepper extends StatelessWidget {
@@ -59,7 +58,13 @@ class SeedImportWarning extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const HeaderTextDark(text: 'Security Information'),
+          Text(
+            'Security Information'.toUpperCase(),
+            style: c.fonts.headline4!.copyWith(
+              color: Colors.white,
+              // fontWeight: FontWeight.bold,
+            ),
+          ),
           const SizedBox(height: 24),
           Text(
             '''
@@ -95,7 +100,13 @@ class SeedImportPassphrase extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 24),
-            const HeaderTextDark(text: 'Enter an optional\npassphrase'),
+            Text(
+              'Enter an optional\npassphrase',
+              style: c.fonts.headline4!.copyWith(
+                color: Colors.white,
+                // fontWeight: FontWeight.bold,
+              ),
+            ),
             const SizedBox(height: 24),
             Padding(
               padding: EdgeInsets.zero,
@@ -110,7 +121,13 @@ class SeedImportPassphrase extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 40),
-            const HeaderTextDark(text: 'Select an\naccount number'),
+            Text(
+              'Select an\naccount number',
+              style: c.fonts.headline4!.copyWith(
+                color: Colors.white,
+                // fontWeight: FontWeight.bold,
+              ),
+            ),
             const SizedBox(height: 24),
             Padding(
               padding: EdgeInsets.zero,
@@ -177,8 +194,13 @@ class _SeedImportLabelState extends State<SeedImportLabel> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 24),
-            if (!isFixed) const HeaderTextDark(text: 'Label your wallet'),
-            if (isFixed) const HeaderTextDark(text: 'Label'),
+            Text(
+              isFixed ? 'Label' : 'Label your wallet',
+              style: c.fonts.headline4!.copyWith(
+                color: Colors.white,
+                // fontWeight: FontWeight.bold,
+              ),
+            ),
             const SizedBox(height: 24),
             Padding(
               padding: EdgeInsets.zero,
@@ -228,7 +250,13 @@ class SeedImportPhrase extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            HeaderTextDark(text: 'Enter your seed\nphrase'.notLocalised()),
+            Text(
+              'Enter your seed\nphrase',
+              style: c.fonts.headline4!.copyWith(
+                color: Colors.white,
+                // fontWeight: FontWeight.bold,
+              ),
+            ),
             const SizedBox(height: 24),
             Padding(
               padding: EdgeInsets.zero,

@@ -296,7 +296,6 @@ class ReorderCards extends StatelessWidget {
                       children: [
                         for (final wallet in wallets) ...[
                           DragAndDropItem(
-                            
                             child: WalletCard(
                               wallet: wallet,
                               isSelection: true,
@@ -500,16 +499,17 @@ class NewHomePage extends StatelessWidget {
           slivers: [
             SliverAppBar(
               stretch: true,
-              pinned: true,
+              pinned: true,              
               expandedHeight: !isRearranging ? 350 : 80,
               automaticallyImplyLeading: false,
               backgroundColor: c.colours.secondary,
+
               flexibleSpace: FlexibleSpaceBar(
                 stretchModes: const [
-                  StretchMode.blurBackground,
+                  // StretchMode.blurBackground,
                   StretchMode.fadeTitle
                 ],
-                collapseMode: CollapseMode.pin,
+                // collapseMode: CollapseMode.parallax,
                 background: Column(
                   children: [
                     HeaderRow(),

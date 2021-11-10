@@ -307,6 +307,7 @@ class CalcPage extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
+        bottom: false,
         child: Column(
           children: [
             if (loading)

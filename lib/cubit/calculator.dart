@@ -67,9 +67,9 @@ class CalculatorCubit extends Cubit<CalculatorState> {
       emit(
         CalculatorState(
           rates: rates,
-          selectedRate: rates[0],
-          editingBtc: true,
-          btcSelected: true,
+          selectedRate: rates[1],
+          editingBtc: false,
+          btcSelected: false,
           currencyAmt: '',
           satsAmt: '',
           loadingRates: false,

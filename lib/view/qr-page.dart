@@ -99,6 +99,10 @@ class QRPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final showActions = context.select(
+      (WalletsCubit wc) => wc.state.selectedWallet != null,
+    );
+
     return WillPopScope(
       onWillPop: () async {
         context.read<WalletsCubit>().clearSelectedWallet();
@@ -147,16 +151,18 @@ class QRPage extends StatelessWidget {
                 const SizedBox(height: 16),
                 AccountsRowSelection(),
                 const SizedBox(height: 40),
-                Center(
-                  child: Text(
-                    'select action'.toUpperCase(),
-                    style: context.fonts.overline!.copyWith(
-                      color: context.colours.onBackground,
+                if (showActions) ...[
+                  Center(
+                    child: Text(
+                      'select action'.toUpperCase(),
+                      style: context.fonts.overline!.copyWith(
+                        color: context.colours.onBackground,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 32),
-                const Buttons(),
+                  const SizedBox(height: 32),
+                  const Buttons(),
+                ],
               ],
             ),
           ),

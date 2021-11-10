@@ -220,7 +220,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
 
       var newWallet = Wallet(
         label: state.walletLabel,
-        walletType: 'SINGLE SIGNATURE',
+        walletType: 'SINGLE ACCOUNT',
         descriptor: com.descriptor.split('#')[0],
         blockchain: _blockchainCubit.state.blockchain.name,
       );
@@ -317,9 +317,11 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
     emit(state.copyWith(passPhrase: text));
   }
 
-  void seedWordSelected(String text) {
+  void seedWordSelected(String text) async {
     if (text != state.quizSeedAnswer) {
       emit(state.copyWith(quizSeedError: 'Incorrect Word Selected'));
+      await Future.delayed(const Duration(seconds: 1));
+      backClicked();
       return;
     }
     emit(state.copyWith(quizSeedError: ''));
