@@ -4,9 +4,9 @@ import 'package:sats/navigation.dart';
 
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button2.dart';
-import 'package:sats/view/common/header-text.dart';
 import 'package:sats/view/common/header.dart';
 import 'package:sats/view/common/loading.dart';
+import 'package:sats/view/common/step-line.dart';
 
 class XPubImportStepper extends StatelessWidget {
   const XPubImportStepper({Key? key}) : super(key: key);
@@ -15,34 +15,19 @@ class XPubImportStepper extends StatelessWidget {
   Widget build(BuildContext c) {
     return BlocBuilder<XpubImportCubit, XpubImportState>(
       builder: (context, state) {
-        final stepLabel = state.currentStepLabel();
+        // final stepLabel = state.currentStepLabel();
         final steps = XpubImportStep.values.length;
         final idx = state.currentStep.index;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              stepLabel,
-              style: c.fonts.headline6!.copyWith(color: Colors.white),
-            ),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                for (var i = 0; i < steps; i++)
-                  Container(
-                    height: 8,
-                    width: 130,
-                    decoration: BoxDecoration(
-                      color: i <= idx
-                          ? Colors.blue.withOpacity(0.4)
-                          : Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-              ],
-            ),
+            // Text(
+            //   stepLabel,
+            //   style: c.fonts.headline6!.copyWith(color: Colors.white),
+            // ),
+            // const SizedBox(height: 24),
+            StepLine(length: steps, idx: idx),
             const SizedBox(height: 24),
           ],
         );

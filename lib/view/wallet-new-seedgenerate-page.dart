@@ -4,6 +4,7 @@ import 'package:sats/cubit/new-wallet/seed-generate.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button.dart';
+import 'package:sats/view/common/step-line.dart';
 
 class NewGenerateStepper extends StatelessWidget {
   @override
@@ -12,7 +13,7 @@ class NewGenerateStepper extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.currentStep != current.currentStep,
       builder: (context, state) {
-        final stepLabel = state.currentStepLabel();
+        // final stepLabel = state.currentStepLabel();
         final steps = SeedGenerateSteps.values.length;
         final idx = state.currentStep.index;
 
@@ -20,22 +21,7 @@ class NewGenerateStepper extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                for (var i = 0; i < steps; i++)
-                  Container(
-                    height: 8,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      color: i <= idx
-                          ? Colors.blue.withOpacity(0.4)
-                          : Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-              ],
-            ),
+            StepLine(length: steps, idx: idx),
             const SizedBox(height: 24),
             // Text(
             //   stepLabel.toUpperCase(),

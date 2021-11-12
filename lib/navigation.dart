@@ -7,6 +7,7 @@ import 'package:sats/cubit/_state.dart';
 import 'package:sats/cubit/calculator.dart';
 import 'package:sats/cubit/new-wallet/seed-generate.dart';
 import 'package:sats/cubit/new-wallet/seed-import.dart';
+import 'package:sats/cubit/new-wallet/timed.dart';
 import 'package:sats/cubit/new-wallet/xpub-import.dart';
 import 'package:sats/cubit/reddit.dart';
 import 'package:sats/cubit/wallet/receive.dart';
@@ -37,9 +38,6 @@ import 'package:sats/view/wallet-send-page.dart';
 class Routes {
   static const home = '/';
   static const addWallet = 'add-wallet';
-  static const generateSeed = 'generate-seed';
-  static const importSeed = 'import-seed';
-  static const watchOnly = 'watch-only';
   static const calc = 'calc';
   static const setting = 'settings';
   static const logs = 'logs';
@@ -49,6 +47,11 @@ class Routes {
   static const sendFromQR = 'send-from-qr';
   static const qr = 'qr';
   static const addressBook = 'address-book';
+
+  static const generateSeed = 'generate-seed';
+  static const importSeed = 'import-seed';
+  static const watchOnly = 'watch-only';
+  static const inheritance = 'inheritance';
 
   static Route<dynamic>? setupRoutes(RouteSettings settings, BuildContext c) {
     late Widget page;
@@ -133,6 +136,9 @@ class Routes {
         );
         break;
 
+      case inheritance:
+        page =const InheritancePage();
+        break;
       case calc:
         final calcCubit = CalculatorCubit(
           // locator<IStorage>(),

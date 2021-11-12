@@ -204,23 +204,15 @@ class AddWalletPage extends StatelessWidget {
                       description:
                           'Time protect you assets.\nSelect your hier.',
                       colour: c.colours.surface,
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(c, Routes.inheritance);
+                      },
                     ),
                     const SizedBox(height: 16),
                     Opacity(
                       opacity: 0.5,
                       child: WalletSelection(
-                        text: 'Inheritance',
-                        description: ' ',
-                        colour: c.colours.surface,
-                        onPressed: () {},
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Opacity(
-                      opacity: 0.5,
-                      child: WalletSelection(
-                        text: 'Fund',
+                        text: 'Co Sign',
                         description: ' ',
                         colour: c.colours.surface,
                         onPressed: () {},

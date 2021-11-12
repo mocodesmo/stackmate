@@ -141,7 +141,7 @@ class SeedImportCubit extends Cubit<SeedImportState> {
 
       final der = _bitcoin.deriveHardened(
         masterXPriv: neu.xprv,
-        account: '',
+        account: '1',
         purpose: '',
       );
       final com = _bitcoin.compile(

@@ -5,6 +5,7 @@ import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button2.dart';
 import 'package:sats/view/common/header.dart';
+import 'package:sats/view/common/step-line.dart';
 
 class NewImportStepper extends StatelessWidget {
   const NewImportStepper();
@@ -14,34 +15,19 @@ class NewImportStepper extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.currentStep != current.currentStep,
       builder: (context, state) {
-        final stepLabel = state.currentStepLabel();
+        // final stepLabel = state.currentStepLabel();
         final steps = SeedImportSteps.values.length;
         final idx = state.currentStep.index;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              stepLabel,
-              style: c.fonts.headline6!.copyWith(color: Colors.white),
-            ),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                for (var i = 0; i < steps; i++)
-                  Container(
-                    height: 8,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: i <= idx
-                          ? Colors.blue.withOpacity(0.4)
-                          : Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-              ],
-            ),
+            // Text(
+            //   stepLabel,
+            //   style: c.fonts.headline6!.copyWith(color: Colors.white),
+            // ),
+            // const SizedBox(height: 24),
+            StepLine(length: steps, idx: idx),
             const SizedBox(height: 24),
           ],
         );
@@ -59,8 +45,8 @@ class SeedImportWarning extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'Security Information'.toUpperCase(),
-            style: c.fonts.headline4!.copyWith(
+            'Security\nInformation'.toUpperCase(),
+            style: c.fonts.headline5!.copyWith(
               color: Colors.white,
               // fontWeight: FontWeight.bold,
             ),
@@ -79,7 +65,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
             onPressed: () {
               c.read<SeedImportCubit>().nextClicked();
             },
-            child: const Text('I Understand'),
+            child: Text('I Understand'.toUpperCase()),
           )
         ],
       ),
@@ -101,8 +87,8 @@ class SeedImportPassphrase extends StatelessWidget {
           children: [
             const SizedBox(height: 24),
             Text(
-              'Enter an optional\npassphrase',
-              style: c.fonts.headline4!.copyWith(
+              'Enter an\noptional\npassphrase'.toUpperCase(),
+              style: c.fonts.headline5!.copyWith(
                 color: Colors.white,
                 // fontWeight: FontWeight.bold,
               ),
@@ -120,10 +106,10 @@ class SeedImportPassphrase extends StatelessWidget {
                 decoration: const InputDecoration(labelText: 'Passphrase'),
               ),
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 80),
             Text(
-              'Select an\naccount number',
-              style: c.fonts.headline4!.copyWith(
+              'Select an\naccount\nnumber'.toUpperCase(),
+              style: c.fonts.headline5!.copyWith(
                 color: Colors.white,
                 // fontWeight: FontWeight.bold,
               ),
