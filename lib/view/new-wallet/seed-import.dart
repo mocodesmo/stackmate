@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sats/cubit/wallet/common/seed-import.dart';
+import 'package:sats/cubit/new-wallet/common/seed-import.dart';
 import 'package:sats/pkg/extensions.dart';
 
 class SeedImportSteps extends StatelessWidget {

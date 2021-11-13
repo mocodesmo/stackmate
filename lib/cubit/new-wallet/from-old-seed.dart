@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/chain-select.dart';
 import 'package:sats/cubit/logger.dart';
-import 'package:sats/cubit/wallet/common/seed-import.dart';
+import 'package:sats/cubit/new-wallet/common/seed-import.dart';
 import 'package:sats/cubit/wallets.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/model/wallet.dart';

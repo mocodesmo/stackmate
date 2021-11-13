@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sats/cubit/wallet/common/xpub-import.dart';
-import 'package:sats/cubit/wallet/new-wallet/from-old-xpub.dart';
+import 'package:sats/cubit/new-wallet/common/xpub-import.dart';
+import 'package:sats/cubit/new-wallet/from-old-xpub.dart';
 import 'package:sats/pkg/extensions.dart';
 
 class XpubFieldsImport extends StatefulWidget {
