@@ -76,6 +76,45 @@ class SeedGenerateWalletCubit extends Cubit<SeedGenerateWalletState> {
   final SeedGenerateCubit _generateCubit;
   late StreamSubscription _generateSub;
 
+  void backClicked() {
+    switch (state.currentStep) {
+      case SeedGenerateWalletSteps.warning:
+        break;
+
+      case SeedGenerateWalletSteps.generate:
+        emit(
+          state.copyWith(
+            currentStep: SeedGenerateWalletSteps.warning,
+          ),
+        );
+        _generateCubit.clear();
+
+        break;
+
+      case SeedGenerateWalletSteps.label:
+        break;
+    }
+  }
+
+  void nextClicked() {
+    switch (state.currentStep) {
+      case SeedGenerateWalletSteps.warning:
+        emit(state.copyWith(currentStep: SeedGenerateWalletSteps.generate));
+        break;
+
+      case SeedGenerateWalletSteps.generate:
+        break;
+
+      case SeedGenerateWalletSteps.label:
+        saveClicked();
+        break;
+    }
+  }
+
+  void labelChanged(String text) {
+    emit(state.copyWith(walletLabel: text, walletLabelError: ''));
+  }
+
   void saveClicked() async {
     if (state.walletLabel.length < 4 ||
         state.walletLabel.length > 10 ||
@@ -132,45 +171,6 @@ class SeedGenerateWalletCubit extends Cubit<SeedGenerateWalletState> {
         s,
       );
     }
-  }
-
-  void nextClicked() {
-    switch (state.currentStep) {
-      case SeedGenerateWalletSteps.warning:
-        emit(state.copyWith(currentStep: SeedGenerateWalletSteps.generate));
-        break;
-
-      case SeedGenerateWalletSteps.generate:
-        break;
-
-      case SeedGenerateWalletSteps.label:
-        saveClicked();
-        break;
-    }
-  }
-
-  void backClicked() {
-    switch (state.currentStep) {
-      case SeedGenerateWalletSteps.warning:
-        break;
-
-      case SeedGenerateWalletSteps.generate:
-        emit(
-          state.copyWith(
-            currentStep: SeedGenerateWalletSteps.warning,
-          ),
-        );
-        _generateCubit.clear();
-
-        break;
-
-      case SeedGenerateWalletSteps.label:
-        break;
-    }
-  }
-
-  void labelChanged(String text) {
-    emit(state.copyWith(walletLabel: text, walletLabelError: ''));
   }
 
   @override

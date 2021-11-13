@@ -23,7 +23,8 @@ class _$SeedImportStateTearOff {
       String seedError = '',
       String passPhrase = '',
       int accountNumber = 0,
-      String errPassPhrase = ''}) {
+      String errPassPhrase = '',
+      bool seedReady = false}) {
     return _SeedImportState(
       currentStep: currentStep,
       seed: seed,
@@ -31,6 +32,7 @@ class _$SeedImportStateTearOff {
       passPhrase: passPhrase,
       accountNumber: accountNumber,
       errPassPhrase: errPassPhrase,
+      seedReady: seedReady,
     );
   }
 }
@@ -46,6 +48,7 @@ mixin _$SeedImportState {
   String get passPhrase => throw _privateConstructorUsedError;
   int get accountNumber => throw _privateConstructorUsedError;
   String get errPassPhrase => throw _privateConstructorUsedError;
+  bool get seedReady => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SeedImportStateCopyWith<SeedImportState> get copyWith =>
@@ -63,7 +66,8 @@ abstract class $SeedImportStateCopyWith<$Res> {
       String seedError,
       String passPhrase,
       int accountNumber,
-      String errPassPhrase});
+      String errPassPhrase,
+      bool seedReady});
 }
 
 /// @nodoc
@@ -83,6 +87,7 @@ class _$SeedImportStateCopyWithImpl<$Res>
     Object? passPhrase = freezed,
     Object? accountNumber = freezed,
     Object? errPassPhrase = freezed,
+    Object? seedReady = freezed,
   }) {
     return _then(_value.copyWith(
       currentStep: currentStep == freezed
@@ -109,6 +114,10 @@ class _$SeedImportStateCopyWithImpl<$Res>
           ? _value.errPassPhrase
           : errPassPhrase // ignore: cast_nullable_to_non_nullable
               as String,
+      seedReady: seedReady == freezed
+          ? _value.seedReady
+          : seedReady // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -126,7 +135,8 @@ abstract class _$SeedImportStateCopyWith<$Res>
       String seedError,
       String passPhrase,
       int accountNumber,
-      String errPassPhrase});
+      String errPassPhrase,
+      bool seedReady});
 }
 
 /// @nodoc
@@ -148,6 +158,7 @@ class __$SeedImportStateCopyWithImpl<$Res>
     Object? passPhrase = freezed,
     Object? accountNumber = freezed,
     Object? errPassPhrase = freezed,
+    Object? seedReady = freezed,
   }) {
     return _then(_SeedImportState(
       currentStep: currentStep == freezed
@@ -174,6 +185,10 @@ class __$SeedImportStateCopyWithImpl<$Res>
           ? _value.errPassPhrase
           : errPassPhrase // ignore: cast_nullable_to_non_nullable
               as String,
+      seedReady: seedReady == freezed
+          ? _value.seedReady
+          : seedReady // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -187,7 +202,8 @@ class _$_SeedImportState extends _SeedImportState {
       this.seedError = '',
       this.passPhrase = '',
       this.accountNumber = 0,
-      this.errPassPhrase = ''})
+      this.errPassPhrase = '',
+      this.seedReady = false})
       : super._();
 
   @JsonKey(defaultValue: SeedImportStep.passphrase)
@@ -208,10 +224,13 @@ class _$_SeedImportState extends _SeedImportState {
   @JsonKey(defaultValue: '')
   @override
   final String errPassPhrase;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool seedReady;
 
   @override
   String toString() {
-    return 'SeedImportState(currentStep: $currentStep, seed: $seed, seedError: $seedError, passPhrase: $passPhrase, accountNumber: $accountNumber, errPassPhrase: $errPassPhrase)';
+    return 'SeedImportState(currentStep: $currentStep, seed: $seed, seedError: $seedError, passPhrase: $passPhrase, accountNumber: $accountNumber, errPassPhrase: $errPassPhrase, seedReady: $seedReady)';
   }
 
   @override
@@ -234,7 +253,10 @@ class _$_SeedImportState extends _SeedImportState {
                     .equals(other.accountNumber, accountNumber)) &&
             (identical(other.errPassPhrase, errPassPhrase) ||
                 const DeepCollectionEquality()
-                    .equals(other.errPassPhrase, errPassPhrase)));
+                    .equals(other.errPassPhrase, errPassPhrase)) &&
+            (identical(other.seedReady, seedReady) ||
+                const DeepCollectionEquality()
+                    .equals(other.seedReady, seedReady)));
   }
 
   @override
@@ -245,7 +267,8 @@ class _$_SeedImportState extends _SeedImportState {
       const DeepCollectionEquality().hash(seedError) ^
       const DeepCollectionEquality().hash(passPhrase) ^
       const DeepCollectionEquality().hash(accountNumber) ^
-      const DeepCollectionEquality().hash(errPassPhrase);
+      const DeepCollectionEquality().hash(errPassPhrase) ^
+      const DeepCollectionEquality().hash(seedReady);
 
   @JsonKey(ignore: true)
   @override
@@ -260,7 +283,8 @@ abstract class _SeedImportState extends SeedImportState {
       String seedError,
       String passPhrase,
       int accountNumber,
-      String errPassPhrase}) = _$_SeedImportState;
+      String errPassPhrase,
+      bool seedReady}) = _$_SeedImportState;
   const _SeedImportState._() : super._();
 
   @override
@@ -275,6 +299,8 @@ abstract class _SeedImportState extends SeedImportState {
   int get accountNumber => throw _privateConstructorUsedError;
   @override
   String get errPassPhrase => throw _privateConstructorUsedError;
+  @override
+  bool get seedReady => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$SeedImportStateCopyWith<_SeedImportState> get copyWith =>

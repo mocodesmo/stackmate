@@ -5,10 +5,8 @@ import 'package:sats/pkg/extensions.dart';
 class SeedImportSteps extends StatelessWidget {
   const SeedImportSteps({
     Key? key,
-    required this.onConfirm,
   }) : super(key: key);
 
-  final Function onConfirm;
   @override
   Widget build(BuildContext context) {
     final step = context.select((SeedImportCubit sc) => sc.state.currentStep);
@@ -17,9 +15,7 @@ class SeedImportSteps extends StatelessWidget {
       case SeedImportStep.passphrase:
         return const SeedImportPhrase();
       case SeedImportStep.import:
-        return SeedImportPassphrase(
-          onConfirm: onConfirm,
-        );
+        return SeedImportPassphrase();
     }
   }
 }
@@ -80,9 +76,7 @@ class SeedImportPhrase extends StatelessWidget {
 }
 
 class SeedImportPassphrase extends StatelessWidget {
-  const SeedImportPassphrase({required this.onConfirm});
-
-  final Function onConfirm;
+  const SeedImportPassphrase();
 
   @override
   Widget build(BuildContext c) {
@@ -145,7 +139,7 @@ class SeedImportPassphrase extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: TextButton(
                 onPressed: () {
-                  onConfirm();
+                  c.read<SeedImportCubit>().checkPassPhrase();
                 },
                 child: const Text('Confirm'),
               ),

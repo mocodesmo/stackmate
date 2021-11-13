@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/chain-select.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/wallet/common/xpub-import.dart';
+import 'package:sats/cubit/wallet/new-wallet/from-old-seed.dart';
 import 'package:sats/cubit/wallets.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/model/wallet.dart';
@@ -52,7 +55,13 @@ class XpubImportWalletCubit extends Cubit<XpubImportWalletState> {
     this._wallets,
     this._blockchainCubit,
     this._importCubit,
-  ) : super(const XpubImportWalletState());
+  ) : super(const XpubImportWalletState()) {
+    _importCubit.stream.listen((istate) {
+      if (istate.detailsReady) {
+        emit(state.copyWith(currentStep: XpubImportWalletStep.label));
+      }
+    });
+  }
 
   // final ISoloWalletAPI _soloWalletAPI;
   final LoggerCubit _logger;
@@ -61,6 +70,7 @@ class XpubImportWalletCubit extends Cubit<XpubImportWalletState> {
   final WalletsCubit _wallets;
   final ChainSelectCubit _blockchainCubit;
   final XpubImportCubit _importCubit;
+  late StreamSubscription _importSub;
 
   void _saveWallet() async {
     emit(
@@ -136,12 +146,8 @@ class XpubImportWalletCubit extends Cubit<XpubImportWalletState> {
   void nextClicked() async {
     switch (state.currentStep) {
       case XpubImportWalletStep.import:
-        _importCubit.checkDetails();
-        await Future.delayed(const Duration(microseconds: 100));
-        if (_importCubit.state.errXpub != '') return;
-
-        emit(state.copyWith(currentStep: XpubImportWalletStep.label));
         break;
+
       case XpubImportWalletStep.label:
         if (state.label == '' || state.label.length < 5) {
           emit(state.copyWith(errSavingWallet: 'Invalid Label.'));
@@ -165,5 +171,11 @@ class XpubImportWalletCubit extends Cubit<XpubImportWalletState> {
         );
         break;
     }
+  }
+
+  @override
+  Future<void> close() {
+    _importSub.cancel();
+    return super.close();
   }
 }

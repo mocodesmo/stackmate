@@ -164,11 +164,7 @@ class XpubImportPage extends StatelessWidget {
                       child: () {
                         switch (state.currentStep) {
                           case XpubImportWalletStep.import:
-                            return XpubFieldsImport(
-                              onConfirm: () {
-                                c.read<XpubImportWalletCubit>().nextClicked();
-                              },
-                            );
+                            return XpubFieldsImport();
 
                           case XpubImportWalletStep.label:
                             return const XpubLabel();

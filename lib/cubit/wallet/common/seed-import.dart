@@ -18,6 +18,7 @@ class SeedImportState with _$SeedImportState {
     @Default('') String passPhrase,
     @Default(0) int accountNumber,
     @Default('') String errPassPhrase,
+    @Default(false) bool seedReady,
   }) = _SeedImportState;
   const SeedImportState._();
 
@@ -93,6 +94,8 @@ class SeedImportCubit extends Cubit<SeedImportState> {
         emit(state.copyWith(seedError: 'Invalid Seed.'));
         return;
       }
+
+      emit(state.copyWith(seedReady: true));
 
       // emit(state.copyWith(currentStep: SeedImportWalletSteps.label));
     } catch (e) {

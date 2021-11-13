@@ -22,13 +22,15 @@ class _$XpubImportStateTearOff {
       String fingerPrint = '',
       String path = '',
       String errXpub = '',
-      bool cameraOpened = false}) {
+      bool cameraOpened = false,
+      bool detailsReady = false}) {
     return _SeedImportXpubState(
       xpub: xpub,
       fingerPrint: fingerPrint,
       path: path,
       errXpub: errXpub,
       cameraOpened: cameraOpened,
+      detailsReady: detailsReady,
     );
   }
 }
@@ -43,6 +45,7 @@ mixin _$XpubImportState {
   String get path => throw _privateConstructorUsedError;
   String get errXpub => throw _privateConstructorUsedError;
   bool get cameraOpened => throw _privateConstructorUsedError;
+  bool get detailsReady => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $XpubImportStateCopyWith<XpubImportState> get copyWith =>
@@ -59,7 +62,8 @@ abstract class $XpubImportStateCopyWith<$Res> {
       String fingerPrint,
       String path,
       String errXpub,
-      bool cameraOpened});
+      bool cameraOpened,
+      bool detailsReady});
 }
 
 /// @nodoc
@@ -78,6 +82,7 @@ class _$XpubImportStateCopyWithImpl<$Res>
     Object? path = freezed,
     Object? errXpub = freezed,
     Object? cameraOpened = freezed,
+    Object? detailsReady = freezed,
   }) {
     return _then(_value.copyWith(
       xpub: xpub == freezed
@@ -100,6 +105,10 @@ class _$XpubImportStateCopyWithImpl<$Res>
           ? _value.cameraOpened
           : cameraOpened // ignore: cast_nullable_to_non_nullable
               as bool,
+      detailsReady: detailsReady == freezed
+          ? _value.detailsReady
+          : detailsReady // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -116,7 +125,8 @@ abstract class _$SeedImportXpubStateCopyWith<$Res>
       String fingerPrint,
       String path,
       String errXpub,
-      bool cameraOpened});
+      bool cameraOpened,
+      bool detailsReady});
 }
 
 /// @nodoc
@@ -137,6 +147,7 @@ class __$SeedImportXpubStateCopyWithImpl<$Res>
     Object? path = freezed,
     Object? errXpub = freezed,
     Object? cameraOpened = freezed,
+    Object? detailsReady = freezed,
   }) {
     return _then(_SeedImportXpubState(
       xpub: xpub == freezed
@@ -159,6 +170,10 @@ class __$SeedImportXpubStateCopyWithImpl<$Res>
           ? _value.cameraOpened
           : cameraOpened // ignore: cast_nullable_to_non_nullable
               as bool,
+      detailsReady: detailsReady == freezed
+          ? _value.detailsReady
+          : detailsReady // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -171,7 +186,8 @@ class _$_SeedImportXpubState extends _SeedImportXpubState {
       this.fingerPrint = '',
       this.path = '',
       this.errXpub = '',
-      this.cameraOpened = false})
+      this.cameraOpened = false,
+      this.detailsReady = false})
       : super._();
 
   @JsonKey(defaultValue: '')
@@ -189,10 +205,13 @@ class _$_SeedImportXpubState extends _SeedImportXpubState {
   @JsonKey(defaultValue: false)
   @override
   final bool cameraOpened;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool detailsReady;
 
   @override
   String toString() {
-    return 'XpubImportState(xpub: $xpub, fingerPrint: $fingerPrint, path: $path, errXpub: $errXpub, cameraOpened: $cameraOpened)';
+    return 'XpubImportState(xpub: $xpub, fingerPrint: $fingerPrint, path: $path, errXpub: $errXpub, cameraOpened: $cameraOpened, detailsReady: $detailsReady)';
   }
 
   @override
@@ -211,7 +230,10 @@ class _$_SeedImportXpubState extends _SeedImportXpubState {
                     .equals(other.errXpub, errXpub)) &&
             (identical(other.cameraOpened, cameraOpened) ||
                 const DeepCollectionEquality()
-                    .equals(other.cameraOpened, cameraOpened)));
+                    .equals(other.cameraOpened, cameraOpened)) &&
+            (identical(other.detailsReady, detailsReady) ||
+                const DeepCollectionEquality()
+                    .equals(other.detailsReady, detailsReady)));
   }
 
   @override
@@ -221,7 +243,8 @@ class _$_SeedImportXpubState extends _SeedImportXpubState {
       const DeepCollectionEquality().hash(fingerPrint) ^
       const DeepCollectionEquality().hash(path) ^
       const DeepCollectionEquality().hash(errXpub) ^
-      const DeepCollectionEquality().hash(cameraOpened);
+      const DeepCollectionEquality().hash(cameraOpened) ^
+      const DeepCollectionEquality().hash(detailsReady);
 
   @JsonKey(ignore: true)
   @override
@@ -236,7 +259,8 @@ abstract class _SeedImportXpubState extends XpubImportState {
       String fingerPrint,
       String path,
       String errXpub,
-      bool cameraOpened}) = _$_SeedImportXpubState;
+      bool cameraOpened,
+      bool detailsReady}) = _$_SeedImportXpubState;
   const _SeedImportXpubState._() : super._();
 
   @override
@@ -249,6 +273,8 @@ abstract class _SeedImportXpubState extends XpubImportState {
   String get errXpub => throw _privateConstructorUsedError;
   @override
   bool get cameraOpened => throw _privateConstructorUsedError;
+  @override
+  bool get detailsReady => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$SeedImportXpubStateCopyWith<_SeedImportXpubState> get copyWith =>

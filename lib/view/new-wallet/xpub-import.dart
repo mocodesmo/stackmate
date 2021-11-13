@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sats/cubit/wallet/common/xpub-import.dart';
+import 'package:sats/cubit/wallet/new-wallet/from-old-xpub.dart';
 import 'package:sats/pkg/extensions.dart';
 
 class XpubFieldsImport extends StatefulWidget {
   const XpubFieldsImport({
     Key? key,
-    required this.onConfirm,
   }) : super(key: key);
-
-  final Function onConfirm;
 
   @override
   _XpubImportFieldsState createState() => _XpubImportFieldsState();
@@ -181,7 +179,7 @@ class _XpubImportFieldsState extends State<XpubFieldsImport> {
               padding: const EdgeInsets.all(16.0),
               child: TextButton(
                 onPressed: () {
-                  widget.onConfirm();
+                  c.read<XpubImportCubit>().checkDetails();
                 },
                 child: const Text('CONFIRM'),
               ),

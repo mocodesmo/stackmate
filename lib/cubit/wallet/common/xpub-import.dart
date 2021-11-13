@@ -14,6 +14,7 @@ class XpubImportState with _$XpubImportState {
     @Default('') String path,
     @Default('') String errXpub,
     @Default(false) bool cameraOpened,
+    @Default(false) bool detailsReady,
   }) = _SeedImportXpubState;
   const XpubImportState._();
 
@@ -118,6 +119,9 @@ class XpubImportCubit extends Cubit<XpubImportState> {
           errXpub: 'Invalid Path. Try again.',
         ),
       );
+      return;
     }
+
+    emit(state.copyWith(detailsReady: true));
   }
 }

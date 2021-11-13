@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/chain-select.dart';
@@ -78,7 +80,13 @@ class SeedImportWalletCubit extends Cubit<SeedImportWalletState> {
             walletLabel: walletLabel,
             labelFixed: walletLabel != '',
           ),
-        );
+        ) {
+    _importCubit.stream.listen((istate) {
+      if (istate.seedReady) {
+        emit(state.copyWith(currentStep: SeedImportWalletSteps.label));
+      }
+    });
+  }
 
   final IBitcoinCore _bitcoin;
 
@@ -87,6 +95,7 @@ class SeedImportWalletCubit extends Cubit<SeedImportWalletState> {
   final WalletsCubit _wallets;
   final ChainSelectCubit _blockchainCubit;
   final SeedImportCubit _importCubit;
+  late StreamSubscription _importSub;
 
   void nextClicked() async {
     switch (state.currentStep) {
@@ -99,18 +108,6 @@ class SeedImportWalletCubit extends Cubit<SeedImportWalletState> {
         break;
 
       case SeedImportWalletSteps.import:
-        final importStep = _importCubit.state.currentStep;
-        switch (importStep) {
-          case SeedImportStep.passphrase:
-            _importCubit.checkPassPhrase();
-            break;
-          case SeedImportStep.import:
-            _importCubit.checkSeed();
-            await Future.delayed(const Duration(microseconds: 100));
-            if (_importCubit.state.seedError != '') return;
-            emit(state.copyWith(currentStep: SeedImportWalletSteps.label));
-            break;
-        }
         break;
 
       case SeedImportWalletSteps.label:
@@ -224,5 +221,11 @@ class SeedImportWalletCubit extends Cubit<SeedImportWalletState> {
     } catch (e, s) {
       logger.logException(e, 'SeedImportCubit._saveWalletLocally', s);
     }
+  }
+
+  @override
+  Future<void> close() {
+    _importSub.cancel();
+    return super.close();
   }
 }
