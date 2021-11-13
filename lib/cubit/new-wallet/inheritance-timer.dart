@@ -10,7 +10,7 @@ import 'package:sats/cubit/new-wallet/common/xpub-import.dart';
 import 'package:sats/cubit/wallets.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/model/wallet.dart';
-import 'package:sats/pkg/bitcoin.dart';
+import 'package:sats/pkg/core.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/pkg/storage.dart';
 
@@ -61,7 +61,7 @@ class InteritanceTimerCubit extends Cubit<InheritanceTimerState> {
     });
   }
 
-  final IBitcoinCore _bitcoin;
+  final IStackMateCore _bitcoin;
 
   final IStorage _storage;
   final LoggerCubit _logger;

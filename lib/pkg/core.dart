@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:bitcoin/bitcoin.dart';
 import 'package:sats/model/transaction.dart';
 
-abstract class IBitcoinCore {
+abstract class IStackMateCore {
   Nmeu generateMaster({
     required String length,
     required String passphrase,
@@ -100,7 +100,7 @@ abstract class IBitcoinCore {
   int daysToBlocks({required String days});
 }
 
-class BitcoinFFI implements IBitcoinCore {
+class BitcoinFFI implements IStackMateCore {
   BitcoinFFI() {
     _bitcoin = FFFI(
       binary: Platform.isAndroid

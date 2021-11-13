@@ -7,7 +7,7 @@ import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/node.dart';
 import 'package:sats/cubit/wallets.dart';
 import 'package:sats/model/blockchain.dart';
-import 'package:sats/pkg/bitcoin.dart';
+import 'package:sats/pkg/core.dart';
 import 'package:sats/pkg/clipboard.dart';
 import 'package:sats/pkg/share.dart';
 import 'package:sats/pkg/vibrate.dart';

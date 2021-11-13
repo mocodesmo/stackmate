@@ -9,7 +9,7 @@ import 'package:sats/cubit/new-wallet/from-old-seed.dart';
 import 'package:sats/cubit/wallets.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/model/wallet.dart';
-import 'package:sats/pkg/bitcoin.dart';
+import 'package:sats/pkg/core.dart';
 import 'package:sats/pkg/storage.dart';
 
 part 'from-old-xpub.freezed.dart';
@@ -65,7 +65,7 @@ class XpubImportWalletCubit extends Cubit<XpubImportWalletState> {
 
   final LoggerCubit _logger;
   final IStorage _storage;
-  final IBitcoinCore _bitcoin;
+  final IStackMateCore _bitcoin;
   final WalletsCubit _wallets;
   final ChainSelectCubit _blockchainCubit;
   final XpubImportCubit _importCubit;

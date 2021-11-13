@@ -8,7 +8,7 @@ import 'package:sats/cubit/wallets.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/model/transaction.dart';
 import 'package:sats/model/wallet.dart';
-import 'package:sats/pkg/bitcoin.dart';
+import 'package:sats/pkg/core.dart';
 import 'package:sats/pkg/launcher.dart';
 import 'package:sats/pkg/share.dart';
 import 'package:sats/pkg/storage.dart';

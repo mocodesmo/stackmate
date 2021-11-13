@@ -16,7 +16,7 @@ import 'package:sats/cubit/wallet/receive.dart';
 import 'package:sats/cubit/wallet/send.dart';
 import 'package:sats/cubit/wallet/wallet.dart';
 import 'package:sats/pkg/_deps.dart';
-import 'package:sats/pkg/bitcoin.dart';
+import 'package:sats/pkg/core.dart';
 import 'package:sats/pkg/clipboard.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/pkg/launcher.dart';
@@ -80,13 +80,13 @@ class Routes {
 
       case generateSeed:
         final seedGenerateCubit = SeedGenerateCubit(
-          locator<IBitcoinCore>(),
+          locator<IStackMateCore>(),
           networkSelectCubit,
           loggerCubit,
         );
 
         final seedGenerateWalletCubit = SeedGenerateWalletCubit(
-          locator<IBitcoinCore>(),
+          locator<IStackMateCore>(),
           locator<IStorage>(),
           loggerCubit,
           walletsCubit,
@@ -106,7 +106,7 @@ class Routes {
       case importSeed:
         final importCubit = SeedImportCubit(loggerCubit);
         final seedImportCubit = SeedImportWalletCubit(
-          locator<IBitcoinCore>(),
+          locator<IStackMateCore>(),
           locator<IStorage>(),
           walletsCubit,
           networkSelectCubit,
@@ -129,7 +129,7 @@ class Routes {
           locator<IClipBoard>(),
         );
         final xpubCubit = XpubImportWalletCubit(
-          locator<IBitcoinCore>(),
+          locator<IStackMateCore>(),
           loggerCubit,
           locator<IStorage>(),
           walletsCubit,
