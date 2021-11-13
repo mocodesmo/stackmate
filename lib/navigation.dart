@@ -7,10 +7,10 @@ import 'package:sats/cubit/_state.dart';
 import 'package:sats/cubit/calculator.dart';
 import 'package:sats/cubit/reddit.dart';
 import 'package:sats/cubit/wallet/common/seed-generate.dart';
-import 'package:sats/cubit/wallet/new-wallet/timed.dart';
-import 'package:sats/cubit/wallet/new-wallet/wallet-from-new-seed.dart';
-import 'package:sats/cubit/wallet/new-wallet/wallet-from-old-seed.dart';
-import 'package:sats/cubit/wallet/new-wallet/wallet-from-old-xpub.dart';
+import 'package:sats/view/wallet-new-inheritance-page.dart';
+import 'package:sats/cubit/wallet/new-wallet/from-new-seed.dart';
+import 'package:sats/cubit/wallet/new-wallet/from-old-seed.dart';
+import 'package:sats/cubit/wallet/new-wallet/from-old-xpub.dart';
 import 'package:sats/cubit/wallet/receive.dart';
 import 'package:sats/cubit/wallet/send.dart';
 import 'package:sats/cubit/wallet/wallet.dart';
@@ -63,7 +63,6 @@ class Routes {
           locator<IRedditAPI>(),
           loggerCubit,
           locator<ILauncher>(),
-          // locator<IStorage>(),
         );
 
         page = BlocProvider.value(
@@ -78,7 +77,6 @@ class Routes {
         break;
 
       case generateSeed:
-        // final networkCubit = NetworkCubit(loggerCubit);
         final seedGenerateCubit = SeedGenerateCubit(
           locator<IBitcoinCore>(),
           networkSelectCubit,
@@ -86,11 +84,8 @@ class Routes {
         );
 
         final seedGenerateWalletCubit = SeedGenerateWalletCubit(
-          // networkCubit,
           locator<IBitcoinCore>(),
           locator<IStorage>(),
-          // walletCubit,
-          // testNetCubit,
           loggerCubit,
           walletsCubit,
           networkSelectCubit,
@@ -98,32 +93,22 @@ class Routes {
         );
 
         page = MultiBlocProvider(
-          providers: [
-            // BlocProvider.value(value: networkCubit),
-            BlocProvider.value(value: seedGenerateWalletCubit)
-          ],
+          providers: [BlocProvider.value(value: seedGenerateWalletCubit)],
           child: SeedGeneratePage(),
         );
         break;
 
       case importSeed:
-        // final networkCubit = NetworkCubit(loggerCubit);
         final seedImportCubit = SeedImportCubit(
-          // networkCubit,
           locator<IBitcoinCore>(),
           locator<IStorage>(),
-          // walletCubit,
-          // testNetCubit,
           walletsCubit,
           networkSelectCubit,
           loggerCubit,
         );
 
         page = MultiBlocProvider(
-          providers: [
-            // BlocProvider.value(value: networkCubit),
-            BlocProvider.value(value: seedImportCubit)
-          ],
+          providers: [BlocProvider.value(value: seedImportCubit)],
           child: SeedImportPage(),
         );
         break;
@@ -149,7 +134,6 @@ class Routes {
         break;
       case calc:
         final calcCubit = CalculatorCubit(
-          // locator<IStorage>(),
           loggerCubit,
           locator<IVibrate>(),
           locator<IRatesAPI>(),
@@ -176,10 +160,8 @@ class Routes {
       case wallet:
         final history = WalletCubit(
           walletsCubit,
-          // locator<IBitcoin>(),
           locator<IStorage>(),
           loggerCubit,
-          // blockchainCubit,
           locator<ILauncher>(),
           locator<IShare>(),
           locator<IVibrate>(),
@@ -192,17 +174,11 @@ class Routes {
           child: const WalletPage(),
         );
 
-        // scheduleMicrotask(() async {
-        //   await Future.delayed(const Duration(milliseconds: 1000));
-        //   history.getHistory();
-        // });
-
         break;
 
       case receive:
         final r = ReceiveCubit(
           walletsCubit,
-          // locator<IBitcoin>(),
           networkSelectCubit,
           loggerCubit,
           locator<IClipBoard>(),
@@ -221,7 +197,6 @@ class Routes {
         final s = SendCubit(
           false,
           walletsCubit,
-          // locator<IBitcoin>(),
           networkSelectCubit,
           loggerCubit,
           locator<IClipBoard>(),
@@ -240,7 +215,6 @@ class Routes {
         final s = SendCubit(
           true,
           walletsCubit,
-          // locator<IBitcoin>(),
           networkSelectCubit,
           loggerCubit,
           locator<IClipBoard>(),
@@ -276,12 +250,6 @@ class Routes {
         );
       },
     );
-
-    // return CupertinoPageRoute(
-    //   builder: (context) {
-    //     return page;
-    //   },
-    // );
   }
 }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sats/cubit/wallet/new-wallet/wallet-from-old-xpub.dart';
+import 'package:sats/cubit/wallet/new-wallet/from-old-xpub.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button2.dart';

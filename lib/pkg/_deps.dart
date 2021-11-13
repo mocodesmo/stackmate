@@ -36,5 +36,5 @@ void setupDependencies({required bool useDummies}) {
   locator.registerLazySingleton<IVibrate>(() => Vibrate());
   locator.registerLazySingleton<ILocalAuth>(() => LocalAuth());
   locator.registerLazySingleton<IRatesAPI>(() => RatesAPI());
-  locator.registerLazySingleton<ILogAPI>(() => LogAPI());
+  locator.registerLazySingleton<ILogAPI>(() => SentryLogger());
 }

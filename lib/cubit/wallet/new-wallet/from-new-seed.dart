@@ -11,7 +11,7 @@ import 'package:sats/pkg/bitcoin.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/pkg/storage.dart';
 
-part 'wallet-from-new-seed.freezed.dart';
+part 'from-new-seed.freezed.dart';
 
 enum SeedGenerateWalletSteps {
   warning,

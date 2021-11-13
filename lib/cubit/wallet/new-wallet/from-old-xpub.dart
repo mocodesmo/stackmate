@@ -10,7 +10,7 @@ import 'package:sats/pkg/bitcoin.dart';
 import 'package:sats/pkg/clipboard.dart';
 import 'package:sats/pkg/storage.dart';
 
-part 'wallet-from-old-xpub.freezed.dart';
+part 'from-old-xpub.freezed.dart';
 
 enum XpubImportWalletStep { import, label }
 

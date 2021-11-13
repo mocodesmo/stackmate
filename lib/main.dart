@@ -23,13 +23,13 @@ void main() async {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
   runZonedGuarded(
-    () => runApp(const SatsApp()),
+    () => runApp(const Stackmate()),
     (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),
   );
 }
 
-class SatsApp extends StatelessWidget {
-  const SatsApp({Key? key}) : super(key: key);
+class Stackmate extends StatelessWidget {
+  const Stackmate({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext c) {

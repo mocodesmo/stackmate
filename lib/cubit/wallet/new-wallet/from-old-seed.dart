@@ -8,7 +8,7 @@ import 'package:sats/model/wallet.dart';
 import 'package:sats/pkg/bitcoin.dart';
 import 'package:sats/pkg/storage.dart';
 
-part 'wallet-from-old-seed.freezed.dart';
+part 'from-old-seed.freezed.dart';
 
 enum SeedImportWalletSteps {
   warning,
