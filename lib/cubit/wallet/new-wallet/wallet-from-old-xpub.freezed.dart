@@ -2,7 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'xpub-import.dart';
+part of 'wallet-from-old-xpub.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,11 +14,11 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$XpubImportStateTearOff {
-  const _$XpubImportStateTearOff();
+class _$XpubImportWalletStateTearOff {
+  const _$XpubImportWalletStateTearOff();
 
   _SeedImportXpubState call(
-      {XpubImportStep currentStep = XpubImportStep.import,
+      {XpubImportWalletStep currentStep = XpubImportWalletStep.import,
       String xpub = '',
       String fingerPrint = '',
       String path = '',
@@ -44,11 +44,11 @@ class _$XpubImportStateTearOff {
 }
 
 /// @nodoc
-const $XpubImportState = _$XpubImportStateTearOff();
+const $XpubImportWalletState = _$XpubImportWalletStateTearOff();
 
 /// @nodoc
-mixin _$XpubImportState {
-  XpubImportStep get currentStep => throw _privateConstructorUsedError;
+mixin _$XpubImportWalletState {
+  XpubImportWalletStep get currentStep => throw _privateConstructorUsedError;
   String get xpub => throw _privateConstructorUsedError;
   String get fingerPrint => throw _privateConstructorUsedError;
   String get path => throw _privateConstructorUsedError;
@@ -60,17 +60,17 @@ mixin _$XpubImportState {
   bool get newWalletSaved => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $XpubImportStateCopyWith<XpubImportState> get copyWith =>
+  $XpubImportWalletStateCopyWith<XpubImportWalletState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $XpubImportStateCopyWith<$Res> {
-  factory $XpubImportStateCopyWith(
-          XpubImportState value, $Res Function(XpubImportState) then) =
-      _$XpubImportStateCopyWithImpl<$Res>;
+abstract class $XpubImportWalletStateCopyWith<$Res> {
+  factory $XpubImportWalletStateCopyWith(XpubImportWalletState value,
+          $Res Function(XpubImportWalletState) then) =
+      _$XpubImportWalletStateCopyWithImpl<$Res>;
   $Res call(
-      {XpubImportStep currentStep,
+      {XpubImportWalletStep currentStep,
       String xpub,
       String fingerPrint,
       String path,
@@ -83,13 +83,13 @@ abstract class $XpubImportStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$XpubImportStateCopyWithImpl<$Res>
-    implements $XpubImportStateCopyWith<$Res> {
-  _$XpubImportStateCopyWithImpl(this._value, this._then);
+class _$XpubImportWalletStateCopyWithImpl<$Res>
+    implements $XpubImportWalletStateCopyWith<$Res> {
+  _$XpubImportWalletStateCopyWithImpl(this._value, this._then);
 
-  final XpubImportState _value;
+  final XpubImportWalletState _value;
   // ignore: unused_field
-  final $Res Function(XpubImportState) _then;
+  final $Res Function(XpubImportWalletState) _then;
 
   @override
   $Res call({
@@ -108,7 +108,7 @@ class _$XpubImportStateCopyWithImpl<$Res>
       currentStep: currentStep == freezed
           ? _value.currentStep
           : currentStep // ignore: cast_nullable_to_non_nullable
-              as XpubImportStep,
+              as XpubImportWalletStep,
       xpub: xpub == freezed
           ? _value.xpub
           : xpub // ignore: cast_nullable_to_non_nullable
@@ -151,13 +151,13 @@ class _$XpubImportStateCopyWithImpl<$Res>
 
 /// @nodoc
 abstract class _$SeedImportXpubStateCopyWith<$Res>
-    implements $XpubImportStateCopyWith<$Res> {
+    implements $XpubImportWalletStateCopyWith<$Res> {
   factory _$SeedImportXpubStateCopyWith(_SeedImportXpubState value,
           $Res Function(_SeedImportXpubState) then) =
       __$SeedImportXpubStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {XpubImportStep currentStep,
+      {XpubImportWalletStep currentStep,
       String xpub,
       String fingerPrint,
       String path,
@@ -171,7 +171,7 @@ abstract class _$SeedImportXpubStateCopyWith<$Res>
 
 /// @nodoc
 class __$SeedImportXpubStateCopyWithImpl<$Res>
-    extends _$XpubImportStateCopyWithImpl<$Res>
+    extends _$XpubImportWalletStateCopyWithImpl<$Res>
     implements _$SeedImportXpubStateCopyWith<$Res> {
   __$SeedImportXpubStateCopyWithImpl(
       _SeedImportXpubState _value, $Res Function(_SeedImportXpubState) _then)
@@ -197,7 +197,7 @@ class __$SeedImportXpubStateCopyWithImpl<$Res>
       currentStep: currentStep == freezed
           ? _value.currentStep
           : currentStep // ignore: cast_nullable_to_non_nullable
-              as XpubImportStep,
+              as XpubImportWalletStep,
       xpub: xpub == freezed
           ? _value.xpub
           : xpub // ignore: cast_nullable_to_non_nullable
@@ -242,7 +242,7 @@ class __$SeedImportXpubStateCopyWithImpl<$Res>
 
 class _$_SeedImportXpubState extends _SeedImportXpubState {
   const _$_SeedImportXpubState(
-      {this.currentStep = XpubImportStep.import,
+      {this.currentStep = XpubImportWalletStep.import,
       this.xpub = '',
       this.fingerPrint = '',
       this.path = '',
@@ -254,9 +254,9 @@ class _$_SeedImportXpubState extends _SeedImportXpubState {
       this.newWalletSaved = false})
       : super._();
 
-  @JsonKey(defaultValue: XpubImportStep.import)
+  @JsonKey(defaultValue: XpubImportWalletStep.import)
   @override
-  final XpubImportStep currentStep;
+  final XpubImportWalletStep currentStep;
   @JsonKey(defaultValue: '')
   @override
   final String xpub;
@@ -287,7 +287,7 @@ class _$_SeedImportXpubState extends _SeedImportXpubState {
 
   @override
   String toString() {
-    return 'XpubImportState(currentStep: $currentStep, xpub: $xpub, fingerPrint: $fingerPrint, path: $path, errXpub: $errXpub, cameraOpened: $cameraOpened, label: $label, savingWallet: $savingWallet, errSavingWallet: $errSavingWallet, newWalletSaved: $newWalletSaved)';
+    return 'XpubImportWalletState(currentStep: $currentStep, xpub: $xpub, fingerPrint: $fingerPrint, path: $path, errXpub: $errXpub, cameraOpened: $cameraOpened, label: $label, savingWallet: $savingWallet, errSavingWallet: $errSavingWallet, newWalletSaved: $newWalletSaved)';
   }
 
   @override
@@ -344,9 +344,9 @@ class _$_SeedImportXpubState extends _SeedImportXpubState {
           this, _$identity);
 }
 
-abstract class _SeedImportXpubState extends XpubImportState {
+abstract class _SeedImportXpubState extends XpubImportWalletState {
   const factory _SeedImportXpubState(
-      {XpubImportStep currentStep,
+      {XpubImportWalletStep currentStep,
       String xpub,
       String fingerPrint,
       String path,
@@ -359,7 +359,7 @@ abstract class _SeedImportXpubState extends XpubImportState {
   const _SeedImportXpubState._() : super._();
 
   @override
-  XpubImportStep get currentStep => throw _privateConstructorUsedError;
+  XpubImportWalletStep get currentStep => throw _privateConstructorUsedError;
   @override
   String get xpub => throw _privateConstructorUsedError;
   @override

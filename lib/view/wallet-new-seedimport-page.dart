@@ -1,6 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:sats/cubit/new-wallet/seed-import.dart';
+import 'package:sats/cubit/wallet/new-wallet/wallet-from-old-seed.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button2.dart';
@@ -16,7 +16,7 @@ class NewImportStepper extends StatelessWidget {
           previous.currentStep != current.currentStep,
       builder: (context, state) {
         // final stepLabel = state.currentStepLabel();
-        final steps = SeedImportSteps.values.length;
+        final steps = SeedImportWalletSteps.values.length;
         final idx = state.currentStep.index;
 
         return Column(
@@ -345,19 +345,19 @@ class SeedImportPage extends StatelessWidget {
                         ),
                         child: () {
                           switch (state.currentStep) {
-                            case SeedImportSteps.warning:
+                            case SeedImportWalletSteps.warning:
                               return const SeedImportWarning();
 
                             // case SeedImportSteps.security:
                             //   return const SeedNetworkOff(isImport: true);
 
-                            case SeedImportSteps.import:
+                            case SeedImportWalletSteps.import:
                               return const SeedImportPhrase();
 
-                            case SeedImportSteps.passphrase:
+                            case SeedImportWalletSteps.passphrase:
                               return const SeedImportPassphrase();
 
-                            case SeedImportSteps.label:
+                            case SeedImportWalletSteps.label:
                               return const SeedImportLabel();
 
                             // case SeedImportSteps.networkOn:

@@ -5,11 +5,11 @@ import 'package:sats/api/rates.dart';
 import 'package:sats/api/reddit.dart';
 import 'package:sats/cubit/_state.dart';
 import 'package:sats/cubit/calculator.dart';
-import 'package:sats/cubit/new-wallet/seed-generate.dart';
-import 'package:sats/cubit/new-wallet/seed-import.dart';
-import 'package:sats/cubit/new-wallet/timed.dart';
-import 'package:sats/cubit/new-wallet/xpub-import.dart';
 import 'package:sats/cubit/reddit.dart';
+import 'package:sats/cubit/wallet/new-wallet/wallet-from-new-seed.dart';
+import 'package:sats/cubit/wallet/new-wallet/wallet-from-old-seed.dart';
+import 'package:sats/cubit/wallet/new-wallet/timed.dart';
+import 'package:sats/cubit/wallet/new-wallet/wallet-from-old-xpub.dart';
 import 'package:sats/cubit/wallet/receive.dart';
 import 'package:sats/cubit/wallet/send.dart';
 import 'package:sats/cubit/wallet/wallet.dart';
@@ -78,7 +78,8 @@ class Routes {
 
       case generateSeed:
         // final networkCubit = NetworkCubit(loggerCubit);
-        final seedGenerateCubit = SeedGenerateCubit(
+        
+        final seedGenerateWalletCubit = SeedGenerateWalletCubit(
           // networkCubit,
           locator<IFFFI>(),
           locator<IStorage>(),
@@ -92,7 +93,7 @@ class Routes {
         page = MultiBlocProvider(
           providers: [
             // BlocProvider.value(value: networkCubit),
-            BlocProvider.value(value: seedGenerateCubit)
+            BlocProvider.value(value: seedGenerateWalletCubit)
           ],
           child: SeedGeneratePage(),
         );
@@ -121,7 +122,7 @@ class Routes {
         break;
 
       case watchOnly:
-        final xpubCubit = XpubImportCubit(
+        final xpubCubit = XpubImportWalletCubit(
           locator<IFFFI>(),
           loggerCubit,
           locator<IClipBoard>(),

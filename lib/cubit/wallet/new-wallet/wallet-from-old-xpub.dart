@@ -10,14 +10,14 @@ import 'package:sats/pkg/bitcoin.dart';
 import 'package:sats/pkg/clipboard.dart';
 import 'package:sats/pkg/storage.dart';
 
-part 'xpub-import.freezed.dart';
+part 'wallet-from-old-xpub.freezed.dart';
 
-enum XpubImportStep { import, label }
+enum XpubImportWalletStep { import, label }
 
 @freezed
-class XpubImportState with _$XpubImportState {
-  const factory XpubImportState({
-    @Default(XpubImportStep.import) XpubImportStep currentStep,
+class XpubImportWalletState with _$XpubImportWalletState {
+  const factory XpubImportWalletState({
+    @Default(XpubImportWalletStep.import) XpubImportWalletStep currentStep,
     @Default('') String xpub,
     @Default('') String fingerPrint,
     @Default('') String path,
@@ -28,24 +28,24 @@ class XpubImportState with _$XpubImportState {
     @Default('') String errSavingWallet,
     @Default(false) bool newWalletSaved,
   }) = _SeedImportXpubState;
-  const XpubImportState._();
+  const XpubImportWalletState._();
 
-  double completePercent() => currentStep.index / XpubImportStep.values.length;
+  double completePercent() => currentStep.index / XpubImportWalletStep.values.length;
 
   String completePercentLabel() =>
-      ((currentStep.index / XpubImportStep.values.length) * 100)
+      ((currentStep.index / XpubImportWalletStep.values.length) * 100)
           .toStringAsFixed(0);
 
   String currentStepLabel() {
     switch (currentStep) {
-      case XpubImportStep.import:
+      case XpubImportWalletStep.import:
         return 'Import XPub';
-      case XpubImportStep.label:
+      case XpubImportWalletStep.label:
         return 'Label Wallet';
     }
   }
 
-  bool canGoBack() => currentStep == XpubImportStep.import;
+  bool canGoBack() => currentStep == XpubImportWalletStep.import;
 
   bool showOtherDetails() {
     if (xpub.startsWith('[') && xpub.contains(']') && xpub.contains('/'))
@@ -54,8 +54,8 @@ class XpubImportState with _$XpubImportState {
   }
 }
 
-class XpubImportCubit extends Cubit<XpubImportState> {
-  XpubImportCubit(
+class XpubImportWalletCubit extends Cubit<XpubImportWalletState> {
+  XpubImportWalletCubit(
     // this._soloWalletAPI,
     this._bitcoin,
     this._logger,
@@ -63,7 +63,7 @@ class XpubImportCubit extends Cubit<XpubImportState> {
     this._storage,
     this._wallets,
     this._blockchainCubit,
-  ) : super(const XpubImportState());
+  ) : super(const XpubImportWalletState());
 
   final IClipBoard _clipboard;
   // final ISoloWalletAPI _soloWalletAPI;
@@ -205,7 +205,7 @@ class XpubImportCubit extends Cubit<XpubImportState> {
 
   void nextClicked() {
     switch (state.currentStep) {
-      case XpubImportStep.import:
+      case XpubImportWalletStep.import:
         if (state.xpub == '' || state.xpub.length < 10) {
           emit(
             state.copyWith(
@@ -231,9 +231,9 @@ class XpubImportCubit extends Cubit<XpubImportState> {
           return;
         }
 
-        emit(state.copyWith(currentStep: XpubImportStep.label));
+        emit(state.copyWith(currentStep: XpubImportWalletStep.label));
         break;
-      case XpubImportStep.label:
+      case XpubImportWalletStep.label:
         if (state.label == '' || state.label.length < 5) {
           emit(state.copyWith(errSavingWallet: 'Invalid Label.'));
           return;
@@ -245,12 +245,12 @@ class XpubImportCubit extends Cubit<XpubImportState> {
 
   void backClicked() {
     switch (state.currentStep) {
-      case XpubImportStep.import:
+      case XpubImportWalletStep.import:
         break;
-      case XpubImportStep.label:
+      case XpubImportWalletStep.label:
         emit(
           state.copyWith(
-            currentStep: XpubImportStep.import,
+            currentStep: XpubImportWalletStep.import,
             label: '',
           ),
         );

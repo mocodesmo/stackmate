@@ -17,11 +17,12 @@ class Nmeu {
   List<String> get neuList => mnemonic.split(' ');
 }
 
-class Derive {
-  const Derive(this.fingerPrint, this.hardenedPath, this.xprv, this.xpub);
-  factory Derive.fromJson(String data) {
+class DerivedWallet {
+  const DerivedWallet(
+      this.fingerPrint, this.hardenedPath, this.xprv, this.xpub);
+  factory DerivedWallet.fromJson(String data) {
     final json = jsonDecode(data);
-    return Derive(
+    return DerivedWallet(
       json['fingerprint'] as String,
       json['hardened_path'] as String,
       json['xprv'] as String,
@@ -32,9 +33,6 @@ class Derive {
   final String hardenedPath;
   final String xprv;
   final String xpub;
-
-  String get policy =>
-      'pk([$fingerPrint/$hardenedPath]$xprv/0/*)'.replaceFirst('/m', '');
 }
 
 class AbsoluteFees {

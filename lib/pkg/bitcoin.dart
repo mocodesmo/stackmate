@@ -18,7 +18,7 @@ abstract class IFFFI {
     required String network,
   });
 
-  Derive deriveHardened({
+  DerivedWallet deriveHardened({
     required String masterXPriv,
     required String account,
     required String purpose,
@@ -136,7 +136,7 @@ class BitcoinFFI implements IFFFI {
   }
 
   @override
-  Derive deriveHardened({
+  DerivedWallet deriveHardened({
     required String masterXPriv,
     required String account,
     required String purpose,
@@ -147,7 +147,7 @@ class BitcoinFFI implements IFFFI {
       purpose: purpose,
     );
     if (resp.startsWith('Error')) throw resp;
-    return Derive.fromJson(resp);
+    return DerivedWallet.fromJson(resp);
   }
 
   @override

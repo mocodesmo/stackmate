@@ -2,7 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'seed-import.dart';
+part of 'wallet-from-old-seed.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -18,7 +18,7 @@ class _$SeedImportStateTearOff {
   const _$SeedImportStateTearOff();
 
   _SeedImportState call(
-      {SeedImportSteps currentStep = SeedImportSteps.warning,
+      {SeedImportWalletSteps currentStep = SeedImportWalletSteps.warning,
       String seed = '',
       String seedError = '',
       String walletLabel = '',
@@ -52,7 +52,7 @@ const $SeedImportState = _$SeedImportStateTearOff();
 
 /// @nodoc
 mixin _$SeedImportState {
-  SeedImportSteps get currentStep => throw _privateConstructorUsedError;
+  SeedImportWalletSteps get currentStep => throw _privateConstructorUsedError;
   String get seed => throw _privateConstructorUsedError;
   String get seedError => throw _privateConstructorUsedError;
   String get walletLabel => throw _privateConstructorUsedError;
@@ -76,7 +76,7 @@ abstract class $SeedImportStateCopyWith<$Res> {
           SeedImportState value, $Res Function(SeedImportState) then) =
       _$SeedImportStateCopyWithImpl<$Res>;
   $Res call(
-      {SeedImportSteps currentStep,
+      {SeedImportWalletSteps currentStep,
       String seed,
       String seedError,
       String walletLabel,
@@ -118,7 +118,7 @@ class _$SeedImportStateCopyWithImpl<$Res>
       currentStep: currentStep == freezed
           ? _value.currentStep
           : currentStep // ignore: cast_nullable_to_non_nullable
-              as SeedImportSteps,
+              as SeedImportWalletSteps,
       seed: seed == freezed
           ? _value.seed
           : seed // ignore: cast_nullable_to_non_nullable
@@ -175,7 +175,7 @@ abstract class _$SeedImportStateCopyWith<$Res>
       __$SeedImportStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {SeedImportSteps currentStep,
+      {SeedImportWalletSteps currentStep,
       String seed,
       String seedError,
       String walletLabel,
@@ -219,7 +219,7 @@ class __$SeedImportStateCopyWithImpl<$Res>
       currentStep: currentStep == freezed
           ? _value.currentStep
           : currentStep // ignore: cast_nullable_to_non_nullable
-              as SeedImportSteps,
+              as SeedImportWalletSteps,
       seed: seed == freezed
           ? _value.seed
           : seed // ignore: cast_nullable_to_non_nullable
@@ -272,7 +272,7 @@ class __$SeedImportStateCopyWithImpl<$Res>
 
 class _$_SeedImportState extends _SeedImportState {
   const _$_SeedImportState(
-      {this.currentStep = SeedImportSteps.warning,
+      {this.currentStep = SeedImportWalletSteps.warning,
       this.seed = '',
       this.seedError = '',
       this.walletLabel = '',
@@ -286,9 +286,9 @@ class _$_SeedImportState extends _SeedImportState {
       this.labelFixed = false})
       : super._();
 
-  @JsonKey(defaultValue: SeedImportSteps.warning)
+  @JsonKey(defaultValue: SeedImportWalletSteps.warning)
   @override
-  final SeedImportSteps currentStep;
+  final SeedImportWalletSteps currentStep;
   @JsonKey(defaultValue: '')
   @override
   final String seed;
@@ -393,7 +393,7 @@ class _$_SeedImportState extends _SeedImportState {
 
 abstract class _SeedImportState extends SeedImportState {
   const factory _SeedImportState(
-      {SeedImportSteps currentStep,
+      {SeedImportWalletSteps currentStep,
       String seed,
       String seedError,
       String walletLabel,
@@ -408,7 +408,7 @@ abstract class _SeedImportState extends SeedImportState {
   const _SeedImportState._() : super._();
 
   @override
-  SeedImportSteps get currentStep => throw _privateConstructorUsedError;
+  SeedImportWalletSteps get currentStep => throw _privateConstructorUsedError;
   @override
   String get seed => throw _privateConstructorUsedError;
   @override

@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:sats/cubit/new-wallet/xpub-import.dart';
+import 'package:sats/cubit/wallet/new-wallet/wallet-from-old-xpub.dart';
 import 'package:sats/navigation.dart';
-
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button2.dart';
 import 'package:sats/view/common/header.dart';
 import 'package:sats/view/common/loading.dart';
 import 'package:sats/view/common/step-line.dart';
+import 'package:sats/view/new-wallet/xpub-import.dart';
 
 class XPubImportStepper extends StatelessWidget {
   const XPubImportStepper({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext c) {
-    return BlocBuilder<XpubImportCubit, XpubImportState>(
+    return BlocBuilder<XpubImportWalletCubit, XpubImportWalletState>(
       builder: (context, state) {
         // final stepLabel = state.currentStepLabel();
-        final steps = XpubImportStep.values.length;
+        final steps = XpubImportWalletStep.values.length;
         final idx = state.currentStep.index;
 
         return Column(
@@ -36,198 +36,12 @@ class XPubImportStepper extends StatelessWidget {
   }
 }
 
-class XpubImport extends StatefulWidget {
-  const XpubImport({Key? key}) : super(key: key);
-
-  @override
-  _XpubImportState createState() => _XpubImportState();
-}
-
-class _XpubImportState extends State<XpubImport> {
-  TextEditingController? _xpubController;
-  TextEditingController? _fingerPrintController;
-  TextEditingController? _pathController;
-
-  @override
-  void initState() {
-    _xpubController = TextEditingController();
-    _fingerPrintController = TextEditingController();
-    _pathController = TextEditingController();
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext c) {
-    return BlocBuilder<XpubImportCubit, XpubImportState>(
-      builder: (context, state) {
-        if (_xpubController!.text != state.xpub)
-          _xpubController!.text = state.xpub;
-
-        if (_fingerPrintController!.text != state.fingerPrint)
-          _fingerPrintController!.text = state.fingerPrint;
-
-        if (_pathController!.text != state.path)
-          _pathController!.text = state.path;
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 24),
-            Text(
-              'Enter your XPub',
-              style: c.fonts.headline4!.copyWith(
-                color: Colors.white,
-                // fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 24),
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'ADDRESS'.notLocalised(),
-                    style: c.fonts.overline!.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                TextButton(
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    child: Text('SCAN'),
-                  ),
-                  onPressed: () {
-                    c.read<XpubImportCubit>().toggleCamera();
-                  },
-                ),
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.zero,
-              child: TextField(
-                controller: _xpubController,
-                maxLines: 4,
-                onChanged: (text) {
-                  c.read<XpubImportCubit>().xpubChanged(text);
-                },
-              ),
-            ),
-            const SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: GestureDetector(
-                  onTap: () {
-                    c.read<XpubImportCubit>().xpubPasteClicked();
-                  },
-                  child: Text(
-                    'PASTE'.notLocalised(),
-                    style: c.fonts.button!.copyWith(color: c.colours.primary),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 40),
-            if (state.showOtherDetails()) ...[
-              Text(
-                'Fingerprint'.toUpperCase().notLocalised(),
-                style: c.fonts.overline!.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Padding(
-                padding: EdgeInsets.zero,
-                child: TextField(
-                  controller: _fingerPrintController,
-                  onChanged: (text) {
-                    c.read<XpubImportCubit>().fingerPrintChanged(text);
-                  },
-                ),
-              ),
-              const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                    onTap: () {
-                      c.read<XpubImportCubit>().fingerPrintPastedClicked();
-                    },
-                    child: Text(
-                      'PASTE'.notLocalised(),
-                      style: c.fonts.button!.copyWith(color: c.colours.primary),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 40),
-              Text(
-                'Path'.toUpperCase().notLocalised(),
-                style: c.fonts.overline!.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Padding(
-                padding: EdgeInsets.zero,
-                child: TextField(
-                  controller: _pathController,
-                  onChanged: (text) {
-                    c.read<XpubImportCubit>().pathChanged(text);
-                  },
-                ),
-              ),
-              const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                    onTap: () {
-                      c.read<XpubImportCubit>().pathPasteClicked();
-                    },
-                    child: Text(
-                      'PASTE'.notLocalised(),
-                      style: c.fonts.button!.copyWith(color: c.colours.primary),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 40),
-            ],
-            if (state.errXpub != '')
-              Text(
-                state.errXpub,
-                style: c.fonts.caption!.copyWith(color: c.colours.error),
-              ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TextButton(
-                onPressed: () {
-                  c.read<XpubImportCubit>().nextClicked();
-                },
-                child: const Text('CONFIRM'),
-              ),
-            )
-          ],
-        );
-      },
-    );
-  }
-}
-
 class XpubLabel extends StatelessWidget {
   const XpubLabel({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext c) {
-    return BlocBuilder<XpubImportCubit, XpubImportState>(
+    return BlocBuilder<XpubImportWalletCubit, XpubImportWalletState>(
       builder: (context, state) {
         return IgnorePointer(
           ignoring: state.savingWallet,
@@ -247,7 +61,7 @@ class XpubLabel extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 child: TextField(
                   onChanged: (text) {
-                    c.read<XpubImportCubit>().labelChanged(text);
+                    c.read<XpubImportWalletCubit>().labelChanged(text);
                   },
                   decoration: const InputDecoration(
                     labelText: 'Wallet Name',
@@ -268,7 +82,7 @@ class XpubLabel extends StatelessWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: TextButton(
                     onPressed: () {
-                      c.read<XpubImportCubit>().nextClicked();
+                      c.read<XpubImportWalletCubit>().nextClicked();
                     },
                     child: const Text('Confirm'),
                   ),
@@ -289,7 +103,7 @@ class XpubLabel extends StatelessWidget {
 class XpubImportPage extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
-    return BlocConsumer<XpubImportCubit, XpubImportState>(
+    return BlocConsumer<XpubImportWalletCubit, XpubImportWalletState>(
       listenWhen: (previous, current) =>
           previous.currentStep != current.currentStep ||
           previous.newWalletSaved != current.newWalletSaved,
@@ -304,7 +118,7 @@ class XpubImportPage extends StatelessWidget {
         return WillPopScope(
           onWillPop: () async {
             if (!state.canGoBack()) {
-              c.read<XpubImportCubit>().backClicked();
+              c.read<XpubImportWalletCubit>().backClicked();
               return false;
             }
 
@@ -323,7 +137,7 @@ class XpubImportPage extends StatelessWidget {
                           text: 'EXIT',
                           onTapped: () {
                             if (!state.canGoBack()) {
-                              c.read<XpubImportCubit>().backClicked();
+                              c.read<XpubImportWalletCubit>().backClicked();
                               return;
                             }
 
@@ -349,10 +163,10 @@ class XpubImportPage extends StatelessWidget {
                       ),
                       child: () {
                         switch (state.currentStep) {
-                          case XpubImportStep.import:
-                            return const XpubImport();
+                          case XpubImportWalletStep.import:
+                            return const XpubFieldsImport();
 
-                          case XpubImportStep.label:
+                          case XpubImportWalletStep.label:
                             return const XpubLabel();
                         }
                       }(),
