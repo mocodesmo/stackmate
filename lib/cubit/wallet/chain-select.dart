@@ -3,7 +3,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/pkg/storage.dart';
-part 'blockchain.freezed.dart';
+
+part 'chain-select.freezed.dart';
 
 @freezed
 class BlockchainState with _$BlockchainState {
@@ -12,8 +13,8 @@ class BlockchainState with _$BlockchainState {
   }) = _BlockchainState;
 }
 
-class BlockchainCubit extends Cubit<BlockchainState> {
-  BlockchainCubit(
+class ChainSelectCubit extends Cubit<BlockchainState> {
+  ChainSelectCubit(
     this._storage,
     this._logger,
   ) : super(const BlockchainState()) {

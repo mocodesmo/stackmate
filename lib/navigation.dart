@@ -6,9 +6,10 @@ import 'package:sats/api/reddit.dart';
 import 'package:sats/cubit/_state.dart';
 import 'package:sats/cubit/calculator.dart';
 import 'package:sats/cubit/reddit.dart';
+import 'package:sats/cubit/wallet/common/seed-generate.dart';
+import 'package:sats/cubit/wallet/new-wallet/timed.dart';
 import 'package:sats/cubit/wallet/new-wallet/wallet-from-new-seed.dart';
 import 'package:sats/cubit/wallet/new-wallet/wallet-from-old-seed.dart';
-import 'package:sats/cubit/wallet/new-wallet/timed.dart';
 import 'package:sats/cubit/wallet/new-wallet/wallet-from-old-xpub.dart';
 import 'package:sats/cubit/wallet/receive.dart';
 import 'package:sats/cubit/wallet/send.dart';
@@ -78,16 +79,22 @@ class Routes {
 
       case generateSeed:
         // final networkCubit = NetworkCubit(loggerCubit);
-        
+        final seedGenerateCubit = SeedGenerateCubit(
+          locator<IBitcoinCore>(),
+          networkSelectCubit,
+          loggerCubit,
+        );
+
         final seedGenerateWalletCubit = SeedGenerateWalletCubit(
           // networkCubit,
-          locator<IFFFI>(),
+          locator<IBitcoinCore>(),
           locator<IStorage>(),
           // walletCubit,
           // testNetCubit,
           loggerCubit,
           walletsCubit,
-          blockchainCubit,
+          networkSelectCubit,
+          seedGenerateCubit,
         );
 
         page = MultiBlocProvider(
@@ -103,12 +110,12 @@ class Routes {
         // final networkCubit = NetworkCubit(loggerCubit);
         final seedImportCubit = SeedImportCubit(
           // networkCubit,
-          locator<IFFFI>(),
+          locator<IBitcoinCore>(),
           locator<IStorage>(),
           // walletCubit,
           // testNetCubit,
           walletsCubit,
-          blockchainCubit,
+          networkSelectCubit,
           loggerCubit,
         );
 
@@ -123,12 +130,12 @@ class Routes {
 
       case watchOnly:
         final xpubCubit = XpubImportWalletCubit(
-          locator<IFFFI>(),
+          locator<IBitcoinCore>(),
           loggerCubit,
           locator<IClipBoard>(),
           locator<IStorage>(),
           walletsCubit,
-          blockchainCubit,
+          networkSelectCubit,
         );
 
         page = BlocProvider.value(
@@ -138,7 +145,7 @@ class Routes {
         break;
 
       case inheritance:
-        page =const InheritancePage();
+        page = const InheritancePage();
         break;
       case calc:
         final calcCubit = CalculatorCubit(
@@ -177,7 +184,7 @@ class Routes {
           locator<IShare>(),
           locator<IVibrate>(),
           nodeAddressCubit,
-          blockchainCubit,
+          networkSelectCubit,
         );
 
         page = BlocProvider.value(
@@ -196,7 +203,7 @@ class Routes {
         final r = ReceiveCubit(
           walletsCubit,
           // locator<IBitcoin>(),
-          blockchainCubit,
+          networkSelectCubit,
           loggerCubit,
           locator<IClipBoard>(),
           locator<IShare>(),
@@ -215,7 +222,7 @@ class Routes {
           false,
           walletsCubit,
           // locator<IBitcoin>(),
-          blockchainCubit,
+          networkSelectCubit,
           loggerCubit,
           locator<IClipBoard>(),
           locator<IShare>(),
@@ -234,7 +241,7 @@ class Routes {
           true,
           walletsCubit,
           // locator<IBitcoin>(),
-          blockchainCubit,
+          networkSelectCubit,
           loggerCubit,
           locator<IClipBoard>(),
           locator<IShare>(),

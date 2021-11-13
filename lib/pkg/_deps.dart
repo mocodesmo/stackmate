@@ -20,7 +20,7 @@ void setupDependencies({required bool useDummies}) {
     locator.registerSingleton<ILauncher>(Launcher());
     locator.registerLazySingleton<IRedditAPI>(() => RedditAPI());
     locator.registerLazySingleton<IVibrate>(() => Vibrate());
-    locator.registerLazySingleton<IFFFI>(() => BitcoinFFI());
+    locator.registerLazySingleton<IBitcoinCore>(() => BitcoinFFI());
     locator.registerLazySingleton<ILocalAuth>(() => LocalAuth());
     locator.registerLazySingleton<ILogAPI>(() => DummyLogAPI());
 
@@ -32,7 +32,7 @@ void setupDependencies({required bool useDummies}) {
   locator.registerLazySingleton<IRedditAPI>(() => RedditAPI());
   locator.registerLazySingleton<IClipBoard>(() => ClipBoardd());
   locator.registerLazySingleton<IStorage>(() => HiveStore());
-  locator.registerLazySingleton<IFFFI>(() => BitcoinFFI());
+  locator.registerLazySingleton<IBitcoinCore>(() => BitcoinFFI());
   locator.registerLazySingleton<IVibrate>(() => Vibrate());
   locator.registerLazySingleton<ILocalAuth>(() => LocalAuth());
   locator.registerLazySingleton<IRatesAPI>(() => RatesAPI());

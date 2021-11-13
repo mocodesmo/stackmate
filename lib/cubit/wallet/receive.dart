@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
-import 'package:sats/cubit/wallet/blockchain.dart';
+import 'package:sats/cubit/wallet/chain-select.dart';
 import 'package:sats/cubit/wallet/node.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/model/blockchain.dart';
@@ -54,7 +54,7 @@ class ReceiveCubit extends Bloc<ReceiveEvent, ReceiveState> {
   final WalletsCubit _walletCubit;
   // final IBitcoin _bitcoin;
   final LoggerCubit _logger;
-  final BlockchainCubit _blockchain;
+  final ChainSelectCubit _blockchain;
   final IShare _share;
   final IClipBoard _clipBoard;
   final IVibrate _vibrate;

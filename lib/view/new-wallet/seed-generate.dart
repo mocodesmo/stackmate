@@ -1,7 +1,85 @@
 import 'package:flutter/material.dart';
+import 'package:sats/cubit/wallet/common/seed-generate.dart';
 import 'package:sats/cubit/wallet/new-wallet/wallet-from-new-seed.dart';
 import 'package:sats/pkg/extensions.dart';
 
+class SeedGeneratePassphrase extends StatefulWidget {
+  @override
+  State<SeedGeneratePassphrase> createState() => _SeedGeneratePassphraseState();
+}
+
+class _SeedGeneratePassphraseState extends State<SeedGeneratePassphrase> {
+  late TextEditingController _textController;
+
+  @override
+  void initState() {
+    _textController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext c) {
+    return BlocBuilder<SeedGenerateCubit, SeedGenerateState>(
+      builder: (context, state) {
+        if (_textController.text != state.passPhrase)
+          _textController.text = state.passPhrase;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 24),
+            Text(
+              'optional\npassphrase'.toUpperCase(),
+              style: c.fonts.headline5!.copyWith(
+                color: Colors.white,
+                // fontWeight: FontWeight.bold,
+              ),
+            ),
+            // const HeaderTextDark(text: 'Enter an\noptional\npassphrase'),
+            const SizedBox(height: 24),
+            Text(
+              'Add an extra security layer to your seed.\nDo not write down your passphrase.\nThis passphrase should be added as the last word of your seed.',
+              style: c.fonts.caption!.copyWith(color: Colors.white),
+            ),
+            const SizedBox(height: 32),
+
+            Padding(
+              padding: EdgeInsets.zero,
+              child: TextField(
+                controller: _textController,
+                onChanged: (text) {
+                  c.read<SeedGenerateCubit>().passPhrasedChanged(text);
+                },
+                style: TextStyle(color: c.colours.onBackground),
+                decoration: const InputDecoration(
+                  labelText: 'Passphrase',
+                ),
+              ),
+            ),
+            const SizedBox(height: 40),
+            if (state.errPassphrase != '')
+              Text(
+                state.errPassphrase,
+                style: c.fonts.caption!.copyWith(
+                  color: c.colours.error,
+                ),
+              ),
+            const SizedBox(height: 24),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextButton(
+                onPressed: () {
+                  c.read<SeedGenerateCubit>().confirmPassphrase();
+                },
+                child: Text('Confirm'.toUpperCase()),
+              ),
+            )
+          ],
+        );
+      },
+    );
+  }
+}
 
 class SeedWordCell extends StatelessWidget {
   const SeedWordCell({
@@ -41,10 +119,30 @@ class SeedWordCell extends StatelessWidget {
   }
 }
 
+class SeedGenerateStepSelect extends StatelessWidget {
+  const SeedGenerateStepSelect({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext c) {
+    final step = c.select((SeedGenerateCubit c) => c.state.currentStep);
+
+    switch (step) {
+      case SeedGenerateSteps.passphrase:
+        return SeedGeneratePassphrase();
+      case SeedGenerateSteps.generate:
+        return SeedGenerate();
+      case SeedGenerateSteps.quiz:
+        return SeedConfirm();
+    }
+
+    return Container();
+  }
+}
+
 class SeedGenerate extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
-    final words = c.select((SeedGenerateWalletCubit c) => c.state.seed);
+    final words = c.select((SeedGenerateCubit c) => c.state.seed);
 
     return SingleChildScrollView(
       child: Column(
@@ -100,7 +198,7 @@ class SeedGenerate extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: TextButton(
               onPressed: () {
-                c.read<SeedGenerateWalletCubit>().nextClicked();
+                c.read<SeedGenerateCubit>().startQuiz();
               },
               child: Text('Next'.toUpperCase()),
             ),
@@ -108,84 +206,6 @@ class SeedGenerate extends StatelessWidget {
           const SizedBox(height: 24)
         ],
       ),
-    );
-  }
-}
-
-class SeedGeneratePassphrase extends StatefulWidget {
-  @override
-  State<SeedGeneratePassphrase> createState() => _SeedGeneratePassphraseState();
-}
-
-class _SeedGeneratePassphraseState extends State<SeedGeneratePassphrase> {
-  late TextEditingController _textController;
-
-  @override
-  void initState() {
-    _textController = TextEditingController();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext c) {
-    return BlocBuilder<SeedGenerateWalletCubit, SeedGenerateWalletState>(
-      builder: (context, state) {
-        if (_textController.text != state.passPhrase)
-          _textController.text = state.passPhrase;
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 24),
-            Text(
-              'optional\npassphrase'.toUpperCase(),
-              style: c.fonts.headline5!.copyWith(
-                color: Colors.white,
-                // fontWeight: FontWeight.bold,
-              ),
-            ),
-            // const HeaderTextDark(text: 'Enter an\noptional\npassphrase'),
-            const SizedBox(height: 24),
-            Text(
-              'Add an extra security layer to your seed.\nDo not write down your passphrase.\nThis passphrase should be added as the last word of your seed.',
-              style: c.fonts.caption!.copyWith(color: Colors.white),
-            ),
-            const SizedBox(height: 32),
-
-            Padding(
-              padding: EdgeInsets.zero,
-              child: TextField(
-                controller: _textController,
-                onChanged: (text) {
-                  c.read<SeedGenerateWalletCubit>().passPhrasedChanged(text);
-                },
-                style: TextStyle(color: c.colours.onBackground),
-                decoration: const InputDecoration(
-                  labelText: 'Passphrase',
-                ),
-              ),
-            ),
-            const SizedBox(height: 40),
-            if (state.errPassphrase != '')
-              Text(
-                state.errPassphrase,
-                style: c.fonts.caption!.copyWith(
-                  color: c.colours.error,
-                ),
-              ),
-            const SizedBox(height: 24),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TextButton(
-                onPressed: () {
-                  c.read<SeedGenerateWalletCubit>().nextClicked();
-                },
-                child: Text('Confirm'.toUpperCase()),
-              ),
-            )
-          ],
-        );
-      },
     );
   }
 }
@@ -234,16 +254,15 @@ class SeedConfirm extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     final answerIdx = c.select(
-      (SeedGenerateWalletCubit c) => c.state.quizSeedAnswerIdx.toString(),
+      (SeedGenerateCubit c) => c.state.quizSeedAnswerIdx.toString(),
     );
 
     final completedIdx =
-        c.select((SeedGenerateWalletCubit c) => c.state.quizSeedCompleted);
+        c.select((SeedGenerateCubit c) => c.state.quizSeedCompleted);
 
-    final words = c.select((SeedGenerateWalletCubit c) => c.state.quizSeedList);
+    final words = c.select((SeedGenerateCubit c) => c.state.quizSeedList);
 
-    final error =
-        c.select((SeedGenerateWalletCubit c) => c.state.quizSeedError);
+    final error = c.select((SeedGenerateCubit c) => c.state.quizSeedError);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -304,18 +323,14 @@ class SeedConfirm extends StatelessWidget {
                 SeedWordCell(
                   text: words[i],
                   onTap: () {
-                    c
-                        .read<SeedGenerateWalletCubit>()
-                        .seedWordSelected(words[i]);
+                    c.read<SeedGenerateCubit>().seedWordSelected(words[i]);
                   },
                 ),
                 const SizedBox(width: 8),
                 SeedWordCell(
                   text: words[i + 1],
                   onTap: () {
-                    c
-                        .read<SeedGenerateWalletCubit>()
-                        .seedWordSelected(words[i + 1]);
+                    c.read<SeedGenerateCubit>().seedWordSelected(words[i + 1]);
                   },
                 )
               ],

@@ -209,7 +209,7 @@ class _SeedGeneratePageState extends State<SeedGeneratePage> {
                       child: GenerateWalletStepper(),
                     ),
                     FadeInLeft(
-                      key: Key(state.currentStepLabel()),
+                      // key: Key(state.currentStepLabel()),
                       child: Container(
                         margin: const EdgeInsets.symmetric(
                           horizontal: 16,
@@ -224,24 +224,10 @@ class _SeedGeneratePageState extends State<SeedGeneratePage> {
                           switch (state.currentStep) {
                             case SeedGenerateWalletSteps.warning:
                               return SeedGenerateWarning();
-
-                            // case SeedGenerateSteps.security:
-                            // return const SeedNetworkOff(isImport: false);
-
                             case SeedGenerateWalletSteps.generate:
-                              return SeedGenerate();
-
-                            case SeedGenerateWalletSteps.confirm:
-                              return SeedConfirm();
-
-                            case SeedGenerateWalletSteps.passphrase:
-                              return SeedGeneratePassphrase();
-
+                              return const SeedGenerateStepSelect();
                             case SeedGenerateWalletSteps.label:
                               return const SeedGenerateLabel();
-
-                            // case SeedGenerateSteps.networkOn:
-                            // return const SeedNetworkOn(isImport: false);
                           }
                         }(),
                       ),

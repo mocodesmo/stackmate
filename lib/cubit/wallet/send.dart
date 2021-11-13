@@ -6,7 +6,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
-import 'package:sats/cubit/wallet/blockchain.dart';
+import 'package:sats/cubit/wallet/chain-select.dart';
 import 'package:sats/cubit/wallet/node.dart';
 import 'package:sats/cubit/wallet/wallet.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
@@ -95,7 +95,7 @@ class SendCubit extends Cubit<SendState> {
   final WalletsCubit _walletCubit;
   // final IBitcoin _bitcoin;
   final LoggerCubit _logger;
-  final BlockchainCubit _blockchain;
+  final ChainSelectCubit _blockchain;
   final IShare _share;
   final IClipBoard _clipBoard;
   final NodeAddressCubit _nodeAddressCubit;

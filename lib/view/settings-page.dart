@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sats/cubit/wallet/blockchain.dart';
+import 'package:sats/cubit/wallet/chain-select.dart';
 import 'package:sats/cubit/wallet/node.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/pkg/extensions.dart';
@@ -11,13 +11,13 @@ class BlockchainRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext c) {
-    final blockchain = c.select((BlockchainCubit b) => b.state.blockchain);
+    final blockchain = c.select((ChainSelectCubit b) => b.state.blockchain);
     return ElevatedButton(
       onPressed: () {
         if (blockchain == Blockchain.mainNet)
-          c.read<BlockchainCubit>().changeBlockchain(Blockchain.testNet);
+          c.read<ChainSelectCubit>().changeBlockchain(Blockchain.testNet);
         else
-          c.read<BlockchainCubit>().changeBlockchain(Blockchain.mainNet);
+          c.read<ChainSelectCubit>().changeBlockchain(Blockchain.mainNet);
       },
       style: ElevatedButton.styleFrom(
         elevation: 0,

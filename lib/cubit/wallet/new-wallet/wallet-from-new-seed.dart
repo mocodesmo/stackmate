@@ -1,8 +1,9 @@
-import 'dart:math';
+import 'dart:async';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
-import 'package:sats/cubit/wallet/blockchain.dart';
+import 'package:sats/cubit/wallet/chain-select.dart';
+import 'package:sats/cubit/wallet/common/seed-generate.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/model/wallet.dart';
@@ -14,9 +15,7 @@ part 'wallet-from-new-seed.freezed.dart';
 
 enum SeedGenerateWalletSteps {
   warning,
-  passphrase,
   generate,
-  confirm,
   label,
 }
 
@@ -25,19 +24,6 @@ class SeedGenerateWalletState with _$SeedGenerateWalletState {
   const factory SeedGenerateWalletState({
     @Default(SeedGenerateWalletSteps.warning)
         SeedGenerateWalletSteps currentStep,
-    List<String>? seed,
-    String? xpriv,
-    String? fingerPrint,
-    @Default(false) bool generatingSeed,
-    @Default('') String seedError,
-    @Default(0) int quizSeedCompleted,
-    @Default('') String quizSeedAnswer,
-    @Default(-1) int quizSeedAnswerIdx,
-    @Default([]) List<String> quizSeedList,
-    @Default([]) List<String> quizSeedCompletedAnswers,
-    @Default('') String quizSeedError,
-    @Default('') String passPhrase,
-    @Default('') String errPassphrase,
     @Default('') String walletLabel,
     @Default('') String walletLabelError,
     @Default(false) bool savinngWallet,
@@ -62,25 +48,6 @@ class SeedGenerateWalletState with _$SeedGenerateWalletState {
   String completePercentLabel() =>
       ((currentStep.index / SeedGenerateWalletSteps.values.length) * 100)
           .toStringAsFixed(0);
-
-  String currentStepLabel() {
-    switch (currentStep) {
-      case SeedGenerateWalletSteps.warning:
-        return 'Instructions';
-
-      case SeedGenerateWalletSteps.generate:
-        return 'Write Seed';
-
-      case SeedGenerateWalletSteps.confirm:
-        return 'Confirm Seed';
-
-      case SeedGenerateWalletSteps.passphrase:
-        return 'Enter Passphrase';
-
-      case SeedGenerateWalletSteps.label:
-        return 'Label Wallet';
-    }
-  }
 }
 
 class SeedGenerateWalletCubit extends Cubit<SeedGenerateWalletState> {
@@ -90,116 +57,26 @@ class SeedGenerateWalletCubit extends Cubit<SeedGenerateWalletState> {
     this._logger,
     this._wallets,
     this._blockchainCubit,
-  ) : super(const SeedGenerateWalletState());
+    this._generateCubit,
+  ) : super(const SeedGenerateWalletState()) {
+    _generateCubit.stream.listen((cstate) {
+      if (cstate.wallet != null) {
+        emit(state.copyWith(currentStep: SeedGenerateWalletSteps.label));
+      }
+    });
+  }
 
-  final IFFFI _bitcoin;
+  final IBitcoinCore _bitcoin;
 
   final IStorage _storage;
   final LoggerCubit _logger;
 
   final WalletsCubit _wallets;
-  final BlockchainCubit _blockchainCubit;
+  final ChainSelectCubit _blockchainCubit;
+  final SeedGenerateCubit _generateCubit;
+  late StreamSubscription _generateSub;
 
-  void _checkPassphrase() {
-    if (state.passPhrase.length > 8 || state.passPhrase.contains(' ')) {
-      emit(state.copyWith(errPassphrase: 'Invalid Passphrase'));
-      return;
-    }
-
-    _generateSeed();
-
-    emit(
-      state.copyWith(
-        currentStep: SeedGenerateWalletSteps.generate,
-        errPassphrase: '',
-      ),
-    );
-  }
-
-  void _generateSeed() async {
-    try {
-      emit(
-        state.copyWith(
-          generatingSeed: true,
-          seedError: '',
-        ),
-      );
-
-      final neu = _bitcoin.generateMaster(
-        length: '12',
-        passphrase: state.passPhrase,
-        network: _blockchainCubit.state.blockchain.name,
-      );
-
-      emit(
-        state.copyWith(
-          generatingSeed: false,
-          currentStep: SeedGenerateWalletSteps.generate,
-          seed: neu.neuList,
-          xpriv: neu.xprv,
-          fingerPrint: neu.fingerprint,
-        ),
-      );
-    } catch (e, s) {
-      _logger.logException(e, 'SeedGenerateWalletCubit._generateSeed', s);
-
-      emit(
-        state.copyWith(
-          generatingSeed: false,
-          seedError: 'Error Occured.',
-        ),
-      );
-      _logger.logException(e, 'SeedGenerateWalletCubit._generateSeed', s);
-    }
-  }
-
-  void _confirmSeed() {
-    emit(
-      state.copyWith(
-        currentStep: SeedGenerateWalletSteps.confirm,
-        quizSeedCompleted: 0,
-      ),
-    );
-
-    _generateQuiz();
-  }
-
-  void _generateQuiz() {
-    final List<String> quizList = [...state.seed!];
-
-    String answer = '';
-    while (answer == '') {
-      final idx = Random().nextInt(quizList.length);
-      if (!state.quizSeedCompletedAnswers.contains(quizList[idx]))
-        answer = quizList[idx];
-    }
-    final answerIdx = quizList.indexOf(answer);
-
-    for (final completed in state.quizSeedCompletedAnswers)
-      quizList.remove(completed);
-
-    final List<String> answerList = [answer];
-    quizList.remove(answer);
-    for (var i = 0; i < 5; i++) {
-      final randIdx = Random().nextInt(quizList.length);
-      answerList.add(quizList[randIdx]);
-      quizList.remove(quizList[randIdx]);
-      if (quizList.isNotEmpty) quizList.removeLast();
-    }
-
-    answerList.shuffle();
-
-    emit(
-      state.copyWith(
-        quizSeedError: '',
-        quizSeedAnswer: answer,
-        quizSeedList: answerList,
-        quizSeedAnswerIdx: answerIdx + 1,
-      ),
-    );
-  }
-
-  void _saveClicked() async {
+  void saveClicked() async {
     if (state.walletLabel.length < 4 ||
         state.walletLabel.length > 10 ||
         state.walletLabel.contains(' ')) {
@@ -208,11 +85,8 @@ class SeedGenerateWalletCubit extends Cubit<SeedGenerateWalletState> {
     }
 
     try {
-      final wallet = _bitcoin.deriveHardened(
-        masterXPriv: state.xpriv!,
-        account: '',
-        purpose: '',
-      );
+      final wallet = _generateCubit.state.wallet;
+      if (wallet == null) return;
 
       final policy =
           'pk([${wallet.fingerPrint}/${wallet.hardenedPath}]${wallet.xprv}/0/*)'
@@ -253,26 +127,24 @@ class SeedGenerateWalletCubit extends Cubit<SeedGenerateWalletState> {
       );
     } catch (e, s) {
       _logger.logException(
-          e, 'SeedGenerateWalletCubit._createNewLocalWallet', s);
+        e,
+        'SeedGenerateWalletCubit._createNewLocalWallet',
+        s,
+      );
     }
   }
 
   void nextClicked() {
     switch (state.currentStep) {
       case SeedGenerateWalletSteps.warning:
-        emit(state.copyWith(currentStep: SeedGenerateWalletSteps.passphrase));
+        emit(state.copyWith(currentStep: SeedGenerateWalletSteps.generate));
         break;
 
-      case SeedGenerateWalletSteps.passphrase:
-        _checkPassphrase();
-        break;
       case SeedGenerateWalletSteps.generate:
-        _confirmSeed();
         break;
-      case SeedGenerateWalletSteps.confirm:
-        break;
+
       case SeedGenerateWalletSteps.label:
-        _saveClicked();
+        saveClicked();
         break;
     }
   }
@@ -282,76 +154,28 @@ class SeedGenerateWalletCubit extends Cubit<SeedGenerateWalletState> {
       case SeedGenerateWalletSteps.warning:
         break;
 
-      case SeedGenerateWalletSteps.passphrase:
-        emit(
-          state.copyWith(
-            currentStep: SeedGenerateWalletSteps.warning,
-            passPhrase: '',
-            xpriv: null,
-            fingerPrint: null,
-          ),
-        );
-        break;
       case SeedGenerateWalletSteps.generate:
         emit(
           state.copyWith(
-            currentStep: SeedGenerateWalletSteps.passphrase,
-            xpriv: null,
-            fingerPrint: null,
+            currentStep: SeedGenerateWalletSteps.warning,
           ),
         );
+        _generateCubit.clear();
+
         break;
-      case SeedGenerateWalletSteps.confirm:
-        emit(
-          state.copyWith(
-            currentStep: SeedGenerateWalletSteps.passphrase,
-            quizSeedAnswer: '',
-            quizSeedList: [],
-            quizSeedError: '',
-            quizSeedCompletedAnswers: [],
-            xpriv: null,
-            fingerPrint: null,
-          ),
-        );
-        break;
+
       case SeedGenerateWalletSteps.label:
         break;
     }
   }
 
-  void passPhrasedChanged(String text) {
-    emit(state.copyWith(passPhrase: text));
-  }
-
-  void seedWordSelected(String text) async {
-    if (text != state.quizSeedAnswer) {
-      emit(state.copyWith(quizSeedError: 'Incorrect Word Selected'));
-      await Future.delayed(const Duration(seconds: 1));
-      backClicked();
-      return;
-    }
-    emit(state.copyWith(quizSeedError: ''));
-
-    final List<String> completedAnswers =
-        state.quizSeedCompletedAnswers.toList();
-    completedAnswers.add(text);
-
-    emit(
-      state.copyWith(
-        quizSeedCompletedAnswers: completedAnswers,
-        quizSeedCompleted: completedAnswers.length,
-      ),
-    );
-
-    if (completedAnswers.length == 3) {
-      emit(state.copyWith(currentStep: SeedGenerateWalletSteps.label));
-      return;
-    }
-
-    _generateQuiz();
-  }
-
   void labelChanged(String text) {
     emit(state.copyWith(walletLabel: text, walletLabelError: ''));
+  }
+
+  @override
+  Future<void> close() {
+    _generateSub.cancel();
+    return super.close();
   }
 }

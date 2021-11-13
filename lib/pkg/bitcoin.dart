@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:bitcoin/bitcoin.dart';
 import 'package:sats/model/transaction.dart';
 
-abstract class IFFFI {
+abstract class IBitcoinCore {
   Nmeu generateMaster({
     required String length,
     required String passphrase,
@@ -93,7 +93,7 @@ abstract class IFFFI {
   });
 }
 
-class BitcoinFFI implements IFFFI {
+class BitcoinFFI implements IBitcoinCore {
   BitcoinFFI() {
     _bitcoin = FFFI(
       binary: Platform.isAndroid

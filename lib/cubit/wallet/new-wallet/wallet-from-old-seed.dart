@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
-import 'package:sats/cubit/wallet/blockchain.dart';
+import 'package:sats/cubit/wallet/chain-select.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/model/wallet.dart';
@@ -86,12 +86,12 @@ class SeedImportCubit extends Cubit<SeedImportState> {
           ),
         );
 
-  final IFFFI _bitcoin;
+  final IBitcoinCore _bitcoin;
 
   final IStorage _storage;
   final LoggerCubit logger;
   final WalletsCubit _wallets;
-  final BlockchainCubit _blockchainCubit;
+  final ChainSelectCubit _blockchainCubit;
 
   void _checkPassPhrase() {
     if (state.passPhrase.length > 8 || state.passPhrase.contains(' ')) {

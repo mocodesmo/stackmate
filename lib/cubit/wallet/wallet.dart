@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/logger.dart';
-import 'package:sats/cubit/wallet/blockchain.dart';
+import 'package:sats/cubit/wallet/chain-select.dart';
 import 'package:sats/cubit/wallet/node.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/model/blockchain.dart';
@@ -66,7 +66,7 @@ class WalletCubit extends Cubit<WalletState> {
   final IShare _share;
   final ILauncher _launcher;
   final IVibrate _vibrate;
-  final BlockchainCubit _blockchainCubit;
+  final ChainSelectCubit _blockchainCubit;
   final NodeAddressCubit _nodeAddressCubit;
 
   void _init() async {

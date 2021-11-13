@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sats/api/logger.dart';
 import 'package:sats/cubit/address-book.dart';
 import 'package:sats/cubit/logger.dart';
-import 'package:sats/cubit/wallet/blockchain.dart';
+import 'package:sats/cubit/wallet/chain-select.dart';
 import 'package:sats/cubit/wallet/node.dart';
 import 'package:sats/cubit/wallet/wallets.dart';
 import 'package:sats/pkg/_deps.dart';
@@ -16,7 +16,7 @@ final loggerCubit = LoggerCubit(
   locator<ILogAPI>(),
 );
 
-final blockchainCubit = BlockchainCubit(
+final networkSelectCubit = ChainSelectCubit(
   locator<IStorage>(),
   loggerCubit,
   // walletsCubit,
@@ -25,7 +25,7 @@ final blockchainCubit = BlockchainCubit(
 final walletsCubit = WalletsCubit(
   locator<IStorage>(),
   loggerCubit,
-  blockchainCubit,
+  networkSelectCubit,
   locator<IClipBoard>(),
 );
 
@@ -50,13 +50,13 @@ class Cubits extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: blockchainCubit),
+        BlocProvider.value(value: networkSelectCubit),
         BlocProvider.value(value: loggerCubit),
         BlocProvider.value(value: walletsCubit),
         BlocProvider.value(value: addressBookCubit),
         BlocProvider.value(value: nodeAddressCubit),
       ],
-      child: BlocListener<BlockchainCubit, BlockchainState>(
+      child: BlocListener<ChainSelectCubit, BlockchainState>(
         listener: (context, state) {
           walletsCubit.refresh();
         },

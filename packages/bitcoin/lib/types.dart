@@ -19,7 +19,11 @@ class Nmeu {
 
 class DerivedWallet {
   const DerivedWallet(
-      this.fingerPrint, this.hardenedPath, this.xprv, this.xpub);
+    this.fingerPrint,
+    this.hardenedPath,
+    this.xprv,
+    this.xpub,
+  );
   factory DerivedWallet.fromJson(String data) {
     final json = jsonDecode(data);
     return DerivedWallet(
