@@ -124,4 +124,6 @@ class XpubImportCubit extends Cubit<XpubImportState> {
 
     emit(state.copyWith(detailsReady: true));
   }
+
+  void clear() => emit(const XpubImportState());
 }

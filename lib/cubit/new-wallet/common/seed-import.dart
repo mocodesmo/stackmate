@@ -102,4 +102,6 @@ class SeedImportCubit extends Cubit<SeedImportState> {
       print(e.toString());
     }
   }
+
+  void clear() => emit(const SeedImportState());
 }

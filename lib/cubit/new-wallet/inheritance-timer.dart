@@ -16,8 +16,8 @@ import 'package:sats/pkg/storage.dart';
 
 part 'inheritance-timer.freezed.dart';
 
-enum InteritanceTimerWalletCubit {
-  warning,
+enum InteritanceTimerWalletSteps {
+  info,
   settings,
   seed,
   import,
@@ -27,9 +27,9 @@ enum InteritanceTimerWalletCubit {
 @freezed
 class InheritanceTimerState with _$InheritanceTimerState {
   const factory InheritanceTimerState({
-    @Default(InteritanceTimerWalletCubit.warning)
-        InteritanceTimerWalletCubit currentStep,
-    @Default(365) int days,
+    @Default(InteritanceTimerWalletSteps.info)
+        InteritanceTimerWalletSteps currentStep,
+    DateTime? date,
     @Default('') String walletLabel,
     @Default('') String errWalletLabel,
     @Default(false) bool savingWallet,
@@ -50,10 +50,14 @@ class InteritanceTimerCubit extends Cubit<InheritanceTimerState> {
     this._importCubit,
   ) : super(const InheritanceTimerState()) {
     _generateCubit.stream.listen((gstate) {
-      if (gstate.wallet != null) {}
+      if (gstate.wallet != null) {
+        emit(state.copyWith(currentStep: InteritanceTimerWalletSteps.import));
+      }
     });
     _importCubit.stream.listen((istate) {
-      if (istate.detailsReady) {}
+      if (istate.detailsReady) {
+        emit(state.copyWith(currentStep: InteritanceTimerWalletSteps.label));
+      }
     });
   }
 
@@ -70,36 +74,47 @@ class InteritanceTimerCubit extends Cubit<InheritanceTimerState> {
   late StreamSubscription _generateSub;
   late StreamSubscription _importSub;
 
-  void dateSelected(DateTime date) {
-    emit(state);
-  }
+  void dateSelected(DateTime date) => emit(state.copyWith(date: date));
 
   void backClicked() {
     switch (state.currentStep) {
-      case InteritanceTimerWalletCubit.warning:
+      case InteritanceTimerWalletSteps.info:
         break;
-      case InteritanceTimerWalletCubit.settings:
+      case InteritanceTimerWalletSteps.settings:
+        emit(state.copyWith(currentStep: InteritanceTimerWalletSteps.info));
         break;
-      case InteritanceTimerWalletCubit.seed:
+
+      case InteritanceTimerWalletSteps.seed:
+        emit(state.copyWith(currentStep: InteritanceTimerWalletSteps.settings));
+        _generateCubit.clear();
         break;
-      case InteritanceTimerWalletCubit.import:
+      case InteritanceTimerWalletSteps.import:
+        emit(state.copyWith(currentStep: InteritanceTimerWalletSteps.settings));
+        _importCubit.clear();
         break;
-      case InteritanceTimerWalletCubit.label:
+
+      case InteritanceTimerWalletSteps.label:
+        emit(state.copyWith(currentStep: InteritanceTimerWalletSteps.settings));
         break;
     }
   }
 
   void nextClicked() {
     switch (state.currentStep) {
-      case InteritanceTimerWalletCubit.warning:
+      case InteritanceTimerWalletSteps.info:
+        emit(state.copyWith(currentStep: InteritanceTimerWalletSteps.settings));
+
         break;
-      case InteritanceTimerWalletCubit.settings:
+      case InteritanceTimerWalletSteps.settings:
+        emit(state.copyWith(currentStep: InteritanceTimerWalletSteps.seed));
         break;
-      case InteritanceTimerWalletCubit.seed:
+
+      case InteritanceTimerWalletSteps.seed:
+      case InteritanceTimerWalletSteps.import:
         break;
-      case InteritanceTimerWalletCubit.import:
-        break;
-      case InteritanceTimerWalletCubit.label:
+
+      case InteritanceTimerWalletSteps.label:
+        saveClicked();
         break;
     }
   }
@@ -107,5 +122,73 @@ class InteritanceTimerCubit extends Cubit<InheritanceTimerState> {
   void labelChanged(String text) =>
       emit(state.copyWith(walletLabel: text, errWalletLabel: ''));
 
-  void saveClicked() {}
+  void saveClicked() async {
+    try {
+      if (state.walletLabel.length < 4 ||
+          state.walletLabel.length > 10 ||
+          state.walletLabel.contains(' ')) {
+        emit(state.copyWith(errWalletLabel: 'Invalid Label'));
+        return;
+      }
+
+      final wallet = _generateCubit.state.wallet;
+      if (wallet == null) return;
+      final policy =
+          'pk([${wallet.fingerPrint}/${wallet.hardenedPath}]${wallet.xprv}/0/*)'
+              .replaceFirst('/m', '');
+
+      final xpubState = _importCubit.state;
+      final fingerprint = xpubState.fingerPrint;
+      final path = xpubState.path;
+      final xpub = xpubState.xpub;
+      String policy2 = '';
+      if (!xpubState.showOtherDetails())
+        policy2 = 'pk($xpub/0/*)';
+      else
+        policy2 = 'pk([$fingerprint/$path]$xpub/0/*)'.replaceFirst('/m', '');
+
+      //calcute time
+      String height = '';
+
+      final descriptor = 'or($policy,and($policy2, after($height)))';
+
+      var newWallet = Wallet(
+        label: state.walletLabel,
+        descriptor: descriptor, // com.descriptor.split('#')[0],
+        blockchain: _blockchainCubit.state.blockchain.name,
+        walletType: 'INHERITANCE',
+      );
+
+      final id = await _storage.saveItem<Wallet>(
+        StoreKeys.Wallet.name,
+        newWallet,
+      );
+
+      newWallet = newWallet.copyWith(id: id);
+
+      await _storage.saveItemAt<Wallet>(
+        StoreKeys.Wallet.name,
+        id,
+        newWallet,
+      );
+
+      _wallets.refresh();
+
+      emit(
+        state.copyWith(
+          savingWallet: false,
+          newWalletSaved: true,
+        ),
+      );
+    } catch (e, s) {
+      _logger.logException(e, 'SeedImportCubit._saveWalletLocally', s);
+    }
+  }
+
+  @override
+  Future<void> close() {
+    _importSub.cancel();
+    _generateSub.cancel();
+    return super.close();
+  }
 }

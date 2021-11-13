@@ -63,7 +63,6 @@ class XpubImportWalletCubit extends Cubit<XpubImportWalletState> {
     });
   }
 
-  // final ISoloWalletAPI _soloWalletAPI;
   final LoggerCubit _logger;
   final IStorage _storage;
   final IBitcoinCore _bitcoin;
@@ -71,6 +70,41 @@ class XpubImportWalletCubit extends Cubit<XpubImportWalletState> {
   final ChainSelectCubit _blockchainCubit;
   final XpubImportCubit _importCubit;
   late StreamSubscription _importSub;
+
+  void labelChanged(String text) {
+    emit(state.copyWith(label: text, errSavingWallet: ''));
+  }
+
+  void nextClicked() async {
+    switch (state.currentStep) {
+      case XpubImportWalletStep.import:
+        break;
+
+      case XpubImportWalletStep.label:
+        if (state.label == '' || state.label.length < 5) {
+          emit(state.copyWith(errSavingWallet: 'Invalid Label.'));
+          return;
+        }
+        _saveWallet();
+        break;
+    }
+  }
+
+  void backClicked() {
+    switch (state.currentStep) {
+      case XpubImportWalletStep.import:
+        _importCubit.clear();
+        break;
+      case XpubImportWalletStep.label:
+        emit(
+          state.copyWith(
+            currentStep: XpubImportWalletStep.import,
+            label: '',
+          ),
+        );
+        break;
+    }
+  }
 
   void _saveWallet() async {
     emit(
@@ -136,40 +170,6 @@ class XpubImportWalletCubit extends Cubit<XpubImportWalletState> {
           newWalletSaved: true,
         ),
       );
-    }
-  }
-
-  void labelChanged(String text) {
-    emit(state.copyWith(label: text, errSavingWallet: ''));
-  }
-
-  void nextClicked() async {
-    switch (state.currentStep) {
-      case XpubImportWalletStep.import:
-        break;
-
-      case XpubImportWalletStep.label:
-        if (state.label == '' || state.label.length < 5) {
-          emit(state.copyWith(errSavingWallet: 'Invalid Label.'));
-          return;
-        }
-        _saveWallet();
-        break;
-    }
-  }
-
-  void backClicked() {
-    switch (state.currentStep) {
-      case XpubImportWalletStep.import:
-        break;
-      case XpubImportWalletStep.label:
-        emit(
-          state.copyWith(
-            currentStep: XpubImportWalletStep.import,
-            label: '',
-          ),
-        );
-        break;
     }
   }
 

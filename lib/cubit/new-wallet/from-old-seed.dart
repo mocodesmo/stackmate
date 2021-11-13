@@ -72,7 +72,7 @@ class SeedImportWalletCubit extends Cubit<SeedImportWalletState> {
     this._storage,
     this._wallets,
     this._blockchainCubit,
-    this.logger,
+    this._logger,
     this._importCubit, {
     String walletLabel = '',
   }) : super(
@@ -91,7 +91,7 @@ class SeedImportWalletCubit extends Cubit<SeedImportWalletState> {
   final IBitcoinCore _bitcoin;
 
   final IStorage _storage;
-  final LoggerCubit logger;
+  final LoggerCubit _logger;
   final WalletsCubit _wallets;
   final ChainSelectCubit _blockchainCubit;
   final SeedImportCubit _importCubit;
@@ -219,7 +219,7 @@ class SeedImportWalletCubit extends Cubit<SeedImportWalletState> {
         ),
       );
     } catch (e, s) {
-      logger.logException(e, 'SeedImportCubit._saveWalletLocally', s);
+      _logger.logException(e, 'SeedImportCubit._saveWalletLocally', s);
     }
   }
 
