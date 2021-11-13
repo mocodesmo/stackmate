@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sats/cubit/wallet/chain-select.dart';
-import 'package:sats/cubit/wallet/node.dart';
+import 'package:sats/cubit/chain-select.dart';
+import 'package:sats/cubit/node.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button.dart';

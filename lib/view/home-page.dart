@@ -4,7 +4,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
 import 'package:sats/cubit/reddit.dart';
-import 'package:sats/cubit/wallet/wallets.dart';
+import 'package:sats/cubit/wallets.dart';
 import 'package:sats/model/reddit-post.dart';
 import 'package:sats/model/wallet.dart';
 import 'package:sats/navigation.dart';

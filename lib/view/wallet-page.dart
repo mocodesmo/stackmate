@@ -2,7 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sats/cubit/wallet/wallet.dart';
-import 'package:sats/cubit/wallet/wallets.dart';
+import 'package:sats/cubit/wallets.dart';
 import 'package:sats/model/transaction.dart';
 import 'package:sats/model/wallet.dart';
 import 'package:sats/navigation.dart';

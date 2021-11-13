@@ -1,7 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:sats/cubit/wallet/send.dart';
-import 'package:sats/cubit/wallet/wallets.dart';
+import 'package:sats/cubit/wallets.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button.dart';
 import 'package:sats/view/common/loading.dart';
