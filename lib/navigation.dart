@@ -5,6 +5,7 @@ import 'package:sats/api/rates.dart';
 import 'package:sats/api/reddit.dart';
 import 'package:sats/cubit/_state.dart';
 import 'package:sats/cubit/calculator.dart';
+import 'package:sats/cubit/new-wallet/inheritance-timer.dart';
 import 'package:sats/cubit/reddit.dart';
 import 'package:sats/cubit/new-wallet/common/seed-generate.dart';
 import 'package:sats/cubit/new-wallet/common/seed-import.dart';
@@ -137,11 +138,6 @@ class Routes {
           xpubCub,
         );
 
-        page = BlocProvider.value(
-          value: xpubCubit,
-          child: XpubImportPage(),
-        );
-
         page = MultiBlocProvider(
           providers: [
             BlocProvider.value(value: xpubCub),
@@ -152,8 +148,39 @@ class Routes {
         break;
 
       case inheritance:
-        page = const InheritancePage();
+        final seedGenerateCubit = SeedGenerateCubit(
+          locator<IStackMateCore>(),
+          networkSelectCubit,
+          loggerCubit,
+        );
+
+        final xpubCub = XpubImportCubit(
+          loggerCubit,
+          locator<IClipBoard>(),
+        );
+
+        final inheritance = InteritanceTimerCubit(
+          locator<IStackMateCore>(),
+          locator<IStorage>(),
+          loggerCubit,
+          walletsCubit,
+          networkSelectCubit,
+          seedGenerateCubit,
+          xpubCub,
+          nodeAddressCubit,
+        );
+
+        page = MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: seedGenerateCubit),
+            BlocProvider.value(value: xpubCub),
+            BlocProvider.value(value: inheritance),
+          ],
+          child: const InheritancePage(),
+        );
+
         break;
+
       case calc:
         final calcCubit = CalculatorCubit(
           loggerCubit,
@@ -224,6 +251,7 @@ class Routes {
           locator<IClipBoard>(),
           locator<IShare>(),
           nodeAddressCubit,
+          locator<IStackMateCore>(),
         );
 
         page = BlocProvider.value(
@@ -242,6 +270,7 @@ class Routes {
           locator<IClipBoard>(),
           locator<IShare>(),
           nodeAddressCubit,
+          locator<IStackMateCore>(),
         );
 
         page = BlocProvider.value(

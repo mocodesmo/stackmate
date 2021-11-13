@@ -42,12 +42,9 @@ class SendState with _$SendState {
     @Default('') String amount,
     @Default(0) int weight,
     @Default('') String fees,
-    double? feeSlow,
-    int? feeSlowAbs,
-    double? feeMedium,
-    int? feeMediumAbs,
-    double? feeFast,
-    int? feeFastAbs,
+    int? feeSlow,
+    int? feeMedium,
+    int? feeFast,
     int? balance,
     @Default(1) int feesOption,
     @Default('') String psbt,
@@ -60,18 +57,6 @@ class SendState with _$SendState {
 
   // bool confirmStep() => psbt != '' && txId == '';
   // bool confirmedStep() => txId != '';
-
-  double feeRate() {
-    try {
-      if (fees != '') return double.parse(fees);
-      if (feesOption == 0) return feeSlow!;
-      if (feesOption == 1) return feeMedium!;
-      if (feesOption == 2) return feeFast!;
-    } catch (e) {
-      print(e.toString());
-    }
-    return 0;
-  }
 
   int total() => finalFee! + finalAmount!;
 
@@ -88,6 +73,7 @@ class SendCubit extends Cubit<SendState> {
     this._clipBoard,
     this._share,
     this._nodeAddressCubit,
+    this._core,
   ) : super(const SendState()) {
     _init(withQR);
   }
@@ -99,6 +85,7 @@ class SendCubit extends Cubit<SendState> {
   final IShare _share;
   final IClipBoard _clipBoard;
   final NodeAddressCubit _nodeAddressCubit;
+  final IStackMateCore _core;
 
   void _init(bool withQR) async {
     if (withQR) {
@@ -217,11 +204,17 @@ class SendCubit extends Cubit<SendState> {
         emit(state.copyWith(errAmount: 'Please enter a valid amount'));
         return;
       }
-      emit(state.copyWith(calculatingFees: true));
+      emit(
+        state.copyWith(
+          calculatingFees: true,
+          currentStep: SendSteps.fees,
+          // buildingTx: false,
+        ),
+      );
 
-      await Future.delayed(const Duration(milliseconds: 100));
+      // await Future.delayed(const Duration(milliseconds: 100));
 
-      emit(state.copyWith(buildingTx: true, errLoading: ''));
+      // emit(state.copyWith(buildingTx: true, errLoading: ''));
 
       final nodeAddress = _nodeAddressCubit.state.getAddress();
 
@@ -230,7 +223,7 @@ class SendCubit extends Cubit<SendState> {
         'nodeAddress': nodeAddress,
         'toAddress': state.address,
         'amount': state.sweepWallet ? '0' : state.amount,
-        'feeRate': '1000',
+        'feeAbsolute': '1000',
         'sweep': state.sweepWallet.toString(),
       });
 
@@ -239,57 +232,50 @@ class SendCubit extends Cubit<SendState> {
         'psbt': psbt,
       });
 
-      final feeFast = await compute(estimateFeees, {
+      final fastRate = await compute(estimateFeees, {
         'targetSize': '1',
         'network': _blockchain.state.blockchain.name,
         'nodeAddress': nodeAddress,
       });
 
-      //get fee rate to abs
-
-      final feeMedium = await compute(estimateFeees, {
+      final mediumRate = await compute(estimateFeees, {
         'targetSize': '3',
         'network': _blockchain.state.blockchain.name,
         'nodeAddress': nodeAddress,
       });
 
-      final feeSlow = await compute(estimateFeees, {
+      final slowRate = await compute(estimateFeees, {
         'targetSize': '6',
         'network': _blockchain.state.blockchain.name,
         'nodeAddress': nodeAddress,
       });
 
-      emit(
-        state.copyWith(
-          feeFast: feeFast,
-          feeMedium: feeMedium,
-          feeSlow: feeSlow,
-        ),
+      final fast = _core.feeRateToAbsolute(
+        feeRate: fastRate.toString(),
+        weight: weight.toString(),
       );
 
+      final medium = _core.feeRateToAbsolute(
+        feeRate: mediumRate.toString(),
+        weight: weight.toString(),
+      );
 
-      //get abs fees
-
-      emit(state.copyWith(weight: weight));
+      final slow = _core.feeRateToAbsolute(
+        feeRate: slowRate.toString(),
+        weight: weight.toString(),
+      );
 
       emit(
         state.copyWith(
+          feeFast: fast.absolute,
+          feeMedium: medium.absolute,
+          feeSlow: slow.absolute,
+          finalFee: medium.absolute,
+          weight: weight,
           calculatingFees: false,
           currentStep: SendSteps.fees,
         ),
       );
-
-      // final amtoutput = decode.firstWhere((o) => o.to == state.address);
-      // final feeoutput = decode.firstWhere((o) => o.to == 'miner');
-
-      // emit(
-      //   state.copyWith(
-      //     buildingTx: false,
-      //     psbt: psbt,
-      //     finalFee: feeoutput.value,
-      //     finalAmount: amtoutput.value,
-      //   ),
-      // );
     } catch (e, s) {
       emit(
         state.copyWith(
@@ -302,12 +288,32 @@ class SendCubit extends Cubit<SendState> {
     }
   }
 
-  void feeSelected(int idx) => emit(state.copyWith(feesOption: idx));
+  void feeSelected(int idx) {
+    emit(state.copyWith(feesOption: idx));
+
+    int finalFee = 0;
+    switch (idx) {
+      case 0:
+        finalFee = state.feeSlow!;
+        break;
+      case 1:
+        finalFee = state.feeMedium!;
+        break;
+      case 2:
+        finalFee = state.feeFast!;
+        break;
+    }
+    emit(state.copyWith(finalFee: finalFee, fees: ''));
+  }
 
   void feeChanged(String fee) {
     final checked = fee.replaceAll('.', '');
     emit(state.copyWith(fees: checked, feesOption: 4));
-    //get fee abs to rate (weight, abs )
+    final fees = _core.feeAbsoluteToRate(
+      feeAbsolute: checked,
+      weight: state.weight.toString(),
+    );
+    emit(state.copyWith(finalFee: fees.absolute));
   }
 
   bool _checkFee() {
@@ -333,7 +339,7 @@ class SendCubit extends Cubit<SendState> {
         'nodeAddress': nodeAddress,
         'toAddress': state.address,
         'amount': state.sweepWallet ? '0' : state.amount,
-        'feeRate': state.feeRate().toString(),
+        'feeAbsolute': state.finalFee.toString(),
         'sweep': state.sweepWallet.toString(),
       });
 
@@ -410,6 +416,7 @@ class SendCubit extends Cubit<SendState> {
           sendingTx: false,
           errLoading: '',
           txId: txid,
+          currentStep: SendSteps.sent,
         ),
       );
     } catch (e, s) {
@@ -465,7 +472,7 @@ String buildTx(dynamic data) {
     nodeAddress: obj['nodeAddress']!,
     amount: obj['amount']!,
     depositDesc: obj['depositDesc']!,
-    feeAbsolute: obj['feeRate']!,
+    feeAbsolute: obj['feeAbsolute']!,
     toAddress: obj['toAddress']!,
     sweep: obj['sweep']!,
   );
@@ -478,7 +485,7 @@ List<DecodedTxOutput> decodePSBT(dynamic data) {
     network: obj['network']!,
     psbt: obj['psbt']!,
   );
-  final json = jsonDecode(resp)['outputs']['outputs'];
+  final json = jsonDecode(resp)['outputs'];
 
   final List<DecodedTxOutput> decoded = [];
   for (final out in json)
@@ -508,3 +515,4 @@ String broadcastTx(dynamic data) {
   );
   return resp;
 }
+// tb1qcd0dej2spq73nlkr4d5w3scksqagz0nzmdnzgg

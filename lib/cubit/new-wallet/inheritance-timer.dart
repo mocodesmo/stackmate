@@ -1,7 +1,6 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'dart:async';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/chain-select.dart';
 import 'package:sats/cubit/logger.dart';
@@ -51,7 +50,6 @@ class InteritanceTimerCubit extends Cubit<InheritanceTimerState> {
     this._generateCubit,
     this._importCubit,
     this._nodeAddressCubit,
-    this._blockchain,
   ) : super(const InheritanceTimerState()) {
     _generateCubit.stream.listen((gstate) {
       if (gstate.wallet != null) {
@@ -78,7 +76,6 @@ class InteritanceTimerCubit extends Cubit<InheritanceTimerState> {
   late StreamSubscription _generateSub;
   late StreamSubscription _importSub;
   final NodeAddressCubit _nodeAddressCubit;
-  final ChainSelectCubit _blockchain;
 
   void dateSelected(DateTime date) =>
       emit(state.copyWith(date: date, errDate: ''));
@@ -159,13 +156,12 @@ class InteritanceTimerCubit extends Cubit<InheritanceTimerState> {
         backupPolicy =
             'pk([$fingerprint/$path]$xpub/0/*)'.replaceFirst('/m', '');
 
-
       final from = DateTime.now();
       final to = state.date!;
       final days = (to.difference(from).inHours / 24).round();
       final blocks = _core.daysToBlocks(days: days.toString());
       final currentHeight = _core.getHeight(
-        network: _blockchain.state.blockchain.name,
+        network: _blockchainCubit.state.blockchain.name,
         nodeAddress: _nodeAddressCubit.state.getAddress(),
       );
       final height = currentHeight + blocks;

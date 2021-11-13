@@ -293,7 +293,7 @@ class BitcoinFFI implements IStackMateCore {
     );
     if (resp.startsWith('Error')) throw resp;
     final data = jsonDecode(resp);
-    return data['fee'] as double;
+    return data['rate'] as double;
   }
 
   @override

@@ -58,20 +58,20 @@ class WalletDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final walletName = context.select(
-      (WalletsCubit wc) => wc.state.selectedWallet!.label,
-    );
+    // final walletName = context.select(
+    //   (WalletsCubit wc) => wc.state.selectedWallet!.label,
+    // );
     final balance = context.select((SendCubit sc) => sc.state.balance);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          walletName,
-          style: context.fonts.headline5!.copyWith(
-            color: context.colours.onBackground,
-          ),
-        ),
-        const SizedBox(height: 40),
+        // Text(
+        //   walletName,
+        //   style: context.fonts.headline5!.copyWith(
+        //     color: context.colours.onBackground,
+        //   ),
+        // ),
+        // const SizedBox(height: 40),
         if (balance != null) ...[
           Text(
             'Balance'.toUpperCase(),
@@ -97,14 +97,14 @@ class WalletDetails extends StatelessWidget {
   }
 }
 
-class AddressRow extends StatefulWidget {
-  const AddressRow({Key? key}) : super(key: key);
+class SendAddress extends StatefulWidget {
+  const SendAddress({Key? key}) : super(key: key);
 
   @override
-  State<AddressRow> createState() => _AddressRowState();
+  State<SendAddress> createState() => _SendAddressState();
 }
 
-class _AddressRowState extends State<AddressRow> {
+class _SendAddressState extends State<SendAddress> {
   late TextEditingController _controller;
 
   @override
@@ -121,7 +121,15 @@ class _AddressRowState extends State<AddressRow> {
     if (address != _controller.text) _controller.text = address;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        Text(
+          'To Address'.toUpperCase(),
+          style: context.fonts.overline!.copyWith(
+            color: context.colours.onBackground,
+          ),
+        ),
+        const SizedBox(height: 16),
         TextField(
           controller: _controller,
           style: TextStyle(color: context.colours.onBackground),
@@ -258,16 +266,16 @@ class _AmountRowState extends State<AmountRow> {
   }
 }
 
-class NetworkRow extends StatefulWidget {
-  const NetworkRow({
+class FeeSelect extends StatefulWidget {
+  const FeeSelect({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<NetworkRow> createState() => _NetworkRowState();
+  State<FeeSelect> createState() => _FeeSelectState();
 }
 
-class _NetworkRowState extends State<NetworkRow> {
+class _FeeSelectState extends State<FeeSelect> {
   late TextEditingController _controller;
 
   @override
@@ -288,98 +296,134 @@ class _NetworkRowState extends State<NetworkRow> {
         final medium = state.feeMedium!.toString();
         final fast = state.feeFast!.toString();
 
+        final buildingTx = state.buildingTx;
+
         if (state.fees != _controller.text) _controller.text = state.fees;
 
-        return Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        return IgnorePointer(
+          ignoring: buildingTx,
+          child: AnimatedOpacity(
+            duration: const Duration(milliseconds: 400),
+            opacity: buildingTx ? 0.3 : 1,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Column(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Opacity(
-                      opacity: state.feesOption == 0 ? 1 : 0.6,
-                      child: TextButton(
-                        onPressed: () {
-                          context.read<SendCubit>().feeSelected(0);
-                        },
-                        child: Text('slow'.toUpperCase()),
-                      ),
+                    Column(
+                      children: [
+                        Opacity(
+                          opacity: state.feesOption == 0 ? 1 : 0.6,
+                          child: TextButton(
+                            onPressed: () {
+                              context.read<SendCubit>().feeSelected(0);
+                            },
+                            child: Text('slow'.toUpperCase()),
+                          ),
+                        ),
+                        Text(
+                          '~ 60 minutes\n($slow sats)',
+                          textAlign: TextAlign.center,
+                          style: context.fonts.caption!.copyWith(
+                            fontSize: 10,
+                            color:
+                                context.colours.onBackground.withOpacity(0.7),
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      '~ 60 minutes\n($slow sats / vbyte)',
-                      textAlign: TextAlign.center,
-                      style: context.fonts.caption!.copyWith(
-                        fontSize: 10,
-                        color: context.colours.onBackground.withOpacity(0.7),
-                      ),
+                    Column(
+                      children: [
+                        Opacity(
+                          opacity: state.feesOption == 1 ? 1 : 0.6,
+                          child: TextButton(
+                            onPressed: () {
+                              context.read<SendCubit>().feeSelected(1);
+                            },
+                            child: Text('medium'.toUpperCase()),
+                          ),
+                        ),
+                        Text(
+                          '~ 30 minutes\n($medium sats)',
+                          textAlign: TextAlign.center,
+                          style: context.fonts.caption!.copyWith(
+                            fontSize: 10,
+                            color:
+                                context.colours.onBackground.withOpacity(0.7),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Opacity(
+                          opacity: state.feesOption == 2 ? 1 : 0.6,
+                          child: TextButton(
+                            onPressed: () {
+                              context.read<SendCubit>().feeSelected(2);
+                            },
+                            child: Text('Fast'.toUpperCase()),
+                          ),
+                        ),
+                        Text(
+                          '~ 10 minutes\n($fast sats)',
+                          textAlign: TextAlign.center,
+                          style: context.fonts.caption!.copyWith(
+                            fontSize: 10,
+                            color:
+                                context.colours.onBackground.withOpacity(0.7),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                Column(
-                  children: [
-                    Opacity(
-                      opacity: state.feesOption == 1 ? 1 : 0.6,
-                      child: TextButton(
-                        onPressed: () {
-                          context.read<SendCubit>().feeSelected(1);
-                        },
-                        child: Text('medium'.toUpperCase()),
-                      ),
-                    ),
-                    Text(
-                      '~ 30 minutes\n($medium sats / vbyte)',
-                      textAlign: TextAlign.center,
-                      style: context.fonts.caption!.copyWith(
-                        fontSize: 10,
-                        color: context.colours.onBackground.withOpacity(0.7),
-                      ),
-                    ),
-                  ],
+                const SizedBox(height: 32),
+                TextField(
+                  controller: _controller,
+                  style: TextStyle(color: context.colours.onBackground),
+                  decoration: InputDecoration(
+                    hintText: 'Enter custom fee'.toUpperCase(),
+                    errorText: state.errFees.nullIfEmpty(),
+                  ),
+                  onChanged: (t) {
+                    context.read<SendCubit>().feeChanged(t);
+                  },
                 ),
-                Column(
-                  children: [
-                    Opacity(
-                      opacity: state.feesOption == 2 ? 1 : 0.6,
-                      child: TextButton(
-                        onPressed: () {
-                          context.read<SendCubit>().feeSelected(2);
-                        },
-                        child: Text('Fast'.toUpperCase()),
-                      ),
+                const SizedBox(height: 60),
+                if (state.finalFee != null) ...[
+                  Text(
+                    'FINAL FEES',
+                    style: context.fonts.overline!.copyWith(
+                      color: context.colours.onBackground,
                     ),
-                    Text(
-                      '~ 10 minutes\n($fast sats / vbyte)',
-                      textAlign: TextAlign.center,
-                      style: context.fonts.caption!.copyWith(
-                        fontSize: 10,
-                        color: context.colours.onBackground.withOpacity(0.7),
-                      ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${state.finalFee} sats',
+                    style: context.fonts.subtitle1!.copyWith(
+                      color: context.colours.onBackground,
                     ),
-                  ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${state.finalFee!.toBtc()} BTC',
+                    style: context.fonts.caption!.copyWith(
+                      color: context.colours.onBackground,
+                    ),
+                  ),
+                ],
+                const SizedBox(height: 80),
+                TextButton(
+                  onPressed: () {
+                    context.read<SendCubit>().feeConfirmedClicked();
+                  },
+                  child: const Text('CONFIRM'),
                 ),
               ],
             ),
-            const SizedBox(height: 32),
-            TextField(
-              controller: _controller,
-              style: TextStyle(color: context.colours.onBackground),
-              decoration: InputDecoration(
-                hintText: 'Enter custom fee rate'.toUpperCase(),
-                errorText: state.errFees.nullIfEmpty(),
-              ),
-              onChanged: (t) {
-                context.read<SendCubit>().feeChanged(t);
-              },
-            ),
-            const SizedBox(height: 100),
-            TextButton(
-              onPressed: () {
-                context.read<SendCubit>().feeConfirmedClicked();
-              },
-              child: const Text('CONFIRM'),
-            ),
-          ],
+          ),
         );
       },
     );
@@ -571,13 +615,18 @@ class WalletSendPage extends StatelessWidget {
                         children: [
                           Back(
                             onPressed: () {
-                              if (step != SendSteps.fees) {
-                                context.read<SendCubit>().backClicked();
+                              if (step == SendSteps.address ||
+                                  step == SendSteps.sent) {
+                                Navigator.pop(context);
                                 return;
                               }
+
+                              // if (step != SendSteps.fees) {
+                              context.read<SendCubit>().backClicked();
+                              // return;
+                              // }
                               // if (confirmedStep)
                               //   context.read<HistoryCubit>().getHistory();
-                              Navigator.pop(context);
                             },
                           ),
                           LogButton(
@@ -596,49 +645,40 @@ class WalletSendPage extends StatelessWidget {
                     const SizedBox(height: 40),
                     const ZeroBalance(),
                     if (step == SendSteps.address) ...[
-                      const SizedBox(height: 80),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Text(
-                          'To Address'.toUpperCase(),
-                          style: context.fonts.overline!.copyWith(
-                            color: context.colours.onBackground,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 0),
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16),
-                        child: AddressRow(),
+                        child: SendAddress(),
                       ),
                     ],
                     if (step == SendSteps.amount) ...[
-                      const SizedBox(height: 80),
+                      const SizedBox(height: 0),
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         child: WalletDetails(),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Text(
-                          'Amount'.toUpperCase(),
-                          style: context.fonts.overline!.copyWith(
-                            color: context.colours.onBackground,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 80),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(horizontal: 16),
+                      //   child: Text(
+                      //     'Amount'.toUpperCase(),
+                      //     style: context.fonts.overline!.copyWith(
+                      //       color: context.colours.onBackground,
+                      //     ),
+                      //   ),
+                      // ),
+                      // const SizedBox(height: 16),
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         child: AmountRow(),
                       ),
                     ],
                     if (step == SendSteps.fees) ...[
-                      const SizedBox(height: 60),
+                      const SizedBox(height: 0),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
-                          'Network Fee'.toUpperCase(),
+                          'Select Network Fee'.toUpperCase(),
                           style: context.fonts.overline!.copyWith(
                             color: context.colours.onBackground,
                           ),
@@ -647,7 +687,7 @@ class WalletSendPage extends StatelessWidget {
                       const SizedBox(height: 16),
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16),
-                        child: NetworkRow(),
+                        child: FeeSelect(),
                       ),
                     ],
                     if (step == SendSteps.confirm)

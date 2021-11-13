@@ -31,12 +31,9 @@ class _$SendStateTearOff {
       String amount = '',
       int weight = 0,
       String fees = '',
-      double? feeSlow,
-      int? feeSlowAbs,
-      double? feeMedium,
-      int? feeMediumAbs,
-      double? feeFast,
-      int? feeFastAbs,
+      int? feeSlow,
+      int? feeMedium,
+      int? feeFast,
       int? balance,
       int feesOption = 1,
       String psbt = '',
@@ -59,11 +56,8 @@ class _$SendStateTearOff {
       weight: weight,
       fees: fees,
       feeSlow: feeSlow,
-      feeSlowAbs: feeSlowAbs,
       feeMedium: feeMedium,
-      feeMediumAbs: feeMediumAbs,
       feeFast: feeFast,
-      feeFastAbs: feeFastAbs,
       balance: balance,
       feesOption: feesOption,
       psbt: psbt,
@@ -93,12 +87,9 @@ mixin _$SendState {
   String get amount => throw _privateConstructorUsedError;
   int get weight => throw _privateConstructorUsedError;
   String get fees => throw _privateConstructorUsedError;
-  double? get feeSlow => throw _privateConstructorUsedError;
-  int? get feeSlowAbs => throw _privateConstructorUsedError;
-  double? get feeMedium => throw _privateConstructorUsedError;
-  int? get feeMediumAbs => throw _privateConstructorUsedError;
-  double? get feeFast => throw _privateConstructorUsedError;
-  int? get feeFastAbs => throw _privateConstructorUsedError;
+  int? get feeSlow => throw _privateConstructorUsedError;
+  int? get feeMedium => throw _privateConstructorUsedError;
+  int? get feeFast => throw _privateConstructorUsedError;
   int? get balance => throw _privateConstructorUsedError;
   int get feesOption => throw _privateConstructorUsedError;
   String get psbt => throw _privateConstructorUsedError;
@@ -130,12 +121,9 @@ abstract class $SendStateCopyWith<$Res> {
       String amount,
       int weight,
       String fees,
-      double? feeSlow,
-      int? feeSlowAbs,
-      double? feeMedium,
-      int? feeMediumAbs,
-      double? feeFast,
-      int? feeFastAbs,
+      int? feeSlow,
+      int? feeMedium,
+      int? feeFast,
       int? balance,
       int feesOption,
       String psbt,
@@ -169,11 +157,8 @@ class _$SendStateCopyWithImpl<$Res> implements $SendStateCopyWith<$Res> {
     Object? weight = freezed,
     Object? fees = freezed,
     Object? feeSlow = freezed,
-    Object? feeSlowAbs = freezed,
     Object? feeMedium = freezed,
-    Object? feeMediumAbs = freezed,
     Object? feeFast = freezed,
-    Object? feeFastAbs = freezed,
     Object? balance = freezed,
     Object? feesOption = freezed,
     Object? psbt = freezed,
@@ -238,26 +223,14 @@ class _$SendStateCopyWithImpl<$Res> implements $SendStateCopyWith<$Res> {
       feeSlow: feeSlow == freezed
           ? _value.feeSlow
           : feeSlow // ignore: cast_nullable_to_non_nullable
-              as double?,
-      feeSlowAbs: feeSlowAbs == freezed
-          ? _value.feeSlowAbs
-          : feeSlowAbs // ignore: cast_nullable_to_non_nullable
               as int?,
       feeMedium: feeMedium == freezed
           ? _value.feeMedium
           : feeMedium // ignore: cast_nullable_to_non_nullable
-              as double?,
-      feeMediumAbs: feeMediumAbs == freezed
-          ? _value.feeMediumAbs
-          : feeMediumAbs // ignore: cast_nullable_to_non_nullable
               as int?,
       feeFast: feeFast == freezed
           ? _value.feeFast
           : feeFast // ignore: cast_nullable_to_non_nullable
-              as double?,
-      feeFastAbs: feeFastAbs == freezed
-          ? _value.feeFastAbs
-          : feeFastAbs // ignore: cast_nullable_to_non_nullable
               as int?,
       balance: balance == freezed
           ? _value.balance
@@ -311,12 +284,9 @@ abstract class _$SendStateCopyWith<$Res> implements $SendStateCopyWith<$Res> {
       String amount,
       int weight,
       String fees,
-      double? feeSlow,
-      int? feeSlowAbs,
-      double? feeMedium,
-      int? feeMediumAbs,
-      double? feeFast,
-      int? feeFastAbs,
+      int? feeSlow,
+      int? feeMedium,
+      int? feeFast,
       int? balance,
       int feesOption,
       String psbt,
@@ -351,11 +321,8 @@ class __$SendStateCopyWithImpl<$Res> extends _$SendStateCopyWithImpl<$Res>
     Object? weight = freezed,
     Object? fees = freezed,
     Object? feeSlow = freezed,
-    Object? feeSlowAbs = freezed,
     Object? feeMedium = freezed,
-    Object? feeMediumAbs = freezed,
     Object? feeFast = freezed,
-    Object? feeFastAbs = freezed,
     Object? balance = freezed,
     Object? feesOption = freezed,
     Object? psbt = freezed,
@@ -420,26 +387,14 @@ class __$SendStateCopyWithImpl<$Res> extends _$SendStateCopyWithImpl<$Res>
       feeSlow: feeSlow == freezed
           ? _value.feeSlow
           : feeSlow // ignore: cast_nullable_to_non_nullable
-              as double?,
-      feeSlowAbs: feeSlowAbs == freezed
-          ? _value.feeSlowAbs
-          : feeSlowAbs // ignore: cast_nullable_to_non_nullable
               as int?,
       feeMedium: feeMedium == freezed
           ? _value.feeMedium
           : feeMedium // ignore: cast_nullable_to_non_nullable
-              as double?,
-      feeMediumAbs: feeMediumAbs == freezed
-          ? _value.feeMediumAbs
-          : feeMediumAbs // ignore: cast_nullable_to_non_nullable
               as int?,
       feeFast: feeFast == freezed
           ? _value.feeFast
           : feeFast // ignore: cast_nullable_to_non_nullable
-              as double?,
-      feeFastAbs: feeFastAbs == freezed
-          ? _value.feeFastAbs
-          : feeFastAbs // ignore: cast_nullable_to_non_nullable
               as int?,
       balance: balance == freezed
           ? _value.balance
@@ -491,11 +446,8 @@ class _$_SendState extends _SendState with DiagnosticableTreeMixin {
       this.weight = 0,
       this.fees = '',
       this.feeSlow,
-      this.feeSlowAbs,
       this.feeMedium,
-      this.feeMediumAbs,
       this.feeFast,
-      this.feeFastAbs,
       this.balance,
       this.feesOption = 1,
       this.psbt = '',
@@ -545,17 +497,11 @@ class _$_SendState extends _SendState with DiagnosticableTreeMixin {
   @override
   final String fees;
   @override
-  final double? feeSlow;
+  final int? feeSlow;
   @override
-  final int? feeSlowAbs;
+  final int? feeMedium;
   @override
-  final double? feeMedium;
-  @override
-  final int? feeMediumAbs;
-  @override
-  final double? feeFast;
-  @override
-  final int? feeFastAbs;
+  final int? feeFast;
   @override
   final int? balance;
   @JsonKey(defaultValue: 1)
@@ -577,7 +523,7 @@ class _$_SendState extends _SendState with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SendState(currentStep: $currentStep, loadingStart: $loadingStart, calculatingFees: $calculatingFees, buildingTx: $buildingTx, sendingTx: $sendingTx, errLoading: $errLoading, errAddress: $errAddress, errAmount: $errAmount, errFees: $errFees, address: $address, amount: $amount, weight: $weight, fees: $fees, feeSlow: $feeSlow, feeSlowAbs: $feeSlowAbs, feeMedium: $feeMedium, feeMediumAbs: $feeMediumAbs, feeFast: $feeFast, feeFastAbs: $feeFastAbs, balance: $balance, feesOption: $feesOption, psbt: $psbt, txId: $txId, finalFee: $finalFee, finalAmount: $finalAmount, sweepWallet: $sweepWallet)';
+    return 'SendState(currentStep: $currentStep, loadingStart: $loadingStart, calculatingFees: $calculatingFees, buildingTx: $buildingTx, sendingTx: $sendingTx, errLoading: $errLoading, errAddress: $errAddress, errAmount: $errAmount, errFees: $errFees, address: $address, amount: $amount, weight: $weight, fees: $fees, feeSlow: $feeSlow, feeMedium: $feeMedium, feeFast: $feeFast, balance: $balance, feesOption: $feesOption, psbt: $psbt, txId: $txId, finalFee: $finalFee, finalAmount: $finalAmount, sweepWallet: $sweepWallet)';
   }
 
   @override
@@ -599,11 +545,8 @@ class _$_SendState extends _SendState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('weight', weight))
       ..add(DiagnosticsProperty('fees', fees))
       ..add(DiagnosticsProperty('feeSlow', feeSlow))
-      ..add(DiagnosticsProperty('feeSlowAbs', feeSlowAbs))
       ..add(DiagnosticsProperty('feeMedium', feeMedium))
-      ..add(DiagnosticsProperty('feeMediumAbs', feeMediumAbs))
       ..add(DiagnosticsProperty('feeFast', feeFast))
-      ..add(DiagnosticsProperty('feeFastAbs', feeFastAbs))
       ..add(DiagnosticsProperty('balance', balance))
       ..add(DiagnosticsProperty('feesOption', feesOption))
       ..add(DiagnosticsProperty('psbt', psbt))
@@ -656,21 +599,12 @@ class _$_SendState extends _SendState with DiagnosticableTreeMixin {
             (identical(other.feeSlow, feeSlow) ||
                 const DeepCollectionEquality()
                     .equals(other.feeSlow, feeSlow)) &&
-            (identical(other.feeSlowAbs, feeSlowAbs) ||
-                const DeepCollectionEquality()
-                    .equals(other.feeSlowAbs, feeSlowAbs)) &&
             (identical(other.feeMedium, feeMedium) ||
                 const DeepCollectionEquality()
                     .equals(other.feeMedium, feeMedium)) &&
-            (identical(other.feeMediumAbs, feeMediumAbs) ||
-                const DeepCollectionEquality()
-                    .equals(other.feeMediumAbs, feeMediumAbs)) &&
             (identical(other.feeFast, feeFast) ||
                 const DeepCollectionEquality()
                     .equals(other.feeFast, feeFast)) &&
-            (identical(other.feeFastAbs, feeFastAbs) ||
-                const DeepCollectionEquality()
-                    .equals(other.feeFastAbs, feeFastAbs)) &&
             (identical(other.balance, balance) ||
                 const DeepCollectionEquality()
                     .equals(other.balance, balance)) &&
@@ -684,8 +618,12 @@ class _$_SendState extends _SendState with DiagnosticableTreeMixin {
             (identical(other.finalFee, finalFee) ||
                 const DeepCollectionEquality()
                     .equals(other.finalFee, finalFee)) &&
-            (identical(other.finalAmount, finalAmount) || const DeepCollectionEquality().equals(other.finalAmount, finalAmount)) &&
-            (identical(other.sweepWallet, sweepWallet) || const DeepCollectionEquality().equals(other.sweepWallet, sweepWallet)));
+            (identical(other.finalAmount, finalAmount) ||
+                const DeepCollectionEquality()
+                    .equals(other.finalAmount, finalAmount)) &&
+            (identical(other.sweepWallet, sweepWallet) ||
+                const DeepCollectionEquality()
+                    .equals(other.sweepWallet, sweepWallet)));
   }
 
   @override
@@ -705,11 +643,8 @@ class _$_SendState extends _SendState with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(weight) ^
       const DeepCollectionEquality().hash(fees) ^
       const DeepCollectionEquality().hash(feeSlow) ^
-      const DeepCollectionEquality().hash(feeSlowAbs) ^
       const DeepCollectionEquality().hash(feeMedium) ^
-      const DeepCollectionEquality().hash(feeMediumAbs) ^
       const DeepCollectionEquality().hash(feeFast) ^
-      const DeepCollectionEquality().hash(feeFastAbs) ^
       const DeepCollectionEquality().hash(balance) ^
       const DeepCollectionEquality().hash(feesOption) ^
       const DeepCollectionEquality().hash(psbt) ^
@@ -739,12 +674,9 @@ abstract class _SendState extends SendState {
       String amount,
       int weight,
       String fees,
-      double? feeSlow,
-      int? feeSlowAbs,
-      double? feeMedium,
-      int? feeMediumAbs,
-      double? feeFast,
-      int? feeFastAbs,
+      int? feeSlow,
+      int? feeMedium,
+      int? feeFast,
       int? balance,
       int feesOption,
       String psbt,
@@ -781,17 +713,11 @@ abstract class _SendState extends SendState {
   @override
   String get fees => throw _privateConstructorUsedError;
   @override
-  double? get feeSlow => throw _privateConstructorUsedError;
+  int? get feeSlow => throw _privateConstructorUsedError;
   @override
-  int? get feeSlowAbs => throw _privateConstructorUsedError;
+  int? get feeMedium => throw _privateConstructorUsedError;
   @override
-  double? get feeMedium => throw _privateConstructorUsedError;
-  @override
-  int? get feeMediumAbs => throw _privateConstructorUsedError;
-  @override
-  double? get feeFast => throw _privateConstructorUsedError;
-  @override
-  int? get feeFastAbs => throw _privateConstructorUsedError;
+  int? get feeFast => throw _privateConstructorUsedError;
   @override
   int? get balance => throw _privateConstructorUsedError;
   @override

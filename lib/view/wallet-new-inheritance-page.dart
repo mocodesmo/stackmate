@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sats/cubit/new-wallet/inheritance-timer.dart';
@@ -57,12 +55,7 @@ class InheritanceWalletInfo extends StatelessWidget {
         const SizedBox(height: 32),
         Text(
           '''
-
-STEPS
-STEPS
-
-
-
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
       ''',
           style: c.fonts.caption!.copyWith(color: Colors.white),
@@ -107,16 +100,29 @@ class TimerSettings extends StatelessWidget {
       children: [
         const SizedBox(height: 24),
         if (date == null)
-          const Text('No Date Selected')
+          Text(
+            '   No Date Selected',
+            style: c.fonts.caption!.copyWith(
+              color: c.colours.onBackground,
+            ),
+          )
         else
-          Text(date.toString()),
+          Text(
+            '   ' + date.toString(),
+            style: c.fonts.caption!.copyWith(
+              color: c.colours.onBackground,
+            ),
+          ),
         const SizedBox(height: 24),
-        TextButton(
-          onPressed: () {
-            _selectDate(c, date: date);
-          },
-          child: const Text(
-            'Select Inheritance Unlock Date',
+        Align(
+          alignment: Alignment.centerLeft,
+          child: TextButton(
+            onPressed: () {
+              _selectDate(c, date: date);
+            },
+            child: Text(
+              'Select Inheritance Unlock Date'.toUpperCase(),
+            ),
           ),
         ),
         const SizedBox(height: 80),
@@ -137,6 +143,7 @@ class TimerSettings extends StatelessWidget {
             'Confirm',
           ),
         ),
+        const SizedBox(height: 24),
       ],
     );
   }
