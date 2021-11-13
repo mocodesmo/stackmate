@@ -7,7 +7,8 @@ import 'package:sats/cubit/_state.dart';
 import 'package:sats/cubit/calculator.dart';
 import 'package:sats/cubit/reddit.dart';
 import 'package:sats/cubit/wallet/common/seed-generate.dart';
-import 'package:sats/view/wallet-new-inheritance-page.dart';
+import 'package:sats/cubit/wallet/common/seed-import.dart';
+import 'package:sats/cubit/wallet/common/xpub-import.dart';
 import 'package:sats/cubit/wallet/new-wallet/from-new-seed.dart';
 import 'package:sats/cubit/wallet/new-wallet/from-old-seed.dart';
 import 'package:sats/cubit/wallet/new-wallet/from-old-xpub.dart';
@@ -29,6 +30,7 @@ import 'package:sats/view/home-page.dart';
 import 'package:sats/view/logs-page.dart';
 import 'package:sats/view/qr-page.dart';
 import 'package:sats/view/settings-page.dart';
+import 'package:sats/view/wallet-new-inheritance-page.dart';
 import 'package:sats/view/wallet-new-seedgenerate-page.dart';
 import 'package:sats/view/wallet-new-seedimport-page.dart';
 import 'package:sats/view/wallet-new-xpub-page.dart';
@@ -93,38 +95,58 @@ class Routes {
         );
 
         page = MultiBlocProvider(
-          providers: [BlocProvider.value(value: seedGenerateWalletCubit)],
+          providers: [
+            BlocProvider.value(value: seedGenerateCubit),
+            BlocProvider.value(value: seedGenerateWalletCubit),
+          ],
           child: SeedGeneratePage(),
         );
         break;
 
       case importSeed:
-        final seedImportCubit = SeedImportCubit(
+        final importCubit = SeedImportCubit(loggerCubit);
+        final seedImportCubit = SeedImportWalletCubit(
           locator<IBitcoinCore>(),
           locator<IStorage>(),
           walletsCubit,
           networkSelectCubit,
           loggerCubit,
+          importCubit,
         );
 
         page = MultiBlocProvider(
-          providers: [BlocProvider.value(value: seedImportCubit)],
+          providers: [
+            BlocProvider.value(value: importCubit),
+            BlocProvider.value(value: seedImportCubit),
+          ],
           child: SeedImportPage(),
         );
         break;
 
       case watchOnly:
+        final xpubCub = XpubImportCubit(
+          loggerCubit,
+          locator<IClipBoard>(),
+        );
         final xpubCubit = XpubImportWalletCubit(
           locator<IBitcoinCore>(),
           loggerCubit,
-          locator<IClipBoard>(),
           locator<IStorage>(),
           walletsCubit,
           networkSelectCubit,
+          xpubCub,
         );
 
         page = BlocProvider.value(
           value: xpubCubit,
+          child: XpubImportPage(),
+        );
+
+        page = MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: xpubCub),
+            BlocProvider.value(value: xpubCubit),
+          ],
           child: XpubImportPage(),
         );
         break;

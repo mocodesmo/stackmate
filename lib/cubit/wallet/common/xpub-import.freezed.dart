@@ -22,21 +22,13 @@ class _$XpubImportStateTearOff {
       String fingerPrint = '',
       String path = '',
       String errXpub = '',
-      bool cameraOpened = false,
-      String label = '',
-      bool savingWallet = false,
-      String errSavingWallet = '',
-      bool newWalletSaved = false}) {
+      bool cameraOpened = false}) {
     return _SeedImportXpubState(
       xpub: xpub,
       fingerPrint: fingerPrint,
       path: path,
       errXpub: errXpub,
       cameraOpened: cameraOpened,
-      label: label,
-      savingWallet: savingWallet,
-      errSavingWallet: errSavingWallet,
-      newWalletSaved: newWalletSaved,
     );
   }
 }
@@ -51,10 +43,6 @@ mixin _$XpubImportState {
   String get path => throw _privateConstructorUsedError;
   String get errXpub => throw _privateConstructorUsedError;
   bool get cameraOpened => throw _privateConstructorUsedError;
-  String get label => throw _privateConstructorUsedError;
-  bool get savingWallet => throw _privateConstructorUsedError;
-  String get errSavingWallet => throw _privateConstructorUsedError;
-  bool get newWalletSaved => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $XpubImportStateCopyWith<XpubImportState> get copyWith =>
@@ -71,11 +59,7 @@ abstract class $XpubImportStateCopyWith<$Res> {
       String fingerPrint,
       String path,
       String errXpub,
-      bool cameraOpened,
-      String label,
-      bool savingWallet,
-      String errSavingWallet,
-      bool newWalletSaved});
+      bool cameraOpened});
 }
 
 /// @nodoc
@@ -94,10 +78,6 @@ class _$XpubImportStateCopyWithImpl<$Res>
     Object? path = freezed,
     Object? errXpub = freezed,
     Object? cameraOpened = freezed,
-    Object? label = freezed,
-    Object? savingWallet = freezed,
-    Object? errSavingWallet = freezed,
-    Object? newWalletSaved = freezed,
   }) {
     return _then(_value.copyWith(
       xpub: xpub == freezed
@@ -120,22 +100,6 @@ class _$XpubImportStateCopyWithImpl<$Res>
           ? _value.cameraOpened
           : cameraOpened // ignore: cast_nullable_to_non_nullable
               as bool,
-      label: label == freezed
-          ? _value.label
-          : label // ignore: cast_nullable_to_non_nullable
-              as String,
-      savingWallet: savingWallet == freezed
-          ? _value.savingWallet
-          : savingWallet // ignore: cast_nullable_to_non_nullable
-              as bool,
-      errSavingWallet: errSavingWallet == freezed
-          ? _value.errSavingWallet
-          : errSavingWallet // ignore: cast_nullable_to_non_nullable
-              as String,
-      newWalletSaved: newWalletSaved == freezed
-          ? _value.newWalletSaved
-          : newWalletSaved // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -152,11 +116,7 @@ abstract class _$SeedImportXpubStateCopyWith<$Res>
       String fingerPrint,
       String path,
       String errXpub,
-      bool cameraOpened,
-      String label,
-      bool savingWallet,
-      String errSavingWallet,
-      bool newWalletSaved});
+      bool cameraOpened});
 }
 
 /// @nodoc
@@ -177,10 +137,6 @@ class __$SeedImportXpubStateCopyWithImpl<$Res>
     Object? path = freezed,
     Object? errXpub = freezed,
     Object? cameraOpened = freezed,
-    Object? label = freezed,
-    Object? savingWallet = freezed,
-    Object? errSavingWallet = freezed,
-    Object? newWalletSaved = freezed,
   }) {
     return _then(_SeedImportXpubState(
       xpub: xpub == freezed
@@ -203,22 +159,6 @@ class __$SeedImportXpubStateCopyWithImpl<$Res>
           ? _value.cameraOpened
           : cameraOpened // ignore: cast_nullable_to_non_nullable
               as bool,
-      label: label == freezed
-          ? _value.label
-          : label // ignore: cast_nullable_to_non_nullable
-              as String,
-      savingWallet: savingWallet == freezed
-          ? _value.savingWallet
-          : savingWallet // ignore: cast_nullable_to_non_nullable
-              as bool,
-      errSavingWallet: errSavingWallet == freezed
-          ? _value.errSavingWallet
-          : errSavingWallet // ignore: cast_nullable_to_non_nullable
-              as String,
-      newWalletSaved: newWalletSaved == freezed
-          ? _value.newWalletSaved
-          : newWalletSaved // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -231,11 +171,7 @@ class _$_SeedImportXpubState extends _SeedImportXpubState {
       this.fingerPrint = '',
       this.path = '',
       this.errXpub = '',
-      this.cameraOpened = false,
-      this.label = '',
-      this.savingWallet = false,
-      this.errSavingWallet = '',
-      this.newWalletSaved = false})
+      this.cameraOpened = false})
       : super._();
 
   @JsonKey(defaultValue: '')
@@ -253,22 +189,10 @@ class _$_SeedImportXpubState extends _SeedImportXpubState {
   @JsonKey(defaultValue: false)
   @override
   final bool cameraOpened;
-  @JsonKey(defaultValue: '')
-  @override
-  final String label;
-  @JsonKey(defaultValue: false)
-  @override
-  final bool savingWallet;
-  @JsonKey(defaultValue: '')
-  @override
-  final String errSavingWallet;
-  @JsonKey(defaultValue: false)
-  @override
-  final bool newWalletSaved;
 
   @override
   String toString() {
-    return 'XpubImportState(xpub: $xpub, fingerPrint: $fingerPrint, path: $path, errXpub: $errXpub, cameraOpened: $cameraOpened, label: $label, savingWallet: $savingWallet, errSavingWallet: $errSavingWallet, newWalletSaved: $newWalletSaved)';
+    return 'XpubImportState(xpub: $xpub, fingerPrint: $fingerPrint, path: $path, errXpub: $errXpub, cameraOpened: $cameraOpened)';
   }
 
   @override
@@ -287,18 +211,7 @@ class _$_SeedImportXpubState extends _SeedImportXpubState {
                     .equals(other.errXpub, errXpub)) &&
             (identical(other.cameraOpened, cameraOpened) ||
                 const DeepCollectionEquality()
-                    .equals(other.cameraOpened, cameraOpened)) &&
-            (identical(other.label, label) ||
-                const DeepCollectionEquality().equals(other.label, label)) &&
-            (identical(other.savingWallet, savingWallet) ||
-                const DeepCollectionEquality()
-                    .equals(other.savingWallet, savingWallet)) &&
-            (identical(other.errSavingWallet, errSavingWallet) ||
-                const DeepCollectionEquality()
-                    .equals(other.errSavingWallet, errSavingWallet)) &&
-            (identical(other.newWalletSaved, newWalletSaved) ||
-                const DeepCollectionEquality()
-                    .equals(other.newWalletSaved, newWalletSaved)));
+                    .equals(other.cameraOpened, cameraOpened)));
   }
 
   @override
@@ -308,11 +221,7 @@ class _$_SeedImportXpubState extends _SeedImportXpubState {
       const DeepCollectionEquality().hash(fingerPrint) ^
       const DeepCollectionEquality().hash(path) ^
       const DeepCollectionEquality().hash(errXpub) ^
-      const DeepCollectionEquality().hash(cameraOpened) ^
-      const DeepCollectionEquality().hash(label) ^
-      const DeepCollectionEquality().hash(savingWallet) ^
-      const DeepCollectionEquality().hash(errSavingWallet) ^
-      const DeepCollectionEquality().hash(newWalletSaved);
+      const DeepCollectionEquality().hash(cameraOpened);
 
   @JsonKey(ignore: true)
   @override
@@ -327,11 +236,7 @@ abstract class _SeedImportXpubState extends XpubImportState {
       String fingerPrint,
       String path,
       String errXpub,
-      bool cameraOpened,
-      String label,
-      bool savingWallet,
-      String errSavingWallet,
-      bool newWalletSaved}) = _$_SeedImportXpubState;
+      bool cameraOpened}) = _$_SeedImportXpubState;
   const _SeedImportXpubState._() : super._();
 
   @override
@@ -344,14 +249,6 @@ abstract class _SeedImportXpubState extends XpubImportState {
   String get errXpub => throw _privateConstructorUsedError;
   @override
   bool get cameraOpened => throw _privateConstructorUsedError;
-  @override
-  String get label => throw _privateConstructorUsedError;
-  @override
-  bool get savingWallet => throw _privateConstructorUsedError;
-  @override
-  String get errSavingWallet => throw _privateConstructorUsedError;
-  @override
-  bool get newWalletSaved => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$SeedImportXpubStateCopyWith<_SeedImportXpubState> get copyWith =>

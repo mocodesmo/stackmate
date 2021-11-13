@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:sats/cubit/wallet/new-wallet/from-old-xpub.dart';
+import 'package:sats/cubit/wallet/common/xpub-import.dart';
 import 'package:sats/pkg/extensions.dart';
+
 class XpubFieldsImport extends StatefulWidget {
-  const XpubFieldsImport({Key? key}) : super(key: key);
+  const XpubFieldsImport({
+    Key? key,
+    required this.onConfirm,
+  }) : super(key: key);
+
+  final Function onConfirm;
 
   @override
   _XpubImportFieldsState createState() => _XpubImportFieldsState();
@@ -24,7 +30,7 @@ class _XpubImportFieldsState extends State<XpubFieldsImport> {
 
   @override
   Widget build(BuildContext c) {
-    return BlocBuilder<XpubImportWalletCubit, XpubImportWalletState>(
+    return BlocBuilder<XpubImportCubit, XpubImportState>(
       builder: (context, state) {
         if (_xpubController.text != state.xpub)
           _xpubController.text = state.xpub;
@@ -64,7 +70,7 @@ class _XpubImportFieldsState extends State<XpubFieldsImport> {
                     child: Text('SCAN'),
                   ),
                   onPressed: () {
-                    c.read<XpubImportWalletCubit>().toggleCamera();
+                    c.read<XpubImportCubit>().toggleCamera();
                   },
                 ),
               ],
@@ -75,7 +81,7 @@ class _XpubImportFieldsState extends State<XpubFieldsImport> {
                 controller: _xpubController,
                 maxLines: 4,
                 onChanged: (text) {
-                  c.read<XpubImportWalletCubit>().xpubChanged(text);
+                  c.read<XpubImportCubit>().xpubChanged(text);
                 },
               ),
             ),
@@ -86,7 +92,7 @@ class _XpubImportFieldsState extends State<XpubFieldsImport> {
                 alignment: Alignment.centerRight,
                 child: GestureDetector(
                   onTap: () {
-                    c.read<XpubImportWalletCubit>().xpubPasteClicked();
+                    c.read<XpubImportCubit>().xpubPasteClicked();
                   },
                   child: Text(
                     'PASTE'.notLocalised(),
@@ -110,7 +116,7 @@ class _XpubImportFieldsState extends State<XpubFieldsImport> {
                 child: TextField(
                   controller: _fingerPrintController,
                   onChanged: (text) {
-                    c.read<XpubImportWalletCubit>().fingerPrintChanged(text);
+                    c.read<XpubImportCubit>().fingerPrintChanged(text);
                   },
                 ),
               ),
@@ -121,9 +127,7 @@ class _XpubImportFieldsState extends State<XpubFieldsImport> {
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
                     onTap: () {
-                      c
-                          .read<XpubImportWalletCubit>()
-                          .fingerPrintPastedClicked();
+                      c.read<XpubImportCubit>().fingerPrintPastedClicked();
                     },
                     child: Text(
                       'PASTE'.notLocalised(),
@@ -146,7 +150,7 @@ class _XpubImportFieldsState extends State<XpubFieldsImport> {
                 child: TextField(
                   controller: _pathController,
                   onChanged: (text) {
-                    c.read<XpubImportWalletCubit>().pathChanged(text);
+                    c.read<XpubImportCubit>().pathChanged(text);
                   },
                 ),
               ),
@@ -157,7 +161,7 @@ class _XpubImportFieldsState extends State<XpubFieldsImport> {
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
                     onTap: () {
-                      c.read<XpubImportWalletCubit>().pathPasteClicked();
+                      c.read<XpubImportCubit>().pathPasteClicked();
                     },
                     child: Text(
                       'PASTE'.notLocalised(),
@@ -177,7 +181,7 @@ class _XpubImportFieldsState extends State<XpubFieldsImport> {
               padding: const EdgeInsets.all(16.0),
               child: TextButton(
                 onPressed: () {
-                  c.read<XpubImportWalletCubit>().nextClicked();
+                  widget.onConfirm();
                 },
                 child: const Text('CONFIRM'),
               ),

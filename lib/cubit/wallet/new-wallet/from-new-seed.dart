@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/chain-select.dart';
+import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/wallet/common/seed-generate.dart';
 import 'package:sats/cubit/wallets.dart';
 import 'package:sats/model/blockchain.dart';

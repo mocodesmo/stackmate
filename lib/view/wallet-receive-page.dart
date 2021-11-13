@@ -69,7 +69,7 @@ class TextAddress extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            c.read<ReceiveCubit>().add(CopyAddress());
+            c.read<ReceiveCubit>().copyAddress();
             //.copyAddress(address);
           },
           child: const Text('COPY'),
@@ -79,7 +79,7 @@ class TextAddress extends StatelessWidget {
           width: c.width / 4,
           child: TextButton(
             onPressed: () {
-              c.read<ReceiveCubit>().add(ShareAddress());
+              c.read<ReceiveCubit>().shareAddress();
               //.shareAddress(address);
             },
             child: Text(

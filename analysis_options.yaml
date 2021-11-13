@@ -30,4 +30,4 @@ analyzer:
     - lib/model/*.g.dart
     - lib/model/*.freezed.dart
     - lib/cubit/*.freezed.dart
-    - lib/cubit/*/*.freezed.dart
+    - lib/cubit/**/*.freezed.dart

@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/chain-select.dart';
+import 'package:sats/cubit/logger.dart';
+import 'package:sats/cubit/wallet/common/seed-import.dart';
 import 'package:sats/cubit/wallets.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/model/wallet.dart';
@@ -12,28 +13,22 @@ part 'from-old-seed.freezed.dart';
 
 enum SeedImportWalletSteps {
   warning,
-  passphrase,
   import,
   label,
 }
 
 @freezed
-class SeedImportState with _$SeedImportState {
-  const factory SeedImportState({
+class SeedImportWalletState with _$SeedImportWalletState {
+  const factory SeedImportWalletState({
     @Default(SeedImportWalletSteps.warning) SeedImportWalletSteps currentStep,
-    @Default('') String seed,
-    @Default('') String seedError,
     @Default('') String walletLabel,
-    @Default('') String passPhrase,
-    @Default(0) int accountNumber,
-    @Default('') String errPassPhrase,
     @Default('') String walletLabelError,
     @Default(false) bool savingWallet,
     @Default('') String savingWalletError,
     @Default(false) bool newWalletSaved,
     @Default(false) bool labelFixed,
-  }) = _SeedImportState;
-  const SeedImportState._();
+  }) = _SeedImportWalletState;
+  const SeedImportWalletState._();
 
   bool showWalletConfirmButton() {
     if (walletLabel.length > 4) return true;
@@ -60,27 +55,26 @@ class SeedImportState with _$SeedImportState {
       case SeedImportWalletSteps.import:
         return 'Enter Seed';
 
-      case SeedImportWalletSteps.passphrase:
-        return 'Extra Details';
+      // case SeedImportWalletSteps.passphrase:
+      //   return 'Extra Details';
 
       case SeedImportWalletSteps.label:
         return 'Label Wallet';
     }
   }
-
-  bool showSeedCompleteButton() => seed.split(' ').length == 12 ? true : false;
 }
 
-class SeedImportCubit extends Cubit<SeedImportState> {
-  SeedImportCubit(
+class SeedImportWalletCubit extends Cubit<SeedImportWalletState> {
+  SeedImportWalletCubit(
     this._bitcoin,
     this._storage,
     this._wallets,
     this._blockchainCubit,
-    this.logger, {
+    this.logger,
+    this._importCubit, {
     String walletLabel = '',
   }) : super(
-          SeedImportState(
+          SeedImportWalletState(
             walletLabel: walletLabel,
             labelFixed: walletLabel != '',
           ),
@@ -92,34 +86,74 @@ class SeedImportCubit extends Cubit<SeedImportState> {
   final LoggerCubit logger;
   final WalletsCubit _wallets;
   final ChainSelectCubit _blockchainCubit;
+  final SeedImportCubit _importCubit;
 
-  void _checkPassPhrase() {
-    if (state.passPhrase.length > 8 || state.passPhrase.contains(' ')) {
-      emit(state.copyWith(errPassPhrase: 'Invalid Passphrase'));
-      return;
+  void nextClicked() async {
+    switch (state.currentStep) {
+      case SeedImportWalletSteps.warning:
+        emit(
+          const SeedImportWalletState(
+            currentStep: SeedImportWalletSteps.import,
+          ),
+        );
+        break;
+
+      case SeedImportWalletSteps.import:
+        final importStep = _importCubit.state.currentStep;
+        switch (importStep) {
+          case SeedImportStep.passphrase:
+            _importCubit.checkPassPhrase();
+            break;
+          case SeedImportStep.import:
+            _importCubit.checkSeed();
+            await Future.delayed(const Duration(microseconds: 100));
+            if (_importCubit.state.seedError != '') return;
+            emit(state.copyWith(currentStep: SeedImportWalletSteps.label));
+            break;
+        }
+        break;
+
+      case SeedImportWalletSteps.label:
+        _saveClicked();
+        break;
     }
-
-    emit(
-      state.copyWith(
-        currentStep: SeedImportWalletSteps.import,
-        errPassPhrase: '',
-      ),
-    );
   }
 
-  void _checkSeed() {
-    try {
-      final seed = state.seed;
+  void backClicked() async {
+    switch (state.currentStep) {
+      case SeedImportWalletSteps.warning:
+        break;
 
-      if (seed.split(' ').length != 12) {
-        emit(state.copyWith(seedError: 'Invalid Seed.'));
-        return;
-      }
+      case SeedImportWalletSteps.import:
+        final importStep = _importCubit.state.currentStep;
+        switch (importStep) {
+          case SeedImportStep.passphrase:
+            emit(
+              const SeedImportWalletState(
+                currentStep: SeedImportWalletSteps.warning,
+              ),
+            );
+            _importCubit.backOnPassphaseClicked();
+            break;
+          case SeedImportStep.import:
+            _importCubit.backOnSeedClicked();
+            break;
+        }
+        break;
 
-      emit(state.copyWith(currentStep: SeedImportWalletSteps.label));
-    } catch (e) {
-      print(e.toString());
+      case SeedImportWalletSteps.label:
+        emit(
+          const SeedImportWalletState(
+            currentStep: SeedImportWalletSteps.import,
+          ),
+        );
+        _importCubit.backOnSeedClicked();
+        break;
     }
+  }
+
+  void labelChanged(String text) {
+    emit(state.copyWith(walletLabel: text, walletLabelError: ''));
   }
 
   void _saveClicked() async {
@@ -132,9 +166,10 @@ class SeedImportCubit extends Cubit<SeedImportState> {
 
     emit(state.copyWith(walletLabelError: ''));
     try {
+      final istate = _importCubit.state;
       final neu = _bitcoin.importMaster(
-        mnemonic: state.seed,
-        passphrase: state.passPhrase,
+        mnemonic: istate.seed,
+        passphrase: istate.passPhrase,
         network: _blockchainCubit.state.blockchain.name,
       );
 
@@ -189,90 +224,5 @@ class SeedImportCubit extends Cubit<SeedImportState> {
     } catch (e, s) {
       logger.logException(e, 'SeedImportCubit._saveWalletLocally', s);
     }
-  }
-
-  void nextClicked() {
-    switch (state.currentStep) {
-      case SeedImportWalletSteps.warning:
-        emit(
-          const SeedImportState(
-            currentStep: SeedImportWalletSteps.passphrase,
-          ),
-        );
-        break;
-
-      case SeedImportWalletSteps.passphrase:
-        _checkPassPhrase();
-        break;
-
-      case SeedImportWalletSteps.import:
-        _checkSeed();
-        break;
-
-      case SeedImportWalletSteps.label:
-        _saveClicked();
-        break;
-    }
-  }
-
-  void backClicked() {
-    switch (state.currentStep) {
-      case SeedImportWalletSteps.warning:
-        break;
-
-      case SeedImportWalletSteps.passphrase:
-        emit(
-          const SeedImportState(
-            currentStep: SeedImportWalletSteps.warning,
-            passPhrase: '',
-            errPassPhrase: '',
-          ),
-        );
-        break;
-
-      case SeedImportWalletSteps.import:
-        emit(
-          const SeedImportState(
-            currentStep: SeedImportWalletSteps.passphrase,
-            seed: '',
-            seedError: '',
-          ),
-        );
-        break;
-
-      case SeedImportWalletSteps.label:
-        emit(
-          const SeedImportState(
-            currentStep: SeedImportWalletSteps.passphrase,
-          ),
-        );
-        break;
-    }
-  }
-
-  void seedTextChanged(String seed) {
-    emit(
-      state.copyWith(
-        seed: seed,
-        seedError: '',
-      ),
-    );
-  }
-
-  void passPhraseChanged(String text) {
-    emit(state.copyWith(passPhrase: text));
-  }
-
-  void accountNumberChanged(String number) {
-    try {
-      final val = int.parse(number);
-      emit(state.copyWith(accountNumber: val));
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-  void labelChanged(String text) {
-    emit(state.copyWith(walletLabel: text, walletLabelError: ''));
   }
 }

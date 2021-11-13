@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sats/cubit/wallet/common/seed-generate.dart';
-import 'package:sats/cubit/wallet/new-wallet/from-new-seed.dart';
 import 'package:sats/pkg/extensions.dart';
 
 class SeedGeneratePassphrase extends StatefulWidget {

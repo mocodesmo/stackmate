@@ -1,13 +1,12 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/chain-select.dart';
+import 'package:sats/cubit/logger.dart';
+import 'package:sats/cubit/wallet/common/xpub-import.dart';
 import 'package:sats/cubit/wallets.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/model/wallet.dart';
 import 'package:sats/pkg/bitcoin.dart';
-import 'package:sats/pkg/clipboard.dart';
 import 'package:sats/pkg/storage.dart';
 
 part 'from-old-xpub.freezed.dart';
@@ -18,11 +17,6 @@ enum XpubImportWalletStep { import, label }
 class XpubImportWalletState with _$XpubImportWalletState {
   const factory XpubImportWalletState({
     @Default(XpubImportWalletStep.import) XpubImportWalletStep currentStep,
-    @Default('') String xpub,
-    @Default('') String fingerPrint,
-    @Default('') String path,
-    @Default('') String errXpub,
-    @Default(false) bool cameraOpened,
     @Default('') String label,
     @Default(false) bool savingWallet,
     @Default('') String errSavingWallet,
@@ -30,7 +24,8 @@ class XpubImportWalletState with _$XpubImportWalletState {
   }) = _SeedImportXpubState;
   const XpubImportWalletState._();
 
-  double completePercent() => currentStep.index / XpubImportWalletStep.values.length;
+  double completePercent() =>
+      currentStep.index / XpubImportWalletStep.values.length;
 
   String completePercentLabel() =>
       ((currentStep.index / XpubImportWalletStep.values.length) * 100)
@@ -46,12 +41,6 @@ class XpubImportWalletState with _$XpubImportWalletState {
   }
 
   bool canGoBack() => currentStep == XpubImportWalletStep.import;
-
-  bool showOtherDetails() {
-    if (xpub.startsWith('[') && xpub.contains(']') && xpub.contains('/'))
-      return false;
-    return true;
-  }
 }
 
 class XpubImportWalletCubit extends Cubit<XpubImportWalletState> {
@@ -59,19 +48,19 @@ class XpubImportWalletCubit extends Cubit<XpubImportWalletState> {
     // this._soloWalletAPI,
     this._bitcoin,
     this._logger,
-    this._clipboard,
     this._storage,
     this._wallets,
     this._blockchainCubit,
+    this._importCubit,
   ) : super(const XpubImportWalletState());
 
-  final IClipBoard _clipboard;
   // final ISoloWalletAPI _soloWalletAPI;
   final LoggerCubit _logger;
   final IStorage _storage;
   final IBitcoinCore _bitcoin;
   final WalletsCubit _wallets;
   final ChainSelectCubit _blockchainCubit;
+  final XpubImportCubit _importCubit;
 
   void _saveWallet() async {
     emit(
@@ -82,11 +71,12 @@ class XpubImportWalletCubit extends Cubit<XpubImportWalletState> {
     );
 
     try {
-      final fingerprint = state.fingerPrint;
-      final path = state.path;
-      final xpub = state.xpub;
+      final xpubState = _importCubit.state;
+      final fingerprint = xpubState.fingerPrint;
+      final path = xpubState.path;
+      final xpub = xpubState.xpub;
       String policy = '';
-      if (!state.showOtherDetails())
+      if (!xpubState.showOtherDetails())
         policy = 'pk($xpub/0/*)';
       else
         policy = 'pk([$fingerprint/$path]$xpub/0/*)'.replaceFirst('/m', '');
@@ -139,97 +129,16 @@ class XpubImportWalletCubit extends Cubit<XpubImportWalletState> {
     }
   }
 
-  void toggleCamera() async {
-    try {
-      emit(state.copyWith(cameraOpened: true, errXpub: ''));
-
-      String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-        '#ff6666',
-        'Cancel',
-        false,
-        ScanMode.QR,
-      );
-
-      if (barcodeScanRes == '-1') barcodeScanRes = '';
-
-      emit(state.copyWith(xpub: barcodeScanRes, cameraOpened: false));
-    } catch (e, s) {
-      emit(state.copyWith(cameraOpened: false, errXpub: 'Error Occured.'));
-
-      _logger.logException(e, 'BtcSendAddressBloc._mapToggleCameraEvent', s);
-    }
-  }
-
-  void xpubPasteClicked() async {
-    try {
-      final text = await _clipboard.pasteFromClipBoard();
-      emit(state.copyWith(xpub: text, errXpub: ''));
-    } catch (e, s) {
-      _logger.logException(e, 'BtcSendAddressBloc._mapPasteAddressEvent', s);
-    }
-  }
-
-  void xpubChanged(String text) {
-    emit(state.copyWith(xpub: text, errXpub: ''));
-  }
-
-  void fingerPrintChanged(String text) {
-    emit(state.copyWith(fingerPrint: text, errXpub: ''));
-  }
-
-  void fingerPrintPastedClicked() async {
-    try {
-      final text = await _clipboard.pasteFromClipBoard();
-      emit(state.copyWith(fingerPrint: text, errXpub: ''));
-    } catch (e, s) {
-      _logger.logException(e, 'BtcSendAddressBloc.fingerPrintPastedClicked', s);
-    }
-  }
-
-  void pathChanged(String text) {
-    emit(state.copyWith(path: text, errXpub: ''));
-  }
-
-  void pathPasteClicked() async {
-    try {
-      final text = await _clipboard.pasteFromClipBoard();
-      emit(state.copyWith(path: text, errXpub: ''));
-    } catch (e, s) {
-      _logger.logException(e, 'BtcSendAddressBloc.pathPasteClicked', s);
-    }
-  }
-
   void labelChanged(String text) {
     emit(state.copyWith(label: text, errSavingWallet: ''));
   }
 
-  void nextClicked() {
+  void nextClicked() async {
     switch (state.currentStep) {
       case XpubImportWalletStep.import:
-        if (state.xpub == '' || state.xpub.length < 10) {
-          emit(
-            state.copyWith(
-              errXpub: 'Invalid xPub. Try again.',
-            ),
-          );
-          return;
-        }
-        if (state.showOtherDetails() && state.fingerPrint.length < 8) {
-          emit(
-            state.copyWith(
-              errXpub: 'Invalid Fingerprint. Try again.',
-            ),
-          );
-          return;
-        }
-        if (state.showOtherDetails() && state.path == '') {
-          emit(
-            state.copyWith(
-              errXpub: 'Invalid Path. Try again.',
-            ),
-          );
-          return;
-        }
+        _importCubit.checkDetails();
+        await Future.delayed(const Duration(microseconds: 100));
+        if (_importCubit.state.errXpub != '') return;
 
         emit(state.copyWith(currentStep: XpubImportWalletStep.label));
         break;

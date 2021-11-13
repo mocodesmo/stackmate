@@ -1,12 +1,9 @@
-// ignore_for_file: type_annotate_public_apis
-
 import 'package:bloc/bloc.dart';
-import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/chain-select.dart';
+import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/node.dart';
 import 'package:sats/cubit/wallets.dart';
 import 'package:sats/model/blockchain.dart';
@@ -17,14 +14,6 @@ import 'package:sats/pkg/vibrate.dart';
 
 part 'receive.freezed.dart';
 
-abstract class ReceiveEvent {}
-
-class GetAddress extends ReceiveEvent {}
-
-class CopyAddress extends ReceiveEvent {}
-
-class ShareAddress extends ReceiveEvent {}
-
 @freezed
 class ReceiveState with _$ReceiveState {
   const factory ReceiveState({
@@ -34,10 +23,10 @@ class ReceiveState with _$ReceiveState {
   }) = _ReceiveState;
 }
 
-class ReceiveCubit extends Bloc<ReceiveEvent, ReceiveState> {
+class ReceiveCubit extends Cubit<ReceiveState> {
   ReceiveCubit(
     this._walletCubit,
-    // this._bitcoin, 
+    // this._bitcoin,
     this._blockchain,
     this._logger,
     this._clipBoard,
@@ -45,9 +34,6 @@ class ReceiveCubit extends Bloc<ReceiveEvent, ReceiveState> {
     this._vibrate,
     this._nodeAddressCubit,
   ) : super(const ReceiveState()) {
-    on<GetAddress>(getAddress, transformer: concurrent());
-    on<CopyAddress>(copyAddress, transformer: concurrent());
-    on<ShareAddress>(shareAddress, transformer: concurrent());
     _init();
   }
 
@@ -62,10 +48,10 @@ class ReceiveCubit extends Bloc<ReceiveEvent, ReceiveState> {
 
   void _init() async {
     await Future.delayed(const Duration(milliseconds: 1000));
-    add(GetAddress());
+    getAddress();
   }
 
-  void getAddress(event, emit) async {
+  void getAddress() async {
     try {
       // await Future.delayed(const Duration(milliseconds: 500));
 
@@ -120,7 +106,7 @@ class ReceiveCubit extends Bloc<ReceiveEvent, ReceiveState> {
     }
   }
 
-  void copyAddress(event, emit) {
+  void copyAddress() {
     try {
       _clipBoard.copyToClipBoard(state.address!);
       _vibrate.vibe();
@@ -129,7 +115,7 @@ class ReceiveCubit extends Bloc<ReceiveEvent, ReceiveState> {
     }
   }
 
-  void shareAddress(event, emit) {
+  void shareAddress() {
     try {
       final address = state.address!;
       final text = 'This is my bitcoin address:\n$address';

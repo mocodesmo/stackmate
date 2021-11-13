@@ -19,22 +19,12 @@ class _$XpubImportWalletStateTearOff {
 
   _SeedImportXpubState call(
       {XpubImportWalletStep currentStep = XpubImportWalletStep.import,
-      String xpub = '',
-      String fingerPrint = '',
-      String path = '',
-      String errXpub = '',
-      bool cameraOpened = false,
       String label = '',
       bool savingWallet = false,
       String errSavingWallet = '',
       bool newWalletSaved = false}) {
     return _SeedImportXpubState(
       currentStep: currentStep,
-      xpub: xpub,
-      fingerPrint: fingerPrint,
-      path: path,
-      errXpub: errXpub,
-      cameraOpened: cameraOpened,
       label: label,
       savingWallet: savingWallet,
       errSavingWallet: errSavingWallet,
@@ -49,11 +39,6 @@ const $XpubImportWalletState = _$XpubImportWalletStateTearOff();
 /// @nodoc
 mixin _$XpubImportWalletState {
   XpubImportWalletStep get currentStep => throw _privateConstructorUsedError;
-  String get xpub => throw _privateConstructorUsedError;
-  String get fingerPrint => throw _privateConstructorUsedError;
-  String get path => throw _privateConstructorUsedError;
-  String get errXpub => throw _privateConstructorUsedError;
-  bool get cameraOpened => throw _privateConstructorUsedError;
   String get label => throw _privateConstructorUsedError;
   bool get savingWallet => throw _privateConstructorUsedError;
   String get errSavingWallet => throw _privateConstructorUsedError;
@@ -71,11 +56,6 @@ abstract class $XpubImportWalletStateCopyWith<$Res> {
       _$XpubImportWalletStateCopyWithImpl<$Res>;
   $Res call(
       {XpubImportWalletStep currentStep,
-      String xpub,
-      String fingerPrint,
-      String path,
-      String errXpub,
-      bool cameraOpened,
       String label,
       bool savingWallet,
       String errSavingWallet,
@@ -94,11 +74,6 @@ class _$XpubImportWalletStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? currentStep = freezed,
-    Object? xpub = freezed,
-    Object? fingerPrint = freezed,
-    Object? path = freezed,
-    Object? errXpub = freezed,
-    Object? cameraOpened = freezed,
     Object? label = freezed,
     Object? savingWallet = freezed,
     Object? errSavingWallet = freezed,
@@ -109,26 +84,6 @@ class _$XpubImportWalletStateCopyWithImpl<$Res>
           ? _value.currentStep
           : currentStep // ignore: cast_nullable_to_non_nullable
               as XpubImportWalletStep,
-      xpub: xpub == freezed
-          ? _value.xpub
-          : xpub // ignore: cast_nullable_to_non_nullable
-              as String,
-      fingerPrint: fingerPrint == freezed
-          ? _value.fingerPrint
-          : fingerPrint // ignore: cast_nullable_to_non_nullable
-              as String,
-      path: path == freezed
-          ? _value.path
-          : path // ignore: cast_nullable_to_non_nullable
-              as String,
-      errXpub: errXpub == freezed
-          ? _value.errXpub
-          : errXpub // ignore: cast_nullable_to_non_nullable
-              as String,
-      cameraOpened: cameraOpened == freezed
-          ? _value.cameraOpened
-          : cameraOpened // ignore: cast_nullable_to_non_nullable
-              as bool,
       label: label == freezed
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
@@ -158,11 +113,6 @@ abstract class _$SeedImportXpubStateCopyWith<$Res>
   @override
   $Res call(
       {XpubImportWalletStep currentStep,
-      String xpub,
-      String fingerPrint,
-      String path,
-      String errXpub,
-      bool cameraOpened,
       String label,
       bool savingWallet,
       String errSavingWallet,
@@ -183,11 +133,6 @@ class __$SeedImportXpubStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? currentStep = freezed,
-    Object? xpub = freezed,
-    Object? fingerPrint = freezed,
-    Object? path = freezed,
-    Object? errXpub = freezed,
-    Object? cameraOpened = freezed,
     Object? label = freezed,
     Object? savingWallet = freezed,
     Object? errSavingWallet = freezed,
@@ -198,26 +143,6 @@ class __$SeedImportXpubStateCopyWithImpl<$Res>
           ? _value.currentStep
           : currentStep // ignore: cast_nullable_to_non_nullable
               as XpubImportWalletStep,
-      xpub: xpub == freezed
-          ? _value.xpub
-          : xpub // ignore: cast_nullable_to_non_nullable
-              as String,
-      fingerPrint: fingerPrint == freezed
-          ? _value.fingerPrint
-          : fingerPrint // ignore: cast_nullable_to_non_nullable
-              as String,
-      path: path == freezed
-          ? _value.path
-          : path // ignore: cast_nullable_to_non_nullable
-              as String,
-      errXpub: errXpub == freezed
-          ? _value.errXpub
-          : errXpub // ignore: cast_nullable_to_non_nullable
-              as String,
-      cameraOpened: cameraOpened == freezed
-          ? _value.cameraOpened
-          : cameraOpened // ignore: cast_nullable_to_non_nullable
-              as bool,
       label: label == freezed
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
@@ -243,11 +168,6 @@ class __$SeedImportXpubStateCopyWithImpl<$Res>
 class _$_SeedImportXpubState extends _SeedImportXpubState {
   const _$_SeedImportXpubState(
       {this.currentStep = XpubImportWalletStep.import,
-      this.xpub = '',
-      this.fingerPrint = '',
-      this.path = '',
-      this.errXpub = '',
-      this.cameraOpened = false,
       this.label = '',
       this.savingWallet = false,
       this.errSavingWallet = '',
@@ -257,21 +177,6 @@ class _$_SeedImportXpubState extends _SeedImportXpubState {
   @JsonKey(defaultValue: XpubImportWalletStep.import)
   @override
   final XpubImportWalletStep currentStep;
-  @JsonKey(defaultValue: '')
-  @override
-  final String xpub;
-  @JsonKey(defaultValue: '')
-  @override
-  final String fingerPrint;
-  @JsonKey(defaultValue: '')
-  @override
-  final String path;
-  @JsonKey(defaultValue: '')
-  @override
-  final String errXpub;
-  @JsonKey(defaultValue: false)
-  @override
-  final bool cameraOpened;
   @JsonKey(defaultValue: '')
   @override
   final String label;
@@ -287,7 +192,7 @@ class _$_SeedImportXpubState extends _SeedImportXpubState {
 
   @override
   String toString() {
-    return 'XpubImportWalletState(currentStep: $currentStep, xpub: $xpub, fingerPrint: $fingerPrint, path: $path, errXpub: $errXpub, cameraOpened: $cameraOpened, label: $label, savingWallet: $savingWallet, errSavingWallet: $errSavingWallet, newWalletSaved: $newWalletSaved)';
+    return 'XpubImportWalletState(currentStep: $currentStep, label: $label, savingWallet: $savingWallet, errSavingWallet: $errSavingWallet, newWalletSaved: $newWalletSaved)';
   }
 
   @override
@@ -297,19 +202,6 @@ class _$_SeedImportXpubState extends _SeedImportXpubState {
             (identical(other.currentStep, currentStep) ||
                 const DeepCollectionEquality()
                     .equals(other.currentStep, currentStep)) &&
-            (identical(other.xpub, xpub) ||
-                const DeepCollectionEquality().equals(other.xpub, xpub)) &&
-            (identical(other.fingerPrint, fingerPrint) ||
-                const DeepCollectionEquality()
-                    .equals(other.fingerPrint, fingerPrint)) &&
-            (identical(other.path, path) ||
-                const DeepCollectionEquality().equals(other.path, path)) &&
-            (identical(other.errXpub, errXpub) ||
-                const DeepCollectionEquality()
-                    .equals(other.errXpub, errXpub)) &&
-            (identical(other.cameraOpened, cameraOpened) ||
-                const DeepCollectionEquality()
-                    .equals(other.cameraOpened, cameraOpened)) &&
             (identical(other.label, label) ||
                 const DeepCollectionEquality().equals(other.label, label)) &&
             (identical(other.savingWallet, savingWallet) ||
@@ -327,11 +219,6 @@ class _$_SeedImportXpubState extends _SeedImportXpubState {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(currentStep) ^
-      const DeepCollectionEquality().hash(xpub) ^
-      const DeepCollectionEquality().hash(fingerPrint) ^
-      const DeepCollectionEquality().hash(path) ^
-      const DeepCollectionEquality().hash(errXpub) ^
-      const DeepCollectionEquality().hash(cameraOpened) ^
       const DeepCollectionEquality().hash(label) ^
       const DeepCollectionEquality().hash(savingWallet) ^
       const DeepCollectionEquality().hash(errSavingWallet) ^
@@ -347,11 +234,6 @@ class _$_SeedImportXpubState extends _SeedImportXpubState {
 abstract class _SeedImportXpubState extends XpubImportWalletState {
   const factory _SeedImportXpubState(
       {XpubImportWalletStep currentStep,
-      String xpub,
-      String fingerPrint,
-      String path,
-      String errXpub,
-      bool cameraOpened,
       String label,
       bool savingWallet,
       String errSavingWallet,
@@ -360,16 +242,6 @@ abstract class _SeedImportXpubState extends XpubImportWalletState {
 
   @override
   XpubImportWalletStep get currentStep => throw _privateConstructorUsedError;
-  @override
-  String get xpub => throw _privateConstructorUsedError;
-  @override
-  String get fingerPrint => throw _privateConstructorUsedError;
-  @override
-  String get path => throw _privateConstructorUsedError;
-  @override
-  String get errXpub => throw _privateConstructorUsedError;
-  @override
-  bool get cameraOpened => throw _privateConstructorUsedError;
   @override
   String get label => throw _privateConstructorUsedError;
   @override
