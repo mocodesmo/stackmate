@@ -7,6 +7,7 @@ import 'package:sats/cubit/chain-select.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/new-wallet/common/seed-generate.dart';
 import 'package:sats/cubit/new-wallet/common/xpub-import.dart';
+import 'package:sats/cubit/node.dart';
 import 'package:sats/cubit/wallets.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/model/wallet.dart';
@@ -30,6 +31,7 @@ class InheritanceTimerState with _$InheritanceTimerState {
     @Default(InteritanceTimerWalletSteps.info)
         InteritanceTimerWalletSteps currentStep,
     DateTime? date,
+    @Default('') String errDate,
     @Default('') String walletLabel,
     @Default('') String errWalletLabel,
     @Default(false) bool savingWallet,
@@ -41,13 +43,15 @@ class InheritanceTimerState with _$InheritanceTimerState {
 
 class InteritanceTimerCubit extends Cubit<InheritanceTimerState> {
   InteritanceTimerCubit(
-    this._bitcoin,
+    this._core,
     this._storage,
     this._logger,
     this._wallets,
     this._blockchainCubit,
     this._generateCubit,
     this._importCubit,
+    this._nodeAddressCubit,
+    this._blockchain,
   ) : super(const InheritanceTimerState()) {
     _generateCubit.stream.listen((gstate) {
       if (gstate.wallet != null) {
@@ -61,7 +65,7 @@ class InteritanceTimerCubit extends Cubit<InheritanceTimerState> {
     });
   }
 
-  final IStackMateCore _bitcoin;
+  final IStackMateCore _core;
 
   final IStorage _storage;
   final LoggerCubit _logger;
@@ -73,8 +77,11 @@ class InteritanceTimerCubit extends Cubit<InheritanceTimerState> {
   final XpubImportCubit _importCubit;
   late StreamSubscription _generateSub;
   late StreamSubscription _importSub;
+  final NodeAddressCubit _nodeAddressCubit;
+  final ChainSelectCubit _blockchain;
 
-  void dateSelected(DateTime date) => emit(state.copyWith(date: date));
+  void dateSelected(DateTime date) =>
+      emit(state.copyWith(date: date, errDate: ''));
 
   void backClicked() {
     switch (state.currentStep) {
@@ -106,6 +113,10 @@ class InteritanceTimerCubit extends Cubit<InheritanceTimerState> {
 
         break;
       case InteritanceTimerWalletSteps.settings:
+        if (state.date == null || state.date!.isBefore(DateTime.now())) {
+          emit(state.copyWith(errDate: 'Invalid Date Selected'));
+          return;
+        }
         emit(state.copyWith(currentStep: InteritanceTimerWalletSteps.seed));
         break;
 
@@ -133,7 +144,7 @@ class InteritanceTimerCubit extends Cubit<InheritanceTimerState> {
 
       final wallet = _generateCubit.state.wallet;
       if (wallet == null) return;
-      final policy =
+      final mainPolicy =
           'pk([${wallet.fingerPrint}/${wallet.hardenedPath}]${wallet.xprv}/0/*)'
               .replaceFirst('/m', '');
 
@@ -141,20 +152,33 @@ class InteritanceTimerCubit extends Cubit<InheritanceTimerState> {
       final fingerprint = xpubState.fingerPrint;
       final path = xpubState.path;
       final xpub = xpubState.xpub;
-      String policy2 = '';
+      String backupPolicy = '';
       if (!xpubState.showOtherDetails())
-        policy2 = 'pk($xpub/0/*)';
+        backupPolicy = 'pk($xpub/0/*)';
       else
-        policy2 = 'pk([$fingerprint/$path]$xpub/0/*)'.replaceFirst('/m', '');
+        backupPolicy =
+            'pk([$fingerprint/$path]$xpub/0/*)'.replaceFirst('/m', '');
 
-      //calcute time
-      String height = '';
 
-      final descriptor = 'or($policy,and($policy2, after($height)))';
+      final from = DateTime.now();
+      final to = state.date!;
+      final days = (to.difference(from).inHours / 24).round();
+      final blocks = _core.daysToBlocks(days: days.toString());
+      final currentHeight = _core.getHeight(
+        network: _blockchain.state.blockchain.name,
+        nodeAddress: _nodeAddressCubit.state.getAddress(),
+      );
+      final height = currentHeight + blocks;
+      final combinedPolicy =
+          'or($mainPolicy,and($backupPolicy, after($height)))';
+      final res = _core.compile(
+        policy: combinedPolicy,
+        scriptType: 'wsh',
+      );
 
       var newWallet = Wallet(
         label: state.walletLabel,
-        descriptor: descriptor, // com.descriptor.split('#')[0],
+        descriptor: res.descriptor.split('#')[0],
         blockchain: _blockchainCubit.state.blockchain.name,
         walletType: 'INHERITANCE',
       );

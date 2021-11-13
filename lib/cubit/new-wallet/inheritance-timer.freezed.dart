@@ -21,6 +21,7 @@ class _$InheritanceTimerStateTearOff {
       {InteritanceTimerWalletSteps currentStep =
           InteritanceTimerWalletSteps.info,
       DateTime? date,
+      String errDate = '',
       String walletLabel = '',
       String errWalletLabel = '',
       bool savingWallet = false,
@@ -29,6 +30,7 @@ class _$InheritanceTimerStateTearOff {
     return _InheritanceTimerState(
       currentStep: currentStep,
       date: date,
+      errDate: errDate,
       walletLabel: walletLabel,
       errWalletLabel: errWalletLabel,
       savingWallet: savingWallet,
@@ -46,6 +48,7 @@ mixin _$InheritanceTimerState {
   InteritanceTimerWalletSteps get currentStep =>
       throw _privateConstructorUsedError;
   DateTime? get date => throw _privateConstructorUsedError;
+  String get errDate => throw _privateConstructorUsedError;
   String get walletLabel => throw _privateConstructorUsedError;
   String get errWalletLabel => throw _privateConstructorUsedError;
   bool get savingWallet => throw _privateConstructorUsedError;
@@ -65,6 +68,7 @@ abstract class $InheritanceTimerStateCopyWith<$Res> {
   $Res call(
       {InteritanceTimerWalletSteps currentStep,
       DateTime? date,
+      String errDate,
       String walletLabel,
       String errWalletLabel,
       bool savingWallet,
@@ -85,6 +89,7 @@ class _$InheritanceTimerStateCopyWithImpl<$Res>
   $Res call({
     Object? currentStep = freezed,
     Object? date = freezed,
+    Object? errDate = freezed,
     Object? walletLabel = freezed,
     Object? errWalletLabel = freezed,
     Object? savingWallet = freezed,
@@ -100,6 +105,10 @@ class _$InheritanceTimerStateCopyWithImpl<$Res>
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      errDate: errDate == freezed
+          ? _value.errDate
+          : errDate // ignore: cast_nullable_to_non_nullable
+              as String,
       walletLabel: walletLabel == freezed
           ? _value.walletLabel
           : walletLabel // ignore: cast_nullable_to_non_nullable
@@ -134,6 +143,7 @@ abstract class _$InheritanceTimerStateCopyWith<$Res>
   $Res call(
       {InteritanceTimerWalletSteps currentStep,
       DateTime? date,
+      String errDate,
       String walletLabel,
       String errWalletLabel,
       bool savingWallet,
@@ -156,6 +166,7 @@ class __$InheritanceTimerStateCopyWithImpl<$Res>
   $Res call({
     Object? currentStep = freezed,
     Object? date = freezed,
+    Object? errDate = freezed,
     Object? walletLabel = freezed,
     Object? errWalletLabel = freezed,
     Object? savingWallet = freezed,
@@ -171,6 +182,10 @@ class __$InheritanceTimerStateCopyWithImpl<$Res>
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      errDate: errDate == freezed
+          ? _value.errDate
+          : errDate // ignore: cast_nullable_to_non_nullable
+              as String,
       walletLabel: walletLabel == freezed
           ? _value.walletLabel
           : walletLabel // ignore: cast_nullable_to_non_nullable
@@ -201,6 +216,7 @@ class _$_InheritanceTimerState extends _InheritanceTimerState {
   const _$_InheritanceTimerState(
       {this.currentStep = InteritanceTimerWalletSteps.info,
       this.date,
+      this.errDate = '',
       this.walletLabel = '',
       this.errWalletLabel = '',
       this.savingWallet = false,
@@ -213,6 +229,9 @@ class _$_InheritanceTimerState extends _InheritanceTimerState {
   final InteritanceTimerWalletSteps currentStep;
   @override
   final DateTime? date;
+  @JsonKey(defaultValue: '')
+  @override
+  final String errDate;
   @JsonKey(defaultValue: '')
   @override
   final String walletLabel;
@@ -231,7 +250,7 @@ class _$_InheritanceTimerState extends _InheritanceTimerState {
 
   @override
   String toString() {
-    return 'InheritanceTimerState(currentStep: $currentStep, date: $date, walletLabel: $walletLabel, errWalletLabel: $errWalletLabel, savingWallet: $savingWallet, errSavingWallet: $errSavingWallet, newWalletSaved: $newWalletSaved)';
+    return 'InheritanceTimerState(currentStep: $currentStep, date: $date, errDate: $errDate, walletLabel: $walletLabel, errWalletLabel: $errWalletLabel, savingWallet: $savingWallet, errSavingWallet: $errSavingWallet, newWalletSaved: $newWalletSaved)';
   }
 
   @override
@@ -243,6 +262,9 @@ class _$_InheritanceTimerState extends _InheritanceTimerState {
                     .equals(other.currentStep, currentStep)) &&
             (identical(other.date, date) ||
                 const DeepCollectionEquality().equals(other.date, date)) &&
+            (identical(other.errDate, errDate) ||
+                const DeepCollectionEquality()
+                    .equals(other.errDate, errDate)) &&
             (identical(other.walletLabel, walletLabel) ||
                 const DeepCollectionEquality()
                     .equals(other.walletLabel, walletLabel)) &&
@@ -265,6 +287,7 @@ class _$_InheritanceTimerState extends _InheritanceTimerState {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(currentStep) ^
       const DeepCollectionEquality().hash(date) ^
+      const DeepCollectionEquality().hash(errDate) ^
       const DeepCollectionEquality().hash(walletLabel) ^
       const DeepCollectionEquality().hash(errWalletLabel) ^
       const DeepCollectionEquality().hash(savingWallet) ^
@@ -282,6 +305,7 @@ abstract class _InheritanceTimerState extends InheritanceTimerState {
   const factory _InheritanceTimerState(
       {InteritanceTimerWalletSteps currentStep,
       DateTime? date,
+      String errDate,
       String walletLabel,
       String errWalletLabel,
       bool savingWallet,
@@ -294,6 +318,8 @@ abstract class _InheritanceTimerState extends InheritanceTimerState {
       throw _privateConstructorUsedError;
   @override
   DateTime? get date => throw _privateConstructorUsedError;
+  @override
+  String get errDate => throw _privateConstructorUsedError;
   @override
   String get walletLabel => throw _privateConstructorUsedError;
   @override

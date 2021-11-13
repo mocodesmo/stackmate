@@ -275,7 +275,7 @@ class SendCubit extends Cubit<SendState> {
       emit(
         state.copyWith(
           calculatingFees: false,
-          currentStep: SendSteps.amount,
+          currentStep: SendSteps.fees,
         ),
       );
 

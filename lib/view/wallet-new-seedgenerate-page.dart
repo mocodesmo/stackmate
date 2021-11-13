@@ -145,7 +145,7 @@ class SeedGeneratePage extends StatefulWidget {
 }
 
 class _SeedGeneratePageState extends State<SeedGeneratePage> {
-  ScrollController? _scrollController;
+  late ScrollController _scrollController;
 
   @override
   void initState() {
@@ -160,7 +160,7 @@ class _SeedGeneratePageState extends State<SeedGeneratePage> {
           previous.currentStep != current.currentStep ||
           previous.newWalletSaved != current.newWalletSaved,
       listener: (context, state) {
-        _scrollController!.animateTo(
+        _scrollController.animateTo(
           0,
           duration: const Duration(milliseconds: 300),
           curve: Curves.bounceIn,
