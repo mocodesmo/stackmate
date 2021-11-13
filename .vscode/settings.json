@@ -33,10 +33,12 @@
         "**/**.freezed.dart": true,
         "android": true,
         "ios": true,
+        "**/android": true,
+        "**/ios": true,
         //
         //
         "**/analysis_options.yaml": true,
-        "**/packages": true,
+        // "**/packages": true,
         "**/pubspec.yaml": true,
         "README.md": true,
         //

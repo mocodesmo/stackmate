@@ -91,6 +91,13 @@ abstract class IBitcoinCore {
     required String nodeAddress,
     required String signedPSBT,
   });
+
+  int getHeight({
+    required String network,
+    required String nodeAddress,
+  });
+
+  int daysToBlocks({required String days});
 }
 
 class BitcoinFFI implements IBitcoinCore {
@@ -327,5 +334,29 @@ class BitcoinFFI implements IBitcoinCore {
     );
     if (resp.startsWith('Error')) throw resp;
     return AbsoluteFees.fromJson(resp);
+  }
+
+  @override
+  int daysToBlocks({required String days}) {
+    final resp = _bitcoin.daysToBlocks(
+      days: days,
+    );
+    if (resp.startsWith('Error')) throw resp;
+    final data = jsonDecode(resp);
+    return data['height'] as int;
+  }
+
+  @override
+  int getHeight({
+    required String network,
+    required String nodeAddress,
+  }) {
+    final resp = _bitcoin.getHeight(
+      network: network,
+      nodeAddress: nodeAddress,
+    );
+    if (resp.startsWith('Error')) throw resp;
+    final data = jsonDecode(resp);
+    return data['height'] as int;
   }
 }

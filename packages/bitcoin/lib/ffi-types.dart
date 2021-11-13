@@ -83,3 +83,12 @@ typedef FeeAbsoluteT = Pointer<Utf8> Function(
   Pointer<Utf8> fee_rate,
   Pointer<Utf8> weight,
 );
+
+typedef DaysT = Pointer<Utf8> Function(
+  Pointer<Utf8> days,
+);
+
+typedef HeightT = Pointer<Utf8> Function(
+  Pointer<Utf8> network,
+  Pointer<Utf8> node_address,
+);

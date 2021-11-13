@@ -178,8 +178,8 @@ class FFFI {
     required String nodeAddress,
     required String targetSize,
   }) {
-    final func =
-        binary.lookupFunction<EstimateFeeT, EstimateFeeT>('estimate_network_fee');
+    final func = binary
+        .lookupFunction<EstimateFeeT, EstimateFeeT>('estimate_network_fee');
     final resp = func(
       network.toNativeUtf8(),
       nodeAddress.toNativeUtf8(),
@@ -222,6 +222,29 @@ class FFFI {
     final resp = func(
       feeRate.toNativeUtf8(),
       weight.toNativeUtf8(),
+    ).toDartString();
+    return resp;
+  }
+
+  String getHeight({
+    required String network,
+    required String nodeAddress,
+  }) {
+    final func =
+        binary.lookupFunction<FeeAbsoluteT, FeeAbsoluteT>('get_height');
+    final resp = func(
+      network.toNativeUtf8(),
+      nodeAddress.toNativeUtf8(),
+    ).toDartString();
+    return resp;
+  }
+
+  String daysToBlocks({
+    required String days,
+  }) {
+    final func = binary.lookupFunction<DaysT, DaysT>('days_to_blocks');
+    final resp = func(
+      days.toNativeUtf8(),
     ).toDartString();
     return resp;
   }
