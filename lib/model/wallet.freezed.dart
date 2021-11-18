@@ -23,15 +23,19 @@ class _$WalletTearOff {
 
   _Wallet call(
       {@HiveField(0) required String label,
-      @HiveField(2) required String descriptor,
-      @HiveField(3) required String blockchain,
-      @HiveField(4) List<Transaction>? transactions,
-      @HiveField(5) int? id,
-      @HiveField(6) int? balance,
-      @HiveField(7) required String walletType}) {
+      @HiveField(1) required InternalWallet mainWallet,
+      @HiveField(2) required InternalWallet exportWallet,
+      @HiveField(3) InternalWallet? backedupWallet,
+      @HiveField(4) required String blockchain,
+      @HiveField(5) List<Transaction>? transactions,
+      @HiveField(6) int? id,
+      @HiveField(7) int? balance,
+      @HiveField(8) required String walletType}) {
     return _Wallet(
       label: label,
-      descriptor: descriptor,
+      mainWallet: mainWallet,
+      exportWallet: exportWallet,
+      backedupWallet: backedupWallet,
       blockchain: blockchain,
       transactions: transactions,
       id: id,
@@ -52,17 +56,21 @@ const $Wallet = _$WalletTearOff();
 mixin _$Wallet {
   @HiveField(0)
   String get label => throw _privateConstructorUsedError;
+  @HiveField(1)
+  InternalWallet get mainWallet => throw _privateConstructorUsedError;
   @HiveField(2)
-  String get descriptor => throw _privateConstructorUsedError;
+  InternalWallet get exportWallet => throw _privateConstructorUsedError;
   @HiveField(3)
-  String get blockchain => throw _privateConstructorUsedError;
+  InternalWallet? get backedupWallet => throw _privateConstructorUsedError;
   @HiveField(4)
-  List<Transaction>? get transactions => throw _privateConstructorUsedError;
+  String get blockchain => throw _privateConstructorUsedError;
   @HiveField(5)
-  int? get id => throw _privateConstructorUsedError;
+  List<Transaction>? get transactions => throw _privateConstructorUsedError;
   @HiveField(6)
-  int? get balance => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
   @HiveField(7)
+  int? get balance => throw _privateConstructorUsedError;
+  @HiveField(8)
   String get walletType => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -76,12 +84,18 @@ abstract class $WalletCopyWith<$Res> {
       _$WalletCopyWithImpl<$Res>;
   $Res call(
       {@HiveField(0) String label,
-      @HiveField(2) String descriptor,
-      @HiveField(3) String blockchain,
-      @HiveField(4) List<Transaction>? transactions,
-      @HiveField(5) int? id,
-      @HiveField(6) int? balance,
-      @HiveField(7) String walletType});
+      @HiveField(1) InternalWallet mainWallet,
+      @HiveField(2) InternalWallet exportWallet,
+      @HiveField(3) InternalWallet? backedupWallet,
+      @HiveField(4) String blockchain,
+      @HiveField(5) List<Transaction>? transactions,
+      @HiveField(6) int? id,
+      @HiveField(7) int? balance,
+      @HiveField(8) String walletType});
+
+  $InternalWalletCopyWith<$Res> get mainWallet;
+  $InternalWalletCopyWith<$Res> get exportWallet;
+  $InternalWalletCopyWith<$Res>? get backedupWallet;
 }
 
 /// @nodoc
@@ -95,7 +109,9 @@ class _$WalletCopyWithImpl<$Res> implements $WalletCopyWith<$Res> {
   @override
   $Res call({
     Object? label = freezed,
-    Object? descriptor = freezed,
+    Object? mainWallet = freezed,
+    Object? exportWallet = freezed,
+    Object? backedupWallet = freezed,
     Object? blockchain = freezed,
     Object? transactions = freezed,
     Object? id = freezed,
@@ -107,10 +123,18 @@ class _$WalletCopyWithImpl<$Res> implements $WalletCopyWith<$Res> {
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
               as String,
-      descriptor: descriptor == freezed
-          ? _value.descriptor
-          : descriptor // ignore: cast_nullable_to_non_nullable
-              as String,
+      mainWallet: mainWallet == freezed
+          ? _value.mainWallet
+          : mainWallet // ignore: cast_nullable_to_non_nullable
+              as InternalWallet,
+      exportWallet: exportWallet == freezed
+          ? _value.exportWallet
+          : exportWallet // ignore: cast_nullable_to_non_nullable
+              as InternalWallet,
+      backedupWallet: backedupWallet == freezed
+          ? _value.backedupWallet
+          : backedupWallet // ignore: cast_nullable_to_non_nullable
+              as InternalWallet?,
       blockchain: blockchain == freezed
           ? _value.blockchain
           : blockchain // ignore: cast_nullable_to_non_nullable
@@ -133,6 +157,31 @@ class _$WalletCopyWithImpl<$Res> implements $WalletCopyWith<$Res> {
               as String,
     ));
   }
+
+  @override
+  $InternalWalletCopyWith<$Res> get mainWallet {
+    return $InternalWalletCopyWith<$Res>(_value.mainWallet, (value) {
+      return _then(_value.copyWith(mainWallet: value));
+    });
+  }
+
+  @override
+  $InternalWalletCopyWith<$Res> get exportWallet {
+    return $InternalWalletCopyWith<$Res>(_value.exportWallet, (value) {
+      return _then(_value.copyWith(exportWallet: value));
+    });
+  }
+
+  @override
+  $InternalWalletCopyWith<$Res>? get backedupWallet {
+    if (_value.backedupWallet == null) {
+      return null;
+    }
+
+    return $InternalWalletCopyWith<$Res>(_value.backedupWallet!, (value) {
+      return _then(_value.copyWith(backedupWallet: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -142,12 +191,21 @@ abstract class _$WalletCopyWith<$Res> implements $WalletCopyWith<$Res> {
   @override
   $Res call(
       {@HiveField(0) String label,
-      @HiveField(2) String descriptor,
-      @HiveField(3) String blockchain,
-      @HiveField(4) List<Transaction>? transactions,
-      @HiveField(5) int? id,
-      @HiveField(6) int? balance,
-      @HiveField(7) String walletType});
+      @HiveField(1) InternalWallet mainWallet,
+      @HiveField(2) InternalWallet exportWallet,
+      @HiveField(3) InternalWallet? backedupWallet,
+      @HiveField(4) String blockchain,
+      @HiveField(5) List<Transaction>? transactions,
+      @HiveField(6) int? id,
+      @HiveField(7) int? balance,
+      @HiveField(8) String walletType});
+
+  @override
+  $InternalWalletCopyWith<$Res> get mainWallet;
+  @override
+  $InternalWalletCopyWith<$Res> get exportWallet;
+  @override
+  $InternalWalletCopyWith<$Res>? get backedupWallet;
 }
 
 /// @nodoc
@@ -162,7 +220,9 @@ class __$WalletCopyWithImpl<$Res> extends _$WalletCopyWithImpl<$Res>
   @override
   $Res call({
     Object? label = freezed,
-    Object? descriptor = freezed,
+    Object? mainWallet = freezed,
+    Object? exportWallet = freezed,
+    Object? backedupWallet = freezed,
     Object? blockchain = freezed,
     Object? transactions = freezed,
     Object? id = freezed,
@@ -174,10 +234,18 @@ class __$WalletCopyWithImpl<$Res> extends _$WalletCopyWithImpl<$Res>
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
               as String,
-      descriptor: descriptor == freezed
-          ? _value.descriptor
-          : descriptor // ignore: cast_nullable_to_non_nullable
-              as String,
+      mainWallet: mainWallet == freezed
+          ? _value.mainWallet
+          : mainWallet // ignore: cast_nullable_to_non_nullable
+              as InternalWallet,
+      exportWallet: exportWallet == freezed
+          ? _value.exportWallet
+          : exportWallet // ignore: cast_nullable_to_non_nullable
+              as InternalWallet,
+      backedupWallet: backedupWallet == freezed
+          ? _value.backedupWallet
+          : backedupWallet // ignore: cast_nullable_to_non_nullable
+              as InternalWallet?,
       blockchain: blockchain == freezed
           ? _value.blockchain
           : blockchain // ignore: cast_nullable_to_non_nullable
@@ -208,12 +276,14 @@ class __$WalletCopyWithImpl<$Res> extends _$WalletCopyWithImpl<$Res>
 class _$_Wallet extends _Wallet {
   const _$_Wallet(
       {@HiveField(0) required this.label,
-      @HiveField(2) required this.descriptor,
-      @HiveField(3) required this.blockchain,
-      @HiveField(4) this.transactions,
-      @HiveField(5) this.id,
-      @HiveField(6) this.balance,
-      @HiveField(7) required this.walletType})
+      @HiveField(1) required this.mainWallet,
+      @HiveField(2) required this.exportWallet,
+      @HiveField(3) this.backedupWallet,
+      @HiveField(4) required this.blockchain,
+      @HiveField(5) this.transactions,
+      @HiveField(6) this.id,
+      @HiveField(7) this.balance,
+      @HiveField(8) required this.walletType})
       : super._();
 
   factory _$_Wallet.fromJson(Map<String, dynamic> json) =>
@@ -223,27 +293,33 @@ class _$_Wallet extends _Wallet {
   @HiveField(0)
   final String label;
   @override
+  @HiveField(1)
+  final InternalWallet mainWallet;
+  @override
   @HiveField(2)
-  final String descriptor;
+  final InternalWallet exportWallet;
   @override
   @HiveField(3)
-  final String blockchain;
+  final InternalWallet? backedupWallet;
   @override
   @HiveField(4)
-  final List<Transaction>? transactions;
+  final String blockchain;
   @override
   @HiveField(5)
-  final int? id;
+  final List<Transaction>? transactions;
   @override
   @HiveField(6)
-  final int? balance;
+  final int? id;
   @override
   @HiveField(7)
+  final int? balance;
+  @override
+  @HiveField(8)
   final String walletType;
 
   @override
   String toString() {
-    return 'Wallet(label: $label, descriptor: $descriptor, blockchain: $blockchain, transactions: $transactions, id: $id, balance: $balance, walletType: $walletType)';
+    return 'Wallet(label: $label, mainWallet: $mainWallet, exportWallet: $exportWallet, backedupWallet: $backedupWallet, blockchain: $blockchain, transactions: $transactions, id: $id, balance: $balance, walletType: $walletType)';
   }
 
   @override
@@ -252,9 +328,15 @@ class _$_Wallet extends _Wallet {
         (other is _Wallet &&
             (identical(other.label, label) ||
                 const DeepCollectionEquality().equals(other.label, label)) &&
-            (identical(other.descriptor, descriptor) ||
+            (identical(other.mainWallet, mainWallet) ||
                 const DeepCollectionEquality()
-                    .equals(other.descriptor, descriptor)) &&
+                    .equals(other.mainWallet, mainWallet)) &&
+            (identical(other.exportWallet, exportWallet) ||
+                const DeepCollectionEquality()
+                    .equals(other.exportWallet, exportWallet)) &&
+            (identical(other.backedupWallet, backedupWallet) ||
+                const DeepCollectionEquality()
+                    .equals(other.backedupWallet, backedupWallet)) &&
             (identical(other.blockchain, blockchain) ||
                 const DeepCollectionEquality()
                     .equals(other.blockchain, blockchain)) &&
@@ -275,7 +357,9 @@ class _$_Wallet extends _Wallet {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(label) ^
-      const DeepCollectionEquality().hash(descriptor) ^
+      const DeepCollectionEquality().hash(mainWallet) ^
+      const DeepCollectionEquality().hash(exportWallet) ^
+      const DeepCollectionEquality().hash(backedupWallet) ^
       const DeepCollectionEquality().hash(blockchain) ^
       const DeepCollectionEquality().hash(transactions) ^
       const DeepCollectionEquality().hash(id) ^
@@ -296,12 +380,14 @@ class _$_Wallet extends _Wallet {
 abstract class _Wallet extends Wallet {
   const factory _Wallet(
       {@HiveField(0) required String label,
-      @HiveField(2) required String descriptor,
-      @HiveField(3) required String blockchain,
-      @HiveField(4) List<Transaction>? transactions,
-      @HiveField(5) int? id,
-      @HiveField(6) int? balance,
-      @HiveField(7) required String walletType}) = _$_Wallet;
+      @HiveField(1) required InternalWallet mainWallet,
+      @HiveField(2) required InternalWallet exportWallet,
+      @HiveField(3) InternalWallet? backedupWallet,
+      @HiveField(4) required String blockchain,
+      @HiveField(5) List<Transaction>? transactions,
+      @HiveField(6) int? id,
+      @HiveField(7) int? balance,
+      @HiveField(8) required String walletType}) = _$_Wallet;
   const _Wallet._() : super._();
 
   factory _Wallet.fromJson(Map<String, dynamic> json) = _$_Wallet.fromJson;
@@ -310,24 +396,301 @@ abstract class _Wallet extends Wallet {
   @HiveField(0)
   String get label => throw _privateConstructorUsedError;
   @override
+  @HiveField(1)
+  InternalWallet get mainWallet => throw _privateConstructorUsedError;
+  @override
   @HiveField(2)
-  String get descriptor => throw _privateConstructorUsedError;
+  InternalWallet get exportWallet => throw _privateConstructorUsedError;
   @override
   @HiveField(3)
-  String get blockchain => throw _privateConstructorUsedError;
+  InternalWallet? get backedupWallet => throw _privateConstructorUsedError;
   @override
   @HiveField(4)
-  List<Transaction>? get transactions => throw _privateConstructorUsedError;
+  String get blockchain => throw _privateConstructorUsedError;
   @override
   @HiveField(5)
-  int? get id => throw _privateConstructorUsedError;
+  List<Transaction>? get transactions => throw _privateConstructorUsedError;
   @override
   @HiveField(6)
-  int? get balance => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
   @override
   @HiveField(7)
+  int? get balance => throw _privateConstructorUsedError;
+  @override
+  @HiveField(8)
   String get walletType => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$WalletCopyWith<_Wallet> get copyWith => throw _privateConstructorUsedError;
+}
+
+InternalWallet _$InternalWalletFromJson(Map<String, dynamic> json) {
+  return _InternalWallet.fromJson(json);
+}
+
+/// @nodoc
+class _$InternalWalletTearOff {
+  const _$InternalWalletTearOff();
+
+  _InternalWallet call(
+      {@HiveField(0) String? xPriv,
+      @HiveField(1) required String xPub,
+      @HiveField(2) required String fingerPrint,
+      @HiveField(3) required String path,
+      @HiveField(4) String? descriptor}) {
+    return _InternalWallet(
+      xPriv: xPriv,
+      xPub: xPub,
+      fingerPrint: fingerPrint,
+      path: path,
+      descriptor: descriptor,
+    );
+  }
+
+  InternalWallet fromJson(Map<String, Object> json) {
+    return InternalWallet.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $InternalWallet = _$InternalWalletTearOff();
+
+/// @nodoc
+mixin _$InternalWallet {
+  @HiveField(0)
+  String? get xPriv => throw _privateConstructorUsedError;
+  @HiveField(1)
+  String get xPub => throw _privateConstructorUsedError;
+  @HiveField(2)
+  String get fingerPrint => throw _privateConstructorUsedError;
+  @HiveField(3)
+  String get path => throw _privateConstructorUsedError;
+  @HiveField(4)
+  String? get descriptor => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $InternalWalletCopyWith<InternalWallet> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $InternalWalletCopyWith<$Res> {
+  factory $InternalWalletCopyWith(
+          InternalWallet value, $Res Function(InternalWallet) then) =
+      _$InternalWalletCopyWithImpl<$Res>;
+  $Res call(
+      {@HiveField(0) String? xPriv,
+      @HiveField(1) String xPub,
+      @HiveField(2) String fingerPrint,
+      @HiveField(3) String path,
+      @HiveField(4) String? descriptor});
+}
+
+/// @nodoc
+class _$InternalWalletCopyWithImpl<$Res>
+    implements $InternalWalletCopyWith<$Res> {
+  _$InternalWalletCopyWithImpl(this._value, this._then);
+
+  final InternalWallet _value;
+  // ignore: unused_field
+  final $Res Function(InternalWallet) _then;
+
+  @override
+  $Res call({
+    Object? xPriv = freezed,
+    Object? xPub = freezed,
+    Object? fingerPrint = freezed,
+    Object? path = freezed,
+    Object? descriptor = freezed,
+  }) {
+    return _then(_value.copyWith(
+      xPriv: xPriv == freezed
+          ? _value.xPriv
+          : xPriv // ignore: cast_nullable_to_non_nullable
+              as String?,
+      xPub: xPub == freezed
+          ? _value.xPub
+          : xPub // ignore: cast_nullable_to_non_nullable
+              as String,
+      fingerPrint: fingerPrint == freezed
+          ? _value.fingerPrint
+          : fingerPrint // ignore: cast_nullable_to_non_nullable
+              as String,
+      path: path == freezed
+          ? _value.path
+          : path // ignore: cast_nullable_to_non_nullable
+              as String,
+      descriptor: descriptor == freezed
+          ? _value.descriptor
+          : descriptor // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$InternalWalletCopyWith<$Res>
+    implements $InternalWalletCopyWith<$Res> {
+  factory _$InternalWalletCopyWith(
+          _InternalWallet value, $Res Function(_InternalWallet) then) =
+      __$InternalWalletCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {@HiveField(0) String? xPriv,
+      @HiveField(1) String xPub,
+      @HiveField(2) String fingerPrint,
+      @HiveField(3) String path,
+      @HiveField(4) String? descriptor});
+}
+
+/// @nodoc
+class __$InternalWalletCopyWithImpl<$Res>
+    extends _$InternalWalletCopyWithImpl<$Res>
+    implements _$InternalWalletCopyWith<$Res> {
+  __$InternalWalletCopyWithImpl(
+      _InternalWallet _value, $Res Function(_InternalWallet) _then)
+      : super(_value, (v) => _then(v as _InternalWallet));
+
+  @override
+  _InternalWallet get _value => super._value as _InternalWallet;
+
+  @override
+  $Res call({
+    Object? xPriv = freezed,
+    Object? xPub = freezed,
+    Object? fingerPrint = freezed,
+    Object? path = freezed,
+    Object? descriptor = freezed,
+  }) {
+    return _then(_InternalWallet(
+      xPriv: xPriv == freezed
+          ? _value.xPriv
+          : xPriv // ignore: cast_nullable_to_non_nullable
+              as String?,
+      xPub: xPub == freezed
+          ? _value.xPub
+          : xPub // ignore: cast_nullable_to_non_nullable
+              as String,
+      fingerPrint: fingerPrint == freezed
+          ? _value.fingerPrint
+          : fingerPrint // ignore: cast_nullable_to_non_nullable
+              as String,
+      path: path == freezed
+          ? _value.path
+          : path // ignore: cast_nullable_to_non_nullable
+              as String,
+      descriptor: descriptor == freezed
+          ? _value.descriptor
+          : descriptor // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+@HiveType(typeId: 2, adapterName: 'InternalWalletClassAdaper')
+class _$_InternalWallet extends _InternalWallet {
+  const _$_InternalWallet(
+      {@HiveField(0) this.xPriv,
+      @HiveField(1) required this.xPub,
+      @HiveField(2) required this.fingerPrint,
+      @HiveField(3) required this.path,
+      @HiveField(4) this.descriptor})
+      : super._();
+
+  factory _$_InternalWallet.fromJson(Map<String, dynamic> json) =>
+      _$$_InternalWalletFromJson(json);
+
+  @override
+  @HiveField(0)
+  final String? xPriv;
+  @override
+  @HiveField(1)
+  final String xPub;
+  @override
+  @HiveField(2)
+  final String fingerPrint;
+  @override
+  @HiveField(3)
+  final String path;
+  @override
+  @HiveField(4)
+  final String? descriptor;
+
+  @override
+  String toString() {
+    return 'InternalWallet(xPriv: $xPriv, xPub: $xPub, fingerPrint: $fingerPrint, path: $path, descriptor: $descriptor)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _InternalWallet &&
+            (identical(other.xPriv, xPriv) ||
+                const DeepCollectionEquality().equals(other.xPriv, xPriv)) &&
+            (identical(other.xPub, xPub) ||
+                const DeepCollectionEquality().equals(other.xPub, xPub)) &&
+            (identical(other.fingerPrint, fingerPrint) ||
+                const DeepCollectionEquality()
+                    .equals(other.fingerPrint, fingerPrint)) &&
+            (identical(other.path, path) ||
+                const DeepCollectionEquality().equals(other.path, path)) &&
+            (identical(other.descriptor, descriptor) ||
+                const DeepCollectionEquality()
+                    .equals(other.descriptor, descriptor)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(xPriv) ^
+      const DeepCollectionEquality().hash(xPub) ^
+      const DeepCollectionEquality().hash(fingerPrint) ^
+      const DeepCollectionEquality().hash(path) ^
+      const DeepCollectionEquality().hash(descriptor);
+
+  @JsonKey(ignore: true)
+  @override
+  _$InternalWalletCopyWith<_InternalWallet> get copyWith =>
+      __$InternalWalletCopyWithImpl<_InternalWallet>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_InternalWalletToJson(this);
+  }
+}
+
+abstract class _InternalWallet extends InternalWallet {
+  const factory _InternalWallet(
+      {@HiveField(0) String? xPriv,
+      @HiveField(1) required String xPub,
+      @HiveField(2) required String fingerPrint,
+      @HiveField(3) required String path,
+      @HiveField(4) String? descriptor}) = _$_InternalWallet;
+  const _InternalWallet._() : super._();
+
+  factory _InternalWallet.fromJson(Map<String, dynamic> json) =
+      _$_InternalWallet.fromJson;
+
+  @override
+  @HiveField(0)
+  String? get xPriv => throw _privateConstructorUsedError;
+  @override
+  @HiveField(1)
+  String get xPub => throw _privateConstructorUsedError;
+  @override
+  @HiveField(2)
+  String get fingerPrint => throw _privateConstructorUsedError;
+  @override
+  @HiveField(3)
+  String get path => throw _privateConstructorUsedError;
+  @override
+  @HiveField(4)
+  String? get descriptor => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$InternalWalletCopyWith<_InternalWallet> get copyWith =>
+      throw _privateConstructorUsedError;
 }

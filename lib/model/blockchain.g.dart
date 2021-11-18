@@ -8,7 +8,7 @@ part of 'blockchain.dart';
 
 class BlockchainClassAdaper extends TypeAdapter<Blockchain> {
   @override
-  final int typeId = 10;
+  final int typeId = 4;
 
   @override
   Blockchain read(BinaryReader reader) {

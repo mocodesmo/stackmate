@@ -6,7 +6,7 @@ part 'transaction.freezed.dart';
 
 @freezed
 class Transaction with _$Transaction {
-  @HiveType(typeId: 4, adapterName: 'TransactionClassAdaper')
+  @HiveType(typeId: 3, adapterName: 'TransactionClassAdaper')
   const factory Transaction({
     @HiveField(0) required int timestamp,
     @HiveField(1) required int height,

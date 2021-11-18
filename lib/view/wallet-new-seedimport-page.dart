@@ -212,7 +212,7 @@ class SeedImportPage extends StatelessWidget {
                               return const SeedImportWarning();
 
                             case SeedImportWalletSteps.import:
-                              return SeedImportSteps();
+                              return const SeedImportSteps();
 
                             case SeedImportWalletSteps.label:
                               return const SeedImportLabel();

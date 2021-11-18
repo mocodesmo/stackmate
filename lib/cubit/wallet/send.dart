@@ -11,8 +11,8 @@ import 'package:sats/cubit/node.dart';
 import 'package:sats/cubit/wallet/wallet.dart';
 import 'package:sats/cubit/wallets.dart';
 import 'package:sats/model/blockchain.dart';
-import 'package:sats/pkg/core.dart';
 import 'package:sats/pkg/clipboard.dart';
+import 'package:sats/pkg/core.dart';
 import 'package:sats/pkg/share.dart';
 import 'package:sats/pkg/validation.dart';
 
@@ -113,7 +113,7 @@ class SendCubit extends Cubit<SendState> {
       final nodeAddress = _nodeAddressCubit.state.getAddress();
 
       final bal = await compute(computeBalance, {
-        'depositDesc': _walletCubit.state.selectedWallet!.descriptor,
+        'depositDesc': _walletCubit.state.selectedWallet!.mainWallet.descriptor,
         'nodeAddress': nodeAddress,
       });
 
@@ -219,7 +219,7 @@ class SendCubit extends Cubit<SendState> {
       final nodeAddress = _nodeAddressCubit.state.getAddress();
 
       final psbt = await compute(buildTx, {
-        'depositDesc': _walletCubit.state.selectedWallet!.descriptor,
+        'depositDesc': _walletCubit.state.selectedWallet!.mainWallet.descriptor,
         'nodeAddress': nodeAddress,
         'toAddress': state.address,
         'amount': state.sweepWallet ? '0' : state.amount,
@@ -228,7 +228,7 @@ class SendCubit extends Cubit<SendState> {
       });
 
       final weight = await compute(getWeight, {
-        'depositDesc': _walletCubit.state.selectedWallet!.descriptor,
+        'depositDesc': _walletCubit.state.selectedWallet!.mainWallet.descriptor,
         'psbt': psbt,
       });
 
@@ -335,7 +335,7 @@ class SendCubit extends Cubit<SendState> {
       final nodeAddress = _nodeAddressCubit.state.getAddress();
 
       final psbt = await compute(buildTx, {
-        'depositDesc': _walletCubit.state.selectedWallet!.descriptor,
+        'depositDesc': _walletCubit.state.selectedWallet!.mainWallet.descriptor,
         'nodeAddress': nodeAddress,
         'toAddress': state.address,
         'amount': state.sweepWallet ? '0' : state.amount,
@@ -400,13 +400,13 @@ class SendCubit extends Cubit<SendState> {
       final nodeAddress = _nodeAddressCubit.state.getAddress();
 
       final signed = await compute(signTx, {
-        'depositDesc': _walletCubit.state.selectedWallet!.descriptor,
+        'depositDesc': _walletCubit.state.selectedWallet!.mainWallet.descriptor,
         'nodeAddress': nodeAddress,
         'unsignedPSBT': state.psbt,
       });
 
       final txid = await compute(broadcastTx, {
-        'depositDesc': _walletCubit.state.selectedWallet!.descriptor,
+        'depositDesc': _walletCubit.state.selectedWallet!.mainWallet.descriptor,
         'nodeAddress': nodeAddress,
         'signedPSBT': signed,
       });

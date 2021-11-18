@@ -8,7 +8,7 @@ part of 'reddit-post.dart';
 
 class RedditPostClassAdapter extends TypeAdapter<_$_RedditPost> {
   @override
-  final int typeId = 0;
+  final int typeId = 8;
 
   @override
   _$_RedditPost read(BinaryReader reader) {

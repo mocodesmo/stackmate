@@ -8,7 +8,7 @@ part of 'address-book.dart';
 
 class AddressBookUserClassAdaper extends TypeAdapter<_$_AddressBookUser> {
   @override
-  final int typeId = 5;
+  final int typeId = 6;
 
   @override
   _$_AddressBookUser read(BinaryReader reader) {
@@ -48,7 +48,7 @@ class AddressBookUserClassAdaper extends TypeAdapter<_$_AddressBookUser> {
 
 class AddressBookValueClassAdaper extends TypeAdapter<_$_AddressBookKey> {
   @override
-  final int typeId = 6;
+  final int typeId = 7;
 
   @override
   _$_AddressBookKey read(BinaryReader reader) {

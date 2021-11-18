@@ -480,7 +480,7 @@ class WalletInfo extends StatelessWidget {
             padding: const EdgeInsets.only(left: 16),
             width: c.width * 0.8,
             child: Text(
-              wallet.descriptor,
+              wallet.mainWallet.descriptor!,
               maxLines: 10,
               textAlign: TextAlign.left,
               style: c.fonts.caption!.copyWith(

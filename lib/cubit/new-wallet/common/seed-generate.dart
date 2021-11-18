@@ -21,6 +21,7 @@ class SeedGenerateState with _$SeedGenerateState {
   const factory SeedGenerateState({
     @Default(SeedGenerateSteps.passphrase) currentStep,
     List<String>? seed,
+    String? masterXpriv,
     String? xpriv,
     String? fingerPrint,
     DerivedWallet? wallet,
@@ -92,7 +93,7 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
           generatingSeed: false,
           currentStep: SeedGenerateSteps.generate,
           seed: neu.neuList,
-          xpriv: neu.xprv,
+          masterXpriv: neu.xprv,
           fingerPrint: neu.fingerprint,
         ),
       );
@@ -190,10 +191,11 @@ class SeedGenerateCubit extends Cubit<SeedGenerateState> {
   void _quizCompleted() {
     try {
       final wallet = _bitcoin.deriveHardened(
-        masterXPriv: state.xpriv!,
+        masterXPriv: state.masterXpriv!,
         account: '',
         purpose: '',
       );
+
       emit(state.copyWith(wallet: wallet));
     } catch (e, s) {
       _logger.logException(

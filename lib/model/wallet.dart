@@ -10,12 +10,14 @@ class Wallet with _$Wallet {
   @HiveType(typeId: 1, adapterName: 'WalletClassAdaper')
   const factory Wallet({
     @HiveField(0) required String label,
-    @HiveField(2) required String descriptor,
-    @HiveField(3) required String blockchain,
-    @HiveField(4) List<Transaction>? transactions,
-    @HiveField(5) int? id,
-    @HiveField(6) int? balance,
-    @HiveField(7) required String walletType,
+    @HiveField(1) required InternalWallet mainWallet,
+    @HiveField(2) required InternalWallet exportWallet,
+    @HiveField(3) InternalWallet? backedupWallet,
+    @HiveField(4) required String blockchain,
+    @HiveField(5) List<Transaction>? transactions,
+    @HiveField(6) int? id,
+    @HiveField(7) int? balance,
+    @HiveField(8) required String walletType,
     // @Default(false) @HiveField(7) bool watchOnly,
   }) = _Wallet;
   const Wallet._();
@@ -26,4 +28,20 @@ class Wallet with _$Wallet {
       balance == null ? '0' : (balance! / 100000000).toStringAsFixed(8);
 
   bool isNotWatchOnly() => label != 'WATCH ONLY';
+}
+
+@freezed
+class InternalWallet with _$InternalWallet {
+  @HiveType(typeId: 2, adapterName: 'InternalWalletClassAdaper')
+  const factory InternalWallet({
+    @HiveField(0) String? xPriv,
+    @HiveField(1) required String xPub,
+    @HiveField(2) required String fingerPrint,
+    @HiveField(3) required String path,
+    @HiveField(4) String? descriptor,
+  }) = _InternalWallet;
+  const InternalWallet._();
+
+  factory InternalWallet.fromJson(Map<String, dynamic> json) =>
+      _$InternalWalletFromJson(json);
 }

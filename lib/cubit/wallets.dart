@@ -103,7 +103,7 @@ class WalletsCubit extends Cubit<WalletsState> {
   }
 
   void copyDescriptor() async {
-    final _ =
-        await _clipBoard.copyToClipBoard(state.selectedWallet!.descriptor);
+    final _ = await _clipBoard
+        .copyToClipBoard(state.selectedWallet!.exportWallet.descriptor!);
   }
 }

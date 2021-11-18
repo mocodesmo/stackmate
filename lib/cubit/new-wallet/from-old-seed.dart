@@ -68,7 +68,7 @@ class SeedImportWalletState with _$SeedImportWalletState {
 
 class SeedImportWalletCubit extends Cubit<SeedImportWalletState> {
   SeedImportWalletCubit(
-    this._bitcoin,
+    this._core,
     this._storage,
     this._wallets,
     this._blockchainCubit,
@@ -88,7 +88,7 @@ class SeedImportWalletCubit extends Cubit<SeedImportWalletState> {
     });
   }
 
-  final IStackMateCore _bitcoin;
+  final IStackMateCore _core;
 
   final IStorage _storage;
   final LoggerCubit _logger;
@@ -164,13 +164,13 @@ class SeedImportWalletCubit extends Cubit<SeedImportWalletState> {
     emit(state.copyWith(walletLabelError: ''));
     try {
       final istate = _importCubit.state;
-      final neu = _bitcoin.importMaster(
+      final neu = _core.importMaster(
         mnemonic: istate.seed,
         passphrase: istate.passPhrase,
         network: _blockchainCubit.state.blockchain.name,
       );
 
-      final wallet = _bitcoin.deriveHardened(
+      final wallet = _core.deriveHardened(
         masterXPriv: neu.xprv,
         account: '1',
         purpose: '',
@@ -180,15 +180,33 @@ class SeedImportWalletCubit extends Cubit<SeedImportWalletState> {
           'pk([${wallet.fingerPrint}/${wallet.hardenedPath}]${wallet.xprv}/0/*)'
               .replaceFirst('/m', '');
 
-      final com = _bitcoin.compile(
+      final com = _core.compile(
         policy: policy,
         scriptType: 'wpkh',
       );
 
+      final exportWallet = _core.deriveHardened(
+        masterXPriv: wallet.xprv,
+        account: '',
+        purpose: '92',
+      );
+
+      // public descriptor
+
       var newWallet = Wallet(
         label: state.walletLabel,
         walletType: 'SINGLE SIGNATURE',
-        descriptor: com.descriptor.split('#')[0],
+        mainWallet: InternalWallet(
+          xPub: wallet.xpub,
+          fingerPrint: wallet.fingerPrint,
+          path: wallet.hardenedPath,
+          descriptor: com.descriptor.split('#')[0],
+        ),
+        exportWallet: InternalWallet(
+          xPub: exportWallet.xpub,
+          fingerPrint: exportWallet.fingerPrint,
+          path: exportWallet.hardenedPath,
+        ),
         blockchain: _blockchainCubit.state.blockchain.name,
       );
 

@@ -20,6 +20,7 @@ class _$SeedGenerateStateTearOff {
   _SeedGenerateState call(
       {dynamic currentStep = SeedGenerateSteps.passphrase,
       List<String>? seed,
+      String? masterXpriv,
       String? xpriv,
       String? fingerPrint,
       DerivedWallet? wallet,
@@ -37,6 +38,7 @@ class _$SeedGenerateStateTearOff {
     return _SeedGenerateState(
       currentStep: currentStep,
       seed: seed,
+      masterXpriv: masterXpriv,
       xpriv: xpriv,
       fingerPrint: fingerPrint,
       wallet: wallet,
@@ -62,6 +64,7 @@ const $SeedGenerateState = _$SeedGenerateStateTearOff();
 mixin _$SeedGenerateState {
   dynamic get currentStep => throw _privateConstructorUsedError;
   List<String>? get seed => throw _privateConstructorUsedError;
+  String? get masterXpriv => throw _privateConstructorUsedError;
   String? get xpriv => throw _privateConstructorUsedError;
   String? get fingerPrint => throw _privateConstructorUsedError;
   DerivedWallet? get wallet => throw _privateConstructorUsedError;
@@ -91,6 +94,7 @@ abstract class $SeedGenerateStateCopyWith<$Res> {
   $Res call(
       {dynamic currentStep,
       List<String>? seed,
+      String? masterXpriv,
       String? xpriv,
       String? fingerPrint,
       DerivedWallet? wallet,
@@ -120,6 +124,7 @@ class _$SeedGenerateStateCopyWithImpl<$Res>
   $Res call({
     Object? currentStep = freezed,
     Object? seed = freezed,
+    Object? masterXpriv = freezed,
     Object? xpriv = freezed,
     Object? fingerPrint = freezed,
     Object? wallet = freezed,
@@ -144,6 +149,10 @@ class _$SeedGenerateStateCopyWithImpl<$Res>
           ? _value.seed
           : seed // ignore: cast_nullable_to_non_nullable
               as List<String>?,
+      masterXpriv: masterXpriv == freezed
+          ? _value.masterXpriv
+          : masterXpriv // ignore: cast_nullable_to_non_nullable
+              as String?,
       xpriv: xpriv == freezed
           ? _value.xpriv
           : xpriv // ignore: cast_nullable_to_non_nullable
@@ -214,6 +223,7 @@ abstract class _$SeedGenerateStateCopyWith<$Res>
   $Res call(
       {dynamic currentStep,
       List<String>? seed,
+      String? masterXpriv,
       String? xpriv,
       String? fingerPrint,
       DerivedWallet? wallet,
@@ -245,6 +255,7 @@ class __$SeedGenerateStateCopyWithImpl<$Res>
   $Res call({
     Object? currentStep = freezed,
     Object? seed = freezed,
+    Object? masterXpriv = freezed,
     Object? xpriv = freezed,
     Object? fingerPrint = freezed,
     Object? wallet = freezed,
@@ -266,6 +277,10 @@ class __$SeedGenerateStateCopyWithImpl<$Res>
           ? _value.seed
           : seed // ignore: cast_nullable_to_non_nullable
               as List<String>?,
+      masterXpriv: masterXpriv == freezed
+          ? _value.masterXpriv
+          : masterXpriv // ignore: cast_nullable_to_non_nullable
+              as String?,
       xpriv: xpriv == freezed
           ? _value.xpriv
           : xpriv // ignore: cast_nullable_to_non_nullable
@@ -332,6 +347,7 @@ class _$_SeedGenerateState extends _SeedGenerateState {
   const _$_SeedGenerateState(
       {this.currentStep = SeedGenerateSteps.passphrase,
       this.seed,
+      this.masterXpriv,
       this.xpriv,
       this.fingerPrint,
       this.wallet,
@@ -353,6 +369,8 @@ class _$_SeedGenerateState extends _SeedGenerateState {
   final dynamic currentStep;
   @override
   final List<String>? seed;
+  @override
+  final String? masterXpriv;
   @override
   final String? xpriv;
   @override
@@ -395,7 +413,7 @@ class _$_SeedGenerateState extends _SeedGenerateState {
 
   @override
   String toString() {
-    return 'SeedGenerateState(currentStep: $currentStep, seed: $seed, xpriv: $xpriv, fingerPrint: $fingerPrint, wallet: $wallet, generatingSeed: $generatingSeed, seedLength: $seedLength, seedError: $seedError, quizSeedCompleted: $quizSeedCompleted, quizSeedAnswer: $quizSeedAnswer, quizSeedAnswerIdx: $quizSeedAnswerIdx, quizSeedList: $quizSeedList, quizSeedCompletedAnswers: $quizSeedCompletedAnswers, quizSeedError: $quizSeedError, passPhrase: $passPhrase, errPassphrase: $errPassphrase)';
+    return 'SeedGenerateState(currentStep: $currentStep, seed: $seed, masterXpriv: $masterXpriv, xpriv: $xpriv, fingerPrint: $fingerPrint, wallet: $wallet, generatingSeed: $generatingSeed, seedLength: $seedLength, seedError: $seedError, quizSeedCompleted: $quizSeedCompleted, quizSeedAnswer: $quizSeedAnswer, quizSeedAnswerIdx: $quizSeedAnswerIdx, quizSeedList: $quizSeedList, quizSeedCompletedAnswers: $quizSeedCompletedAnswers, quizSeedError: $quizSeedError, passPhrase: $passPhrase, errPassphrase: $errPassphrase)';
   }
 
   @override
@@ -407,6 +425,9 @@ class _$_SeedGenerateState extends _SeedGenerateState {
                     .equals(other.currentStep, currentStep)) &&
             (identical(other.seed, seed) ||
                 const DeepCollectionEquality().equals(other.seed, seed)) &&
+            (identical(other.masterXpriv, masterXpriv) ||
+                const DeepCollectionEquality()
+                    .equals(other.masterXpriv, masterXpriv)) &&
             (identical(other.xpriv, xpriv) ||
                 const DeepCollectionEquality().equals(other.xpriv, xpriv)) &&
             (identical(other.fingerPrint, fingerPrint) ||
@@ -456,6 +477,7 @@ class _$_SeedGenerateState extends _SeedGenerateState {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(currentStep) ^
       const DeepCollectionEquality().hash(seed) ^
+      const DeepCollectionEquality().hash(masterXpriv) ^
       const DeepCollectionEquality().hash(xpriv) ^
       const DeepCollectionEquality().hash(fingerPrint) ^
       const DeepCollectionEquality().hash(wallet) ^
@@ -481,6 +503,7 @@ abstract class _SeedGenerateState extends SeedGenerateState {
   const factory _SeedGenerateState(
       {dynamic currentStep,
       List<String>? seed,
+      String? masterXpriv,
       String? xpriv,
       String? fingerPrint,
       DerivedWallet? wallet,
@@ -501,6 +524,8 @@ abstract class _SeedGenerateState extends SeedGenerateState {
   dynamic get currentStep => throw _privateConstructorUsedError;
   @override
   List<String>? get seed => throw _privateConstructorUsedError;
+  @override
+  String? get masterXpriv => throw _privateConstructorUsedError;
   @override
   String? get xpriv => throw _privateConstructorUsedError;
   @override

@@ -167,14 +167,32 @@ class InteritanceTimerCubit extends Cubit<InheritanceTimerState> {
       final height = currentHeight + blocks;
       final combinedPolicy =
           'or($mainPolicy,and($backupPolicy, after($height)))';
-      final res = _core.compile(
+      final com = _core.compile(
         policy: combinedPolicy,
         scriptType: 'wsh',
       );
 
+      final exportWallet = _core.deriveHardened(
+        masterXPriv: _generateCubit.state.masterXpriv!,
+        account: '',
+        purpose: '92',
+      );
+
+      // public descriptor
+
       var newWallet = Wallet(
         label: state.walletLabel,
-        descriptor: res.descriptor.split('#')[0],
+        mainWallet: InternalWallet(
+          xPub: wallet.xpub,
+          fingerPrint: wallet.fingerPrint,
+          path: wallet.hardenedPath,
+          descriptor: com.descriptor.split('#')[0],
+        ),
+        exportWallet: InternalWallet(
+          xPub: exportWallet.xpub,
+          fingerPrint: exportWallet.fingerPrint,
+          path: exportWallet.hardenedPath,
+        ),
         blockchain: _blockchainCubit.state.blockchain.name,
         walletType: 'INHERITANCE',
       );

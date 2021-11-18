@@ -193,7 +193,7 @@ class __$RedditPostCopyWithImpl<$Res> extends _$RedditPostCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 0, adapterName: 'RedditPostClassAdapter')
+@HiveType(typeId: 8, adapterName: 'RedditPostClassAdapter')
 class _$_RedditPost extends _RedditPost {
   const _$_RedditPost(
       {@HiveField(0) required this.title,

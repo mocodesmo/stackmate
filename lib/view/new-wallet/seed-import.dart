@@ -15,7 +15,7 @@ class SeedImportSteps extends StatelessWidget {
       case SeedImportStep.passphrase:
         return const SeedImportPhrase();
       case SeedImportStep.import:
-        return SeedImportPassphrase();
+        return const SeedImportPassphrase();
     }
   }
 }

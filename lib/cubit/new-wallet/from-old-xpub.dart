@@ -5,7 +5,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/chain-select.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/new-wallet/common/xpub-import.dart';
-import 'package:sats/cubit/new-wallet/from-old-seed.dart';
 import 'package:sats/cubit/wallets.dart';
 import 'package:sats/model/blockchain.dart';
 import 'package:sats/model/wallet.dart';
@@ -131,9 +130,27 @@ class XpubImportWalletCubit extends Cubit<XpubImportWalletState> {
 
       // final len = _storage.getAll<Wallet>(StoreKeys.Wallet.name).length;
 
+      final exportWallet = _bitcoin.deriveHardened(
+        masterXPriv: xpub,
+        account: '',
+        purpose: '92',
+      );
+
+      // public descriptor
+
       var newWallet = Wallet(
         label: state.label,
-        descriptor: com.descriptor.split('#')[0],
+        mainWallet: InternalWallet(
+          xPub: xpub,
+          fingerPrint: fingerprint,
+          path: path,
+          descriptor: com.descriptor.split('#')[0],
+        ),
+        exportWallet: InternalWallet(
+          xPub: exportWallet.xpub,
+          fingerPrint: exportWallet.fingerPrint,
+          path: exportWallet.hardenedPath,
+        ),
         blockchain: _blockchainCubit.state.blockchain.name,
         walletType: 'WATCH ONLY',
       );

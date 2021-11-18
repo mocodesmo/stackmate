@@ -8,7 +8,7 @@ part 'reddit-post.freezed.dart';
 
 @freezed
 class RedditPost with _$RedditPost {
-  @HiveType(typeId: 0, adapterName: 'RedditPostClassAdapter')
+  @HiveType(typeId: 8, adapterName: 'RedditPostClassAdapter')
   const factory RedditPost({
     @HiveField(0) required String title,
     @HiveField(1) required String permalink,

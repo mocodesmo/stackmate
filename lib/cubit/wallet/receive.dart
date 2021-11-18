@@ -7,8 +7,8 @@ import 'package:sats/cubit/logger.dart';
 import 'package:sats/cubit/node.dart';
 import 'package:sats/cubit/wallets.dart';
 import 'package:sats/model/blockchain.dart';
-import 'package:sats/pkg/core.dart';
 import 'package:sats/pkg/clipboard.dart';
+import 'package:sats/pkg/core.dart';
 import 'package:sats/pkg/share.dart';
 import 'package:sats/pkg/vibrate.dart';
 
@@ -65,7 +65,7 @@ class ReceiveCubit extends Cubit<ReceiveState> {
       // await Future.delayed(const Duration(seconds: 1));
 
       // final w = _walletCubit.state.selectedWallet!.descriptor.split('#')[0];
-      final w = _walletCubit.state.selectedWallet!.descriptor;
+      final w = _walletCubit.state.selectedWallet!.mainWallet.descriptor;
       final node = _nodeAddressCubit.state.getAddress();
 
       final address = await compute(getAdrr, {

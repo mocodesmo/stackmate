@@ -120,7 +120,7 @@ class __$NodeCopyWithImpl<$Res> extends _$NodeCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 14, adapterName: 'NodeClassAdaper')
+@HiveType(typeId: 5, adapterName: 'NodeClassAdaper')
 class _$_Node extends _Node {
   const _$_Node(
       {@HiveField(1) required this.address, @HiveField(2) required this.port})

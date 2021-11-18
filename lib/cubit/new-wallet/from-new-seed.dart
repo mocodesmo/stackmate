@@ -52,7 +52,7 @@ class SeedGenerateWalletState with _$SeedGenerateWalletState {
 
 class SeedGenerateWalletCubit extends Cubit<SeedGenerateWalletState> {
   SeedGenerateWalletCubit(
-    this._bitcoin,
+    this._core,
     this._storage,
     this._logger,
     this._wallets,
@@ -66,7 +66,7 @@ class SeedGenerateWalletCubit extends Cubit<SeedGenerateWalletState> {
     });
   }
 
-  final IStackMateCore _bitcoin;
+  final IStackMateCore _core;
 
   final IStorage _storage;
   final LoggerCubit _logger;
@@ -131,15 +131,31 @@ class SeedGenerateWalletCubit extends Cubit<SeedGenerateWalletState> {
           'pk([${wallet.fingerPrint}/${wallet.hardenedPath}]${wallet.xprv}/0/*)'
               .replaceFirst('/m', '');
 
-      final com = _bitcoin.compile(
+      final com = _core.compile(
         policy: policy,
         scriptType: 'wpkh',
+      );
+
+      final exportWallet = _core.deriveHardened(
+        masterXPriv: _generateCubit.state.masterXpriv!,
+        account: '',
+        purpose: '92',
       );
 
       var newWallet = Wallet(
         label: state.walletLabel,
         walletType: 'SINGLE ACCOUNT',
-        descriptor: com.descriptor.split('#')[0],
+        mainWallet: InternalWallet(
+          xPub: wallet.xpub,
+          fingerPrint: wallet.fingerPrint,
+          path: wallet.hardenedPath,
+          descriptor: com.descriptor.split('#')[0],
+        ),
+        exportWallet: InternalWallet(
+          xPub: exportWallet.xpub,
+          fingerPrint: exportWallet.fingerPrint,
+          path: exportWallet.hardenedPath,
+        ),
         blockchain: _blockchainCubit.state.blockchain.name,
       );
 

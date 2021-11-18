@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'blockchain.g.dart';
 
-@HiveType(typeId: 10, adapterName: 'BlockchainClassAdaper')
+@HiveType(typeId: 4, adapterName: 'BlockchainClassAdaper')
 enum Blockchain {
   @HiveField(0)
   mainNet,

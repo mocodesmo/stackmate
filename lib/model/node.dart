@@ -6,7 +6,7 @@ part 'node.g.dart';
 
 @freezed
 class Node with _$Node {
-  @HiveType(typeId: 14, adapterName: 'NodeClassAdaper')
+  @HiveType(typeId: 5, adapterName: 'NodeClassAdaper')
   const factory Node({
     @HiveField(1) required String address,
     @HiveField(2) required String port,

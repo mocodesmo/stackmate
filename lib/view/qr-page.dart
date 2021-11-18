@@ -9,7 +9,7 @@ import 'package:sats/view/home-page.dart';
 class AccountsRowSelection extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
-    final state = c.select((WalletsCubit w) => w.state);
+    final state = c.select((WalletsCubit w) => w.state);    
     final wallets = state.wallets;
     final selected = state.selectedWallet;
 
