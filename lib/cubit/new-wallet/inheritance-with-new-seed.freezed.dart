@@ -2,7 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'inheritance-timer.dart';
+part of 'inheritance-with-new-seed.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,12 +14,12 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$InheritanceTimerStateTearOff {
-  const _$InheritanceTimerStateTearOff();
+class _$InheritanceWithNewSeedStateTearOff {
+  const _$InheritanceWithNewSeedStateTearOff();
 
-  _InheritanceTimerState call(
-      {InteritanceTimerWalletSteps currentStep =
-          InteritanceTimerWalletSteps.info,
+  _InheritanceWithNewSeedState call(
+      {InteritanceWithNewSeedWalletSteps currentStep =
+          InteritanceWithNewSeedWalletSteps.info,
       DateTime? date,
       String errDate = '',
       String walletLabel = '',
@@ -27,7 +27,7 @@ class _$InheritanceTimerStateTearOff {
       bool savingWallet = false,
       String errSavingWallet = '',
       bool newWalletSaved = false}) {
-    return _InheritanceTimerState(
+    return _InheritanceWithNewSeedState(
       currentStep: currentStep,
       date: date,
       errDate: errDate,
@@ -41,11 +41,11 @@ class _$InheritanceTimerStateTearOff {
 }
 
 /// @nodoc
-const $InheritanceTimerState = _$InheritanceTimerStateTearOff();
+const $InheritanceWithNewSeedState = _$InheritanceWithNewSeedStateTearOff();
 
 /// @nodoc
-mixin _$InheritanceTimerState {
-  InteritanceTimerWalletSteps get currentStep =>
+mixin _$InheritanceWithNewSeedState {
+  InteritanceWithNewSeedWalletSteps get currentStep =>
       throw _privateConstructorUsedError;
   DateTime? get date => throw _privateConstructorUsedError;
   String get errDate => throw _privateConstructorUsedError;
@@ -56,17 +56,18 @@ mixin _$InheritanceTimerState {
   bool get newWalletSaved => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $InheritanceTimerStateCopyWith<InheritanceTimerState> get copyWith =>
-      throw _privateConstructorUsedError;
+  $InheritanceWithNewSeedStateCopyWith<InheritanceWithNewSeedState>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $InheritanceTimerStateCopyWith<$Res> {
-  factory $InheritanceTimerStateCopyWith(InheritanceTimerState value,
-          $Res Function(InheritanceTimerState) then) =
-      _$InheritanceTimerStateCopyWithImpl<$Res>;
+abstract class $InheritanceWithNewSeedStateCopyWith<$Res> {
+  factory $InheritanceWithNewSeedStateCopyWith(
+          InheritanceWithNewSeedState value,
+          $Res Function(InheritanceWithNewSeedState) then) =
+      _$InheritanceWithNewSeedStateCopyWithImpl<$Res>;
   $Res call(
-      {InteritanceTimerWalletSteps currentStep,
+      {InteritanceWithNewSeedWalletSteps currentStep,
       DateTime? date,
       String errDate,
       String walletLabel,
@@ -77,13 +78,13 @@ abstract class $InheritanceTimerStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$InheritanceTimerStateCopyWithImpl<$Res>
-    implements $InheritanceTimerStateCopyWith<$Res> {
-  _$InheritanceTimerStateCopyWithImpl(this._value, this._then);
+class _$InheritanceWithNewSeedStateCopyWithImpl<$Res>
+    implements $InheritanceWithNewSeedStateCopyWith<$Res> {
+  _$InheritanceWithNewSeedStateCopyWithImpl(this._value, this._then);
 
-  final InheritanceTimerState _value;
+  final InheritanceWithNewSeedState _value;
   // ignore: unused_field
-  final $Res Function(InheritanceTimerState) _then;
+  final $Res Function(InheritanceWithNewSeedState) _then;
 
   @override
   $Res call({
@@ -100,7 +101,7 @@ class _$InheritanceTimerStateCopyWithImpl<$Res>
       currentStep: currentStep == freezed
           ? _value.currentStep
           : currentStep // ignore: cast_nullable_to_non_nullable
-              as InteritanceTimerWalletSteps,
+              as InteritanceWithNewSeedWalletSteps,
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -134,14 +135,15 @@ class _$InheritanceTimerStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$InheritanceTimerStateCopyWith<$Res>
-    implements $InheritanceTimerStateCopyWith<$Res> {
-  factory _$InheritanceTimerStateCopyWith(_InheritanceTimerState value,
-          $Res Function(_InheritanceTimerState) then) =
-      __$InheritanceTimerStateCopyWithImpl<$Res>;
+abstract class _$InheritanceWithNewSeedStateCopyWith<$Res>
+    implements $InheritanceWithNewSeedStateCopyWith<$Res> {
+  factory _$InheritanceWithNewSeedStateCopyWith(
+          _InheritanceWithNewSeedState value,
+          $Res Function(_InheritanceWithNewSeedState) then) =
+      __$InheritanceWithNewSeedStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {InteritanceTimerWalletSteps currentStep,
+      {InteritanceWithNewSeedWalletSteps currentStep,
       DateTime? date,
       String errDate,
       String walletLabel,
@@ -152,15 +154,17 @@ abstract class _$InheritanceTimerStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$InheritanceTimerStateCopyWithImpl<$Res>
-    extends _$InheritanceTimerStateCopyWithImpl<$Res>
-    implements _$InheritanceTimerStateCopyWith<$Res> {
-  __$InheritanceTimerStateCopyWithImpl(_InheritanceTimerState _value,
-      $Res Function(_InheritanceTimerState) _then)
-      : super(_value, (v) => _then(v as _InheritanceTimerState));
+class __$InheritanceWithNewSeedStateCopyWithImpl<$Res>
+    extends _$InheritanceWithNewSeedStateCopyWithImpl<$Res>
+    implements _$InheritanceWithNewSeedStateCopyWith<$Res> {
+  __$InheritanceWithNewSeedStateCopyWithImpl(
+      _InheritanceWithNewSeedState _value,
+      $Res Function(_InheritanceWithNewSeedState) _then)
+      : super(_value, (v) => _then(v as _InheritanceWithNewSeedState));
 
   @override
-  _InheritanceTimerState get _value => super._value as _InheritanceTimerState;
+  _InheritanceWithNewSeedState get _value =>
+      super._value as _InheritanceWithNewSeedState;
 
   @override
   $Res call({
@@ -173,11 +177,11 @@ class __$InheritanceTimerStateCopyWithImpl<$Res>
     Object? errSavingWallet = freezed,
     Object? newWalletSaved = freezed,
   }) {
-    return _then(_InheritanceTimerState(
+    return _then(_InheritanceWithNewSeedState(
       currentStep: currentStep == freezed
           ? _value.currentStep
           : currentStep // ignore: cast_nullable_to_non_nullable
-              as InteritanceTimerWalletSteps,
+              as InteritanceWithNewSeedWalletSteps,
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -212,9 +216,9 @@ class __$InheritanceTimerStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_InheritanceTimerState extends _InheritanceTimerState {
-  const _$_InheritanceTimerState(
-      {this.currentStep = InteritanceTimerWalletSteps.info,
+class _$_InheritanceWithNewSeedState extends _InheritanceWithNewSeedState {
+  const _$_InheritanceWithNewSeedState(
+      {this.currentStep = InteritanceWithNewSeedWalletSteps.info,
       this.date,
       this.errDate = '',
       this.walletLabel = '',
@@ -224,9 +228,9 @@ class _$_InheritanceTimerState extends _InheritanceTimerState {
       this.newWalletSaved = false})
       : super._();
 
-  @JsonKey(defaultValue: InteritanceTimerWalletSteps.info)
+  @JsonKey(defaultValue: InteritanceWithNewSeedWalletSteps.info)
   @override
-  final InteritanceTimerWalletSteps currentStep;
+  final InteritanceWithNewSeedWalletSteps currentStep;
   @override
   final DateTime? date;
   @JsonKey(defaultValue: '')
@@ -250,13 +254,13 @@ class _$_InheritanceTimerState extends _InheritanceTimerState {
 
   @override
   String toString() {
-    return 'InheritanceTimerState(currentStep: $currentStep, date: $date, errDate: $errDate, walletLabel: $walletLabel, errWalletLabel: $errWalletLabel, savingWallet: $savingWallet, errSavingWallet: $errSavingWallet, newWalletSaved: $newWalletSaved)';
+    return 'InheritanceWithNewSeedState(currentStep: $currentStep, date: $date, errDate: $errDate, walletLabel: $walletLabel, errWalletLabel: $errWalletLabel, savingWallet: $savingWallet, errSavingWallet: $errSavingWallet, newWalletSaved: $newWalletSaved)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _InheritanceTimerState &&
+        (other is _InheritanceWithNewSeedState &&
             (identical(other.currentStep, currentStep) ||
                 const DeepCollectionEquality()
                     .equals(other.currentStep, currentStep)) &&
@@ -296,25 +300,26 @@ class _$_InheritanceTimerState extends _InheritanceTimerState {
 
   @JsonKey(ignore: true)
   @override
-  _$InheritanceTimerStateCopyWith<_InheritanceTimerState> get copyWith =>
-      __$InheritanceTimerStateCopyWithImpl<_InheritanceTimerState>(
-          this, _$identity);
+  _$InheritanceWithNewSeedStateCopyWith<_InheritanceWithNewSeedState>
+      get copyWith => __$InheritanceWithNewSeedStateCopyWithImpl<
+          _InheritanceWithNewSeedState>(this, _$identity);
 }
 
-abstract class _InheritanceTimerState extends InheritanceTimerState {
-  const factory _InheritanceTimerState(
-      {InteritanceTimerWalletSteps currentStep,
+abstract class _InheritanceWithNewSeedState
+    extends InheritanceWithNewSeedState {
+  const factory _InheritanceWithNewSeedState(
+      {InteritanceWithNewSeedWalletSteps currentStep,
       DateTime? date,
       String errDate,
       String walletLabel,
       String errWalletLabel,
       bool savingWallet,
       String errSavingWallet,
-      bool newWalletSaved}) = _$_InheritanceTimerState;
-  const _InheritanceTimerState._() : super._();
+      bool newWalletSaved}) = _$_InheritanceWithNewSeedState;
+  const _InheritanceWithNewSeedState._() : super._();
 
   @override
-  InteritanceTimerWalletSteps get currentStep =>
+  InteritanceWithNewSeedWalletSteps get currentStep =>
       throw _privateConstructorUsedError;
   @override
   DateTime? get date => throw _privateConstructorUsedError;
@@ -332,6 +337,6 @@ abstract class _InheritanceTimerState extends InheritanceTimerState {
   bool get newWalletSaved => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$InheritanceTimerStateCopyWith<_InheritanceTimerState> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$InheritanceWithNewSeedStateCopyWith<_InheritanceWithNewSeedState>
+      get copyWith => throw _privateConstructorUsedError;
 }

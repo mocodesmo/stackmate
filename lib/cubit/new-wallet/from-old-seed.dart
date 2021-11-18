@@ -81,7 +81,7 @@ class SeedImportWalletCubit extends Cubit<SeedImportWalletState> {
             labelFixed: walletLabel != '',
           ),
         ) {
-    _importCubit.stream.listen((istate) {
+    _importSub = _importCubit.stream.listen((istate) {
       if (istate.seedReady) {
         emit(state.copyWith(currentStep: SeedImportWalletSteps.label));
       }
@@ -164,17 +164,8 @@ class SeedImportWalletCubit extends Cubit<SeedImportWalletState> {
     emit(state.copyWith(walletLabelError: ''));
     try {
       final istate = _importCubit.state;
-      final neu = _core.importMaster(
-        mnemonic: istate.seed,
-        passphrase: istate.passPhrase,
-        network: _blockchainCubit.state.blockchain.name,
-      );
-
-      final wallet = _core.deriveHardened(
-        masterXPriv: neu.xprv,
-        account: '1',
-        purpose: '',
-      );
+      final wallet = istate.wallet;
+      if (wallet == null) return;
 
       final policy =
           'pk([${wallet.fingerPrint}/${wallet.hardenedPath}]${wallet.xprv}/0/*)'
@@ -186,7 +177,7 @@ class SeedImportWalletCubit extends Cubit<SeedImportWalletState> {
       );
 
       final exportWallet = _core.deriveHardened(
-        masterXPriv: wallet.xprv,
+        masterXPriv: istate.masterXpriv!,
         account: '',
         purpose: '92',
       );

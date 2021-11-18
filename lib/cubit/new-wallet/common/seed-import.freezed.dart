@@ -24,7 +24,9 @@ class _$SeedImportStateTearOff {
       String passPhrase = '',
       int accountNumber = 0,
       String errPassPhrase = '',
-      bool seedReady = false}) {
+      bool seedReady = false,
+      String? masterXpriv,
+      DerivedWallet? wallet}) {
     return _SeedImportState(
       currentStep: currentStep,
       seed: seed,
@@ -33,6 +35,8 @@ class _$SeedImportStateTearOff {
       accountNumber: accountNumber,
       errPassPhrase: errPassPhrase,
       seedReady: seedReady,
+      masterXpriv: masterXpriv,
+      wallet: wallet,
     );
   }
 }
@@ -49,6 +53,8 @@ mixin _$SeedImportState {
   int get accountNumber => throw _privateConstructorUsedError;
   String get errPassPhrase => throw _privateConstructorUsedError;
   bool get seedReady => throw _privateConstructorUsedError;
+  String? get masterXpriv => throw _privateConstructorUsedError;
+  DerivedWallet? get wallet => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SeedImportStateCopyWith<SeedImportState> get copyWith =>
@@ -67,7 +73,9 @@ abstract class $SeedImportStateCopyWith<$Res> {
       String passPhrase,
       int accountNumber,
       String errPassPhrase,
-      bool seedReady});
+      bool seedReady,
+      String? masterXpriv,
+      DerivedWallet? wallet});
 }
 
 /// @nodoc
@@ -88,6 +96,8 @@ class _$SeedImportStateCopyWithImpl<$Res>
     Object? accountNumber = freezed,
     Object? errPassPhrase = freezed,
     Object? seedReady = freezed,
+    Object? masterXpriv = freezed,
+    Object? wallet = freezed,
   }) {
     return _then(_value.copyWith(
       currentStep: currentStep == freezed
@@ -118,6 +128,14 @@ class _$SeedImportStateCopyWithImpl<$Res>
           ? _value.seedReady
           : seedReady // ignore: cast_nullable_to_non_nullable
               as bool,
+      masterXpriv: masterXpriv == freezed
+          ? _value.masterXpriv
+          : masterXpriv // ignore: cast_nullable_to_non_nullable
+              as String?,
+      wallet: wallet == freezed
+          ? _value.wallet
+          : wallet // ignore: cast_nullable_to_non_nullable
+              as DerivedWallet?,
     ));
   }
 }
@@ -136,7 +154,9 @@ abstract class _$SeedImportStateCopyWith<$Res>
       String passPhrase,
       int accountNumber,
       String errPassPhrase,
-      bool seedReady});
+      bool seedReady,
+      String? masterXpriv,
+      DerivedWallet? wallet});
 }
 
 /// @nodoc
@@ -159,6 +179,8 @@ class __$SeedImportStateCopyWithImpl<$Res>
     Object? accountNumber = freezed,
     Object? errPassPhrase = freezed,
     Object? seedReady = freezed,
+    Object? masterXpriv = freezed,
+    Object? wallet = freezed,
   }) {
     return _then(_SeedImportState(
       currentStep: currentStep == freezed
@@ -189,6 +211,14 @@ class __$SeedImportStateCopyWithImpl<$Res>
           ? _value.seedReady
           : seedReady // ignore: cast_nullable_to_non_nullable
               as bool,
+      masterXpriv: masterXpriv == freezed
+          ? _value.masterXpriv
+          : masterXpriv // ignore: cast_nullable_to_non_nullable
+              as String?,
+      wallet: wallet == freezed
+          ? _value.wallet
+          : wallet // ignore: cast_nullable_to_non_nullable
+              as DerivedWallet?,
     ));
   }
 }
@@ -203,7 +233,9 @@ class _$_SeedImportState extends _SeedImportState {
       this.passPhrase = '',
       this.accountNumber = 0,
       this.errPassPhrase = '',
-      this.seedReady = false})
+      this.seedReady = false,
+      this.masterXpriv,
+      this.wallet})
       : super._();
 
   @JsonKey(defaultValue: SeedImportStep.passphrase)
@@ -227,10 +259,14 @@ class _$_SeedImportState extends _SeedImportState {
   @JsonKey(defaultValue: false)
   @override
   final bool seedReady;
+  @override
+  final String? masterXpriv;
+  @override
+  final DerivedWallet? wallet;
 
   @override
   String toString() {
-    return 'SeedImportState(currentStep: $currentStep, seed: $seed, seedError: $seedError, passPhrase: $passPhrase, accountNumber: $accountNumber, errPassPhrase: $errPassPhrase, seedReady: $seedReady)';
+    return 'SeedImportState(currentStep: $currentStep, seed: $seed, seedError: $seedError, passPhrase: $passPhrase, accountNumber: $accountNumber, errPassPhrase: $errPassPhrase, seedReady: $seedReady, masterXpriv: $masterXpriv, wallet: $wallet)';
   }
 
   @override
@@ -256,7 +292,12 @@ class _$_SeedImportState extends _SeedImportState {
                     .equals(other.errPassPhrase, errPassPhrase)) &&
             (identical(other.seedReady, seedReady) ||
                 const DeepCollectionEquality()
-                    .equals(other.seedReady, seedReady)));
+                    .equals(other.seedReady, seedReady)) &&
+            (identical(other.masterXpriv, masterXpriv) ||
+                const DeepCollectionEquality()
+                    .equals(other.masterXpriv, masterXpriv)) &&
+            (identical(other.wallet, wallet) ||
+                const DeepCollectionEquality().equals(other.wallet, wallet)));
   }
 
   @override
@@ -268,7 +309,9 @@ class _$_SeedImportState extends _SeedImportState {
       const DeepCollectionEquality().hash(passPhrase) ^
       const DeepCollectionEquality().hash(accountNumber) ^
       const DeepCollectionEquality().hash(errPassPhrase) ^
-      const DeepCollectionEquality().hash(seedReady);
+      const DeepCollectionEquality().hash(seedReady) ^
+      const DeepCollectionEquality().hash(masterXpriv) ^
+      const DeepCollectionEquality().hash(wallet);
 
   @JsonKey(ignore: true)
   @override
@@ -284,7 +327,9 @@ abstract class _SeedImportState extends SeedImportState {
       String passPhrase,
       int accountNumber,
       String errPassPhrase,
-      bool seedReady}) = _$_SeedImportState;
+      bool seedReady,
+      String? masterXpriv,
+      DerivedWallet? wallet}) = _$_SeedImportState;
   const _SeedImportState._() : super._();
 
   @override
@@ -301,6 +346,10 @@ abstract class _SeedImportState extends SeedImportState {
   String get errPassPhrase => throw _privateConstructorUsedError;
   @override
   bool get seedReady => throw _privateConstructorUsedError;
+  @override
+  String? get masterXpriv => throw _privateConstructorUsedError;
+  @override
+  DerivedWallet? get wallet => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$SeedImportStateCopyWith<_SeedImportState> get copyWith =>

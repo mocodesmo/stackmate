@@ -11,7 +11,7 @@ import 'package:sats/cubit/new-wallet/common/xpub-import.dart';
 import 'package:sats/cubit/new-wallet/from-new-seed.dart';
 import 'package:sats/cubit/new-wallet/from-old-seed.dart';
 import 'package:sats/cubit/new-wallet/from-old-xpub.dart';
-import 'package:sats/cubit/new-wallet/inheritance-timer.dart';
+import 'package:sats/cubit/new-wallet/inheritance-with-new-seed.dart';
 import 'package:sats/cubit/reddit.dart';
 import 'package:sats/cubit/wallet/receive.dart';
 import 'package:sats/cubit/wallet/send.dart';
@@ -105,7 +105,12 @@ class Routes {
         break;
 
       case importSeed:
-        final importCubit = SeedImportCubit(loggerCubit);
+        final importCubit = SeedImportCubit(
+          loggerCubit,
+          networkSelectCubit,
+          locator<IStackMateCore>(),
+        );
+
         final seedImportCubit = SeedImportWalletCubit(
           locator<IStackMateCore>(),
           locator<IStorage>(),
@@ -159,7 +164,7 @@ class Routes {
           locator<IClipBoard>(),
         );
 
-        final inheritance = InteritanceTimerCubit(
+        final inheritance = InteritanceWithNewSeedCubit(
           locator<IStackMateCore>(),
           locator<IStorage>(),
           loggerCubit,

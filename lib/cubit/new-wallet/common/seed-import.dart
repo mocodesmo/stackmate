@@ -1,6 +1,10 @@
+import 'package:bitcoin/bitcoin.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:sats/cubit/chain-select.dart';
 import 'package:sats/cubit/logger.dart';
+import 'package:sats/model/wallet.dart';
+import 'package:sats/pkg/core.dart';
 
 part 'seed-import.freezed.dart';
 
@@ -19,6 +23,8 @@ class SeedImportState with _$SeedImportState {
     @Default(0) int accountNumber,
     @Default('') String errPassPhrase,
     @Default(false) bool seedReady,
+    String? masterXpriv,
+    DerivedWallet? wallet,
   }) = _SeedImportState;
   const SeedImportState._();
 
@@ -26,9 +32,16 @@ class SeedImportState with _$SeedImportState {
 }
 
 class SeedImportCubit extends Cubit<SeedImportState> {
-  SeedImportCubit(this.logger) : super(const SeedImportState());
+  SeedImportCubit(
+    this.logger,
+    this._blockchainCubit,
+    this._core,
+  ) : super(const SeedImportState());
+
+  final IStackMateCore _core;
 
   final LoggerCubit logger;
+  final ChainSelectCubit _blockchainCubit;
 
   void backOnPassphaseClicked() {
     emit(
@@ -95,9 +108,25 @@ class SeedImportCubit extends Cubit<SeedImportState> {
         return;
       }
 
-      emit(state.copyWith(seedReady: true));
+      final neu = _core.importMaster(
+        mnemonic: state.seed,
+        passphrase: state.passPhrase,
+        network: _blockchainCubit.state.blockchain.name,
+      );
 
-      // emit(state.copyWith(currentStep: SeedImportWalletSteps.label));
+      final wallet = _core.deriveHardened(
+        masterXPriv: neu.xprv,
+        account: '',
+        purpose: '',
+      );
+
+      emit(
+        state.copyWith(
+          seedReady: true,
+          masterXpriv: neu.xprv,
+          wallet: wallet,
+        ),
+      );
     } catch (e) {
       print(e.toString());
     }

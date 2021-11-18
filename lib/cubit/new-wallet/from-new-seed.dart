@@ -59,7 +59,7 @@ class SeedGenerateWalletCubit extends Cubit<SeedGenerateWalletState> {
     this._blockchainCubit,
     this._generateCubit,
   ) : super(const SeedGenerateWalletState()) {
-    _generateCubit.stream.listen((gstate) {
+    _generateSub = _generateCubit.stream.listen((gstate) {
       if (gstate.wallet != null) {
         emit(state.copyWith(currentStep: SeedGenerateWalletSteps.label));
       }

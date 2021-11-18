@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sats/cubit/new-wallet/inheritance-timer.dart';
+import 'package:sats/cubit/new-wallet/inheritance-with-new-seed.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button.dart';
@@ -15,10 +15,10 @@ class InheritanceStepper extends StatelessWidget {
 
   @override
   Widget build(BuildContext c) {
-    return BlocBuilder<InteritanceTimerCubit, InheritanceTimerState>(
+    return BlocBuilder<InteritanceWithNewSeedCubit, InheritanceWithNewSeedState>(
       builder: (context, state) {
         // final stepLabel = state.currentStepLabel();
-        final steps = InteritanceTimerWalletSteps.values.length;
+        final steps = InteritanceWithNewSeedWalletSteps.values.length;
         final idx = state.currentStep.index;
 
         return Column(
@@ -63,7 +63,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
         const SizedBox(height: 24),
         TextButton(
           onPressed: () {
-            c.read<InteritanceTimerCubit>().nextClicked();
+            c.read<InteritanceWithNewSeedCubit>().nextClicked();
           },
           child: Text(
             'I Understand'.toUpperCase().notLocalised(),
@@ -86,14 +86,14 @@ class TimerSettings extends StatelessWidget {
     );
 
     if (dt != null && dt != date) {
-      c.read<InteritanceTimerCubit>().dateSelected(dt);
+      c.read<InteritanceWithNewSeedCubit>().dateSelected(dt);
     }
   }
 
   @override
   Widget build(BuildContext c) {
-    final date = c.select((InteritanceTimerCubit itc) => itc.state.date);
-    final err = c.select((InteritanceTimerCubit itc) => itc.state.errDate);
+    final date = c.select((InteritanceWithNewSeedCubit itc) => itc.state.date);
+    final err = c.select((InteritanceWithNewSeedCubit itc) => itc.state.errDate);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -137,7 +137,7 @@ class TimerSettings extends StatelessWidget {
         ],
         TextButton(
           onPressed: () {
-            c.read<InteritanceTimerCubit>().nextClicked();
+            c.read<InteritanceWithNewSeedCubit>().nextClicked();
           },
           child: const Text(
             'Confirm',
@@ -154,7 +154,7 @@ class InheritanceWalletLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext c) {
-    return BlocBuilder<InteritanceTimerCubit, InheritanceTimerState>(
+    return BlocBuilder<InteritanceWithNewSeedCubit, InheritanceWithNewSeedState>(
       builder: (context, state) {
         return IgnorePointer(
           ignoring: state.savingWallet,
@@ -174,7 +174,7 @@ class InheritanceWalletLabel extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 child: TextField(
                   onChanged: (text) {
-                    c.read<InteritanceTimerCubit>().labelChanged(text);
+                    c.read<InteritanceWithNewSeedCubit>().labelChanged(text);
                   },
                   decoration: const InputDecoration(
                     labelText: 'Wallet Name',
@@ -195,7 +195,7 @@ class InheritanceWalletLabel extends StatelessWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: TextButton(
                     onPressed: () {
-                      c.read<InteritanceTimerCubit>().nextClicked();
+                      c.read<InteritanceWithNewSeedCubit>().nextClicked();
                     },
                     child: const Text('Confirm'),
                   ),
@@ -210,6 +210,15 @@ class InheritanceWalletLabel extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+class ShareDetails extends StatelessWidget {
+  const ShareDetails({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
 
@@ -231,7 +240,7 @@ class _InheritancePageState extends State<InheritancePage> {
 
   @override
   Widget build(BuildContext c) {
-    return BlocConsumer<InteritanceTimerCubit, InheritanceTimerState>(
+    return BlocConsumer<InteritanceWithNewSeedCubit, InheritanceWithNewSeedState>(
       listenWhen: (previous, current) =>
           previous.currentStep != current.currentStep ||
           previous.newWalletSaved != current.newWalletSaved,
@@ -307,16 +316,18 @@ class _InheritancePageState extends State<InheritancePage> {
                       ),
                       child: () {
                         switch (state.currentStep) {
-                          case InteritanceTimerWalletSteps.info:
+                          case InteritanceWithNewSeedWalletSteps.info:
                             return InheritanceWalletInfo();
-                          case InteritanceTimerWalletSteps.settings:
+                          case InteritanceWithNewSeedWalletSteps.settings:
                             return const TimerSettings();
-                          case InteritanceTimerWalletSteps.seed:
+                          case InteritanceWithNewSeedWalletSteps.seed:
                             return const SeedGenerateStepSelect();
-                          case InteritanceTimerWalletSteps.import:
+                          case InteritanceWithNewSeedWalletSteps.import:
                             return const XpubFieldsImport();
-                          case InteritanceTimerWalletSteps.label:
+                          case InteritanceWithNewSeedWalletSteps.label:
                             return const InheritanceWalletLabel();
+                          case InteritanceWithNewSeedWalletSteps.share:
+                            return const ShareDetails();
                         }
                       }(),
                     )
