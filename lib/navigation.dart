@@ -31,7 +31,7 @@ import 'package:sats/view/home-page.dart';
 import 'package:sats/view/logs-page.dart';
 import 'package:sats/view/qr-page.dart';
 import 'package:sats/view/settings-page.dart';
-import 'package:sats/view/wallet-new-inheritance-page.dart';
+import 'package:sats/view/wallet-new-inheritance-generate-seed-page.dart';
 import 'package:sats/view/wallet-new-seedgenerate-page.dart';
 import 'package:sats/view/wallet-new-seedimport-page.dart';
 import 'package:sats/view/wallet-new-xpub-page.dart';
