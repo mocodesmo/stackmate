@@ -6,7 +6,7 @@ import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button2.dart';
 import 'package:sats/view/common/header.dart';
 import 'package:sats/view/common/step-line.dart';
-import 'package:sats/view/new-wallet/seed-import.dart';
+import 'package:sats/view/new-wallet/common/seed-import.dart';
 
 class NewImportStepper extends StatelessWidget {
   const NewImportStepper();

@@ -5,7 +5,7 @@ import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
 import 'package:sats/view/common/back-button.dart';
 import 'package:sats/view/common/step-line.dart';
-import 'package:sats/view/new-wallet/seed-generate.dart';
+import 'package:sats/view/new-wallet/common/seed-generate.dart';
 
 class GenerateWalletStepper extends StatelessWidget {
   @override

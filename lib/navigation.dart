@@ -12,6 +12,7 @@ import 'package:sats/cubit/new-wallet/from-new-seed.dart';
 import 'package:sats/cubit/new-wallet/from-old-seed.dart';
 import 'package:sats/cubit/new-wallet/from-old-xpub.dart';
 import 'package:sats/cubit/new-wallet/inheritance-with-new-seed.dart';
+import 'package:sats/cubit/new-wallet/inheritance-with-old-seed.dart';
 import 'package:sats/cubit/reddit.dart';
 import 'package:sats/cubit/wallet/receive.dart';
 import 'package:sats/cubit/wallet/send.dart';
@@ -29,12 +30,13 @@ import 'package:sats/view/address-book-page.dart';
 import 'package:sats/view/calculator-page.dart';
 import 'package:sats/view/home-page.dart';
 import 'package:sats/view/logs-page.dart';
+import 'package:sats/view/new-wallet/inheritance-new-seed-page.dart';
+import 'package:sats/view/new-wallet/inheritance-old-seed-page.dart';
+import 'package:sats/view/new-wallet/seed-generate-page.dart';
+import 'package:sats/view/new-wallet/seed-import-page.dart';
+import 'package:sats/view/new-wallet/xpub-import-page.dart';
 import 'package:sats/view/qr-page.dart';
 import 'package:sats/view/settings-page.dart';
-import 'package:sats/view/wallet-new-inheritance-generate-seed-page.dart';
-import 'package:sats/view/wallet-new-seedgenerate-page.dart';
-import 'package:sats/view/wallet-new-seedimport-page.dart';
-import 'package:sats/view/wallet-new-xpub-page.dart';
 import 'package:sats/view/wallet-page.dart';
 import 'package:sats/view/wallet-receive-page.dart';
 import 'package:sats/view/wallet-send-page.dart';
@@ -55,7 +57,8 @@ class Routes {
   static const generateSeed = 'generate-seed';
   static const importSeed = 'import-seed';
   static const watchOnly = 'watch-only';
-  static const inheritance = 'inheritance';
+  static const inheritanceNewSeed = 'inheritance-new-seed';
+  static const inheritanceOldSeed = 'inheritance-old-seed';
 
   static Route<dynamic>? setupRoutes(RouteSettings settings, BuildContext c) {
     late Widget page;
@@ -152,7 +155,7 @@ class Routes {
         );
         break;
 
-      case inheritance:
+      case inheritanceNewSeed:
         final seedGenerateCubit = SeedGenerateCubit(
           locator<IStackMateCore>(),
           networkSelectCubit,
@@ -181,7 +184,41 @@ class Routes {
             BlocProvider.value(value: xpubCub),
             BlocProvider.value(value: inheritance),
           ],
-          child: const InheritancePage(),
+          child: const InheritanceNewSeedPage(),
+        );
+
+        break;
+
+      case inheritanceOldSeed:
+        final seedImportCubit = SeedImportCubit(
+          loggerCubit,
+          networkSelectCubit,
+          locator<IStackMateCore>(),
+        );
+
+        final xpubCub = XpubImportCubit(
+          loggerCubit,
+          locator<IClipBoard>(),
+        );
+
+        final inheritance = InheritanceWithOldSeedCubit(
+          locator<IStackMateCore>(),
+          locator<IStorage>(),
+          loggerCubit,
+          walletsCubit,
+          networkSelectCubit,
+          seedImportCubit,
+          xpubCub,
+          nodeAddressCubit,
+        );
+
+        page = MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: seedImportCubit),
+            BlocProvider.value(value: xpubCub),
+            BlocProvider.value(value: inheritance),
+          ],
+          child: const InheritanceOldSeedPage(),
         );
 
         break;

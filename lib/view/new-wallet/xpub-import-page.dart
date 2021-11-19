@@ -6,7 +6,7 @@ import 'package:sats/view/common/back-button2.dart';
 import 'package:sats/view/common/header.dart';
 import 'package:sats/view/common/loading.dart';
 import 'package:sats/view/common/step-line.dart';
-import 'package:sats/view/new-wallet/xpub-import.dart';
+import 'package:sats/view/new-wallet/common/xpub-import.dart';
 
 class XPubImportStepper extends StatelessWidget {
   const XPubImportStepper({Key? key}) : super(key: key);

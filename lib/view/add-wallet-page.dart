@@ -200,12 +200,21 @@ class AddWalletPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     WalletSelection(
-                      text: 'Inheritance',
+                      text: 'Inheritance With New Seed',
                       description:
                           'Time protect you assets.\nSelect your hier.',
                       colour: c.colours.surface,
                       onPressed: () {
-                        Navigator.pushNamed(c, Routes.inheritance);
+                        Navigator.pushNamed(c, Routes.inheritanceNewSeed);
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    WalletSelection(
+                      text: 'Inheritance With Old Seed',
+                      description: 'Import an existing time protected wallet.',
+                      colour: c.colours.surface,
+                      onPressed: () {
+                        Navigator.pushNamed(c, Routes.inheritanceOldSeed);
                       },
                     ),
                     const SizedBox(height: 16),
