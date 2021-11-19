@@ -66,3 +66,15 @@ char *broadcast_tx(
     const char *deposit_desc, 
     const char *node_address, 
     const char *signed_psbt);
+
+char *get_height(
+    const char *network, 
+    const char *node_address);
+
+char *get_weight(
+    const char *deposit_desc, 
+    const char *psbt);
+
+char *days_to_blocks(const char *days);
+
+char *cstring_free(const char *ptr);

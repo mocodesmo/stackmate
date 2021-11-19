@@ -27,8 +27,10 @@ public class SwiftBitcoinPlugin: NSObject, FlutterPlugin {
     build_tx("","","","","");
     sign_tx("","","");
     broadcast_tx("","","");
-    // cstring_free("");
-
+    get_height("","");
+    get_weight("","");
+    days_to_blocks("");
+    cstring_free("");
   }
 
 }
