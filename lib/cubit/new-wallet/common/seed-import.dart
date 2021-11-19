@@ -3,7 +3,6 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sats/cubit/chain-select.dart';
 import 'package:sats/cubit/logger.dart';
-import 'package:sats/model/wallet.dart';
 import 'package:sats/pkg/core.dart';
 
 part 'seed-import.freezed.dart';

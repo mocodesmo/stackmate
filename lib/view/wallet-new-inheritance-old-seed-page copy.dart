@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sats/cubit/new-wallet/inheritance-with-new-seed.dart';
 import 'package:sats/cubit/new-wallet/inheritance-with-old-seed.dart';
 import 'package:sats/navigation.dart';
 import 'package:sats/pkg/extensions.dart';
@@ -8,7 +7,6 @@ import 'package:sats/view/common/back-button.dart';
 import 'package:sats/view/common/loading.dart';
 import 'package:sats/view/common/log-button.dart';
 import 'package:sats/view/common/step-line.dart';
-import 'package:sats/view/new-wallet/seed-generate.dart';
 import 'package:sats/view/new-wallet/seed-import.dart';
 import 'package:sats/view/new-wallet/xpub-import.dart';
 

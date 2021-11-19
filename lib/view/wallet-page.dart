@@ -468,36 +468,65 @@ class WalletInfo extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 16),
             child: Text(
-              'WALLET INFORMATION',
+              'EXPORT WALLET INFORMATION',
               style: c.fonts.overline!.copyWith(
                 color: c.colours.onBackground,
               ),
             ),
           ),
           const SizedBox(height: 24),
-
-          Container(
-            padding: const EdgeInsets.only(left: 16),
-            width: c.width * 0.8,
-            child: Text(
-              wallet.mainWallet.descriptor!,
-              maxLines: 10,
-              textAlign: TextAlign.left,
-              style: c.fonts.caption!.copyWith(
-                color: c.colours.onBackground.withOpacity(0.9),
-              ),
-            ),
+          const Text('Public Key'),
+          Text(wallet.exportWallet.xPub),
+          TextButton(
+            onPressed: () {
+              c.read<WalletsCubit>().copyDescriptor(wallet.exportWallet.xPub);
+            },
+            child: const Text('COPY'),
           ),
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextButton(
-              onPressed: () {
-                c.read<WalletsCubit>().copyDescriptor();
-              },
-              child: const Text('COPY'),
-            ),
-          )
+          const SizedBox(height: 24),
+
+          const Text('Fingerprint'),
+          Text(wallet.exportWallet.fingerPrint),
+          TextButton(
+            onPressed: () {
+              c
+                  .read<WalletsCubit>()
+                  .copyDescriptor(wallet.exportWallet.fingerPrint);
+            },
+            child: const Text('COPY'),
+          ),
+          const SizedBox(height: 24),
+          const Text('Path'),
+          Text(wallet.exportWallet.path),
+          TextButton(
+            onPressed: () {
+              c.read<WalletsCubit>().copyDescriptor(wallet.exportWallet.path);
+            },
+            child: const Text('COPY'),
+          ),
+
+          // Container(
+          //   padding: const EdgeInsets.only(left: 16),
+          //   width: c.width * 0.8,
+          //   child: Text(
+          //     wallet.mainWallet.descriptor!,
+          //     maxLines: 10,
+          //     textAlign: TextAlign.left,
+          //     style: c.fonts.caption!.copyWith(
+          //       color: c.colours.onBackground.withOpacity(0.9),
+          //     ),
+          //   ),
+          // ),
+          // const SizedBox(height: 16),
+          // Padding(
+          //   padding: const EdgeInsets.all(8.0),
+          //   child: TextButton(
+          //     onPressed: () {
+          //       c.read<WalletsCubit>().copyDescriptor();
+          //     },
+          //     child: const Text('COPY'),
+          //   ),
+          // ),
 
           // for (var transaction in transactions)
           //   TransactionCell(transaction: transaction),
@@ -603,8 +632,9 @@ class WalletPage extends StatelessWidget {
                               ),
                               AnimatedOpacity(
                                 duration: const Duration(milliseconds: 300),
-                                opacity:
-                                    (zeroBal || !wallet.isNotWatchOnly()) ? 0.4 : 1,
+                                opacity: (zeroBal || !wallet.isNotWatchOnly())
+                                    ? 0.4
+                                    : 1,
                                 child: IconButton(
                                   // alignment: Alignment.centerRight,
                                   color: c.colours.primary,
