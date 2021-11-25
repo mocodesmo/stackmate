@@ -204,10 +204,13 @@ class InteritanceWithNewSeedCubit extends Cubit<InheritanceWithNewSeedState> {
         nodeAddress: _nodeAddressCubit.state.getAddress(),
       );
       final height = currentHeight + blocks;
-      
+
       final combinedPolicy =
           'or($mainPolicy,and($backupPolicy,after($height)))';
-      
+
+      // final combinedPolicy =
+      //     'thresh(1,$mainPolicy,and($backupPolicy,after($height)))';
+
       final com = _core.compile(
         policy: combinedPolicy,
         scriptType: 'wsh',

@@ -48,7 +48,7 @@ typedef BuildT = Pointer<Utf8> Function(
 
 typedef DecodeT = Pointer<Utf8> Function(
   Pointer<Utf8> network,
-  Pointer<Utf8> upsbt,
+  Pointer<Utf8> psbt,
 );
 
 typedef SignT = Pointer<Utf8> Function(

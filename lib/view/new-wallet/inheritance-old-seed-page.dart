@@ -301,6 +301,7 @@ class _InheritanceOldSeedPageState extends State<InheritanceOldSeedPage> {
                 ];
               },
               body: SingleChildScrollView(
+                controller: _scrollController,
                 child: Column(
                   children: [
                     const InheritanceStepper(),

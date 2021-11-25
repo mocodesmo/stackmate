@@ -22,7 +22,7 @@ mv -f ./target/universal/release/libstackmate.a ../ios
 
 echo 'cleaning up ..'
 cd ..
-# rm -f -r stackmate-core
+rm -f -r stackmate-core
 
 echo '\n\nstackmate-core for android and ios updated !\n\n'
 
