@@ -460,88 +460,123 @@ class WalletInfo extends StatelessWidget {
 
     return FadeIn(
       delay: const Duration(milliseconds: 300),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 32),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 32),
 
-          Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: Text(
+            Text(
               'EXPORT WALLET INFORMATION',
               style: c.fonts.overline!.copyWith(
                 color: c.colours.onBackground,
               ),
             ),
-          ),
-          const SizedBox(height: 24),
-          const Text('Public Key'),
-          Text(wallet.exportWallet.xPub),
-          TextButton(
-            onPressed: () {
-              c.read<WalletsCubit>().copyDescriptor(wallet.exportWallet.xPub);
-            },
-            child: const Text('COPY'),
-          ),
-          const SizedBox(height: 24),
+            const SizedBox(height: 24),
+            Text(
+              'Public Key',
+              style: c.fonts.overline!.copyWith(
+                color: c.colours.onBackground,
+              ),
+            ),
+            const SizedBox(height: 8),
 
-          const Text('Fingerprint'),
-          Text(wallet.exportWallet.fingerPrint),
-          TextButton(
-            onPressed: () {
-              c
-                  .read<WalletsCubit>()
-                  .copyDescriptor(wallet.exportWallet.fingerPrint);
-            },
-            child: const Text('COPY'),
-          ),
-          const SizedBox(height: 24),
-          const Text('Path'),
-          Text(wallet.exportWallet.path),
-          TextButton(
-            onPressed: () {
-              c.read<WalletsCubit>().copyDescriptor(wallet.exportWallet.path);
-            },
-            child: const Text('COPY'),
-          ),
+            Text(
+              wallet.exportWallet.xPub,
+              style: c.fonts.caption!.copyWith(
+                color: c.colours.onBackground,
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                c.read<WalletsCubit>().copyDescriptor(wallet.exportWallet.xPub);
+              },
+              child: const Text('COPY'),
+            ),
+            const SizedBox(height: 24),
 
-          // Container(
-          //   padding: const EdgeInsets.only(left: 16),
-          //   width: c.width * 0.8,
-          //   child: Text(
-          //     wallet.mainWallet.descriptor!,
-          //     maxLines: 10,
-          //     textAlign: TextAlign.left,
-          //     style: c.fonts.caption!.copyWith(
-          //       color: c.colours.onBackground.withOpacity(0.9),
-          //     ),
-          //   ),
-          // ),
-          // const SizedBox(height: 16),
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: TextButton(
-          //     onPressed: () {
-          //       c.read<WalletsCubit>().copyDescriptor();
-          //     },
-          //     child: const Text('COPY'),
-          //   ),
-          // ),
+            Text(
+              'Fingerprint',
+              style: c.fonts.overline!.copyWith(
+                color: c.colours.onBackground,
+              ),
+            ),
+            const SizedBox(height: 8),
 
-          // for (var transaction in transactions)
-          //   TransactionCell(transaction: transaction),
+            Text(
+              wallet.exportWallet.fingerPrint,
+              style: c.fonts.caption!.copyWith(
+                color: c.colours.onBackground,
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                c
+                    .read<WalletsCubit>()
+                    .copyDescriptor(wallet.exportWallet.fingerPrint);
+              },
+              child: const Text('COPY'),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'Path',
+              style: c.fonts.overline!.copyWith(
+                color: c.colours.onBackground,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              wallet.exportWallet.path,
+              style: c.fonts.caption!.copyWith(
+                color: c.colours.onBackground,
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                c.read<WalletsCubit>().copyDescriptor(wallet.exportWallet.path);
+              },
+              child: const Text('COPY'),
+            ),
 
-          // if (!state.loadingTransactions) ...[
-          //   SizedBox(height: 24),
-          //   Center(
-          //       child: TextButton(
-          //           onPressed: () {
-          //             c.read<HistoryCubit>().getHistory();
-          //           },
-          //           child: Text('Load More'))),
-          //   SizedBox(height: 24),
-          // ]
-        ],
+            // Container(
+            //   padding: const EdgeInsets.only(left: 16),
+            //   width: c.width * 0.8,
+            //   child: Text(
+            //     wallet.mainWallet.descriptor!,
+            //     maxLines: 10,
+            //     textAlign: TextAlign.left,
+            //     style: c.fonts.caption!.copyWith(
+            //       color: c.colours.onBackground.withOpacity(0.9),
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(height: 16),
+            // Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: TextButton(
+            //     onPressed: () {
+            //       c.read<WalletsCubit>().copyDescriptor();
+            //     },
+            //     child: const Text('COPY'),
+            //   ),
+            // ),
+
+            // for (var transaction in transactions)
+            //   TransactionCell(transaction: transaction),
+
+            // if (!state.loadingTransactions) ...[
+            //   SizedBox(height: 24),
+            //   Center(
+            //       child: TextButton(
+            //           onPressed: () {
+            //             c.read<HistoryCubit>().getHistory();
+            //           },
+            //           child: Text('Load More'))),
+            //   SizedBox(height: 24),
+            // ]
+          ],
+        ),
       ),
     );
   }

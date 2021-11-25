@@ -439,7 +439,7 @@ class SendCubit extends Cubit<SendState> {
 }
 
 double estimateFeees(dynamic data) {
-  final obj = data as Map<String, String>;
+  final obj = data as Map<String, String?>;
   final resp = BitcoinFFI().estimateNetworkFee(
     targetSize: obj['targetSize']!,
     network: obj['network']!,
@@ -449,7 +449,7 @@ double estimateFeees(dynamic data) {
 }
 
 int getWeight(dynamic data) {
-  final obj = data as Map<String, String>;
+  final obj = data as Map<String, String?>;
   final resp = BitcoinFFI().getWeight(
     depositDesc: obj['depositDesc']!,
     psbt: obj['psbt']!,
@@ -458,7 +458,7 @@ int getWeight(dynamic data) {
 }
 
 AbsoluteFees getAbsoluteFees(dynamic data) {
-  final obj = data as Map<String, String>;
+  final obj = data as Map<String, String?>;
   final resp = BitcoinFFI().feeAbsoluteToRate(
     feeAbsolute: obj['feeRate']!,
     weight: obj['weight']!,
@@ -467,7 +467,7 @@ AbsoluteFees getAbsoluteFees(dynamic data) {
 }
 
 String buildTx(dynamic data) {
-  final obj = data as Map<String, String>;
+  final obj = data as Map<String, String?>;
   final resp = BitcoinFFI().buildTransaction(
     nodeAddress: obj['nodeAddress']!,
     amount: obj['amount']!,
@@ -480,7 +480,7 @@ String buildTx(dynamic data) {
 }
 
 List<DecodedTxOutput> decodePSBT(dynamic data) {
-  final obj = data as Map<String, String>;
+  final obj = data as Map<String, String?>;
   final resp = BitcoinFFI().decodePsbt(
     network: obj['network']!,
     psbt: obj['psbt']!,
@@ -495,7 +495,7 @@ List<DecodedTxOutput> decodePSBT(dynamic data) {
 }
 
 String signTx(dynamic data) {
-  final obj = data as Map<String, String>;
+  final obj = data as Map<String, String?>;
 
   final resp = BitcoinFFI().signTransaction(
     nodeAddress: obj['nodeAddress']!,
@@ -506,7 +506,7 @@ String signTx(dynamic data) {
 }
 
 String broadcastTx(dynamic data) {
-  final obj = data as Map<String, String>;
+  final obj = data as Map<String, String?>;
 
   final resp = BitcoinFFI().broadcastTransaction(
     nodeAddress: obj['nodeAddress']!,

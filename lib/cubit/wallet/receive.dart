@@ -127,7 +127,7 @@ class ReceiveCubit extends Cubit<ReceiveState> {
 }
 
 String getAdrr(dynamic msg) {
-  final data = msg as Map<String, String>;
+  final data = msg as Map<String, String?>;
   final resp = BitcoinFFI().getAddress(
     depositDesc: data['depositDesc']!,
     nodeAddress: data['nodeAddress']!,

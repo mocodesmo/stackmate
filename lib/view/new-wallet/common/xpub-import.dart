@@ -54,7 +54,7 @@ class _XpubImportFieldsState extends State<XpubFieldsImport> {
               children: [
                 Expanded(
                   child: Text(
-                    'ADDRESS'.notLocalised(),
+                    'Public Key'.notLocalised(),
                     style: c.fonts.overline!.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -77,6 +77,9 @@ class _XpubImportFieldsState extends State<XpubFieldsImport> {
               child: TextField(
                 controller: _xpubController,
                 maxLines: 4,
+                style: c.fonts.bodyText1!.copyWith(
+                  color: c.colours.onBackground,
+                ),
                 onChanged: (text) {
                   c.read<XpubImportCubit>().xpubChanged(text);
                 },
@@ -112,6 +115,9 @@ class _XpubImportFieldsState extends State<XpubFieldsImport> {
                 padding: EdgeInsets.zero,
                 child: TextField(
                   controller: _fingerPrintController,
+                  style: c.fonts.bodyText1!.copyWith(
+                    color: c.colours.onBackground,
+                  ),
                   onChanged: (text) {
                     c.read<XpubImportCubit>().fingerPrintChanged(text);
                   },
@@ -146,6 +152,9 @@ class _XpubImportFieldsState extends State<XpubFieldsImport> {
                 padding: EdgeInsets.zero,
                 child: TextField(
                   controller: _pathController,
+                  style: c.fonts.bodyText1!.copyWith(
+                    color: c.colours.onBackground,
+                  ),
                   onChanged: (text) {
                     c.read<XpubImportCubit>().pathChanged(text);
                   },

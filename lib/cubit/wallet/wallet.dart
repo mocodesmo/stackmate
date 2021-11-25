@@ -85,9 +85,10 @@ class WalletCubit extends Cubit<WalletState> {
       );
 
       final node = _nodeAddressCubit.state.getAddress();
+      final wallet = _walletsCubit.state.selectedWallet!;
 
       final bal = await compute(computeBalance, {
-        'depositDesc': _walletsCubit.state.selectedWallet!.mainWallet.descriptor,
+        'depositDesc': wallet.mainWallet.descriptor,
         'nodeAddress': node,
       });
 
@@ -102,7 +103,8 @@ class WalletCubit extends Cubit<WalletState> {
       );
 
       final transactions = await compute(computeHistory, {
-        'depositDesc': _walletsCubit.state.selectedWallet!.mainWallet.descriptor,
+        'depositDesc':
+            _walletsCubit.state.selectedWallet!.mainWallet.descriptor,
         'nodeAddress': node,
         // 'network': _blockchain.state.blockchain.name,
       });
@@ -185,7 +187,7 @@ class WalletCubit extends Cubit<WalletState> {
 }
 
 List<Transaction> computeHistory(dynamic obj) {
-  final data = obj as Map<String, String>;
+  final data = obj as Map<String, String?>;
   final resp = BitcoinFFI().getHistory(
     depositDesc: data['depositDesc']!,
     nodeAddress: data['nodeAddress']!,
@@ -194,7 +196,7 @@ List<Transaction> computeHistory(dynamic obj) {
 }
 
 int computeBalance(dynamic obj) {
-  final data = obj as Map<String, String>;
+  final data = obj as Map<String, String?>;
   final resp = BitcoinFFI().syncBalance(
     depositDesc: data['depositDesc']!,
     nodeAddress: data['nodeAddress']!,

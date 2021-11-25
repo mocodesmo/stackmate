@@ -15,7 +15,8 @@ class InheritanceStepper extends StatelessWidget {
 
   @override
   Widget build(BuildContext c) {
-    return BlocBuilder<InteritanceWithNewSeedCubit, InheritanceWithNewSeedState>(
+    return BlocBuilder<InteritanceWithNewSeedCubit,
+        InheritanceWithNewSeedState>(
       builder: (context, state) {
         // final stepLabel = state.currentStepLabel();
         final steps = InteritanceWithNewSeedWalletSteps.values.length;
@@ -93,7 +94,8 @@ class TimerSettings extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     final date = c.select((InteritanceWithNewSeedCubit itc) => itc.state.date);
-    final err = c.select((InteritanceWithNewSeedCubit itc) => itc.state.errDate);
+    final err =
+        c.select((InteritanceWithNewSeedCubit itc) => itc.state.errDate);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -154,7 +156,8 @@ class InheritanceWalletLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext c) {
-    return BlocBuilder<InteritanceWithNewSeedCubit, InheritanceWithNewSeedState>(
+    return BlocBuilder<InteritanceWithNewSeedCubit,
+        InheritanceWithNewSeedState>(
       builder: (context, state) {
         return IgnorePointer(
           ignoring: state.savingWallet,
@@ -176,6 +179,8 @@ class InheritanceWalletLabel extends StatelessWidget {
                   onChanged: (text) {
                     c.read<InteritanceWithNewSeedCubit>().labelChanged(text);
                   },
+                  style: c.fonts.bodyText2!
+                      .copyWith(color: c.colours.onBackground),
                   decoration: const InputDecoration(
                     labelText: 'Wallet Name',
                     labelStyle: TextStyle(
@@ -240,7 +245,8 @@ class _InheritanceNewSeedPageState extends State<InheritanceNewSeedPage> {
 
   @override
   Widget build(BuildContext c) {
-    return BlocConsumer<InteritanceWithNewSeedCubit, InheritanceWithNewSeedState>(
+    return BlocConsumer<InteritanceWithNewSeedCubit,
+        InheritanceWithNewSeedState>(
       listenWhen: (previous, current) =>
           previous.currentStep != current.currentStep ||
           previous.newWalletSaved != current.newWalletSaved,

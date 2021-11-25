@@ -22,11 +22,11 @@ mv -f ./target/universal/release/libstackmate.a ../ios
 
 echo 'cleaning up ..'
 cd ..
-rm -f -r stackmate-core
+# rm -f -r stackmate-core
 
 echo '\n\nstackmate-core for android and ios updated !\n\n'
 
-echo 'add new functions to ios/Classes/BitcoinPlugin.h'
-echo 'call new functions in ios/Classes/BitcoinPlugin.swift\n\n'
-echo 'Open XCode and link the new .a binary\n\n'
+echo '-- Add new functions to ios/Classes/BitcoinPlugin.h \n'
+echo '-- Call new functions in ios/Classes/BitcoinPlugin.swift\n'
+echo '-- Open XCode and link the new .a binary\n\n'
 

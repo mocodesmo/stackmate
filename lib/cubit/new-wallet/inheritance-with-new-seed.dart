@@ -204,8 +204,10 @@ class InteritanceWithNewSeedCubit extends Cubit<InheritanceWithNewSeedState> {
         nodeAddress: _nodeAddressCubit.state.getAddress(),
       );
       final height = currentHeight + blocks;
+      
       final combinedPolicy =
-          'or($mainPolicy,and($backupPolicy, after($height)))';
+          'or($mainPolicy,and($backupPolicy,after($height)))';
+      
       final com = _core.compile(
         policy: combinedPolicy,
         scriptType: 'wsh',
@@ -221,6 +223,7 @@ class InteritanceWithNewSeedCubit extends Cubit<InheritanceWithNewSeedState> {
         label: state.walletLabel,
         mainWallet: InternalWallet(
           xPub: mainWallet.xpub,
+          xPriv: mainWallet.xprv,
           fingerPrint: mainWallet.fingerPrint,
           path: mainWallet.hardenedPath,
           descriptor: com.descriptor.split('#')[0],
