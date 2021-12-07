@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_single_cascade_in_expression_statements
-
 import 'dart:math' as math;
 
 import 'package:bloc/bloc.dart';
@@ -243,6 +241,9 @@ class CalculatorCubit extends Cubit<CalculatorState> {
         if (calc[i] == '.' && !Validation.isNumeric(calc[i - 1]))
           calc = calc.substring(0, i) + '0' + calc.substring(i, calc.length);
 
+      if (calc == '') return;
+
+      print('---calc: $calc');
       calc = parser.parse(calc).value.toString();
 
       if (state.editingBtc) {
@@ -284,7 +285,8 @@ class CalculatorCubit extends Cubit<CalculatorState> {
 
   bool _isZero(String val) {
     try {
-      final amt = double.parse(val);
+      if (val == '') return true;
+      final amt = double.parse(val.replaceAll(',', ''));
       return amt == 0 && !val.contains('.');
     } catch (e, s) {
       _logger.logException(e, 'CalculatorBloc._isZero', s);
@@ -318,10 +320,11 @@ ExpressionBuilder _expBuilder() {
       (String l, num a, String r) => a,
     );
 
-  builder.group()..prefix(char('-').trim(), (String op, num a) => -a);
+  builder.group().prefix(char('-').trim(), (String op, num a) => -a);
 
-  builder.group()
-    ..right(char('^').trim(), (num a, String op, num b) => math.pow(a, b));
+  builder
+      .group()
+      .right(char('^').trim(), (num a, String op, num b) => math.pow(a, b));
 
   builder.group()
     ..left(char('*').trim(), (num a, String op, num b) => a * b)

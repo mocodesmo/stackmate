@@ -15,10 +15,10 @@ mv -f ./target/x86_64-linux-android/release/libstackmate.so ../android/src/main/
 
 echo 'build stackmate-core for android'
 echo 'this might take a while ..'
-cargo lipo --release
+# cargo lipo --release
 
 echo 'updating to new ios binaries'
-mv -f ./target/universal/release/libstackmate.a ../ios
+# mv -f ./target/universal/release/libstackmate.a ../ios
 
 echo 'cleaning up ..'
 cd ..

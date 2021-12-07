@@ -507,7 +507,7 @@ class NewHomePage extends StatelessWidget {
               flexibleSpace: FlexibleSpaceBar(
                 stretchModes: const [
                   // StretchMode.blurBackground,
-                  StretchMode.fadeTitle
+                  StretchMode.fadeTitle,
                 ],
                 // collapseMode: CollapseMode.parallax,
                 background: Column(

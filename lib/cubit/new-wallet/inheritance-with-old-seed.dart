@@ -154,7 +154,6 @@ class InheritanceWithOldSeedCubit extends Cubit<InheritanceWithOldSeedState> {
       case InteritanceWithOldSeedWalletSteps.label:
         saveClicked();
         break;
-    
     }
   }
 
@@ -206,8 +205,13 @@ class InheritanceWithOldSeedCubit extends Cubit<InheritanceWithOldSeedState> {
         nodeAddress: _nodeAddressCubit.state.getAddress(),
       );
       final height = currentHeight + blocks;
+
+      // final combinedPolicy =
+      //     'or($mainPolicy,and($backupPolicy, after($height)))';
+
       final combinedPolicy =
-          'or($mainPolicy,and($backupPolicy, after($height)))';
+          'thresh(1,$mainPolicy,and($backupPolicy,after($height)))';
+
       final com = _core.compile(
         policy: combinedPolicy,
         scriptType: 'wsh',
