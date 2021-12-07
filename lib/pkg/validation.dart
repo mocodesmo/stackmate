@@ -47,12 +47,23 @@ class Validation {
     return btc;
   }
 
+  // static String addCommas(String amt) {
+  //   final str = amt.replaceAll(',', '');
+  //   return str.replaceAllMapped(
+  //     RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+  //     (Match m) {
+  //       // if(amt.split('.')
+  //       // )
+  //       return '${m[1]},';
+  //     },
+  //   );
+  // }
+
   static String addCommas(String amt) {
-    final str = amt.replaceAll(',', '');
-    return str.replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]},',
-    );
+    var str = amt.replaceAll(',', '');
+    str = str.replaceAll(r'(\\d)(?=(\\d{3})+$)', str);
+    print('---amt: $str');
+    return str;
   }
 
   static String removeCommas(String amt) {

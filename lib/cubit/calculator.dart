@@ -184,6 +184,8 @@ class CalculatorCubit extends Cubit<CalculatorState> {
               ),
             );
           } else {
+            if ('.'.allMatches(state.currencyAmt).length == 1 && key == '.')
+              return;
             str = _isZero(state.currencyAmt) ? '' : state.currencyAmt;
             final newExp = str + (key == 'x' ? '*' : key);
             emit(state.copyWith(currencyAmt: Validation.addCommas(newExp)));
@@ -242,13 +244,18 @@ class CalculatorCubit extends Cubit<CalculatorState> {
           calc = calc.substring(0, i) + '0' + calc.substring(i, calc.length);
 
       if (calc == '') return;
+      // if (calc.split('.').length > 1) return;
 
       print('---calc: $calc');
-      calc = parser.parse(calc).value.toString();
+      if (!calc.endsWith('.')) calc = parser.parse(calc).value.toString();
+      // calc = calc.substring(0, calc.length - 1);
 
       if (state.editingBtc) {
-        final str = calc;
-        final amt = double.parse(Validation.removeCommas(str));
+        late double amt;
+        // if (calc.endsWith('.'))
+        amt = double.parse(Validation.removeCommas(calc));
+        // else
+        // amt = 0;
         final finalVal = (state.btcSelected ? amt : amt / 100000000) *
             state.selectedRate!.rate;
         emit(
@@ -259,8 +266,12 @@ class CalculatorCubit extends Cubit<CalculatorState> {
           ),
         );
       } else {
-        final str = calc;
-        final amt = double.parse(Validation.removeCommas(str));
+        late double amt;
+        // if (calc.endsWith('.'))
+        amt = double.parse(Validation.removeCommas(calc));
+        // else
+        // amt = 0;
+
         final finalVal = amt / state.selectedRate!.rate;
 
         emit(
