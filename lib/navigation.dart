@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sats/api/rates.dart';
 import 'package:sats/api/reddit.dart';
 import 'package:sats/cubit/_state.dart';
@@ -59,6 +60,26 @@ class Routes {
   static const watchOnly = 'watch-only';
   static const inheritanceNewSeed = 'inheritance-new-seed';
   static const inheritanceOldSeed = 'inheritance-old-seed';
+
+  static GoRouter setupRouter() {
+    final _router = GoRouter(
+      routes: [
+        GoRoute(
+          path: '/family/:fid',
+          builder: (context, state) {
+            // state.extra
+            return Container();
+          },
+          // pageBuilder: (context, state) {
+          //   return CustomTransitionPage(child: Container());
+          // },
+        ),
+      ],
+
+      // navigatorBuilder:
+    );
+    return _router;
+  }
 
   static Route<dynamic>? setupRoutes(RouteSettings settings, BuildContext c) {
     late Widget page;

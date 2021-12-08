@@ -39,6 +39,7 @@ class InternalWallet with _$InternalWallet {
     @HiveField(2) required String fingerPrint,
     @HiveField(3) required String path,
     @HiveField(4) String? descriptor,
+    @HiveField(5) DateTime? rescueDate,
   }) = _InternalWallet;
   const InternalWallet._();
 

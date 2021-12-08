@@ -80,13 +80,14 @@ class InternalWalletClassAdaper extends TypeAdapter<_$_InternalWallet> {
       fingerPrint: fields[2] as String,
       path: fields[3] as String,
       descriptor: fields[4] as String?,
+      rescueDate: fields[5] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, _$_InternalWallet obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.xPriv)
       ..writeByte(1)
@@ -96,7 +97,9 @@ class InternalWalletClassAdaper extends TypeAdapter<_$_InternalWallet> {
       ..writeByte(3)
       ..write(obj.path)
       ..writeByte(4)
-      ..write(obj.descriptor);
+      ..write(obj.descriptor)
+      ..writeByte(5)
+      ..write(obj.rescueDate);
   }
 
   @override
@@ -152,6 +155,9 @@ _$_InternalWallet _$$_InternalWalletFromJson(Map<String, dynamic> json) =>
       fingerPrint: json['fingerPrint'] as String,
       path: json['path'] as String,
       descriptor: json['descriptor'] as String?,
+      rescueDate: json['rescueDate'] == null
+          ? null
+          : DateTime.parse(json['rescueDate'] as String),
     );
 
 Map<String, dynamic> _$$_InternalWalletToJson(_$_InternalWallet instance) =>
@@ -161,4 +167,5 @@ Map<String, dynamic> _$$_InternalWalletToJson(_$_InternalWallet instance) =>
       'fingerPrint': instance.fingerPrint,
       'path': instance.path,
       'descriptor': instance.descriptor,
+      'rescueDate': instance.rescueDate?.toIso8601String(),
     };

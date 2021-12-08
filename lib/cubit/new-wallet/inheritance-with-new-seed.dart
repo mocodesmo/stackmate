@@ -235,6 +235,7 @@ class InteritanceWithNewSeedCubit extends Cubit<InheritanceWithNewSeedState> {
           xPub: exportWallet.xpub,
           fingerPrint: exportWallet.fingerPrint,
           path: exportWallet.hardenedPath,
+          rescueDate: to,
         ),
         blockchain: _blockchainCubit.state.blockchain.name,
         walletType: 'INHERITANCE',

@@ -437,13 +437,15 @@ class _$InternalWalletTearOff {
       @HiveField(1) required String xPub,
       @HiveField(2) required String fingerPrint,
       @HiveField(3) required String path,
-      @HiveField(4) String? descriptor}) {
+      @HiveField(4) String? descriptor,
+      @HiveField(5) DateTime? rescueDate}) {
     return _InternalWallet(
       xPriv: xPriv,
       xPub: xPub,
       fingerPrint: fingerPrint,
       path: path,
       descriptor: descriptor,
+      rescueDate: rescueDate,
     );
   }
 
@@ -467,6 +469,8 @@ mixin _$InternalWallet {
   String get path => throw _privateConstructorUsedError;
   @HiveField(4)
   String? get descriptor => throw _privateConstructorUsedError;
+  @HiveField(5)
+  DateTime? get rescueDate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -484,7 +488,8 @@ abstract class $InternalWalletCopyWith<$Res> {
       @HiveField(1) String xPub,
       @HiveField(2) String fingerPrint,
       @HiveField(3) String path,
-      @HiveField(4) String? descriptor});
+      @HiveField(4) String? descriptor,
+      @HiveField(5) DateTime? rescueDate});
 }
 
 /// @nodoc
@@ -503,6 +508,7 @@ class _$InternalWalletCopyWithImpl<$Res>
     Object? fingerPrint = freezed,
     Object? path = freezed,
     Object? descriptor = freezed,
+    Object? rescueDate = freezed,
   }) {
     return _then(_value.copyWith(
       xPriv: xPriv == freezed
@@ -525,6 +531,10 @@ class _$InternalWalletCopyWithImpl<$Res>
           ? _value.descriptor
           : descriptor // ignore: cast_nullable_to_non_nullable
               as String?,
+      rescueDate: rescueDate == freezed
+          ? _value.rescueDate
+          : rescueDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -541,7 +551,8 @@ abstract class _$InternalWalletCopyWith<$Res>
       @HiveField(1) String xPub,
       @HiveField(2) String fingerPrint,
       @HiveField(3) String path,
-      @HiveField(4) String? descriptor});
+      @HiveField(4) String? descriptor,
+      @HiveField(5) DateTime? rescueDate});
 }
 
 /// @nodoc
@@ -562,6 +573,7 @@ class __$InternalWalletCopyWithImpl<$Res>
     Object? fingerPrint = freezed,
     Object? path = freezed,
     Object? descriptor = freezed,
+    Object? rescueDate = freezed,
   }) {
     return _then(_InternalWallet(
       xPriv: xPriv == freezed
@@ -584,6 +596,10 @@ class __$InternalWalletCopyWithImpl<$Res>
           ? _value.descriptor
           : descriptor // ignore: cast_nullable_to_non_nullable
               as String?,
+      rescueDate: rescueDate == freezed
+          ? _value.rescueDate
+          : rescueDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -597,7 +613,8 @@ class _$_InternalWallet extends _InternalWallet {
       @HiveField(1) required this.xPub,
       @HiveField(2) required this.fingerPrint,
       @HiveField(3) required this.path,
-      @HiveField(4) this.descriptor})
+      @HiveField(4) this.descriptor,
+      @HiveField(5) this.rescueDate})
       : super._();
 
   factory _$_InternalWallet.fromJson(Map<String, dynamic> json) =>
@@ -618,10 +635,13 @@ class _$_InternalWallet extends _InternalWallet {
   @override
   @HiveField(4)
   final String? descriptor;
+  @override
+  @HiveField(5)
+  final DateTime? rescueDate;
 
   @override
   String toString() {
-    return 'InternalWallet(xPriv: $xPriv, xPub: $xPub, fingerPrint: $fingerPrint, path: $path, descriptor: $descriptor)';
+    return 'InternalWallet(xPriv: $xPriv, xPub: $xPub, fingerPrint: $fingerPrint, path: $path, descriptor: $descriptor, rescueDate: $rescueDate)';
   }
 
   @override
@@ -639,7 +659,10 @@ class _$_InternalWallet extends _InternalWallet {
                 const DeepCollectionEquality().equals(other.path, path)) &&
             (identical(other.descriptor, descriptor) ||
                 const DeepCollectionEquality()
-                    .equals(other.descriptor, descriptor)));
+                    .equals(other.descriptor, descriptor)) &&
+            (identical(other.rescueDate, rescueDate) ||
+                const DeepCollectionEquality()
+                    .equals(other.rescueDate, rescueDate)));
   }
 
   @override
@@ -649,7 +672,8 @@ class _$_InternalWallet extends _InternalWallet {
       const DeepCollectionEquality().hash(xPub) ^
       const DeepCollectionEquality().hash(fingerPrint) ^
       const DeepCollectionEquality().hash(path) ^
-      const DeepCollectionEquality().hash(descriptor);
+      const DeepCollectionEquality().hash(descriptor) ^
+      const DeepCollectionEquality().hash(rescueDate);
 
   @JsonKey(ignore: true)
   @override
@@ -668,7 +692,8 @@ abstract class _InternalWallet extends InternalWallet {
       @HiveField(1) required String xPub,
       @HiveField(2) required String fingerPrint,
       @HiveField(3) required String path,
-      @HiveField(4) String? descriptor}) = _$_InternalWallet;
+      @HiveField(4) String? descriptor,
+      @HiveField(5) DateTime? rescueDate}) = _$_InternalWallet;
   const _InternalWallet._() : super._();
 
   factory _InternalWallet.fromJson(Map<String, dynamic> json) =
@@ -689,6 +714,9 @@ abstract class _InternalWallet extends InternalWallet {
   @override
   @HiveField(4)
   String? get descriptor => throw _privateConstructorUsedError;
+  @override
+  @HiveField(5)
+  DateTime? get rescueDate => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$InternalWalletCopyWith<_InternalWallet> get copyWith =>
