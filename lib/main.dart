@@ -35,7 +35,7 @@ class Stackmate extends StatelessWidget {
   Widget build(BuildContext c) {
     return Cubits(
       child: OKToast(
-        duration: const Duration(milliseconds: 600),
+        duration: const Duration(milliseconds: 2000),
         position: ToastPosition.bottom,
         textStyle: c.fonts.caption!.copyWith(color: c.colours.onBackground),
         child: MaterialApp(

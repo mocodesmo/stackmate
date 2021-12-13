@@ -1,10 +1,16 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:file_saver/file_saver.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:sats/cubit/logger.dart';
 import 'package:sats/model/address-book.dart';
 import 'package:sats/pkg/clipboard.dart';
 import 'package:sats/pkg/storage.dart';
-// import 'package:sats/pkg/vibrate.dart';
 
 part 'address-book.freezed.dart';
 
@@ -24,6 +30,18 @@ class AddressBookState with _$AddressBookState {
     //
     @Default('') String editPublicKey,
     @Default('') String errEditPublicKey,
+    //
+    //
+    @Default('') String editPath,
+    @Default('') String errEditPath,
+    //
+    //
+    @Default('') String editFingerPrint,
+    @Default('') String errFingerPrint,
+    //
+    //
+    @Default('') String editRescueDate,
+    @Default('') String errEditRescueDate,
     //
     //
     AddressBookUser? selectedUser,
@@ -152,6 +170,33 @@ class AddressBookCubit extends Cubit<AddressBookState> {
     );
   }
 
+  void pathChanged(String text) {
+    emit(
+      state.copyWith(
+        editPath: text,
+        errEditPath: '',
+      ),
+    );
+  }
+
+  void fingerprintChanged(String text) {
+    emit(
+      state.copyWith(
+        editFingerPrint: text,
+        errFingerPrint: '',
+      ),
+    );
+  }
+
+  void rescueDateChanged(String text) {
+    emit(
+      state.copyWith(
+        editRescueDate: text,
+        errEditRescueDate: '',
+      ),
+    );
+  }
+
   void publicKeyChanged(String text) {
     emit(
       state.copyWith(
@@ -171,8 +216,38 @@ class AddressBookCubit extends Cubit<AddressBookState> {
     );
   }
 
-  void copyKey() async {
-    await _clipBoard.copyToClipBoard(state.selectedKey!.publicKey);
+  void pasteFingerprint() async {
+    final text = await _clipBoard.pasteFromClipBoard();
+    emit(
+      state.copyWith(
+        editFingerPrint: text,
+        errFingerPrint: '',
+      ),
+    );
+  }
+
+  void pastePath() async {
+    final text = await _clipBoard.pasteFromClipBoard();
+    emit(
+      state.copyWith(
+        editPath: text,
+        errEditPath: '',
+      ),
+    );
+  }
+
+  void pasteRescueDate() async {
+    final text = await _clipBoard.pasteFromClipBoard();
+    emit(
+      state.copyWith(
+        editRescueDate: text,
+        errEditRescueDate: '',
+      ),
+    );
+  }
+
+  void copyKey(String text) async {
+    await _clipBoard.copyToClipBoard(text);
   }
 
   void saveUserClicked() async {
@@ -252,6 +327,9 @@ class AddressBookCubit extends Cubit<AddressBookState> {
       final newKey = AddressBookKey(
         name: state.editKeyName,
         publicKey: state.editPublicKey,
+        path: state.editPath,
+        fingerprint: state.editFingerPrint,
+        rescueDate: state.editRescueDate == '' ? null : state.editRescueDate,
         createdAt: DateTime.now().millisecondsSinceEpoch,
       );
       if (state.selectedUser!.keys != null) {
@@ -342,5 +420,61 @@ class AddressBookCubit extends Cubit<AddressBookState> {
     await _storage.clearAll<AddressBookUser>(
       StoreKeys.AddressBookUser.name,
     );
+  }
+
+  void exportAddressBook() async {
+    final addressBook =
+        _storage.getAll<AddressBookUser>(StoreKeys.AddressBookUser.name);
+    if (addressBook.isEmpty) {
+      showToast('Address Book is empty.');
+      return;
+    }
+    String jsonStr = '{"address_book":[';
+    for (final user in addressBook) jsonStr += jsonEncode(user.toJson()) + ',';
+    jsonStr = jsonStr.substring(0, jsonStr.length - 1);
+    jsonStr += ']}';
+    final bin = Uint8List.fromList(jsonStr.codeUnits);
+    final date = DateTime.now().millisecondsSinceEpoch.toString();
+    await FileSaver.instance
+        .saveAs('backup-$date.sm9', bin, '', MimeType.OTHER);
+    showToast('Backup Saved.');
+  }
+
+  void importAddressBook() async {
+    try {
+      final result = await FilePicker.platform.pickFiles();
+      if (result == null || !result.files.first.extension!.contains('sm9')) {
+        showToast('Invalid Backup File.');
+        return;
+      }
+      final file = File(result.files.first.path!);
+      final bin = await file.readAsBytes();
+      // if (bin == null) return;
+      final jsonBin = List<int>.from(bin);
+      String jsonStr = '';
+      for (final binary in jsonBin) jsonStr += String.fromCharCode(binary);
+      final json = jsonDecode(jsonStr);
+      final List<AddressBookUser> users = [];
+      for (final user in json['address_book'])
+        users.add(AddressBookUser.fromJson(user as Map<String, dynamic>));
+      final newUsers = [...state.users.toList()];
+      for (final user in users) {
+        var newUser = user.copyWith(id: null);
+        final id = await _storage.saveItem<AddressBookUser>(
+          StoreKeys.AddressBookUser.name,
+          newUser,
+        );
+        newUser = newUser.copyWith(id: id);
+        await _storage.saveItemAt<AddressBookUser>(
+          StoreKeys.AddressBookUser.name,
+          id,
+          newUser,
+        );
+        newUsers.add(newUser);
+      }
+      emit(state.copyWith(users: newUsers));
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

@@ -27,6 +27,12 @@ class _$AddressBookStateTearOff {
       String errKeyName = '',
       String editPublicKey = '',
       String errEditPublicKey = '',
+      String editPath = '',
+      String errEditPath = '',
+      String editFingerPrint = '',
+      String errFingerPrint = '',
+      String editRescueDate = '',
+      String errEditRescueDate = '',
       AddressBookUser? selectedUser,
       AddressBookKey? selectedKey}) {
     return _AddressBookState(
@@ -39,6 +45,12 @@ class _$AddressBookStateTearOff {
       errKeyName: errKeyName,
       editPublicKey: editPublicKey,
       errEditPublicKey: errEditPublicKey,
+      editPath: editPath,
+      errEditPath: errEditPath,
+      editFingerPrint: editFingerPrint,
+      errFingerPrint: errFingerPrint,
+      editRescueDate: editRescueDate,
+      errEditRescueDate: errEditRescueDate,
       selectedUser: selectedUser,
       selectedKey: selectedKey,
     );
@@ -59,6 +71,15 @@ mixin _$AddressBookState {
   String get errKeyName => throw _privateConstructorUsedError; //
   String get editPublicKey => throw _privateConstructorUsedError;
   String get errEditPublicKey => throw _privateConstructorUsedError; //
+//
+  String get editPath => throw _privateConstructorUsedError;
+  String get errEditPath => throw _privateConstructorUsedError; //
+//
+  String get editFingerPrint => throw _privateConstructorUsedError;
+  String get errFingerPrint => throw _privateConstructorUsedError; //
+//
+  String get editRescueDate => throw _privateConstructorUsedError;
+  String get errEditRescueDate => throw _privateConstructorUsedError; //
 //
   AddressBookUser? get selectedUser => throw _privateConstructorUsedError;
   AddressBookKey? get selectedKey => throw _privateConstructorUsedError;
@@ -83,6 +104,12 @@ abstract class $AddressBookStateCopyWith<$Res> {
       String errKeyName,
       String editPublicKey,
       String errEditPublicKey,
+      String editPath,
+      String errEditPath,
+      String editFingerPrint,
+      String errFingerPrint,
+      String editRescueDate,
+      String errEditRescueDate,
       AddressBookUser? selectedUser,
       AddressBookKey? selectedKey});
 
@@ -110,6 +137,12 @@ class _$AddressBookStateCopyWithImpl<$Res>
     Object? errKeyName = freezed,
     Object? editPublicKey = freezed,
     Object? errEditPublicKey = freezed,
+    Object? editPath = freezed,
+    Object? errEditPath = freezed,
+    Object? editFingerPrint = freezed,
+    Object? errFingerPrint = freezed,
+    Object? editRescueDate = freezed,
+    Object? errEditRescueDate = freezed,
     Object? selectedUser = freezed,
     Object? selectedKey = freezed,
   }) {
@@ -149,6 +182,30 @@ class _$AddressBookStateCopyWithImpl<$Res>
       errEditPublicKey: errEditPublicKey == freezed
           ? _value.errEditPublicKey
           : errEditPublicKey // ignore: cast_nullable_to_non_nullable
+              as String,
+      editPath: editPath == freezed
+          ? _value.editPath
+          : editPath // ignore: cast_nullable_to_non_nullable
+              as String,
+      errEditPath: errEditPath == freezed
+          ? _value.errEditPath
+          : errEditPath // ignore: cast_nullable_to_non_nullable
+              as String,
+      editFingerPrint: editFingerPrint == freezed
+          ? _value.editFingerPrint
+          : editFingerPrint // ignore: cast_nullable_to_non_nullable
+              as String,
+      errFingerPrint: errFingerPrint == freezed
+          ? _value.errFingerPrint
+          : errFingerPrint // ignore: cast_nullable_to_non_nullable
+              as String,
+      editRescueDate: editRescueDate == freezed
+          ? _value.editRescueDate
+          : editRescueDate // ignore: cast_nullable_to_non_nullable
+              as String,
+      errEditRescueDate: errEditRescueDate == freezed
+          ? _value.errEditRescueDate
+          : errEditRescueDate // ignore: cast_nullable_to_non_nullable
               as String,
       selectedUser: selectedUser == freezed
           ? _value.selectedUser
@@ -201,6 +258,12 @@ abstract class _$AddressBookStateCopyWith<$Res>
       String errKeyName,
       String editPublicKey,
       String errEditPublicKey,
+      String editPath,
+      String errEditPath,
+      String editFingerPrint,
+      String errFingerPrint,
+      String editRescueDate,
+      String errEditRescueDate,
       AddressBookUser? selectedUser,
       AddressBookKey? selectedKey});
 
@@ -232,6 +295,12 @@ class __$AddressBookStateCopyWithImpl<$Res>
     Object? errKeyName = freezed,
     Object? editPublicKey = freezed,
     Object? errEditPublicKey = freezed,
+    Object? editPath = freezed,
+    Object? errEditPath = freezed,
+    Object? editFingerPrint = freezed,
+    Object? errFingerPrint = freezed,
+    Object? editRescueDate = freezed,
+    Object? errEditRescueDate = freezed,
     Object? selectedUser = freezed,
     Object? selectedKey = freezed,
   }) {
@@ -272,6 +341,30 @@ class __$AddressBookStateCopyWithImpl<$Res>
           ? _value.errEditPublicKey
           : errEditPublicKey // ignore: cast_nullable_to_non_nullable
               as String,
+      editPath: editPath == freezed
+          ? _value.editPath
+          : editPath // ignore: cast_nullable_to_non_nullable
+              as String,
+      errEditPath: errEditPath == freezed
+          ? _value.errEditPath
+          : errEditPath // ignore: cast_nullable_to_non_nullable
+              as String,
+      editFingerPrint: editFingerPrint == freezed
+          ? _value.editFingerPrint
+          : editFingerPrint // ignore: cast_nullable_to_non_nullable
+              as String,
+      errFingerPrint: errFingerPrint == freezed
+          ? _value.errFingerPrint
+          : errFingerPrint // ignore: cast_nullable_to_non_nullable
+              as String,
+      editRescueDate: editRescueDate == freezed
+          ? _value.editRescueDate
+          : editRescueDate // ignore: cast_nullable_to_non_nullable
+              as String,
+      errEditRescueDate: errEditRescueDate == freezed
+          ? _value.errEditRescueDate
+          : errEditRescueDate // ignore: cast_nullable_to_non_nullable
+              as String,
       selectedUser: selectedUser == freezed
           ? _value.selectedUser
           : selectedUser // ignore: cast_nullable_to_non_nullable
@@ -297,6 +390,12 @@ class _$_AddressBookState extends _AddressBookState {
       this.errKeyName = '',
       this.editPublicKey = '',
       this.errEditPublicKey = '',
+      this.editPath = '',
+      this.errEditPath = '',
+      this.editFingerPrint = '',
+      this.errFingerPrint = '',
+      this.editRescueDate = '',
+      this.errEditRescueDate = '',
       this.selectedUser,
       this.selectedKey})
       : super._();
@@ -328,6 +427,27 @@ class _$_AddressBookState extends _AddressBookState {
   @JsonKey(defaultValue: '')
   @override
   final String errEditPublicKey;
+  @JsonKey(defaultValue: '')
+  @override //
+//
+  final String editPath;
+  @JsonKey(defaultValue: '')
+  @override
+  final String errEditPath;
+  @JsonKey(defaultValue: '')
+  @override //
+//
+  final String editFingerPrint;
+  @JsonKey(defaultValue: '')
+  @override
+  final String errFingerPrint;
+  @JsonKey(defaultValue: '')
+  @override //
+//
+  final String editRescueDate;
+  @JsonKey(defaultValue: '')
+  @override
+  final String errEditRescueDate;
   @override //
 //
   final AddressBookUser? selectedUser;
@@ -336,7 +456,7 @@ class _$_AddressBookState extends _AddressBookState {
 
   @override
   String toString() {
-    return 'AddressBookState(users: $users, editUserDetails: $editUserDetails, editKeyDetails: $editKeyDetails, editUserName: $editUserName, errEditUserName: $errEditUserName, editKeyName: $editKeyName, errKeyName: $errKeyName, editPublicKey: $editPublicKey, errEditPublicKey: $errEditPublicKey, selectedUser: $selectedUser, selectedKey: $selectedKey)';
+    return 'AddressBookState(users: $users, editUserDetails: $editUserDetails, editKeyDetails: $editKeyDetails, editUserName: $editUserName, errEditUserName: $errEditUserName, editKeyName: $editKeyName, errKeyName: $errKeyName, editPublicKey: $editPublicKey, errEditPublicKey: $errEditPublicKey, editPath: $editPath, errEditPath: $errEditPath, editFingerPrint: $editFingerPrint, errFingerPrint: $errFingerPrint, editRescueDate: $editRescueDate, errEditRescueDate: $errEditRescueDate, selectedUser: $selectedUser, selectedKey: $selectedKey)';
   }
 
   @override
@@ -369,6 +489,24 @@ class _$_AddressBookState extends _AddressBookState {
             (identical(other.errEditPublicKey, errEditPublicKey) ||
                 const DeepCollectionEquality()
                     .equals(other.errEditPublicKey, errEditPublicKey)) &&
+            (identical(other.editPath, editPath) ||
+                const DeepCollectionEquality()
+                    .equals(other.editPath, editPath)) &&
+            (identical(other.errEditPath, errEditPath) ||
+                const DeepCollectionEquality()
+                    .equals(other.errEditPath, errEditPath)) &&
+            (identical(other.editFingerPrint, editFingerPrint) ||
+                const DeepCollectionEquality()
+                    .equals(other.editFingerPrint, editFingerPrint)) &&
+            (identical(other.errFingerPrint, errFingerPrint) ||
+                const DeepCollectionEquality()
+                    .equals(other.errFingerPrint, errFingerPrint)) &&
+            (identical(other.editRescueDate, editRescueDate) ||
+                const DeepCollectionEquality()
+                    .equals(other.editRescueDate, editRescueDate)) &&
+            (identical(other.errEditRescueDate, errEditRescueDate) ||
+                const DeepCollectionEquality()
+                    .equals(other.errEditRescueDate, errEditRescueDate)) &&
             (identical(other.selectedUser, selectedUser) ||
                 const DeepCollectionEquality()
                     .equals(other.selectedUser, selectedUser)) &&
@@ -389,6 +527,12 @@ class _$_AddressBookState extends _AddressBookState {
       const DeepCollectionEquality().hash(errKeyName) ^
       const DeepCollectionEquality().hash(editPublicKey) ^
       const DeepCollectionEquality().hash(errEditPublicKey) ^
+      const DeepCollectionEquality().hash(editPath) ^
+      const DeepCollectionEquality().hash(errEditPath) ^
+      const DeepCollectionEquality().hash(editFingerPrint) ^
+      const DeepCollectionEquality().hash(errFingerPrint) ^
+      const DeepCollectionEquality().hash(editRescueDate) ^
+      const DeepCollectionEquality().hash(errEditRescueDate) ^
       const DeepCollectionEquality().hash(selectedUser) ^
       const DeepCollectionEquality().hash(selectedKey);
 
@@ -409,6 +553,12 @@ abstract class _AddressBookState extends AddressBookState {
       String errKeyName,
       String editPublicKey,
       String errEditPublicKey,
+      String editPath,
+      String errEditPath,
+      String editFingerPrint,
+      String errFingerPrint,
+      String editRescueDate,
+      String errEditRescueDate,
       AddressBookUser? selectedUser,
       AddressBookKey? selectedKey}) = _$_AddressBookState;
   const _AddressBookState._() : super._();
@@ -431,6 +581,21 @@ abstract class _AddressBookState extends AddressBookState {
   String get editPublicKey => throw _privateConstructorUsedError;
   @override
   String get errEditPublicKey => throw _privateConstructorUsedError;
+  @override //
+//
+  String get editPath => throw _privateConstructorUsedError;
+  @override
+  String get errEditPath => throw _privateConstructorUsedError;
+  @override //
+//
+  String get editFingerPrint => throw _privateConstructorUsedError;
+  @override
+  String get errFingerPrint => throw _privateConstructorUsedError;
+  @override //
+//
+  String get editRescueDate => throw _privateConstructorUsedError;
+  @override
+  String get errEditRescueDate => throw _privateConstructorUsedError;
   @override //
 //
   AddressBookUser? get selectedUser => throw _privateConstructorUsedError;

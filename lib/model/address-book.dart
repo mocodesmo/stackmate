@@ -24,6 +24,9 @@ class AddressBookKey with _$AddressBookKey {
     @HiveField(0) required String name,
     @HiveField(1) required String publicKey,
     @HiveField(2) required int createdAt,
+    @HiveField(3) required String path,
+    @HiveField(4) required String fingerprint,
+    @HiveField(5) String? rescueDate,
   }) = _AddressBookKey;
 
   factory AddressBookKey.fromJson(Map<String, dynamic> json) =>

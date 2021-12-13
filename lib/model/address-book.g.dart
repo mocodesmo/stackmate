@@ -60,19 +60,28 @@ class AddressBookValueClassAdaper extends TypeAdapter<_$_AddressBookKey> {
       name: fields[0] as String,
       publicKey: fields[1] as String,
       createdAt: fields[2] as int,
+      path: fields[3] as String,
+      fingerprint: fields[4] as String,
+      rescueDate: fields[5] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, _$_AddressBookKey obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
       ..write(obj.publicKey)
       ..writeByte(2)
-      ..write(obj.createdAt);
+      ..write(obj.createdAt)
+      ..writeByte(3)
+      ..write(obj.path)
+      ..writeByte(4)
+      ..write(obj.fingerprint)
+      ..writeByte(5)
+      ..write(obj.rescueDate);
   }
 
   @override
@@ -111,6 +120,9 @@ _$_AddressBookKey _$$_AddressBookKeyFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       publicKey: json['publicKey'] as String,
       createdAt: json['createdAt'] as int,
+      path: json['path'] as String,
+      fingerprint: json['fingerprint'] as String,
+      rescueDate: json['rescueDate'] as String?,
     );
 
 Map<String, dynamic> _$$_AddressBookKeyToJson(_$_AddressBookKey instance) =>
@@ -118,4 +130,7 @@ Map<String, dynamic> _$$_AddressBookKeyToJson(_$_AddressBookKey instance) =>
       'name': instance.name,
       'publicKey': instance.publicKey,
       'createdAt': instance.createdAt,
+      'path': instance.path,
+      'fingerprint': instance.fingerprint,
+      'rescueDate': instance.rescueDate,
     };

@@ -237,11 +237,17 @@ class _$AddressBookKeyTearOff {
   _AddressBookKey call(
       {@HiveField(0) required String name,
       @HiveField(1) required String publicKey,
-      @HiveField(2) required int createdAt}) {
+      @HiveField(2) required int createdAt,
+      @HiveField(3) required String path,
+      @HiveField(4) required String fingerprint,
+      @HiveField(5) String? rescueDate}) {
     return _AddressBookKey(
       name: name,
       publicKey: publicKey,
       createdAt: createdAt,
+      path: path,
+      fingerprint: fingerprint,
+      rescueDate: rescueDate,
     );
   }
 
@@ -261,6 +267,12 @@ mixin _$AddressBookKey {
   String get publicKey => throw _privateConstructorUsedError;
   @HiveField(2)
   int get createdAt => throw _privateConstructorUsedError;
+  @HiveField(3)
+  String get path => throw _privateConstructorUsedError;
+  @HiveField(4)
+  String get fingerprint => throw _privateConstructorUsedError;
+  @HiveField(5)
+  String? get rescueDate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -276,7 +288,10 @@ abstract class $AddressBookKeyCopyWith<$Res> {
   $Res call(
       {@HiveField(0) String name,
       @HiveField(1) String publicKey,
-      @HiveField(2) int createdAt});
+      @HiveField(2) int createdAt,
+      @HiveField(3) String path,
+      @HiveField(4) String fingerprint,
+      @HiveField(5) String? rescueDate});
 }
 
 /// @nodoc
@@ -293,6 +308,9 @@ class _$AddressBookKeyCopyWithImpl<$Res>
     Object? name = freezed,
     Object? publicKey = freezed,
     Object? createdAt = freezed,
+    Object? path = freezed,
+    Object? fingerprint = freezed,
+    Object? rescueDate = freezed,
   }) {
     return _then(_value.copyWith(
       name: name == freezed
@@ -307,6 +325,18 @@ class _$AddressBookKeyCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as int,
+      path: path == freezed
+          ? _value.path
+          : path // ignore: cast_nullable_to_non_nullable
+              as String,
+      fingerprint: fingerprint == freezed
+          ? _value.fingerprint
+          : fingerprint // ignore: cast_nullable_to_non_nullable
+              as String,
+      rescueDate: rescueDate == freezed
+          ? _value.rescueDate
+          : rescueDate // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -321,7 +351,10 @@ abstract class _$AddressBookKeyCopyWith<$Res>
   $Res call(
       {@HiveField(0) String name,
       @HiveField(1) String publicKey,
-      @HiveField(2) int createdAt});
+      @HiveField(2) int createdAt,
+      @HiveField(3) String path,
+      @HiveField(4) String fingerprint,
+      @HiveField(5) String? rescueDate});
 }
 
 /// @nodoc
@@ -340,6 +373,9 @@ class __$AddressBookKeyCopyWithImpl<$Res>
     Object? name = freezed,
     Object? publicKey = freezed,
     Object? createdAt = freezed,
+    Object? path = freezed,
+    Object? fingerprint = freezed,
+    Object? rescueDate = freezed,
   }) {
     return _then(_AddressBookKey(
       name: name == freezed
@@ -354,6 +390,18 @@ class __$AddressBookKeyCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as int,
+      path: path == freezed
+          ? _value.path
+          : path // ignore: cast_nullable_to_non_nullable
+              as String,
+      fingerprint: fingerprint == freezed
+          ? _value.fingerprint
+          : fingerprint // ignore: cast_nullable_to_non_nullable
+              as String,
+      rescueDate: rescueDate == freezed
+          ? _value.rescueDate
+          : rescueDate // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -365,7 +413,10 @@ class _$_AddressBookKey implements _AddressBookKey {
   const _$_AddressBookKey(
       {@HiveField(0) required this.name,
       @HiveField(1) required this.publicKey,
-      @HiveField(2) required this.createdAt});
+      @HiveField(2) required this.createdAt,
+      @HiveField(3) required this.path,
+      @HiveField(4) required this.fingerprint,
+      @HiveField(5) this.rescueDate});
 
   factory _$_AddressBookKey.fromJson(Map<String, dynamic> json) =>
       _$$_AddressBookKeyFromJson(json);
@@ -379,10 +430,19 @@ class _$_AddressBookKey implements _AddressBookKey {
   @override
   @HiveField(2)
   final int createdAt;
+  @override
+  @HiveField(3)
+  final String path;
+  @override
+  @HiveField(4)
+  final String fingerprint;
+  @override
+  @HiveField(5)
+  final String? rescueDate;
 
   @override
   String toString() {
-    return 'AddressBookKey(name: $name, publicKey: $publicKey, createdAt: $createdAt)';
+    return 'AddressBookKey(name: $name, publicKey: $publicKey, createdAt: $createdAt, path: $path, fingerprint: $fingerprint, rescueDate: $rescueDate)';
   }
 
   @override
@@ -396,7 +456,15 @@ class _$_AddressBookKey implements _AddressBookKey {
                     .equals(other.publicKey, publicKey)) &&
             (identical(other.createdAt, createdAt) ||
                 const DeepCollectionEquality()
-                    .equals(other.createdAt, createdAt)));
+                    .equals(other.createdAt, createdAt)) &&
+            (identical(other.path, path) ||
+                const DeepCollectionEquality().equals(other.path, path)) &&
+            (identical(other.fingerprint, fingerprint) ||
+                const DeepCollectionEquality()
+                    .equals(other.fingerprint, fingerprint)) &&
+            (identical(other.rescueDate, rescueDate) ||
+                const DeepCollectionEquality()
+                    .equals(other.rescueDate, rescueDate)));
   }
 
   @override
@@ -404,7 +472,10 @@ class _$_AddressBookKey implements _AddressBookKey {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(publicKey) ^
-      const DeepCollectionEquality().hash(createdAt);
+      const DeepCollectionEquality().hash(createdAt) ^
+      const DeepCollectionEquality().hash(path) ^
+      const DeepCollectionEquality().hash(fingerprint) ^
+      const DeepCollectionEquality().hash(rescueDate);
 
   @JsonKey(ignore: true)
   @override
@@ -421,7 +492,10 @@ abstract class _AddressBookKey implements AddressBookKey {
   const factory _AddressBookKey(
       {@HiveField(0) required String name,
       @HiveField(1) required String publicKey,
-      @HiveField(2) required int createdAt}) = _$_AddressBookKey;
+      @HiveField(2) required int createdAt,
+      @HiveField(3) required String path,
+      @HiveField(4) required String fingerprint,
+      @HiveField(5) String? rescueDate}) = _$_AddressBookKey;
 
   factory _AddressBookKey.fromJson(Map<String, dynamic> json) =
       _$_AddressBookKey.fromJson;
@@ -435,6 +509,15 @@ abstract class _AddressBookKey implements AddressBookKey {
   @override
   @HiveField(2)
   int get createdAt => throw _privateConstructorUsedError;
+  @override
+  @HiveField(3)
+  String get path => throw _privateConstructorUsedError;
+  @override
+  @HiveField(4)
+  String get fingerprint => throw _privateConstructorUsedError;
+  @override
+  @HiveField(5)
+  String? get rescueDate => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$AddressBookKeyCopyWith<_AddressBookKey> get copyWith =>

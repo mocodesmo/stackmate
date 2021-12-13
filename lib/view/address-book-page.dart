@@ -24,14 +24,28 @@ class UserList extends StatelessWidget {
               color: context.colours.onBackground,
             ),
           ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: TextButton(
-              onPressed: () {
-                context.read<AddressBookCubit>().editUserSelected();
-              },
-              child: Text('Create New User'.toUpperCase()),
-            ),
+          Row(
+            children: [
+              TextButton(
+                onPressed: () {
+                  context.read<AddressBookCubit>().importAddressBook();
+                },
+                child: Text('Restore'.toUpperCase()),
+              ),
+              TextButton(
+                onPressed: () {
+                  context.read<AddressBookCubit>().exportAddressBook();
+                },
+                child: Text('Backup'.toUpperCase()),
+              ),
+              const Spacer(),
+              TextButton(
+                onPressed: () {
+                  context.read<AddressBookCubit>().editUserSelected();
+                },
+                child: Text('Add User'.toUpperCase()),
+              ),
+            ],
           ),
           const SizedBox(height: 40),
           if (users.isEmpty) ...[
@@ -87,23 +101,23 @@ class KeyList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: 40),
+          const SizedBox(height: 24),
+          Text(
+            '  USER',
+            style: context.fonts.overline!.copyWith(
+              color: context.colours.onBackground,
+            ),
+          ),
           Text(
             '  ' + user.name,
             style: context.fonts.headline6!.copyWith(
               color: context.colours.onBackground,
             ),
           ),
+          const SizedBox(height: 32),
           Row(
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TextButton(
-                onPressed: () {
-                  context.read<AddressBookCubit>().editKeySelected();
-                },
-                child: const Text('NEW PUBLIC KEY'),
-              ),
-              const Spacer(),
               TextButton(
                 onPressed: () {
                   context.read<AddressBookCubit>().editUserSelected();
@@ -122,13 +136,20 @@ class KeyList extends StatelessWidget {
                   ),
                 ),
               ),
+              const Spacer(),
+              TextButton(
+                onPressed: () {
+                  context.read<AddressBookCubit>().editKeySelected();
+                },
+                child: const Text('NEW ACCOUNT'),
+              ),
             ],
           ),
           const SizedBox(height: 40),
           if (user.keys == null || user.keys!.isEmpty) ...[
             Text(
-              '   No Public Keys',
-              style: context.fonts.subtitle1!.copyWith(
+              '   No Accounts for ${user.name} added',
+              style: context.fonts.caption!.copyWith(
                 color: context.colours.onBackground,
               ),
             ),
@@ -176,18 +197,23 @@ class KeyProfile extends StatelessWidget {
 
     return FadeIn(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 40),
+          const SizedBox(height: 50),
           Text(
-            '    ' + key.name,
+            'ACCOUNT',
+            style: context.fonts.overline!.copyWith(
+              color: context.colours.onBackground,
+            ),
+          ),
+          Text(
+            '' + key.name,
             style: context.fonts.headline6!.copyWith(
               color: context.colours.onBackground,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 32),
           Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton(
                 onPressed: () {
@@ -195,15 +221,21 @@ class KeyProfile extends StatelessWidget {
                 },
                 child: const Text('EDIT'),
               ),
+              const SizedBox(width: 24),
               TextButton(
                 onPressed: () {
                   context.read<AddressBookCubit>().deleteKeyClicked();
                 },
-                child: const Text('DELETE'),
+                child: Text(
+                  'DELETE',
+                  style: context.fonts.button!.copyWith(
+                    color: context.colours.error.withOpacity(0.5),
+                  ),
+                ),
               ),
             ],
           ),
-          const SizedBox(height: 80),
+          const SizedBox(height: 100),
           Text(
             'PUBLIC KEY',
             style: context.fonts.overline!.copyWith(
@@ -220,10 +252,76 @@ class KeyProfile extends StatelessWidget {
           const SizedBox(height: 16),
           TextButton(
             onPressed: () {
-              context.read<AddressBookCubit>().copyKey();
+              context.read<AddressBookCubit>().copyKey(key.publicKey);
             },
             child: const Text('COPY'),
           ),
+          const SizedBox(height: 80),
+          Text(
+            'FINGERPRINT',
+            style: context.fonts.overline!.copyWith(
+              color: context.colours.onBackground,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            key.fingerprint,
+            style: context.fonts.bodyText1!.copyWith(
+              color: context.colours.onBackground,
+            ),
+          ),
+          const SizedBox(height: 16),
+          TextButton(
+            onPressed: () {
+              context.read<AddressBookCubit>().copyKey(key.fingerprint);
+            },
+            child: const Text('COPY'),
+          ),
+          const SizedBox(height: 80),
+          Text(
+            'PATH',
+            style: context.fonts.overline!.copyWith(
+              color: context.colours.onBackground,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            key.path,
+            style: context.fonts.bodyText1!.copyWith(
+              color: context.colours.onBackground,
+            ),
+          ),
+          const SizedBox(height: 16),
+          TextButton(
+            onPressed: () {
+              context.read<AddressBookCubit>().copyKey(key.path);
+            },
+            child: const Text('COPY'),
+          ),
+          if (key.rescueDate != null) ...[
+            const SizedBox(height: 80),
+            Text(
+              'RESCUE DATE - (BLOCKHEIGHT)',
+              style: context.fonts.overline!.copyWith(
+                color: context.colours.onBackground,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              key.rescueDate!,
+              style: context.fonts.bodyText1!.copyWith(
+                color: context.colours.onBackground,
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextButton(
+              onPressed: () {
+                context.read<AddressBookCubit>().copyKey(key.rescueDate!);
+              },
+              child: const Text('COPY'),
+            ),
+            const SizedBox(height: 80),
+          ],
         ],
       ),
     );
@@ -347,11 +445,11 @@ class KeyNameField extends StatefulWidget {
 }
 
 class _KeyNameFieldState extends State<KeyNameField> {
-  late TextEditingController _controller;
+  late TextEditingController _namecontroller;
 
   @override
   void initState() {
-    _controller = TextEditingController();
+    _namecontroller = TextEditingController();
     super.initState();
   }
 
@@ -362,16 +460,16 @@ class _KeyNameFieldState extends State<KeyNameField> {
     final errKeyName =
         context.select((AddressBookCubit sc) => sc.state.errKeyName);
 
-    if (keyname != _controller.text) _controller.text = keyname;
+    if (keyname != _namecontroller.text) _namecontroller.text = keyname;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TextField(
-          controller: _controller,
+          controller: _namecontroller,
           style: TextStyle(color: context.colours.onBackground),
           decoration: InputDecoration(
-            hintText: 'Enter Key Name'.toUpperCase(),
+            hintText: 'Enter Account Name'.toUpperCase(),
             errorText: errKeyName.nullIfEmpty(),
           ),
           onChanged: (t) {
@@ -392,50 +490,145 @@ class KeyValueField extends StatefulWidget {
 }
 
 class _KeyValueFieldState extends State<KeyValueField> {
-  late TextEditingController _controller;
+  late TextEditingController _pubkeycontroller;
+  late TextEditingController _fingerprintcontroller;
+  late TextEditingController _pathcontroller;
+  late TextEditingController _rescueDatecontroller;
 
   @override
   void initState() {
-    _controller = TextEditingController();
+    _pubkeycontroller = TextEditingController();
+    _fingerprintcontroller = TextEditingController();
+    _pathcontroller = TextEditingController();
+    _rescueDatecontroller = TextEditingController();
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final keyValue =
-        context.select((AddressBookCubit abc) => abc.state.editPublicKey);
-    final errKeyValue =
-        context.select((AddressBookCubit sc) => sc.state.errEditPublicKey);
+    final state = context.select((AddressBookCubit abc) => abc.state);
 
-    if (keyValue != _controller.text) _controller.text = keyValue;
+    if (state.editPublicKey != _pubkeycontroller.text)
+      _pubkeycontroller.text = state.editPublicKey;
+    if (state.editPath != _pathcontroller.text)
+      _pathcontroller.text = state.editPath;
+    if (state.editFingerPrint != _fingerprintcontroller.text)
+      _fingerprintcontroller.text = state.editFingerPrint;
+    if (state.editRescueDate != _rescueDatecontroller.text)
+      _rescueDatecontroller.text = state.editRescueDate;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TextField(
-          controller: _controller,
+          controller: _pubkeycontroller,
           style: TextStyle(color: context.colours.onBackground),
           decoration: InputDecoration(
             hintText: 'Enter Public Key'.toUpperCase(),
-            errorText: errKeyValue.nullIfEmpty(),
+            errorText: state.errEditPublicKey.nullIfEmpty(),
           ),
           onChanged: (t) {
             context.read<AddressBookCubit>().publicKeyChanged(t);
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Container(),
             TextButton(
               onPressed: () {
                 context.read<AddressBookCubit>().pasteKey();
               },
               child: const Text('PASTE'),
             ),
-            Container(),
           ],
         ),
+        const SizedBox(height: 32),
+        //
+        //
+        TextField(
+          controller: _fingerprintcontroller,
+          style: TextStyle(color: context.colours.onBackground),
+          decoration: InputDecoration(
+            hintText: 'Enter Fingerprint'.toUpperCase(),
+            errorText: state.errFingerPrint.nullIfEmpty(),
+          ),
+          onChanged: (t) {
+            context.read<AddressBookCubit>().fingerprintChanged(t);
+          },
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(),
+            TextButton(
+              onPressed: () {
+                context.read<AddressBookCubit>().pasteFingerprint();
+              },
+              child: const Text('PASTE'),
+            ),
+          ],
+        ),
+        const SizedBox(height: 32),
+        //
+        //
+        TextField(
+          controller: _pathcontroller,
+          style: TextStyle(color: context.colours.onBackground),
+          decoration: InputDecoration(
+            hintText: 'Enter Path'.toUpperCase(),
+            errorText: state.errEditPublicKey.nullIfEmpty(),
+          ),
+          onChanged: (t) {
+            context.read<AddressBookCubit>().pathChanged(t);
+          },
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(),
+            TextButton(
+              onPressed: () {
+                context.read<AddressBookCubit>().pastePath();
+              },
+              child: const Text('PASTE'),
+            ),
+          ],
+        ),
+        const SizedBox(height: 32),
+        //
+        //
+        TextField(
+          controller: _rescueDatecontroller,
+          style: TextStyle(color: context.colours.onBackground),
+          decoration: InputDecoration(
+            hintText: 'Enter Rescue Date - (Height)'.toUpperCase(),
+            errorText: state.errEditRescueDate.nullIfEmpty(),
+          ),
+          onChanged: (t) {
+            context.read<AddressBookCubit>().rescueDateChanged(t);
+          },
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(),
+            TextButton(
+              onPressed: () {
+                context.read<AddressBookCubit>().pasteRescueDate();
+              },
+              child: const Text('PASTE'),
+            ),
+          ],
+        ),
+        const SizedBox(height: 32),
+        //
+        //
       ],
     );
   }
