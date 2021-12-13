@@ -1,0 +1,15 @@
+name: wasmtest
+description: A simple command-line application.
+version: 1.0.0
+# homepage: https://www.example.com
+
+environment:
+  sdk: '>=2.15.0-178.1.beta <3.0.0'
+
+
+dependencies:
+  wasm:
+#   path: ^1.8.0
+
+dev_dependencies:
+  lints: ^1.0.0

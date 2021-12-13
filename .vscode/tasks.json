@@ -58,3 +58,13 @@
         },
     ],
 }
+// flutter clean 
+// flutter build ios 
+// rm -rf build/export 
+// mkdir -p build/export  
+// cd ios 
+// xcodebuild -workspace Runner.xcworkspace -scheme Runner -sdk iphoneos -configuration Release archive -archivePath $PWD/build/Runner.xcarchive 
+// xcodebuild -exportArchive -archivePath $PWD/build/Runner.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath $PWD/build/Runner.ipa -allowProvisioningUpdates
+// cd .. && cp ios/build/Runner.ipa/Runner.ipa build/export
+// cd build/export 
+// firebase appdistribution:distribute Runner.ipa --app <API-KEY> --release-notes  \"${input:release-note}\"  --groups \"${input:release-group}\"

@@ -23,7 +23,7 @@
         //
         "assets": true,
         "integration_test": true,
-        "**/test": true,
+        // "**/test": true,
         ".gitlab-ci.yml": true,
         //
         "**/assets": true,
@@ -38,8 +38,8 @@
         //
         //
         "**/analysis_options.yaml": true,
-        "**/packages": true,
-        "**/pubspec.yaml": true,
+        // "**/packages": true,
+        // "**/pubspec.yaml": true,
         "README.md": true,
         //
         //

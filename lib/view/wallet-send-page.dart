@@ -306,14 +306,15 @@ class _FeeSelectState extends State<FeeSelect> {
         final fast = state.feeFast!.toString();
 
         final buildingTx = state.buildingTx;
+        final calculatingFees = state.calculatingFees;
 
         if (state.fees != _controller.text) _controller.text = state.fees;
 
         return IgnorePointer(
-          ignoring: buildingTx,
+          ignoring: buildingTx || calculatingFees,
           child: AnimatedOpacity(
             duration: const Duration(milliseconds: 400),
-            opacity: buildingTx ? 0.3 : 1,
+            opacity: (buildingTx || calculatingFees) ? 0.3 : 1,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
