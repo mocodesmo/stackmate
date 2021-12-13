@@ -441,40 +441,36 @@ class AddressBookCubit extends Cubit<AddressBookState> {
   }
 
   void importAddressBook() async {
-    try {
-      final result = await FilePicker.platform.pickFiles();
-      if (result == null || !result.files.first.extension!.contains('sm9')) {
-        showToast('Invalid Backup File.');
-        return;
-      }
-      final file = File(result.files.first.path!);
-      final bin = await file.readAsBytes();
-      // if (bin == null) return;
-      final jsonBin = List<int>.from(bin);
-      String jsonStr = '';
-      for (final binary in jsonBin) jsonStr += String.fromCharCode(binary);
-      final json = jsonDecode(jsonStr);
-      final List<AddressBookUser> users = [];
-      for (final user in json['address_book'])
-        users.add(AddressBookUser.fromJson(user as Map<String, dynamic>));
-      final newUsers = [...state.users.toList()];
-      for (final user in users) {
-        var newUser = user.copyWith(id: null);
-        final id = await _storage.saveItem<AddressBookUser>(
-          StoreKeys.AddressBookUser.name,
-          newUser,
-        );
-        newUser = newUser.copyWith(id: id);
-        await _storage.saveItemAt<AddressBookUser>(
-          StoreKeys.AddressBookUser.name,
-          id,
-          newUser,
-        );
-        newUsers.add(newUser);
-      }
-      emit(state.copyWith(users: newUsers));
-    } catch (e) {
-      print(e.toString());
+    final result = await FilePicker.platform.pickFiles();
+    if (result == null || !result.files.first.extension!.contains('sm9')) {
+      showToast('Invalid Backup File.');
+      return;
     }
+    final file = File(result.files.first.path!);
+    final bin = await file.readAsBytes();
+    // if (bin == null) return;
+    final jsonBin = List<int>.from(bin);
+    String jsonStr = '';
+    for (final binary in jsonBin) jsonStr += String.fromCharCode(binary);
+    final json = jsonDecode(jsonStr);
+    final List<AddressBookUser> users = [];
+    for (final user in json['address_book'])
+      users.add(AddressBookUser.fromJson(user as Map<String, dynamic>));
+    final newUsers = [...state.users.toList()];
+    for (final user in users) {
+      var newUser = user.copyWith(id: null);
+      final id = await _storage.saveItem<AddressBookUser>(
+        StoreKeys.AddressBookUser.name,
+        newUser,
+      );
+      newUser = newUser.copyWith(id: id);
+      await _storage.saveItemAt<AddressBookUser>(
+        StoreKeys.AddressBookUser.name,
+        id,
+        newUser,
+      );
+      newUsers.add(newUser);
+    }
+    emit(state.copyWith(users: newUsers));
   }
 }
